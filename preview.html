@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1440" />
+<title>FRMLS — Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0a;
+  --bg-card: #111111;
+  --purple: #7c3aed;
+  --purple-light: #9d5cf5;
+  --cyan: #06b6d4;
+  --cyan-light: #22d3ee;
+  --white: #ffffff;
+  --border-subtle: rgba(255,255,255,0.07);
+  --border-mid: rgba(255,255,255,0.13);
+  --grad: linear-gradient(135deg, var(--purple), var(--cyan));
+  --grad-text: linear-gradient(90deg, var(--purple-light), var(--cyan-light));
+}
+
+html, body {
+  width: 1440px;
+  height: 900px;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+}
+
+/* ===== AMBIENT BG ===== */
+body::before {
+  content: '';
+  position: fixed; inset: -60px;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,58,237,0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(6,182,212,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 60% 40%, rgba(109,40,217,0.05) 0%, transparent 50%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ===== ORBS ===== */
+.orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; }
+.orb-purple { width: 700px; height: 700px; background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%); top: -250px; left: -180px; }
+.orb-cyan   { width: 600px; height: 600px; background: radial-gradient(circle, rgba(6,182,212,0.09) 0%, transparent 70%); bottom: -180px; right: -120px; }
+
+/* ===== CENTER GLOW ===== */
+.center-glow {
+  position: fixed;
+  width: 1000px; height: 700px;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center,
+    rgba(124,58,237,0.06) 0%,
+    rgba(6,182,212,0.03) 45%,
+    transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ===== NOISE ===== */
+.noise-overlay {
+  position: fixed; inset: 0; pointer-events: none; z-index: 200;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* ===== PAGE SHELL ===== */
+.page {
+  position: relative; z-index: 10;
+  width: 1440px; height: 900px;
+}
+
+/* ===== TOP BAR — pinned to top edge ===== */
+.top-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 80px;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 30px 80px 0;
+}
+
+/* ===== MIDDLE — explicitly occupies space between header and footer ===== */
+.main {
+  position: absolute;
+  top: 80px; bottom: 44px; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 80px;
+}
+
+.logo-mark {
+  font-size: 22px; font-weight: 900; letter-spacing: -0.03em;
+  color: var(--white); line-height: 1; display: block;
+}
+.logo-mark .accent {
+  background: var(--grad-text);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.logo-tag {
+  font-size: 10px; font-family: 'DM Mono', monospace; letter-spacing: 0.18em;
+  color: #555555; text-transform: uppercase; margin-top: 5px; display: block;
+}
+
+.top-badge {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: #3a3a3a;
+  border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;
+  padding: 5px 14px;
+  margin-top: 4px;
+}
+
+/* ===== HERO ===== */
+.hero {
+  width: 100%;
+  display: flex; flex-direction: column;
+  align-items: center;
+}
+
+.hero-brand {
+  font-size: 54px; font-weight: 900; letter-spacing: -0.04em; line-height: 1.05;
+  background: var(--grad-text);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.hero-sub {
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em;
+  color: #4a4a4a; text-transform: lowercase;
+  margin-bottom: 32px;
+}
+
+/* ===== WORKSPACE LABEL ===== */
+.workspace-label {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: #383838;
+  margin-bottom: 10px; align-self: flex-start;
+  width: 100%;
+}
+
+/* ===== 3×3 GRID ===== */
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+  width: 100%;
+}
+
+.dash-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  padding: 20px 22px 16px;
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  height: 132px;
+  overflow: hidden;
+}
+
+.dash-box::before {
+  content: '';
+  position: absolute; inset: -1px;
+  border-radius: 19px;
+  background: var(--box-accent, var(--grad));
+  z-index: -1; opacity: 0.26;
+}
+
+.dash-box-icon {
+  font-size: 19px; margin-bottom: 8px;
+  color: var(--box-color, var(--purple-light));
+  line-height: 1; display: block;
+}
+.dash-box-icon svg { display: block; }
+
+.dash-box-title {
+  font-size: 14px; font-weight: 700; color: var(--white);
+  margin-bottom: 3px; letter-spacing: -0.01em;
+}
+
+.dash-box-desc {
+  font-size: 11.5px; color: #777777; line-height: 1.45; flex: 1;
+}
+
+.dash-box-arrow {
+  font-size: 9.5px; font-family: 'DM Mono', monospace;
+  color: #2e2e2e; margin-top: 8px; text-align: right;
+  letter-spacing: 0.08em;
+}
+
+/* ===== BOX COLOR ACCENTS ===== */
+.box-purple   { --box-accent: linear-gradient(135deg,#7c3aed,#9d5cf5); --box-color: #9d5cf5; }
+.box-cyan     { --box-accent: linear-gradient(135deg,#06b6d4,#22d3ee); --box-color: #22d3ee; }
+.box-blue     { --box-accent: linear-gradient(135deg,#3b82f6,#60a5fa); --box-color: #60a5fa; }
+.box-orange   { --box-accent: linear-gradient(135deg,#f97316,#a855f7); --box-color: #f97316; }
+.box-green    { --box-accent: linear-gradient(135deg,#22c55e,#06b6d4); --box-color: #22c55e; }
+.box-violet   { --box-accent: linear-gradient(135deg,#8b5cf6,#06b6d4); --box-color: #a78bfa; }
+.box-yellow   { --box-accent: linear-gradient(135deg,#eab308,#f97316); --box-color: #eab308; }
+.box-pink     { --box-accent: linear-gradient(135deg,#ec4899,#8b5cf6); --box-color: #ec4899; }
+.box-amethyst { --box-accent: linear-gradient(135deg,#a855f7,#06b6d4); --box-color: #a855f7; }
+
+/* ===== FOOTER BAR — pinned to bottom edge ===== */
+.footer-bar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 44px;
+  background: rgba(10,10,10,0.97);
+  border-top: 1px solid var(--border-subtle);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 80px; z-index: 150;
+}
+
+.footer-brand {
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: #444444;
+}
+
+.footer-right {
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; font-weight: 600;
+  background: var(--grad-text);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb-purple"></div>
+<div class="orb orb-cyan"></div>
+<div class="center-glow"></div>
+<div class="noise-overlay"></div>
+
+<div class="page">
+
+  <!-- TOP BAR — absolute, doesn't affect centering -->
+  <div class="top-bar">
+    <div class="logo">
+      <span class="logo-mark">FRM<span class="accent">LS</span></span>
+      <span class="logo-tag">your store. built right.</span>
+    </div>
+    <div class="top-badge">Store Builder System</div>
+  </div>
+
+  <!-- MIDDLE — owns all space between top-bar and footer -->
+  <div class="main">
+  <div class="hero">
+
+    <div class="hero-brand">Everything you need to launch.</div>
+    <div class="hero-sub">your store. built right.</div>
+
+    <div class="workspace-label">your workspace</div>
+
+    <!-- 3×3 DASHBOARD GRID -->
+    <div class="dash-grid">
+
+      <!-- Row 1 -->
+      <div class="dash-box box-purple">
+        <span class="dash-box-icon">◆</span>
+        <div class="dash-box-title">Brand Kit</div>
+        <div class="dash-box-desc">Your colors, fonts, and tone of voice.</div>
+        <div class="dash-box-arrow">Open →</div>
+      </div>
+
+      <div class="dash-box box-cyan">
+        <span class="dash-box-icon">◧</span>
+        <div class="dash-box-title">Prompt Pack</div>
+        <div class="dash-box-desc">All 12 steps with custom AI prompts.</div>
+        <div class="dash-box-arrow">Open →</div>
+      </div>
+
+      <div class="dash-box box-blue">
+        <span class="dash-box-icon">⌥</span>
+        <div class="dash-box-title">Designer Prompts</div>
+        <div class="dash-box-desc">Claude snippets that upgrade your Shopify theme.</div>
+        <div class="dash-box-arrow">Open →</div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="dash-box box-orange">
+        <span class="dash-box-icon">
+          <svg width="20" height="14" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="eyeGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#a855f7"/></linearGradient></defs>
+            <path d="M14 2C7.5 2 2 10 2 10s5.5 8 12 8 12-8 12-8S20.5 2 14 2z" stroke="url(#eyeGrad)" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+            <circle cx="14" cy="10" r="3.5" stroke="url(#eyeGrad)" stroke-width="1.8" fill="none"/>
+          </svg>
+        </span>
+        <div class="dash-box-title">What Good Looks Like</div>
+        <div class="dash-box-desc">References from stores that get it right.</div>
+        <div class="dash-box-arrow">Open →</div>
+      </div>
+
+      <div class="dash-box box-green">
+        <span class="dash-box-icon">◉</span>
+        <div class="dash-box-title">Launch Checklist</div>
+        <div class="dash-box-desc">Track your progress to launch day.</div>
+        <div class="dash-box-arrow">Open →</div>
+      </div>
+
+      <div class="dash-box box-violet">
+        <span class="dash-box-icon">◫</span>
+        <div class="dash-box-title">Store Roadmap</div>
+        <div class="dash-box-desc">See how everything connects.</div>
+        <div class="dash-box-arrow">Open →</div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="dash-box box-yellow">
+        <span class="dash-box-icon">
+          <svg width="20" height="16" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="mailGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#eab308"/><stop offset="100%" stop-color="#f97316"/></linearGradient></defs>
+            <rect x="1" y="1" width="26" height="20" rx="3.5" stroke="url(#mailGrad)" stroke-width="1.8" fill="none"/>
+            <path d="M1 5.5l13 8.5 13-8.5" stroke="url(#mailGrad)" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <div class="dash-box-title">Email Marketing</div>
+        <div class="dash-box-desc">Flows, copy, and subject lines.</div>
+        <div class="dash-box-arrow">Open →</div>
+      </div>
+
+      <div class="dash-box box-pink">
+        <span class="dash-box-icon">◈</span>
+        <div class="dash-box-title">Resources</div>
+        <div class="dash-box-desc">Every tool you need to build.</div>
+        <div class="dash-box-arrow">Open →</div>
+      </div>
+
+      <div class="dash-box box-amethyst">
+        <span class="dash-box-icon">
+          <svg width="19" height="19" viewBox="0 0 26 26" fill="none">
+            <defs><linearGradient id="mbGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#a855f7"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient></defs>
+            <rect x="1.5" y="1.5" width="10" height="10" rx="2.5" stroke="url(#mbGrad)" stroke-width="1.5"/>
+            <rect x="14.5" y="1.5" width="10" height="10" rx="2.5" stroke="url(#mbGrad)" stroke-width="1.5"/>
+            <rect x="1.5" y="14.5" width="10" height="10" rx="2.5" stroke="url(#mbGrad)" stroke-width="1.5"/>
+            <rect x="14.5" y="14.5" width="10" height="10" rx="2.5" stroke="url(#mbGrad)" stroke-width="1.5"/>
+          </svg>
+        </span>
+        <div class="dash-box-title">Mood Board</div>
+        <div class="dash-box-desc">Your visual references and inspiration.</div>
+        <div class="dash-box-arrow">Open →</div>
+      </div>
+
+    </div>
+  </div>
+  </div><!-- /main -->
+
+  <!-- FOOTER — anchored to bottom of page flow -->
+  <div class="footer-bar">
+  <span class="footer-brand">FRMLS — your store. built right.</span>
+  <span class="footer-right">Dashboard</span>
+</div>
+
+</div><!-- /page -->
+
+</body>
+</html>

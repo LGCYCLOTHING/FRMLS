@@ -1753,6 +1753,11 @@ body::before {
 </div>
 
 <script>
+/* ===== GATE CHECK ===== */
+if (sessionStorage.getItem('frmlsVerified') !== 'true') {
+  window.location.href = 'gate.html';
+}
+
 /* ===== STATE ===== */
 const state = { cat:'', vibe:'', brandName:'', audience:'', fontStyle:'', colorMood:'' };
 const stepVisited = new Set();

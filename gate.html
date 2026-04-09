@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FRMLS — Store Builder System</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { height: 100%; }
+
+:root {
+  --bg: #0a0a0a;
+  --bg-card: #111111;
+  --purple: #7c3aed;
+  --purple-light: #9d5cf5;
+  --cyan: #06b6d4;
+  --cyan-light: #22d3ee;
+  --white: #ffffff;
+  --border-subtle: rgba(255,255,255,0.07);
+  --border-mid: rgba(255,255,255,0.13);
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --grad: linear-gradient(135deg, var(--purple), var(--cyan));
+  --grad-text: linear-gradient(90deg, var(--purple-light), var(--cyan-light));
+  --accent-rgb: 124, 58, 237;
+}
+
+/* ===== BASE ===== */
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 46px;
+}
+
+/* ===== AMBIENT BG ===== */
+body::before {
+  content: '';
+  position: fixed; inset: -60px;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,58,237,0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(6,182,212,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 60% 40%, rgba(109,40,217,0.05) 0%, transparent 50%);
+  animation: bgShift 14s ease-in-out infinite alternate;
+  pointer-events: none; z-index: 0;
+  will-change: transform;
+}
+@keyframes bgShift {
+  0%   { transform: scale(1) translate(0,0); }
+  33%  { transform: scale(1.05) translate(2%,1%); }
+  66%  { transform: scale(0.97) translate(-1%,2%); }
+  100% { transform: scale(1.03) translate(1%,-1%); }
+}
+
+/* ===== ORBS ===== */
+.orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; }
+.orb-purple {
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+  top: -250px; left: -180px;
+  animation: orbP 22s ease-in-out infinite alternate;
+}
+.orb-cyan {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(6,182,212,0.09) 0%, transparent 70%);
+  bottom: -180px; right: -120px;
+  animation: orbC 28s ease-in-out infinite alternate;
+}
+@keyframes orbP {
+  0%   { transform: translate(0,0) scale(1); }
+  33%  { transform: translate(90px,60px) scale(1.1); }
+  66%  { transform: translate(-30px,110px) scale(0.93); }
+  100% { transform: translate(55px,-40px) scale(1.06); }
+}
+@keyframes orbC {
+  0%   { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(-90px,-70px) scale(1.12); }
+  100% { transform: translate(70px,50px) scale(0.9); }
+}
+
+/* ===== NOISE ===== */
+.noise-overlay {
+  position: fixed; inset: 0; pointer-events: none; z-index: 200;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* ===== MAIN CARD ===== */
+.gate-wrap {
+  position: relative; z-index: 10;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 24px;
+}
+
+/* ===== LOGO ===== */
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+}
+.logo-mark {
+  font-size: 28px; font-weight: 900; letter-spacing: -0.03em;
+  color: var(--white); line-height: 1;
+  animation: logoGlitch 9s ease-in-out infinite;
+}
+.logo-mark .accent {
+  background: var(--grad-text);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+@keyframes logoGlitch {
+  0%,76%,100% { text-shadow: none; transform: none; filter: none; }
+  78% { text-shadow: 3px 0 rgba(6,182,212,0.65), -3px 0 rgba(124,58,237,0.65); transform: translateX(2px) skewX(-2deg); filter: brightness(1.25); }
+  80% { text-shadow: -2px 0 rgba(6,182,212,0.5), 2px 0 rgba(124,58,237,0.5); transform: translateX(-1px) skewX(1deg); filter: brightness(1.1); }
+  82% { text-shadow: 1px 0 rgba(6,182,212,0.3); transform: none; filter: none; }
+  84% { text-shadow: none; }
+}
+.logo-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: #666666; margin-top: 6px;
+}
+
+/* ===== FEATURE PILLS ===== */
+.pill-row {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 26px;
+}
+.feat-pill {
+  display: inline-flex; align-items: center;
+  height: 26px; padding: 0 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.08em;
+  color: #aaaaaa; background: var(--bg-card);
+  border: 1px solid transparent; border-radius: 20px;
+  position: relative; z-index: 1;
+  white-space: nowrap;
+}
+.feat-pill::before {
+  content: ''; position: absolute; inset: -1px; border-radius: 21px;
+  background: var(--grad); z-index: -1; opacity: 0.32;
+}
+.feat-pill::after {
+  content: ''; position: absolute; inset: 0; border-radius: 20px;
+  background: var(--bg-card); z-index: -1;
+}
+
+/* ===== HEADLINE ===== */
+.headline {
+  font-size: 38px; font-weight: 900; letter-spacing: -0.04em; line-height: 1.1;
+  text-align: center;
+  background: var(--grad-text);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+}
+
+/* ===== DESCRIPTION ===== */
+.desc {
+  font-size: 15px; color: #999999; line-height: 1.7;
+  text-align: center; font-weight: 500;
+  max-width: 420px;
+  margin-bottom: 32px;
+}
+
+/* ===== CTA BUTTON ===== */
+.btn-cta {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 100%;
+  padding: 15px 32px;
+  font-size: 16px; font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.01em;
+  background: var(--grad);
+  border: none; border-radius: var(--radius-md);
+  color: var(--white);
+  cursor: pointer;
+  box-shadow: 0 0 24px rgba(124,58,237,0.3);
+  position: relative; overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+  margin-bottom: 28px;
+}
+.btn-cta::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.13), transparent);
+  opacity: 0; transition: opacity 0.2s;
+}
+.btn-cta:hover {
+  box-shadow: 0 0 44px rgba(124,58,237,0.58), 0 6px 24px rgba(6,182,212,0.22);
+  transform: translateY(-2px);
+}
+.btn-cta:hover::after { opacity: 1; }
+
+/* ===== DIVIDER ===== */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border-subtle);
+  margin-bottom: 24px;
+}
+
+/* ===== ACCESS SECTION ===== */
+.access-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #555555;
+  margin-bottom: 10px;
+  align-self: flex-start;
+}
+
+.access-row {
+  display: flex; gap: 8px;
+  width: 100%;
+}
+
+.access-input {
+  flex: 1;
+  padding: 11px 16px;
+  font-size: 14px; font-family: 'Inter', sans-serif; font-weight: 500;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  color: var(--white);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.access-input::placeholder { color: #555555; }
+.access-input:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.12);
+}
+.access-input.error {
+  border-color: rgba(239,68,68,0.6);
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.08);
+}
+
+.btn-submit {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 11px 20px;
+  font-size: 13px; font-weight: 600;
+  font-family: 'Inter', sans-serif; letter-spacing: 0.01em;
+  background: transparent;
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-md);
+  color: #cccccc; cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.btn-submit:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--white);
+  border-color: rgba(255,255,255,0.22);
+}
+
+.error-msg {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.06em;
+  color: #ef4444;
+  margin-top: 8px;
+  align-self: flex-start;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+.error-msg.visible { opacity: 1; }
+
+/* ===== FOOTER BAR ===== */
+.footer-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 46px;
+  background: rgba(10,10,10,0.96);
+  border-top: 1px solid var(--border-subtle);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; z-index: 150;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.footer-brand {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #999999;
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb-purple"></div>
+<div class="orb orb-cyan"></div>
+<div class="noise-overlay"></div>
+
+<div class="gate-wrap">
+
+  <!-- LOGO -->
+  <div class="logo">
+    <span class="logo-mark">FRM<span class="accent">LS</span></span>
+    <span class="logo-tag">your store. built right.</span>
+  </div>
+
+  <!-- FEATURE PILLS -->
+  <div class="pill-row">
+    <span class="feat-pill">12-step prompt pack</span>
+    <span class="feat-pill">brand identity system</span>
+    <span class="feat-pill">launch checklist</span>
+  </div>
+
+  <!-- HEADLINE -->
+  <h1 class="headline">Everything you need to launch.</h1>
+
+  <!-- DESCRIPTION -->
+  <p class="desc">A complete system for building your Shopify store. Brand identity, custom prompts, designer tools, and more — all in one place.</p>
+
+  <!-- CTA -->
+  <a class="btn-cta" href="https://whop.com/frmls/frmls-store-builder-system" target="_blank" rel="noopener">
+    Get access — $37
+  </a>
+
+  <!-- DIVIDER -->
+  <div class="divider"></div>
+
+  <!-- ACCESS CODE SECTION -->
+  <span class="access-label">already have access?</span>
+
+  <div class="access-row">
+    <input
+      class="access-input"
+      id="codeInput"
+      type="text"
+      placeholder="enter access code"
+      autocomplete="off"
+      spellcheck="false"
+    />
+    <button class="btn-submit" id="submitBtn">Submit</button>
+  </div>
+
+  <span class="error-msg" id="errorMsg">
+    invalid access code — purchase access at the link above.
+  </span>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer-bar">
+  <span class="footer-brand">FRMLS — your store. built right.</span>
+</div>
+
+<script>
+const ACCESS_CODE = 'FRMLS2026';
+
+const codeInput = document.getElementById('codeInput');
+const submitBtn = document.getElementById('submitBtn');
+const errorMsg  = document.getElementById('errorMsg');
+
+function showError() {
+  codeInput.classList.add('error');
+  errorMsg.classList.add('visible');
+}
+
+function clearError() {
+  codeInput.classList.remove('error');
+  errorMsg.classList.remove('visible');
+}
+
+codeInput.addEventListener('input', clearError);
+
+codeInput.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') handleSubmit();
+});
+
+submitBtn.addEventListener('click', handleSubmit);
+
+function handleSubmit() {
+  const entered = codeInput.value.trim().toUpperCase();
+  if (entered === ACCESS_CODE) {
+    sessionStorage.setItem('frmlsVerified', 'true');
+    window.location.href = 'index.html';
+  } else {
+    showError();
+    codeInput.select();
+  }
+}
+</script>
+</body>
+</html>

@@ -940,68 +940,68 @@ body::before {
 }
 .fn-header-actions { display:flex; align-items:center; gap:4px; }
 .fn-clear-note-btn {
-  background:none; border:none; cursor:pointer; color:#555;
+  background:none; border:none; cursor:pointer; color:#cccccc;
   font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase;
   padding:2px 6px; border-radius:4px; transition:color 0.15s, background 0.15s; line-height:1;
 }
-.fn-clear-note-btn:hover { color:#ef4444; background:rgba(239,68,68,0.1); }
+.fn-clear-note-btn:hover { color:#ef4444; background:rgba(239,68,68,0.15); }
 .fn-collapse-btn {
-  background:none; border:none; cursor:pointer; color:#555;
+  background:none; border:none; cursor:pointer; color:#cccccc;
   font-size:14px; padding:2px 5px; border-radius:4px; transition:color 0.15s; line-height:1;
 }
-.fn-collapse-btn:hover { color:#aaa; }
+.fn-collapse-btn:hover { color:#ffffff; }
 .fn-notes-section { padding:12px 14px; border-bottom:1px solid var(--border-subtle); flex-shrink:0; }
 .fn-notes-label {
   font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em;
-  text-transform:uppercase; color:#d97706; margin-bottom:6px;
+  text-transform:uppercase; color:#ffffff; margin-bottom:6px;
   display:flex; align-items:center; justify-content:space-between;
 }
 .fn-notes-saved {
-  font-family:'DM Mono',monospace; font-size:9px; color:#555; opacity:0;
+  font-family:'DM Mono',monospace; font-size:9px; color:#aaaaaa; opacity:0;
   transition:opacity 0.3s, color 0.3s;
 }
 .fn-notes-saved.visible { opacity:1; color:#6ee7b7; }
 .fn-fmt-bar { display:flex; gap:4px; margin-bottom:6px; }
 .fn-fmt-btn {
-  background:rgba(255,255,255,0.05); border:1px solid var(--border-subtle);
-  border-radius:4px; color:#888; cursor:pointer; font-size:11px; font-weight:600;
-  padding:3px 8px; transition:all 0.15s; line-height:1.4; font-family:'Inter',sans-serif;
+  background:rgba(0,0,0,0.45); border:1px solid rgba(255,255,255,0.18);
+  border-radius:4px; color:#ffffff; cursor:pointer; font-size:11px; font-weight:700;
+  padding:3px 9px; transition:all 0.15s; line-height:1.4; font-family:'Inter',sans-serif;
 }
-.fn-fmt-btn:hover { background:rgba(var(--accent-rgb),0.15); border-color:rgba(var(--accent-rgb),0.4); color:#ccc; }
+.fn-fmt-btn:hover { background:rgba(var(--accent-rgb),0.5); border-color:rgba(var(--accent-rgb),0.7); color:#ffffff; }
 .fn-notes-textarea {
   width:100%; resize:none; background:transparent; border:none; outline:none;
   font-size:12px; font-family:'Inter',sans-serif; font-weight:400;
-  color:var(--white); line-height:1.6; min-height:120px;
+  color:#ffffff; line-height:1.6; min-height:120px;
   caret-color:var(--purple-light);
 }
-.fn-notes-textarea::placeholder { color:#3a3a3a; }
+.fn-notes-textarea::placeholder { color:#aaaaaa; }
 .fn-char-count {
-  font-family:'DM Mono',monospace; font-size:9px; color:#444;
+  font-family:'DM Mono',monospace; font-size:9px; color:#cccccc;
   text-align:right; margin-top:4px; letter-spacing:0.06em;
 }
 .fn-todo-section { padding:12px 14px 14px; flex:1; }
 .fn-todo-label {
   font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em;
-  text-transform:uppercase; color:#555; margin-bottom:8px;
+  text-transform:uppercase; color:#ffffff; margin-bottom:8px;
   display:flex; align-items:center; justify-content:space-between; gap:8px;
 }
 .fn-todo-label-left { display:flex; align-items:center; gap:8px; }
-.fn-todo-counter { font-family:'DM Mono',monospace; font-size:9px; color:#555; letter-spacing:0.06em; }
+.fn-todo-counter { font-family:'DM Mono',monospace; font-size:9px; color:#cccccc; letter-spacing:0.06em; }
 .fn-clear-completed {
-  background:none; border:none; cursor:pointer; color:#444;
+  background:none; border:none; cursor:pointer; color:#aaaaaa;
   font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.08em;
   text-transform:uppercase; padding:0; transition:color 0.15s; flex-shrink:0;
 }
 .fn-clear-completed:hover { color:#ef4444; }
 .fn-todo-input-row { display:flex; align-items:center; gap:6px; margin-bottom:10px; }
 .fn-todo-input {
-  flex:1; background:rgba(255,255,255,0.04); border:1px solid var(--border-subtle);
+  flex:1; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.18);
   border-radius:var(--radius-sm); outline:none; padding:6px 10px;
-  font-size:12px; font-family:'Inter',sans-serif; color:var(--white);
+  font-size:12px; font-family:'Inter',sans-serif; color:#ffffff;
   transition:border-color 0.2s;
 }
-.fn-todo-input::placeholder { color:#3a3a3a; }
-.fn-todo-input:focus { border-color:var(--border-mid); }
+.fn-todo-input::placeholder { color:#aaaaaa; }
+.fn-todo-input:focus { border-color:rgba(255,255,255,0.4); }
 .fn-todo-add-btn {
   width:26px; height:26px; border-radius:6px; border:none; cursor:pointer;
   background:var(--grad); color:var(--white); font-size:16px; line-height:1;
@@ -1016,10 +1016,10 @@ body::before {
   display:flex; align-items:center; gap:8px;
   padding:5px 4px; border-radius:5px; transition:background 0.15s; cursor:pointer;
 }
-.fn-todo-item:hover { background:rgba(255,255,255,0.03); }
+.fn-todo-item:hover { background:rgba(255,255,255,0.06); }
 .fn-todo-check {
   width:16px; height:16px; min-width:16px; border-radius:4px;
-  border:1.5px solid var(--border-mid); background:transparent;
+  border:1.5px solid rgba(255,255,255,0.35); background:transparent;
   display:flex; align-items:center; justify-content:center;
   cursor:pointer; transition:all 0.18s; flex-shrink:0;
   position:relative; overflow:hidden;
@@ -1029,12 +1029,12 @@ body::before {
   content:'✓'; position:absolute; color:white; font-size:9px; font-weight:700; line-height:1;
 }
 .fn-todo-text {
-  flex:1; font-size:12px; font-family:'Inter',sans-serif; color:#cccccc; line-height:1.4;
+  flex:1; font-size:12px; font-family:'Inter',sans-serif; color:#ffffff; line-height:1.4;
   word-break:break-word; transition:all 0.18s; cursor:pointer;
 }
-.fn-todo-item.done .fn-todo-text { text-decoration:line-through; opacity:0.38; color:#888; }
+.fn-todo-item.done .fn-todo-text { text-decoration:line-through; opacity:0.45; color:#cccccc; }
 .fn-todo-del {
-  background:none; border:none; color:#3a3a3a; cursor:pointer; font-size:11px;
+  background:none; border:none; color:#aaaaaa; cursor:pointer; font-size:11px;
   padding:2px 4px; flex-shrink:0; transition:color 0.15s; line-height:1; opacity:0;
 }
 .fn-todo-item:hover .fn-todo-del { opacity:1; }
@@ -3256,14 +3256,30 @@ function fnFormat(type) {
   const ta = document.getElementById('fnNotesTextarea');
   if (!ta) return;
   const start = ta.selectionStart, end = ta.selectionEnd;
+
+  if (type === 'bullet') {
+    // Insert • at the start of the line the cursor is on
+    const lineStart = ta.value.lastIndexOf('\n', start - 1) + 1;
+    ta.value = ta.value.substring(0, lineStart) + '• ' + ta.value.substring(lineStart);
+    ta.selectionStart = ta.selectionEnd = start + 2;
+    ta.focus();
+    fnDebounceSaveNote();
+    fnUpdateCharCount();
+    return;
+  }
+
   const sel = ta.value.substring(start, end);
-  let replacement = '';
-  if (type === 'bold')   replacement = '**' + sel + '**';
-  if (type === 'italic') replacement = '*' + sel + '*';
-  if (type === 'bullet') replacement = sel.split('\n').map(l => l.trim() ? '- ' + l : l).join('\n');
+  const before = type === 'bold' ? '**' : '*';
+  const after  = type === 'bold' ? '**' : '*';
+  const replacement = before + sel + after;
   ta.value = ta.value.substring(0, start) + replacement + ta.value.substring(end);
-  ta.selectionStart = start;
-  ta.selectionEnd = start + replacement.length;
+  if (start === end) {
+    // No selection — place cursor between the markers
+    ta.selectionStart = ta.selectionEnd = start + before.length;
+  } else {
+    ta.selectionStart = start;
+    ta.selectionEnd = start + replacement.length;
+  }
   ta.focus();
   fnDebounceSaveNote();
   fnUpdateCharCount();
@@ -3333,14 +3349,20 @@ function escHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// Stop all clicks inside the panel from bubbling to the document close handler
+document.addEventListener('DOMContentLoaded', () => {
+  const panel = document.getElementById('floatNotePanel');
+  if (panel) panel.addEventListener('click', e => e.stopPropagation());
+});
+
 // Close float panel when clicking outside
 document.addEventListener('click', e => {
   if (!floatNoteOpen) return;
-  const panel = document.getElementById('floatNotePanel');
-  const btn   = document.getElementById('floatNoteBtn');
-  if (panel && btn && !panel.contains(e.target) && !btn.contains(e.target)) {
+  const btn = document.getElementById('floatNoteBtn');
+  if (btn && !btn.contains(e.target)) {
     floatNoteOpen = false;
-    panel.classList.remove('open');
+    const panel = document.getElementById('floatNotePanel');
+    if (panel) panel.classList.remove('open');
   }
 });
 

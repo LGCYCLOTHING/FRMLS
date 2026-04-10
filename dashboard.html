@@ -2133,20 +2133,60 @@ if (window.location.pathname.endsWith('dashboard.html')) {
   window.history.replaceState(null, '', '/dashboard');
 }
 
-/* ===== GATE CHECK ===== */
-document.addEventListener('DOMContentLoaded', function() {
+/* ===== GATE CHECK (inline — runs before DOM parse finishes) ===== */
+(function() {
   const verified = localStorage.getItem('frmlsVerified');
   console.log('[FRMLS] frmlsVerified localStorage value:', verified);
   if (verified !== 'true') {
-    window.location.href = 'gate.html';
+    window.location.replace('gate.html');
   }
-});
+})();
 
 /* ===== STATE ===== */
+const STATE_LS     = 'frmlsState';
+const SCREEN_LS    = 'frmlsScreen';
+const STEP_DONE_LS = 'frmlsStepDone';
+const CHECKLIST_LS = 'frmlsChecklist';
+
 const state = { cat:'', vibe:'', brandName:'', audience:'', fontStyle:'', colorMood:'' };
 const stepVisited = new Set();
 const stepDone    = new Set();
 let currentScreen = 0;
+
+function saveState() {
+  localStorage.setItem(STATE_LS, JSON.stringify(state));
+}
+
+function saveStepDone() {
+  localStorage.setItem(STEP_DONE_LS, JSON.stringify([...stepDone]));
+}
+
+function saveChecklistState() {
+  const checked = [];
+  launchItems.forEach((_, i) => {
+    const main  = document.getElementById('cl-'    + i);
+    const panel = document.getElementById('pk-cl-' + i);
+    if ((main && main.checked) || (panel && panel.checked)) checked.push(i);
+  });
+  localStorage.setItem(CHECKLIST_LS, JSON.stringify(checked));
+}
+
+function restoreSelections() {
+  /* Re-apply .selected class to option/font/color cards based on saved state */
+  document.querySelectorAll('.option-card').forEach(c => {
+    const oc = c.getAttribute('onclick') || '';
+    if (state.cat   && oc.includes("'cat'")  && oc.includes("'" + state.cat   + "'")) c.classList.add('selected');
+    if (state.vibe  && oc.includes("'vibe'") && oc.includes("'" + state.vibe  + "'")) c.classList.add('selected');
+  });
+  document.querySelectorAll('.font-card').forEach(c => {
+    const oc = c.getAttribute('onclick') || '';
+    if (state.fontStyle && oc.includes("'" + state.fontStyle + "'")) c.classList.add('selected');
+  });
+  document.querySelectorAll('.color-card').forEach(c => {
+    const oc = c.getAttribute('onclick') || '';
+    if (state.colorMood && oc.includes("'" + state.colorMood + "'")) c.classList.add('selected');
+  });
+}
 
 /* ===== DECISION TREE (branching, 5Q → 6 outcomes) ===== */
 let dtNodeId = 0;
@@ -2323,9 +2363,13 @@ function dtRenderOutcome(outcomeNum) {
 
 /* ===== NAVIGATION ===== */
 function goTo(n) {
+  localStorage.setItem(SCREEN_LS, n);
   if (n === 3) {
-    state.brandName = document.getElementById('brandName').value || 'your brand';
-    state.audience  = document.getElementById('audience').value  || 'your audience';
+    const bnVal  = document.getElementById('brandName').value;
+    const audVal = document.getElementById('audience').value;
+    state.brandName = bnVal  || state.brandName || 'your brand';
+    state.audience  = audVal || state.audience  || 'your audience';
+    saveState();
     buildIdentityCard();
   }
   if (n === 4) buildBrandKit();
@@ -2436,6 +2480,7 @@ function selectOpt(el, key, val) {
   el.classList.add('selected');
   state[key] = val;
   updateSnapshot();
+  saveState();
 }
 
 function selectFont(el, fontStyle) {
@@ -2443,6 +2488,7 @@ function selectFont(el, fontStyle) {
   el.classList.add('selected');
   state.fontStyle = fontStyle;
   updateSnapshot();
+  saveState();
 }
 
 function selectColorMood(el, colorMood) {
@@ -2450,6 +2496,7 @@ function selectColorMood(el, colorMood) {
   el.classList.add('selected');
   state.colorMood = colorMood;
   updateSnapshot();
+  saveState();
 }
 
 
@@ -2666,6 +2713,7 @@ function toggleStep(i) {
 
 function markDone(i, checked) {
   if (checked) stepDone.add(i); else stepDone.delete(i);
+  saveStepDone();
   const label = document.getElementById('done-label-' + i);
   if (label) label.classList.toggle('is-done', checked);
   const item = document.getElementById('item-' + i);
@@ -2726,9 +2774,11 @@ const launchItems = [
 function buildLaunchChecklist() {
   const list = document.getElementById('launchChecklist');
   if (!list.innerHTML) {
+    const savedChecked = new Set();
+    try { JSON.parse(localStorage.getItem(CHECKLIST_LS) || '[]').forEach(i => savedChecked.add(Number(i))); } catch(e) {}
     list.innerHTML = launchItems.map((item,i) => `
       <label class="checklist-item" id="cl-item-${i}">
-        <input type="checkbox" id="cl-${i}" onchange="updateChecklistProgress()" />
+        <input type="checkbox" id="cl-${i}" onchange="updateChecklistProgress()" ${savedChecked.has(i) ? 'checked' : ''} />
         <div class="cl-check-box">✓</div>
         <span class="cl-text">${item.text}</span>
         <span class="cl-tag cl-tag-${item.category}">${item.category}</span>
@@ -2746,6 +2796,7 @@ function updateChecklistProgress() {
   if (countEl) countEl.innerHTML = `<span>${checked}</span> / ${total} complete`;
   if (fillEl)  fillEl.style.width = (checked / total * 100) + '%';
   if (banner)  banner.classList.toggle('hidden', checked < total);
+  saveChecklistState();
 }
 
 /* ===== DASHBOARD ===== */
@@ -3124,9 +3175,11 @@ function buildChecklistPanel() {
   const list = document.getElementById('pk-launchChecklist');
   if (!list) return;
   if (!list.innerHTML) {
+    const savedChecked = new Set();
+    try { JSON.parse(localStorage.getItem(CHECKLIST_LS) || '[]').forEach(i => savedChecked.add(Number(i))); } catch(e) {}
     list.innerHTML = launchItems.map((item, i) => `
       <label class="checklist-item" id="pk-cl-item-${i}">
-        <input type="checkbox" id="pk-cl-${i}" onchange="updatePkChecklistProgress()" ${document.getElementById('cl-'+i) && document.getElementById('cl-'+i).checked ? 'checked' : ''} />
+        <input type="checkbox" id="pk-cl-${i}" onchange="updatePkChecklistProgress()" ${savedChecked.has(i) ? 'checked' : ''} />
         <div class="cl-check-box">✓</div>
         <span class="cl-text">${item.text}</span>
         <span class="cl-tag cl-tag-${item.category}">${item.category}</span>
@@ -3144,6 +3197,7 @@ function updatePkChecklistProgress() {
   if (countEl) countEl.innerHTML = `<span>${checked}</span> / ${total} complete`;
   if (fillEl)  fillEl.style.width = (checked / total * 100) + '%';
   if (banner)  banner.classList.toggle('hidden', checked < total);
+  saveChecklistState();
 }
 
 /* ===== STORE ROADMAP ===== */
@@ -4095,11 +4149,41 @@ function searchKeyNav(e) {
 
 /* ===== INIT ===== */
 document.addEventListener('DOMContentLoaded', () => {
-  initDecisionTree();
-  updateSidebar(0);
-  updateFooter(0);
-  updateSnapshot();
+  /* 1. Accent color (no DOM dependencies) */
   loadAccentColor();
+
+  /* 2. Restore state object from localStorage */
+  try {
+    const savedState = JSON.parse(localStorage.getItem(STATE_LS) || 'null');
+    if (savedState) Object.assign(state, savedState);
+  } catch(e) {}
+
+  /* 3. Restore stepDone set */
+  try {
+    JSON.parse(localStorage.getItem(STEP_DONE_LS) || '[]').forEach(i => stepDone.add(Number(i)));
+  } catch(e) {}
+
+  /* 4. Restore text input values from state */
+  const bnInput  = document.getElementById('brandName');
+  const audInput = document.getElementById('audience');
+  if (bnInput  && state.brandName) bnInput.value  = state.brandName;
+  if (audInput && state.audience)  audInput.value  = state.audience;
+
+  /* 5. Wire up live-save for text inputs */
+  if (bnInput)  bnInput.addEventListener('input',  () => { state.brandName = bnInput.value;  saveState(); });
+  if (audInput) audInput.addEventListener('input',  () => { state.audience  = audInput.value; saveState(); });
+
+  /* 6. Navigate to the saved screen (builds the correct view, calls buildDashboard/buildStepList etc.) */
+  const savedScreen = parseInt(localStorage.getItem(SCREEN_LS) || '0', 10);
+  goTo(isNaN(savedScreen) ? 0 : savedScreen);
+
+  /* 7. Re-apply visual card selections now that the screens exist in DOM */
+  restoreSelections();
+
+  /* 8. Update snapshot display */
+  updateSnapshot();
+
+  /* 9. Load all other persistent widget data */
   fnLoadNotes();
   fnLoadTodos();
   loadStoreUrl();

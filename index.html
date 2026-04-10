@@ -275,25 +275,6 @@ body::before {
 .color-card-label-sub { font-size:11px; color:#aaaaaa; padding:0 12px 10px; font-family:'DM Mono',monospace; letter-spacing:0.04em; display:block; }
 
 /* ===== BRAND NAME GENERATOR ===== */
-.name-gen-wrap { border:1px solid var(--border-subtle); border-radius:var(--radius-md); overflow:hidden; margin-bottom:1.5rem; }
-.name-gen-toggle { width:100%; padding:12px 16px; background:var(--bg-card); border:none; color:#cccccc; font-size:14px; font-family:'Inter',sans-serif; font-weight:500; cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:background 0.2s; text-align:left; }
-.name-gen-toggle:hover { background:var(--bg-card-2); color:var(--white); }
-.name-gen-arrow { font-size:14px; transition:transform 0.25s ease; line-height:1; }
-.name-gen-arrow.open { transform:rotate(180deg); }
-.name-gen-body { padding:14px 16px 16px; background:var(--bg-card); border-top:1px solid transparent; max-height:600px; overflow:hidden; opacity:1; transition:max-height 0.4s cubic-bezier(0.16,1,0.3,1),opacity 0.3s ease,border-color 0.2s ease; }
-.name-gen-body:not(.hidden) { border-top-color:var(--border-subtle); }
-.name-gen-body.hidden { max-height:0; opacity:0; }
-.name-gen-inputs { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:12px; }
-@media (max-width:560px) { .name-gen-inputs { grid-template-columns:1fr; } }
-.name-results { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
-.name-results.hidden { display:none; }
-.name-pill { display:inline-flex; align-items:center; gap:8px; background:rgba(124,58,237,0.13); border:1px solid rgba(124,58,237,0.3); border-radius:20px; padding:6px 10px 6px 14px; font-size:13px; font-weight:800; color:var(--white); letter-spacing:0.04em; cursor:pointer; transition:background 0.2s cubic-bezier(0.16,1,0.3,1),border-color 0.2s cubic-bezier(0.16,1,0.3,1); }
-.name-pill:hover { background:rgba(124,58,237,0.24); border-color:rgba(124,58,237,0.55); }
-.name-pill-use { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.08em; color:var(--purple-light); opacity:0; transition:opacity 0.15s; white-space:nowrap; font-weight:500; }
-.name-pill:hover .name-pill-use { opacity:1; }
-.name-pill-copy { font-size:10px; font-family:'DM Mono',monospace; letter-spacing:0.1em; text-transform:uppercase; background:transparent; border:1px solid rgba(124,58,237,0.3); border-radius:10px; color:var(--purple-light); cursor:pointer; padding:3px 8px; transition:all 0.2s; }
-.name-pill-copy:hover { background:rgba(124,58,237,0.2); color:var(--white); }
-.name-pill-copy.copied { background:rgba(16,185,129,0.15); border-color:rgba(16,185,129,0.35); color:var(--green); }
 
 /* ===== INPUTS ===== */
 .input-row { margin-bottom:1.25rem; }
@@ -451,18 +432,19 @@ body::before {
 .dash-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:2rem; }
 @media (max-width:600px) { .dash-grid { grid-template-columns:1fr; } }
 
-.dash-box { --accent:#7c3aed; --accent-bg:rgba(124,58,237,0.07); --accent-glow:rgba(124,58,237,0.22); background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:24px; padding:28px; cursor:pointer; position:relative; z-index:1; transition:transform 0.3s cubic-bezier(0.16,1,0.3,1),box-shadow 0.3s ease,border-color 0.3s ease,background 0.25s ease; display:flex; flex-direction:column; min-height:160px; }
-.dash-box::before { content:''; position:absolute; inset:-1px; border-radius:25px; background:var(--accent); z-index:-1; opacity:0; transition:opacity 0.22s ease; }
-.dash-box:hover { transform:translateY(-3px); box-shadow:0 10px 36px rgba(0,0,0,0.5),0 0 26px var(--accent-glow); border-color:transparent; background:var(--accent-bg); }
-.dash-box:hover::before { opacity:1; }
-.dash-box-icon { font-size:28px; margin-bottom:14px; color:var(--accent); display:block; line-height:1; transition:color 0.2s; }
+.dash-box { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:24px; padding:28px; cursor:pointer; position:relative; z-index:1; transition:transform 0.3s cubic-bezier(0.16,1,0.3,1),box-shadow 0.3s ease,border-color 0.3s ease,background 0.25s ease; display:flex; flex-direction:column; min-height:160px; }
+.dash-box::before { content:''; position:absolute; inset:-1px; border-radius:25px; background:var(--grad); z-index:-1; opacity:0; transition:opacity 0.22s ease; }
+.dash-box:hover { transform:translateY(-3px); box-shadow:0 10px 36px rgba(0,0,0,0.5),0 0 16px rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.1); background:var(--bg-card-2); }
+.dash-box:hover::before { opacity:0.5; }
+.dash-box-icon { font-size:28px; margin-bottom:14px; color:#777777; display:block; line-height:1; transition:color 0.2s; }
+.dash-box:hover .dash-box-icon { color:#cccccc; }
 .dash-box-icon svg { display:block; }
 .dash-box-title { font-size:18px; font-weight:600; color:var(--white); margin-bottom:6px; letter-spacing:-0.01em; }
 .dash-box-desc { font-size:14px; color:#aaaaaa; line-height:1.55; flex:1; }
 .dash-box-last { font-family:'DM Mono',monospace; font-size:11px; color:#444444; letter-spacing:0.07em; margin-top:12px; transition:color 0.2s; }
 .dash-box:hover .dash-box-last { color:#777777; }
 .dash-box-arrow { font-size:11px; font-family:'DM Mono',monospace; color:#555555; margin-top:5px; text-align:right; letter-spacing:0.08em; transition:color 0.2s; }
-.dash-box:hover .dash-box-arrow { color:var(--accent); }
+.dash-box:hover .dash-box-arrow { color:#aaaaaa; }
 
 /* ===== SIDE PANEL OVERLAY ===== */
 .panel-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:400; opacity:0; pointer-events:none; transition:opacity 0.25s ease; backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px); }
@@ -697,65 +679,67 @@ body::before {
 .social-item:hover .social-edit-btn { opacity:1; }
 .social-edit-btn:hover { color:var(--white); }
 
-/* ===== MOOD BOARD PANEL ===== */
-.moodboard-subtitle {
-  font-size:13px; color:#888; font-style:italic; margin-bottom:18px; line-height:1.5;
+/* ===== MOOD BOARD PANEL — FULLSCREEN ===== */
+#panel-moodboard {
+  width: 100vw !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+#panel-moodboard .panel-body {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  gap: 0;
 }
 .moodboard-grid {
-  display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(2,1fr);
+  gap:16px;
+  flex:1;
+  min-height:0;
 }
-@media (max-width:420px) { .moodboard-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:600px) { .moodboard-grid { grid-template-columns:repeat(2,1fr); grid-template-rows:repeat(3,1fr); } }
 .moodboard-slot {
-  position:relative; border-radius:var(--radius-md); background:var(--bg-card-2);
-  border:1px solid var(--border-subtle); aspect-ratio:1;
+  position:relative; border-radius:var(--radius-lg); background:var(--bg-card-2);
+  border:1px solid var(--border-subtle);
   display:flex; align-items:center; justify-content:center;
-  cursor:pointer; overflow:hidden; transition:border-color 0.2s;
+  cursor:pointer; overflow:hidden; transition:border-color 0.2s, background 0.2s;
+  min-height:180px;
 }
-.moodboard-slot:hover { border-color:var(--border-mid); }
+.moodboard-slot:hover { border-color:var(--border-mid); background:rgba(255,255,255,0.02); }
 .moodboard-slot-plus {
-  display:flex; flex-direction:column; align-items:center; gap:4px;
-  color:#444; pointer-events:none; transition:color 0.2s;
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  color:#3a3a3a; pointer-events:none; transition:color 0.2s;
 }
-.moodboard-slot:hover .moodboard-slot-plus { color:#666; }
-.moodboard-plus-icon { font-size:22px; line-height:1; font-weight:300; }
+.moodboard-slot:hover .moodboard-slot-plus { color:#555; }
+.moodboard-plus-icon { font-size:28px; line-height:1; font-weight:300; }
 .moodboard-plus-label {
-  font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase;
+  font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.14em; text-transform:uppercase;
 }
 .moodboard-img {
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-  border-radius:var(--radius-md); display:none;
+  border-radius:var(--radius-lg); display:none;
 }
 .moodboard-slot.filled .moodboard-img { display:block; }
 .moodboard-slot.filled .moodboard-slot-plus { display:none; }
+.moodboard-slot-hover-overlay {
+  position:absolute; inset:0; background:rgba(0,0,0,0.55);
+  display:flex; align-items:center; justify-content:center;
+  border-radius:var(--radius-lg); opacity:0; transition:opacity 0.2s; pointer-events:none;
+}
+.moodboard-slot.filled:hover .moodboard-slot-hover-overlay { opacity:1; pointer-events:auto; }
 .moodboard-slot-remove {
-  position:absolute; top:5px; right:5px; width:20px; height:20px; border-radius:50%;
-  background:rgba(0,0,0,0.72); border:none; color:#fff; font-size:9px; cursor:pointer;
-  display:none; align-items:center; justify-content:center; z-index:2;
-  transition:background 0.15s; line-height:1;
+  width:36px; height:36px; border-radius:50%;
+  background:rgba(0,0,0,0.8); border:1.5px solid rgba(255,255,255,0.2);
+  color:#fff; font-size:14px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:background 0.15s, border-color 0.15s; line-height:1;
 }
-.moodboard-slot.filled:hover .moodboard-slot-remove { display:flex; }
-.moodboard-slot-remove:hover { background:rgba(239,68,68,0.88); }
-.moodboard-url-overlay {
-  position:absolute; inset:0; background:rgba(0,0,0,0.88);
-  display:none; flex-direction:column; align-items:center; justify-content:center;
-  gap:8px; padding:10px; border-radius:var(--radius-md); z-index:3;
-}
-.moodboard-slot.editing .moodboard-url-overlay { display:flex; }
-.moodboard-slot.editing .moodboard-slot-plus { display:none; }
-.moodboard-url-field {
-  width:100%; background:var(--bg-card); border:1px solid var(--border-mid);
-  border-radius:6px; outline:none; font-size:11px; font-family:'DM Mono',monospace;
-  color:var(--white); padding:5px 8px; text-align:center;
-}
-.moodboard-url-field::placeholder { color:#444; font-size:10px; }
-.moodboard-url-confirm {
-  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.06em;
-  color:var(--white); background:var(--grad); border:none; border-radius:6px;
-  padding:4px 14px; cursor:pointer; white-space:nowrap;
-}
+.moodboard-slot-remove:hover { background:rgba(239,68,68,0.9); border-color:rgba(239,68,68,0.5); }
 .moodboard-hint {
   font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em;
-  color:#444; text-align:center; line-height:1.65;
+  color:#333; text-align:center; line-height:1.65; padding-top:14px; flex-shrink:0;
 }
 
 /* ===== PINNED NOTES WIDGET ===== */
@@ -851,6 +835,217 @@ body::before {
   display:flex; align-items:center; justify-content:space-between;
 }
 .search-footer-hint { font-family:'DM Mono',monospace; font-size:10px; color:#3a3a3a; letter-spacing:0.06em; }
+
+/* ===== SIDEBAR ACTION BUTTONS (PART 1 & 4) ===== */
+.sb-dash-actions { display:flex; flex-direction:column; gap:2px; width:100%; margin-top:10px; }
+.sb-action-btn {
+  display:flex; align-items:center; gap:9px; padding:7px 10px;
+  border-radius:var(--radius-sm); cursor:pointer;
+  background:none; border:1px solid transparent; color:#888888;
+  font-size:12px; font-family:'Inter',sans-serif; font-weight:500;
+  letter-spacing:0.01em; width:100%; text-align:left;
+  transition:all 0.2s cubic-bezier(0.16,1,0.3,1);
+}
+.sb-action-btn:hover { background:rgba(255,255,255,0.04); border-color:var(--border-subtle); color:#cccccc; }
+.sb-action-btn svg { flex-shrink:0; opacity:0.7; }
+.sb-action-btn:hover svg { opacity:1; }
+
+/* ===== BRAND LINKS PANEL (PART 1) ===== */
+.bl-section { margin-bottom:22px; }
+.bl-section-title {
+  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em;
+  text-transform:uppercase; color:#666666; margin-bottom:12px;
+}
+.bl-store-row {
+  display:flex; align-items:center; gap:10px;
+  background:var(--bg-card); border:1px solid var(--border-subtle);
+  border-radius:var(--radius-md); padding:11px 14px; position:relative; overflow:hidden;
+}
+.bl-store-row::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--grad); }
+.bl-platform-icon { flex-shrink:0; color:#666; display:flex; align-items:center; }
+.bl-input {
+  flex:1; background:transparent; border:none; outline:none;
+  font-size:13px; font-family:'Inter',sans-serif; font-weight:500; color:var(--white); min-width:0;
+}
+.bl-input::placeholder { color:#3a3a3a; }
+.bl-saved-display { flex:1; display:flex; align-items:center; gap:8px; min-width:0; }
+.bl-icon-link {
+  display:inline-flex; align-items:center; gap:5px; height:28px; padding:0 12px;
+  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.08em;
+  color:var(--white); background:var(--grad); border-radius:14px; text-decoration:none;
+  white-space:nowrap; flex-shrink:0; transition:opacity 0.15s, box-shadow 0.15s;
+}
+.bl-icon-link:hover { opacity:0.85; box-shadow:0 0 14px rgba(var(--accent-rgb),0.35); }
+.bl-icon-link svg { flex-shrink:0; }
+.bl-edit-btn {
+  background:none; border:none; color:#555; cursor:pointer; font-size:12px;
+  padding:2px 5px; border-radius:4px; flex-shrink:0; opacity:0; transition:opacity 0.15s;
+}
+.bl-store-row:hover .bl-edit-btn { opacity:1; }
+.bl-edit-btn:hover { color:var(--white); background:rgba(255,255,255,0.07); }
+.bl-social-list { display:flex; flex-direction:column; gap:8px; }
+.bl-social-row {
+  display:flex; align-items:center; gap:10px;
+  background:rgba(255,255,255,0.03); border:1px solid var(--border-subtle);
+  border-radius:var(--radius-sm); padding:9px 12px; position:relative;
+  transition:border-color 0.2s;
+}
+.bl-social-row:focus-within { border-color:var(--border-mid); }
+.bl-social-row:hover .bl-edit-btn { opacity:1; }
+
+/* ===== FLOATING NOTES WIDGET (PART 3) ===== */
+.float-note-btn {
+  position:fixed; bottom:62px; right:20px; z-index:300;
+  width:46px; height:46px; border-radius:50%;
+  background:#1a1a1a; border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 20px rgba(0,0,0,0.7);
+  transition:transform 0.2s cubic-bezier(0.16,1,0.3,1), box-shadow 0.2s;
+}
+.float-note-btn:hover { transform:scale(1.1); box-shadow:0 6px 28px rgba(0,0,0,0.8); }
+.float-note-btn svg { display:block; }
+.float-note-panel {
+  position:fixed; bottom:116px; right:20px; z-index:299;
+  width:320px; background:#111111;
+  border-radius:var(--radius-lg);
+  box-shadow:0 20px 60px rgba(0,0,0,0.9);
+  transform:translateY(12px) scale(0.97); opacity:0; pointer-events:none;
+  transition:transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.25s ease;
+  overflow:hidden;
+  /* gradient border via outline trick */
+  position:fixed;
+}
+.float-note-panel::before {
+  content:''; position:absolute; inset:-1px; border-radius:calc(var(--radius-lg)+1px);
+  background:var(--grad); z-index:-1; opacity:0.45;
+}
+.float-note-panel.open { transform:translateY(0) scale(1); opacity:1; pointer-events:auto; }
+.fn-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 14px 10px; border-bottom:1px solid var(--border-subtle);
+}
+.fn-header-title {
+  font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.15em;
+  text-transform:uppercase; background:var(--grad-text);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.fn-collapse-btn {
+  background:none; border:none; cursor:pointer; color:#555;
+  font-size:14px; padding:2px 5px; border-radius:4px; transition:color 0.15s;
+  line-height:1;
+}
+.fn-collapse-btn:hover { color:#aaa; }
+.fn-notes-section { padding:12px 14px; border-bottom:1px solid var(--border-subtle); }
+.fn-notes-label {
+  font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em;
+  text-transform:uppercase; color:#d97706; margin-bottom:6px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.fn-notes-saved {
+  font-family:'DM Mono',monospace; font-size:9px; color:#555; opacity:0;
+  transition:opacity 0.3s, color 0.3s;
+}
+.fn-notes-saved.visible { opacity:1; color:#6ee7b7; }
+.fn-notes-textarea {
+  width:100%; resize:none; background:transparent; border:none; outline:none;
+  font-size:12px; font-family:'Inter',sans-serif; font-weight:400;
+  color:var(--white); line-height:1.6; min-height:70px; max-height:140px;
+  caret-color:var(--purple-light);
+}
+.fn-notes-textarea::placeholder { color:#3a3a3a; }
+.fn-todo-section { padding:12px 14px 14px; }
+.fn-todo-label {
+  font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em;
+  text-transform:uppercase; color:#555; margin-bottom:8px;
+}
+.fn-todo-input-row { display:flex; align-items:center; gap:6px; margin-bottom:10px; }
+.fn-todo-input {
+  flex:1; background:rgba(255,255,255,0.04); border:1px solid var(--border-subtle);
+  border-radius:var(--radius-sm); outline:none; padding:6px 10px;
+  font-size:12px; font-family:'Inter',sans-serif; color:var(--white);
+  transition:border-color 0.2s;
+}
+.fn-todo-input::placeholder { color:#3a3a3a; }
+.fn-todo-input:focus { border-color:var(--border-mid); }
+.fn-todo-add-btn {
+  width:26px; height:26px; border-radius:6px; border:none; cursor:pointer;
+  background:var(--grad); color:var(--white); font-size:16px; line-height:1;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  transition:opacity 0.15s;
+}
+.fn-todo-add-btn:hover { opacity:0.8; }
+.fn-todo-list { display:flex; flex-direction:column; gap:5px; max-height:160px; overflow-y:auto; }
+.fn-todo-list::-webkit-scrollbar { width:3px; }
+.fn-todo-list::-webkit-scrollbar-thumb { background:#2a2a2a; border-radius:2px; }
+.fn-todo-item {
+  display:flex; align-items:center; gap:8px;
+  padding:5px 4px; border-radius:5px; transition:background 0.15s;
+  cursor:pointer;
+}
+.fn-todo-item:hover { background:rgba(255,255,255,0.03); }
+.fn-todo-check {
+  width:16px; height:16px; min-width:16px; border-radius:4px;
+  border:1.5px solid var(--border-mid); background:transparent;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all 0.18s; flex-shrink:0;
+  position:relative; overflow:hidden;
+}
+.fn-todo-check.checked {
+  background:var(--grad); border-color:transparent;
+}
+.fn-todo-check.checked::after {
+  content:'✓'; position:absolute; color:white; font-size:9px; font-weight:700; line-height:1;
+}
+.fn-todo-text {
+  flex:1; font-size:12px; font-family:'Inter',sans-serif; color:#cccccc; line-height:1.4;
+  word-break:break-word; transition:all 0.18s; cursor:pointer;
+}
+.fn-todo-item.done .fn-todo-text { text-decoration:line-through; opacity:0.38; color:#888; }
+.fn-todo-del {
+  background:none; border:none; color:#3a3a3a; cursor:pointer; font-size:11px;
+  padding:2px 4px; flex-shrink:0; transition:color 0.15s; line-height:1;
+  opacity:0;
+}
+.fn-todo-item:hover .fn-todo-del { opacity:1; }
+.fn-todo-del:hover { color:#ef4444; }
+
+/* ===== CUSTOMIZE PANEL (PART 4) ===== */
+.cust-section { margin-bottom:26px; }
+.cust-section-title {
+  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.22em;
+  text-transform:uppercase; color:#666; margin-bottom:14px;
+  padding-bottom:8px; border-bottom:1px solid var(--border-subtle);
+}
+.cust-accent-row { display:flex; align-items:center; gap:10px; }
+.cust-toggle-list { display:flex; flex-direction:column; gap:6px; }
+.cust-toggle-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 14px; background:var(--bg-card); border:1px solid var(--border-subtle);
+  border-radius:var(--radius-sm);
+}
+.cust-toggle-label { font-size:13px; font-weight:500; color:#cccccc; }
+.cust-toggle {
+  width:36px; height:20px; border-radius:10px; background:#2a2a2a;
+  border:none; cursor:pointer; position:relative; transition:background 0.22s; flex-shrink:0;
+}
+.cust-toggle::after {
+  content:''; position:absolute; top:3px; left:3px; width:14px; height:14px;
+  border-radius:50%; background:#555; transition:all 0.22s cubic-bezier(0.16,1,0.3,1);
+}
+.cust-toggle.on { background:var(--grad); }
+.cust-toggle.on::after { background:#fff; left:19px; }
+.cust-reorder-list { display:flex; flex-direction:column; gap:5px; }
+.cust-reorder-item {
+  display:flex; align-items:center; gap:10px; padding:10px 14px;
+  background:var(--bg-card); border:1px solid var(--border-subtle);
+  border-radius:var(--radius-sm); cursor:grab; user-select:none;
+  transition:background 0.15s, border-color 0.15s; position:relative;
+}
+.cust-reorder-item:active { cursor:grabbing; }
+.cust-reorder-item.drag-over { border-color:rgba(var(--accent-rgb),0.5); background:rgba(var(--accent-rgb),0.08); }
+.cust-reorder-item.dragging { opacity:0.4; }
+.cust-drag-handle { color:#444; font-size:12px; flex-shrink:0; line-height:1; }
+.cust-reorder-label { font-size:13px; font-weight:500; color:#cccccc; flex:1; }
 </style>
 </head>
 <body>
@@ -877,6 +1072,16 @@ body::before {
   <!-- Dashboard mode (screen 7 only) -->
   <div class="sb-dashboard-mode">
     <div class="sb-dash-label">Dashboard</div>
+    <div class="sb-dash-actions">
+      <button class="sb-action-btn" onclick="openPanel('panel-brandlinks')" title="Brand Links">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        Brand Links
+      </button>
+      <button class="sb-action-btn" onclick="openPanel('panel-customize')" title="Customize">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+        Customize
+      </button>
+    </div>
     <div class="sb-onboarding-toggle">
       <button class="sb-toggle-btn" onclick="toggleSbSteps(this)" aria-label="Show onboarding steps">
         <span class="sb-toggle-label">onboarding steps</span>
@@ -978,22 +1183,7 @@ body::before {
     </div>
     <div class="input-row">
       <label>brand name</label>
-      <input id="brandName" placeholder="e.g. MNML CLUB" oninput="updateSnapshot()" />
-    </div>
-    <div class="name-gen-wrap">
-      <button class="name-gen-toggle" onclick="toggleNameGen()">
-        <span>Need a brand name? Generate one.</span>
-        <span class="name-gen-arrow" id="nameGenArrow">▾</span>
-      </button>
-      <div class="name-gen-body hidden" id="nameGenBody">
-        <div class="name-gen-inputs">
-          <div class="input-row" style="margin-bottom:0"><label>niche</label><input id="gen-niche" placeholder="e.g. streetwear" /></div>
-          <div class="input-row" style="margin-bottom:0"><label>vibe word</label><input id="gen-vibe" placeholder="e.g. void, era, legacy" /></div>
-          <div class="input-row" style="margin-bottom:0"><label>personal word</label><input id="gen-personal" placeholder="e.g. anything meaningful" /></div>
-        </div>
-        <button class="btn primary sm" style="margin-top:12px;width:100%" onclick="generateBrandNames()">Generate names</button>
-        <div class="name-results hidden" id="nameResults"></div>
-      </div>
+      <input id="brandName" placeholder="e.g. MNML CLUB" oninput="updateSnapshot();updateFontPreviews()" />
     </div>
     <div class="btn-row">
       <button class="btn" onclick="goTo(0)">← Back</button>
@@ -1036,27 +1226,27 @@ body::before {
     <div class="picker-sub">Shapes the typography in your brand kit and store.</div>
     <div class="picker-grid" id="fontGrid">
       <div class="font-card" onclick="selectFont(this,'Sharp Serif')">
-        <span class="font-preview" style="font-family:'Playfair Display',serif;font-weight:700">LEGACY</span>
+        <span class="font-preview" style="font-family:'Playfair Display',serif;font-weight:700">YOUR BRAND</span>
         <span class="font-card-label">Sharp Serif</span>
       </div>
       <div class="font-card" onclick="selectFont(this,'Clean Sans')">
-        <span class="font-preview" style="font-family:'DM Sans',sans-serif;font-weight:700">LEGACY</span>
+        <span class="font-preview" style="font-family:'DM Sans',sans-serif;font-weight:700">YOUR BRAND</span>
         <span class="font-card-label">Clean Sans</span>
       </div>
       <div class="font-card" onclick="selectFont(this,'Bold Grotesque')">
-        <span class="font-preview" style="font-family:'Bebas Neue',sans-serif;font-weight:400;letter-spacing:0.05em">LEGACY</span>
+        <span class="font-preview" style="font-family:'Bebas Neue',sans-serif;font-weight:400;letter-spacing:0.05em">YOUR BRAND</span>
         <span class="font-card-label">Bold Grotesque</span>
       </div>
       <div class="font-card" onclick="selectFont(this,'Mono Tech')">
-        <span class="font-preview" style="font-family:'DM Mono',monospace;font-size:22px;font-weight:500">LEGACY</span>
+        <span class="font-preview" style="font-family:'DM Mono',monospace;font-size:22px;font-weight:500">YOUR BRAND</span>
         <span class="font-card-label">Mono Tech</span>
       </div>
       <div class="font-card" onclick="selectFont(this,'Elegant Thin')">
-        <span class="font-preview" style="font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic">LEGACY</span>
+        <span class="font-preview" style="font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic">YOUR BRAND</span>
         <span class="font-card-label">Elegant Thin</span>
       </div>
       <div class="font-card" onclick="selectFont(this,'Raw Condensed')">
-        <span class="font-preview" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;letter-spacing:0.02em">LEGACY</span>
+        <span class="font-preview" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;letter-spacing:0.02em">YOUR BRAND</span>
         <span class="font-card-label">Raw Condensed</span>
       </div>
     </div>
@@ -1223,64 +1413,6 @@ body::before {
         <span class="logo-tag">your store. built right.</span>
       </div>
     </div>
-    <!-- Store Link Widget -->
-    <div class="dash-store-widget" id="storeWidget">
-      <div class="store-left">
-        <span class="store-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
-        <span class="store-label">your store</span>
-      </div>
-      <div class="store-input-wrap" id="storeInputWrap">
-        <input class="store-url-input" id="storeUrlInput" type="url" placeholder="paste your Shopify store URL here"
-          onkeydown="if(event.key==='Enter')saveStoreUrl()" />
-      </div>
-      <div class="store-saved-wrap" id="storeSavedWrap" style="display:none">
-        <a class="store-url-link" id="storeUrlLink" href="#" target="_blank" rel="noopener noreferrer">—</a>
-        <button class="store-edit-btn" onclick="editStoreUrl()" title="Edit URL">✎</button>
-      </div>
-      <a class="store-visit-pill" id="storeVisitPill" href="#" target="_blank" rel="noopener noreferrer" style="display:none">Visit Store →</a>
-    </div>
-    <!-- Social Links Widget -->
-    <div class="dash-socials-widget">
-      <div class="socials-header">your socials</div>
-      <div class="socials-row">
-        <!-- Instagram -->
-        <div class="social-item">
-          <span class="social-platform-icon" title="Instagram"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg></span>
-          <div id="ig-input-wrap" style="flex:1;min-width:0;display:flex;align-items:center">
-            <input class="social-input" id="ig-input" type="text" placeholder="@yourbrand"
-              onkeydown="if(event.key==='Enter')saveSocial('instagram',this.value)" />
-          </div>
-          <div id="ig-saved-wrap" class="social-saved-wrap" style="display:none">
-            <a class="social-link" id="ig-link" href="#" target="_blank" rel="noopener noreferrer">—</a>
-            <button class="social-edit-btn" onclick="editSocial('instagram')" title="Edit">✎</button>
-          </div>
-        </div>
-        <!-- Pinterest -->
-        <div class="social-item">
-          <span class="social-platform-icon" title="Pinterest"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83.18-.76 1.23-5.22 1.23-5.22s-.31-.63-.31-1.56c0-1.46.85-2.55 1.9-2.55.9 0 1.34.67 1.34 1.48 0 .9-.57 2.25-.87 3.5-.25 1.04.52 1.89 1.54 1.89 1.85 0 3.28-1.95 3.28-4.77 0-2.49-1.79-4.24-4.35-4.24-2.96 0-4.7 2.22-4.7 4.52 0 .9.34 1.85.77 2.37a.31.31 0 0 1 .07.29l-.29 1.16c-.05.18-.16.22-.36.13-1.32-.62-2.15-2.55-2.15-4.11 0-3.34 2.43-6.41 7-6.41 3.67 0 6.52 2.62 6.52 6.11 0 3.65-2.3 6.59-5.49 6.59-1.07 0-2.08-.56-2.43-1.21l-.66 2.46c-.24.91-.88 2.05-1.31 2.74.99.3 2.03.47 3.12.47 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg></span>
-          <div id="pin-input-wrap" style="flex:1;min-width:0;display:flex;align-items:center">
-            <input class="social-input" id="pin-input" type="text" placeholder="pinterest.com/yourbrand"
-              onkeydown="if(event.key==='Enter')saveSocial('pinterest',this.value)" />
-          </div>
-          <div id="pin-saved-wrap" class="social-saved-wrap" style="display:none">
-            <a class="social-link" id="pin-link" href="#" target="_blank" rel="noopener noreferrer">—</a>
-            <button class="social-edit-btn" onclick="editSocial('pinterest')" title="Edit">✎</button>
-          </div>
-        </div>
-        <!-- TikTok -->
-        <div class="social-item">
-          <span class="social-platform-icon" title="TikTok"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V9.02a8.19 8.19 0 004.79 1.52V7.1a4.85 4.85 0 01-1.02-.41z"/></svg></span>
-          <div id="tt-input-wrap" style="flex:1;min-width:0;display:flex;align-items:center">
-            <input class="social-input" id="tt-input" type="text" placeholder="@yourbrand"
-              onkeydown="if(event.key==='Enter')saveSocial('tiktok',this.value)" />
-          </div>
-          <div id="tt-saved-wrap" class="social-saved-wrap" style="display:none">
-            <a class="social-link" id="tt-link" href="#" target="_blank" rel="noopener noreferrer">—</a>
-            <button class="social-edit-btn" onclick="editSocial('tiktok')" title="Edit">✎</button>
-          </div>
-        </div>
-      </div>
-    </div>
     <!-- Build Progress Bar -->
     <div class="dash-build-progress">
       <span class="dash-build-label">build progress</span>
@@ -1295,92 +1427,67 @@ body::before {
       <button class="quick-pill" onclick="openPanel('panel-roadmap')"><span class="quick-pill-icon">◫</span> Roadmap</button>
       <button class="quick-pill" onclick="openQuickSearch()" title="Ctrl+K"><span class="quick-pill-icon">⌕</span> Search <span style="font-size:9px;opacity:0.45;margin-left:2px">⌘K</span></button>
     </div>
-    <!-- Pinned Notes Widget -->
-    <div class="dash-notes-widget">
-      <div class="dash-notes-label">
-        <span>quick note</span>
-        <span class="dash-notes-saved" id="notesSaved">saved ✓</span>
-      </div>
-      <textarea class="dash-notes-textarea" id="notesTextarea" rows="2"
-        placeholder="type a note to yourself and it saves automatically"
-        oninput="debounceSaveNote()"></textarea>
-    </div>
     <div class="dash-welcome">
       <div class="dash-brand-name" id="dash-brand-name">YOUR BRAND</div>
-      <span class="dash-tagline" id="dash-tagline" onclick="startEditTagline()">click to add your launch goal</span>
-      <input class="dash-tagline-input" id="dash-tagline-input" type="text" maxlength="80" placeholder="e.g. launching May 2025" onblur="saveTagline()" onkeydown="if(event.key==='Enter')this.blur()" />
       <div class="dash-subtitle" id="dash-meta">—</div>
     </div>
-    <div class="dash-workspace-label">your workspace</div>
-    <!-- Accent Color Picker -->
-    <div class="dash-accent-picker">
-      <span class="accent-picker-label">accent color</span>
-      <div class="accent-circles" id="accentCircles">
-        <div class="accent-circle" data-accent="purple" style="background:#7c3aed" onclick="setAccentColor('purple')" title="Purple"></div>
-        <div class="accent-circle" data-accent="cyan"   style="background:#06b6d4" onclick="setAccentColor('cyan')"   title="Cyan"></div>
-        <div class="accent-circle" data-accent="green"  style="background:#22c55e" onclick="setAccentColor('green')"  title="Green"></div>
-        <div class="accent-circle" data-accent="red"    style="background:#ef4444" onclick="setAccentColor('red')"    title="Red"></div>
-        <div class="accent-circle" data-accent="gold"   style="background:#eab308" onclick="setAccentColor('gold')"   title="Gold"></div>
-        <div class="accent-circle" data-accent="pink"   style="background:#ec4899" onclick="setAccentColor('pink')"   title="Pink"></div>
-      </div>
-    </div>
-    <div class="dash-grid">
-      <div class="dash-box" data-panel="panel-brandkit" style="--accent:#7c3aed;--accent-bg:rgba(124,58,237,0.07);--accent-glow:rgba(124,58,237,0.22)" onclick="openPanel('panel-brandkit')">
+    <div class="dash-grid" id="dash-grid">
+      <div class="dash-box" id="box-brandkit" data-panel="panel-brandkit" onclick="openPanel('panel-brandkit')">
         <div class="dash-box-icon">◆</div>
         <div class="dash-box-title">Brand Kit</div>
         <div class="dash-box-desc">Your colors, fonts, and tone of voice.</div>
         <div class="dash-box-last" id="last-panel-brandkit">not opened yet</div>
         <div class="dash-box-arrow">Open →</div>
       </div>
-      <div class="dash-box" data-panel="panel-prompts" style="--accent:#06b6d4;--accent-bg:rgba(6,182,212,0.07);--accent-glow:rgba(6,182,212,0.22)" onclick="openPanel('panel-prompts')">
+      <div class="dash-box" id="box-prompts" data-panel="panel-prompts" onclick="openPanel('panel-prompts')">
         <div class="dash-box-icon">◧</div>
         <div class="dash-box-title">Prompt Pack</div>
         <div class="dash-box-desc">All 12 steps with custom prompts.</div>
         <div class="dash-box-last" id="last-panel-prompts">not opened yet</div>
         <div class="dash-box-arrow">Open →</div>
       </div>
-      <div class="dash-box" data-panel="panel-designer" style="--accent:#3b82f6;--accent-bg:rgba(59,130,246,0.07);--accent-glow:rgba(59,130,246,0.22)" onclick="openPanel('panel-designer')">
+      <div class="dash-box" id="box-designer" data-panel="panel-designer" onclick="openPanel('panel-designer')">
         <div class="dash-box-icon">⌥</div>
         <div class="dash-box-title">Designer Prompts</div>
         <div class="dash-box-desc">Claude Code snippets for your Shopify theme.</div>
         <div class="dash-box-last" id="last-panel-designer">not opened yet</div>
         <div class="dash-box-arrow">Open →</div>
       </div>
-      <div class="dash-box" data-panel="panel-goodlooks" style="--accent:#f97316;--accent-bg:rgba(249,115,22,0.07);--accent-glow:rgba(249,115,22,0.22)" onclick="openPanel('panel-goodlooks')">
+      <div class="dash-box" id="box-goodlooks" data-panel="panel-goodlooks" onclick="openPanel('panel-goodlooks')">
         <div class="dash-box-icon">
           <svg width="28" height="20" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs><linearGradient id="eyeGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#a855f7"/></linearGradient></defs>
+            <defs><linearGradient id="eyeGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9d5cf5"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>
             <path d="M14 2C7.5 2 2 10 2 10s5.5 8 12 8 12-8 12-8S20.5 2 14 2z" stroke="url(#eyeGrad)" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
             <circle cx="14" cy="10" r="3.5" stroke="url(#eyeGrad)" stroke-width="1.8" fill="none"/>
           </svg>
         </div>
-        <div class="dash-box-title">What Good Looks Like</div>
+        <div class="dash-box-title">Store Inspiration</div>
         <div class="dash-box-desc">References from stores that get it right.</div>
         <div class="dash-box-last" id="last-panel-goodlooks">not opened yet</div>
         <div class="dash-box-arrow">Open →</div>
       </div>
-      <div class="dash-box" data-panel="panel-checklist" style="--accent:#22c55e;--accent-bg:rgba(34,197,94,0.07);--accent-glow:rgba(34,197,94,0.22)" onclick="openPanel('panel-checklist')">
+      <div class="dash-box" id="box-checklist" data-panel="panel-checklist" onclick="openPanel('panel-checklist')">
         <div class="dash-box-icon">◉</div>
         <div class="dash-box-title">Launch Checklist</div>
         <div class="dash-box-desc">Track your progress to launch.</div>
         <div class="dash-box-last" id="last-panel-checklist">not opened yet</div>
         <div class="dash-box-arrow">Open →</div>
       </div>
-      <div class="dash-box" data-panel="panel-resources" style="--accent:#ec4899;--accent-bg:rgba(236,72,153,0.07);--accent-glow:rgba(236,72,153,0.22)" onclick="openPanel('panel-resources')">
+      <div class="dash-box" id="box-resources" data-panel="panel-resources" onclick="openPanel('panel-resources')">
         <div class="dash-box-icon">◈</div>
         <div class="dash-box-title">Resources</div>
         <div class="dash-box-desc">Every tool you need to build.</div>
         <div class="dash-box-last" id="last-panel-resources">not opened yet</div>
         <div class="dash-box-arrow">Open →</div>
       </div>
-      <div class="dash-box" data-panel="panel-roadmap" style="--accent:#8b5cf6;--accent-bg:rgba(139,92,246,0.07);--accent-glow:rgba(139,92,246,0.22)" onclick="openPanel('panel-roadmap')">
+      <div class="dash-box" id="box-roadmap" data-panel="panel-roadmap" onclick="openPanel('panel-roadmap')">
         <div class="dash-box-icon">◫</div>
         <div class="dash-box-title">Store Roadmap</div>
         <div class="dash-box-desc">See how everything connects.</div>
         <div class="dash-box-last" id="last-panel-roadmap">not opened yet</div>
         <div class="dash-box-arrow">Open →</div>
       </div>
-      <div class="dash-box" data-panel="panel-email" style="--accent:#eab308;--accent-bg:rgba(234,179,8,0.07);--accent-glow:rgba(234,179,8,0.22)" onclick="openPanel('panel-email')">
+      <div class="dash-box" id="box-email" data-panel="panel-email" onclick="openPanel('panel-email')">
         <div class="dash-box-icon">
           <svg width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="26" height="20" rx="3.5" stroke="currentColor" stroke-width="2" fill="none"/><path d="M1 5.5l13 8.5 13-8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </div>
@@ -1389,14 +1496,14 @@ body::before {
         <div class="dash-box-last" id="last-panel-email">not opened yet</div>
         <div class="dash-box-arrow">Open →</div>
       </div>
-      <div class="dash-box" data-panel="panel-moodboard" style="--accent:#a855f7;--accent-bg:rgba(168,85,247,0.07);--accent-glow:rgba(168,85,247,0.22)" onclick="openPanel('panel-moodboard')">
+      <div class="dash-box" id="box-moodboard" data-panel="panel-moodboard" onclick="openPanel('panel-moodboard')">
         <div class="dash-box-icon">
           <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
             <rect x="1.5" y="1.5" width="10" height="10" rx="2.5" stroke="url(#mbg)" stroke-width="1.5"/>
             <rect x="14.5" y="1.5" width="10" height="10" rx="2.5" stroke="url(#mbg)" stroke-width="1.5"/>
             <rect x="1.5" y="14.5" width="10" height="10" rx="2.5" stroke="url(#mbg)" stroke-width="1.5"/>
             <rect x="14.5" y="14.5" width="10" height="10" rx="2.5" stroke="url(#mbg)" stroke-width="1.5"/>
-            <defs><linearGradient id="mbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#a855f7"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient></defs>
+            <defs><linearGradient id="mbg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9d5cf5"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>
           </svg>
         </div>
         <div class="dash-box-title">Mood Board</div>
@@ -1414,6 +1521,159 @@ body::before {
 
 <!-- ===== PANEL OVERLAY ===== -->
 <div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
+
+<!-- ===== FLOATING NOTES + TASKS WIDGET (PART 3) ===== -->
+<button class="float-note-btn" id="floatNoteBtn" onclick="toggleFloatNote()" title="Notes &amp; Tasks">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="pencilGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9d5cf5"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>
+    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="url(#pencilGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="url(#pencilGrad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
+<div class="float-note-panel" id="floatNotePanel">
+  <div class="fn-header">
+    <span class="fn-header-title">notes + tasks</span>
+    <button class="fn-collapse-btn" onclick="toggleFloatNote()" title="Collapse">✕</button>
+  </div>
+  <div class="fn-notes-section">
+    <div class="fn-notes-label">
+      <span>quick note</span>
+      <span class="fn-notes-saved" id="fnNotesSaved">saved ✓</span>
+    </div>
+    <textarea class="fn-notes-textarea" id="fnNotesTextarea" rows="3"
+      placeholder="type a note — saves automatically"
+      oninput="fnDebounceSaveNote()"></textarea>
+  </div>
+  <div class="fn-todo-section">
+    <div class="fn-todo-label">to-do</div>
+    <div class="fn-todo-input-row">
+      <input class="fn-todo-input" id="fnTodoInput" type="text" placeholder="add a task..."
+        onkeydown="if(event.key==='Enter')fnAddTodo()" />
+      <button class="fn-todo-add-btn" onclick="fnAddTodo()" title="Add task">+</button>
+    </div>
+    <div class="fn-todo-list" id="fnTodoList"></div>
+  </div>
+</div>
+
+<!-- ===== SIDE PANEL: Brand Links (PART 1) ===== -->
+<div class="side-panel" id="panel-brandlinks">
+  <div class="panel-header">
+    <span class="panel-title">Brand Links</span>
+    <button class="panel-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="panel-body">
+    <div class="bl-section">
+      <div class="bl-section-title">Store URL</div>
+      <div class="bl-store-row" id="blStoreWidget">
+        <span class="bl-platform-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </span>
+        <div id="storeInputWrap" style="flex:1;min-width:0;display:flex;align-items:center">
+          <input class="bl-input" id="storeUrlInput" type="url" placeholder="paste your Shopify store URL"
+            onkeydown="if(event.key==='Enter')saveStoreUrl()" />
+        </div>
+        <div id="storeSavedWrap" style="display:none;flex:1;align-items:center;gap:8px;min-width:0">
+          <a class="bl-icon-link" id="storeVisitPill" href="#" target="_blank" rel="noopener noreferrer">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Visit Store
+          </a>
+          <button class="bl-edit-btn" onclick="editStoreUrl()" title="Edit URL">✎</button>
+        </div>
+      </div>
+    </div>
+    <div class="bl-section">
+      <div class="bl-section-title">Social Handles</div>
+      <div class="bl-social-list">
+        <!-- Instagram -->
+        <div class="bl-social-row">
+          <span class="bl-platform-icon" title="Instagram">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+          </span>
+          <div id="ig-input-wrap" style="flex:1;min-width:0;display:flex;align-items:center">
+            <input class="bl-input" id="ig-input" type="text" placeholder="@yourbrand"
+              onkeydown="if(event.key==='Enter')saveSocial('instagram',this.value)" />
+          </div>
+          <div id="ig-saved-wrap" style="display:none;align-items:center;gap:6px">
+            <a class="bl-icon-link" id="ig-link" href="#" target="_blank" rel="noopener noreferrer">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/></svg>
+              Instagram
+            </a>
+            <button class="bl-edit-btn" style="opacity:1" onclick="editSocial('instagram')" title="Edit">✎</button>
+          </div>
+        </div>
+        <!-- Pinterest -->
+        <div class="bl-social-row">
+          <span class="bl-platform-icon" title="Pinterest">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83.18-.76 1.23-5.22 1.23-5.22s-.31-.63-.31-1.56c0-1.46.85-2.55 1.9-2.55.9 0 1.34.67 1.34 1.48 0 .9-.57 2.25-.87 3.5-.25 1.04.52 1.89 1.54 1.89 1.85 0 3.28-1.95 3.28-4.77 0-2.49-1.79-4.24-4.35-4.24-2.96 0-4.7 2.22-4.7 4.52 0 .9.34 1.85.77 2.37a.31.31 0 0 1 .07.29l-.29 1.16c-.05.18-.16.22-.36.13-1.32-.62-2.15-2.55-2.15-4.11 0-3.34 2.43-6.41 7-6.41 3.67 0 6.52 2.62 6.52 6.11 0 3.65-2.3 6.59-5.49 6.59-1.07 0-2.08-.56-2.43-1.21l-.66 2.46c-.24.91-.88 2.05-1.31 2.74.99.3 2.03.47 3.12.47 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+          </span>
+          <div id="pin-input-wrap" style="flex:1;min-width:0;display:flex;align-items:center">
+            <input class="bl-input" id="pin-input" type="text" placeholder="pinterest.com/yourbrand"
+              onkeydown="if(event.key==='Enter')saveSocial('pinterest',this.value)" />
+          </div>
+          <div id="pin-saved-wrap" style="display:none;align-items:center;gap:6px">
+            <a class="bl-icon-link" id="pin-link" href="#" target="_blank" rel="noopener noreferrer">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.65 7.86 6.39 9.29-.09-.78-.17-1.98.04-2.83.18-.76 1.23-5.22 1.23-5.22s-.31-.63-.31-1.56c0-1.46.85-2.55 1.9-2.55.9 0 1.34.67 1.34 1.48 0 .9-.57 2.25-.87 3.5-.25 1.04.52 1.89 1.54 1.89 1.85 0 3.28-1.95 3.28-4.77 0-2.49-1.79-4.24-4.35-4.24-2.96 0-4.7 2.22-4.7 4.52 0 .9.34 1.85.77 2.37a.31.31 0 0 1 .07.29l-.29 1.16c-.05.18-.16.22-.36.13-1.32-.62-2.15-2.55-2.15-4.11 0-3.34 2.43-6.41 7-6.41 3.67 0 6.52 2.62 6.52 6.11 0 3.65-2.3 6.59-5.49 6.59-1.07 0-2.08-.56-2.43-1.21l-.66 2.46c-.24.91-.88 2.05-1.31 2.74.99.3 2.03.47 3.12.47 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+              Pinterest
+            </a>
+            <button class="bl-edit-btn" style="opacity:1" onclick="editSocial('pinterest')" title="Edit">✎</button>
+          </div>
+        </div>
+        <!-- TikTok -->
+        <div class="bl-social-row">
+          <span class="bl-platform-icon" title="TikTok">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V9.02a8.19 8.19 0 004.79 1.52V7.1a4.85 4.85 0 01-1.02-.41z"/></svg>
+          </span>
+          <div id="tt-input-wrap" style="flex:1;min-width:0;display:flex;align-items:center">
+            <input class="bl-input" id="tt-input" type="text" placeholder="@yourbrand"
+              onkeydown="if(event.key==='Enter')saveSocial('tiktok',this.value)" />
+          </div>
+          <div id="tt-saved-wrap" style="display:none;align-items:center;gap:6px">
+            <a class="bl-icon-link" id="tt-link" href="#" target="_blank" rel="noopener noreferrer">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V9.02a8.19 8.19 0 004.79 1.52V7.1a4.85 4.85 0 01-1.02-.41z"/></svg>
+              TikTok
+            </a>
+            <button class="bl-edit-btn" style="opacity:1" onclick="editSocial('tiktok')" title="Edit">✎</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SIDE PANEL: Customize (PART 4) ===== -->
+<div class="side-panel" id="panel-customize">
+  <div class="panel-header">
+    <span class="panel-title">Customize</span>
+    <button class="panel-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="panel-body">
+    <!-- Section 1: Accent color -->
+    <div class="cust-section">
+      <div class="cust-section-title">Accent color</div>
+      <div class="cust-accent-row">
+        <div class="accent-circles" id="accentCircles">
+          <div class="accent-circle" data-accent="purple" style="background:#7c3aed" onclick="setAccentColor('purple')" title="Purple"></div>
+          <div class="accent-circle" data-accent="cyan"   style="background:#06b6d4" onclick="setAccentColor('cyan')"   title="Cyan"></div>
+          <div class="accent-circle" data-accent="green"  style="background:#22c55e" onclick="setAccentColor('green')"  title="Green"></div>
+          <div class="accent-circle" data-accent="red"    style="background:#ef4444" onclick="setAccentColor('red')"    title="Red"></div>
+          <div class="accent-circle" data-accent="gold"   style="background:#eab308" onclick="setAccentColor('gold')"   title="Gold"></div>
+          <div class="accent-circle" data-accent="pink"   style="background:#ec4899" onclick="setAccentColor('pink')"   title="Pink"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Section 2: Dashboard layout -->
+    <div class="cust-section">
+      <div class="cust-section-title">Dashboard layout</div>
+      <div class="cust-toggle-list" id="custToggleList"></div>
+    </div>
+    <!-- Section 3: Reorder boxes -->
+    <div class="cust-section">
+      <div class="cust-section-title">Reorder boxes</div>
+      <div class="cust-reorder-list" id="custReorderList"></div>
+    </div>
+  </div>
+</div>
 
 <!-- ===== SIDE PANEL: Brand Kit ===== -->
 <div class="side-panel" id="panel-brandkit">
@@ -1508,10 +1768,10 @@ body::before {
   </div>
 </div>
 
-<!-- ===== SIDE PANEL: What Good Looks Like ===== -->
+<!-- ===== SIDE PANEL: Store Inspiration ===== -->
 <div class="side-panel" id="panel-goodlooks">
   <div class="panel-header">
-    <span class="panel-title">What Good Looks Like</span>
+    <span class="panel-title">Store Inspiration</span>
     <button class="panel-close" onclick="closePanel()">✕</button>
   </div>
   <div class="panel-body">
@@ -1728,15 +1988,12 @@ body::before {
 <!-- ===== SIDE PANEL: Mood Board ===== -->
 <div class="side-panel" id="panel-moodboard">
   <div class="panel-header">
-    <div>
-      <span class="panel-title">Mood Board</span>
-      <div style="font-family:'DM Mono',monospace;font-size:10px;color:#666;letter-spacing:0.1em;margin-top:3px">paste image URLs of brands or aesthetics you love</div>
-    </div>
+    <span class="panel-title">Mood Board</span>
     <button class="panel-close" onclick="closePanel()">✕</button>
   </div>
   <div class="panel-body">
     <div class="moodboard-grid" id="moodboardGrid"></div>
-    <div class="moodboard-hint">these are your visual references — keep them in mind as you build</div>
+    <div class="moodboard-hint">click any slot to upload an image — your references, saved automatically</div>
   </div>
 </div>
 
@@ -2036,6 +2293,13 @@ function updateSnapshot() {
   }
 }
 
+/* ===== FONT PREVIEW LIVE UPDATE (PART 6) ===== */
+function updateFontPreviews() {
+  const name = ((document.getElementById('brandName') || {}).value || '').trim().toUpperCase();
+  const text = name || 'YOUR BRAND';
+  document.querySelectorAll('.font-preview').forEach(el => { el.textContent = text; });
+}
+
 /* ===== CARDS ===== */
 function animateCards(gridId) {
   document.querySelectorAll('#' + gridId + ' .option-card').forEach((card, i) => {
@@ -2065,113 +2329,6 @@ function selectColorMood(el, colorMood) {
   updateSnapshot();
 }
 
-/* ===== BRAND NAME GENERATOR ===== */
-function toggleNameGen() {
-  const body  = document.getElementById('nameGenBody');
-  const arrow = document.getElementById('nameGenArrow');
-  const open  = !body.classList.contains('hidden');
-  body.classList.toggle('hidden', open);
-  arrow.classList.toggle('open', !open);
-}
-
-function generateBrandNames() {
-  const rawN = document.getElementById('gen-niche').value.trim()    || 'street';
-  const rawV = document.getElementById('gen-vibe').value.trim()     || 'void';
-  const rawP = document.getElementById('gen-personal').value.trim() || 'arc';
-
-  // Clean inputs: lowercase, strip non-alpha, take first meaningful chunk
-  function clean(s) {
-    return s.toLowerCase().replace(/[^a-z]/g, '').slice(0, 10);
-  }
-  function cap(s) {
-    return s.charAt(0).toUpperCase() + s.slice(1);
-  }
-  // Truncate to a given max syllable length (rough: trim to n chars, avoid ending on ugly consonant clusters)
-  function trim(s, max) {
-    s = s.slice(0, max);
-    // strip trailing consonant pile (more than 2 consonants)
-    return s.replace(/[bcdfghjklmnpqrstvwxyz]{3,}$/, s.slice(-2));
-  }
-
-  const n = clean(rawN);
-  const v = clean(rawV);
-  const p = clean(rawP);
-
-  const nouns   = ['Club','Studio','Goods','Supply','Works','House','Label','Form','Trade','Store'];
-  const adjs    = ['Raw','Clean','Dark','Quiet','Still','Fine','Core','Open','True','Spare'];
-  const suffixes = ['ex','ix','ara','one','era','ux','ode','en','or','al'];
-  const prefixes = ['re','de','all','un','co','over','well','four'];
-
-  // Deterministic picks based on input (so same inputs → same names, different inputs → different names)
-  function pick(arr, seed) {
-    return arr[Math.abs(seed) % arr.length];
-  }
-  const seed1 = v.length * 7 + p.length * 3 + n.length;
-  const seed2 = p.charCodeAt(0) + v.length * 5;
-  const seed3 = n.charCodeAt(0) + p.length * 9;
-  const seed4 = (v.charCodeAt(0) || 0) + (n.charCodeAt(0) || 0);
-  const seed5 = p.length * 11 + n.length * 4;
-
-  // Pattern 1 — vibe root + clean suffix → single word (e.g. "Voidex", "Arcora")
-  const p1base = trim(v, 5);
-  const p1suf  = pick(suffixes, seed1);
-  const p1 = cap(p1base + p1suf);
-
-  // Pattern 2 — personal word (clean) + noun (e.g. "Arc Club", "Melo Studio")
-  const p2base = cap(trim(p, 6));
-  const p2noun = pick(nouns, seed2);
-  const p2 = p2base + ' ' + p2noun;
-
-  // Pattern 3 — niche abstracted to brand sound: take first 4-6 chars and add vowel ending if needed
-  let p3base = trim(n, 5);
-  if (!/[aeiou]$/.test(p3base)) p3base += pick(['a','e','o'], seed3);
-  const p3 = cap(p3base);
-
-  // Pattern 4 — two word: adjective + niche noun (e.g. "Raw Trade", "Still Goods")
-  const p4adj  = pick(adjs, seed4);
-  const p4noun = pick(nouns, seed4 + 2);
-  const p4 = p4adj + ' ' + p4noun;
-
-  // Pattern 5 — prefix + personal word (e.g. "Rearc", "Dealien") — clean prefix + root
-  const p5pre  = pick(prefixes, seed5);
-  const p5root = cap(trim(p, 6));
-  const p5 = cap(p5pre) + p5root;
-
-  const names = [p1, p2, p3, p4, p5];
-
-  const out = document.getElementById('nameResults');
-  out.innerHTML = names.map(name => {
-    const safe = name.replace(/'/g, "\\'");
-    return `
-    <div class="name-pill" onclick="useName('${safe}')" title="Click to use this name">
-      <span>${name}</span>
-      <span class="name-pill-use">use this ↗</span>
-      <button class="name-pill-copy" onclick="event.stopPropagation();copyName(this,'${safe}')">copy</button>
-    </div>`;
-  }).join('');
-  out.classList.remove('hidden');
-}
-
-function useName(name) {
-  const input = document.getElementById('brandName');
-  if (!input) return;
-  input.value = name;
-  input.dispatchEvent(new Event('input'));
-  // Flash the input to confirm
-  input.style.borderColor = 'var(--purple)';
-  input.style.boxShadow = '0 0 0 3px rgba(124,58,237,0.22)';
-  setTimeout(() => { input.style.borderColor = ''; input.style.boxShadow = ''; }, 900);
-  // Scroll to input
-  input.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-function copyName(btn, name) {
-  navigator.clipboard.writeText(name).then(() => {
-    btn.textContent = '✓';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1400);
-  });
-}
 
 /* ===== IDENTITY CARD ===== */
 function buildIdentityCard() {
@@ -2472,8 +2629,7 @@ function buildDashboard() {
   }
   updateDashProgress();
   refreshLastOpenedLabels();
-  loadTagline();
-  loadNotes();
+  fnLoadNotes();
   loadStoreUrl();
   loadSocials();
 }
@@ -2621,6 +2777,7 @@ function openPanel(id) {
   if (id === 'panel-email')      buildEmailPanel();
   if (id === 'panel-roadmap')    buildRoadmap();
   if (id === 'panel-moodboard')  buildMoodboardPanel();
+  if (id === 'panel-customize')  buildCustomizePanel();
 
   // Track last opened timestamp
   recordPanelOpen(id);
@@ -2976,42 +3133,220 @@ function loadAccentColor() {
   setAccentColor(saved);
 }
 
-/* ===== TAGLINE ===== */
-const TAGLINE_LS = 'frmls_tagline';
-const TAGLINE_DEFAULT = 'click to add your launch goal';
+/* ===== FLOATING NOTES + TASKS (PART 3) ===== */
+const FN_NOTES_LS = 'frmls_quick_note';
+const FN_TODOS_LS = 'frmls_todos';
+let fnNotesSaveTimer = null;
+let fnTodosData = [];
+let floatNoteOpen = false;
 
-function loadTagline() {
-  const saved = localStorage.getItem(TAGLINE_LS);
-  const el = document.getElementById('dash-tagline');
-  if (el) el.textContent = saved || TAGLINE_DEFAULT;
+function toggleFloatNote() {
+  floatNoteOpen = !floatNoteOpen;
+  const panel = document.getElementById('floatNotePanel');
+  if (panel) panel.classList.toggle('open', floatNoteOpen);
 }
 
-function startEditTagline() {
-  const display = document.getElementById('dash-tagline');
-  const input   = document.getElementById('dash-tagline-input');
-  if (!display || !input) return;
-  const current = localStorage.getItem(TAGLINE_LS) || '';
-  input.value = current;
-  display.style.display = 'none';
-  input.style.display = 'block';
-  input.focus();
-  input.select();
+function fnDebounceSaveNote() {
+  clearTimeout(fnNotesSaveTimer);
+  fnNotesSaveTimer = setTimeout(() => {
+    const ta = document.getElementById('fnNotesTextarea');
+    if (!ta) return;
+    localStorage.setItem(FN_NOTES_LS, ta.value);
+    const saved = document.getElementById('fnNotesSaved');
+    if (saved) {
+      saved.classList.add('visible');
+      setTimeout(() => saved.classList.remove('visible'), 1800);
+    }
+  }, 500);
 }
 
-function saveTagline() {
-  const display = document.getElementById('dash-tagline');
-  const input   = document.getElementById('dash-tagline-input');
-  if (!display || !input) return;
-  const val = input.value.trim();
-  if (val) {
-    localStorage.setItem(TAGLINE_LS, val);
-    display.textContent = val;
-  } else {
-    localStorage.removeItem(TAGLINE_LS);
-    display.textContent = TAGLINE_DEFAULT;
+function fnLoadNotes() {
+  const ta = document.getElementById('fnNotesTextarea');
+  if (ta) ta.value = localStorage.getItem(FN_NOTES_LS) || '';
+}
+
+function fnAddTodo() {
+  const input = document.getElementById('fnTodoInput');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  fnTodosData.push({ text, done: false, id: Date.now() });
+  input.value = '';
+  fnSaveTodos();
+  fnRenderTodos();
+}
+
+function fnToggleTodo(id) {
+  const item = fnTodosData.find(t => t.id === id);
+  if (item) { item.done = !item.done; fnSaveTodos(); fnRenderTodos(); }
+}
+
+function fnDeleteTodo(id) {
+  fnTodosData = fnTodosData.filter(t => t.id !== id);
+  fnSaveTodos();
+  fnRenderTodos();
+}
+
+function fnSaveTodos() {
+  localStorage.setItem(FN_TODOS_LS, JSON.stringify(fnTodosData));
+}
+
+function fnLoadTodos() {
+  try { fnTodosData = JSON.parse(localStorage.getItem(FN_TODOS_LS) || '[]'); } catch(e) { fnTodosData = []; }
+  fnRenderTodos();
+}
+
+function fnRenderTodos() {
+  const list = document.getElementById('fnTodoList');
+  if (!list) return;
+  list.innerHTML = fnTodosData.map(t => `
+    <div class="fn-todo-item${t.done ? ' done' : ''}" data-id="${t.id}">
+      <div class="fn-todo-check${t.done ? ' checked' : ''}" onclick="fnToggleTodo(${t.id})"></div>
+      <span class="fn-todo-text" onclick="fnToggleTodo(${t.id})">${escHtml(t.text)}</span>
+      <button class="fn-todo-del" onclick="fnDeleteTodo(${t.id})" title="Delete">✕</button>
+    </div>`).join('');
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Close float panel when clicking outside
+document.addEventListener('click', e => {
+  if (!floatNoteOpen) return;
+  const panel = document.getElementById('floatNotePanel');
+  const btn   = document.getElementById('floatNoteBtn');
+  if (panel && btn && !panel.contains(e.target) && !btn.contains(e.target)) {
+    floatNoteOpen = false;
+    panel.classList.remove('open');
   }
-  input.style.display = 'none';
-  display.style.display = 'block';
+});
+
+/* ===== CUSTOMIZE PANEL (PART 4) ===== */
+const LAYOUT_LS  = 'frmls_layout_hidden';
+const ORDER_LS   = 'frmls_layout_order';
+
+const DASH_BOXES = [
+  { id:'box-brandkit',  label:'Brand Kit' },
+  { id:'box-prompts',   label:'Prompt Pack' },
+  { id:'box-designer',  label:'Designer Prompts' },
+  { id:'box-goodlooks', label:'Store Inspiration' },
+  { id:'box-checklist', label:'Launch Checklist' },
+  { id:'box-resources', label:'Resources' },
+  { id:'box-roadmap',   label:'Store Roadmap' },
+  { id:'box-email',     label:'Email Marketing' },
+  { id:'box-moodboard', label:'Mood Board' },
+];
+
+function buildCustomizePanel() {
+  const hiddenSet = new Set(JSON.parse(localStorage.getItem(LAYOUT_LS) || '[]'));
+  const order     = JSON.parse(localStorage.getItem(ORDER_LS) || 'null') || DASH_BOXES.map(b => b.id);
+
+  // Section 2: toggles
+  const toggleList = document.getElementById('custToggleList');
+  if (toggleList) {
+    toggleList.innerHTML = DASH_BOXES.map(b => `
+      <div class="cust-toggle-row">
+        <span class="cust-toggle-label">${b.label}</span>
+        <button class="cust-toggle${hiddenSet.has(b.id) ? '' : ' on'}"
+          id="tog-${b.id}" onclick="custToggleBox('${b.id}',this)" title="Toggle visibility"></button>
+      </div>`).join('');
+  }
+
+  // Section 3: reorder
+  const reorderList = document.getElementById('custReorderList');
+  if (reorderList) {
+    const orderedBoxes = order.map(id => DASH_BOXES.find(b => b.id === id)).filter(Boolean);
+    const remaining    = DASH_BOXES.filter(b => !order.includes(b.id));
+    const allOrdered   = [...orderedBoxes, ...remaining];
+    reorderList.innerHTML = allOrdered.map(b => `
+      <div class="cust-reorder-item" draggable="true" data-id="${b.id}"
+        ondragstart="custDragStart(event)" ondragover="custDragOver(event)"
+        ondrop="custDrop(event)" ondragend="custDragEnd(event)" ondragleave="custDragLeave(event)">
+        <span class="cust-drag-handle">⠿</span>
+        <span class="cust-reorder-label">${b.label}</span>
+      </div>`).join('');
+  }
+}
+
+function custToggleBox(boxId, btn) {
+  const hidden = new Set(JSON.parse(localStorage.getItem(LAYOUT_LS) || '[]'));
+  const box = document.getElementById(boxId);
+  if (hidden.has(boxId)) {
+    hidden.delete(boxId);
+    btn.classList.add('on');
+    if (box) box.style.display = '';
+  } else {
+    hidden.add(boxId);
+    btn.classList.remove('on');
+    if (box) box.style.display = 'none';
+  }
+  localStorage.setItem(LAYOUT_LS, JSON.stringify([...hidden]));
+}
+
+function loadLayoutState() {
+  const hidden = new Set(JSON.parse(localStorage.getItem(LAYOUT_LS) || '[]'));
+  hidden.forEach(id => {
+    const box = document.getElementById(id);
+    if (box) box.style.display = 'none';
+  });
+  const order = JSON.parse(localStorage.getItem(ORDER_LS) || 'null');
+  if (order) applyBoxOrder(order);
+}
+
+function applyBoxOrder(order) {
+  const grid = document.getElementById('dash-grid');
+  if (!grid) return;
+  order.forEach(id => {
+    const box = document.getElementById(id);
+    if (box) grid.appendChild(box);
+  });
+}
+
+let custDragSrc = null;
+
+function custDragStart(e) {
+  custDragSrc = e.currentTarget;
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+function custDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  const target = e.currentTarget;
+  if (target !== custDragSrc) target.classList.add('drag-over');
+}
+
+function custDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+
+function custDrop(e) {
+  e.preventDefault();
+  const target = e.currentTarget;
+  target.classList.remove('drag-over');
+  if (!custDragSrc || custDragSrc === target) return;
+
+  const list = document.getElementById('custReorderList');
+  const items = [...list.querySelectorAll('.cust-reorder-item')];
+  const srcIdx = items.indexOf(custDragSrc);
+  const tgtIdx = items.indexOf(target);
+  if (srcIdx < tgtIdx) {
+    target.after(custDragSrc);
+  } else {
+    target.before(custDragSrc);
+  }
+
+  // Save new order and apply to grid
+  const newOrder = [...list.querySelectorAll('.cust-reorder-item')].map(el => el.dataset.id);
+  localStorage.setItem(ORDER_LS, JSON.stringify(newOrder));
+  applyBoxOrder(newOrder);
+}
+
+function custDragEnd(e) {
+  e.currentTarget.classList.remove('dragging');
+  document.querySelectorAll('.cust-reorder-item').forEach(el => el.classList.remove('drag-over'));
 }
 
 /* ===== STORE LINK WIDGET ===== */
@@ -3035,25 +3370,20 @@ function saveStoreUrl() {
 function showStoreSaved(url) {
   const inputWrap = document.getElementById('storeInputWrap');
   const savedWrap = document.getElementById('storeSavedWrap');
-  const linkEl    = document.getElementById('storeUrlLink');
   const visitPill = document.getElementById('storeVisitPill');
-  if (!inputWrap || !savedWrap || !linkEl || !visitPill) return;
-  linkEl.textContent = url.replace(/^https?:\/\//, '');
-  linkEl.href = url;
+  if (!inputWrap || !savedWrap || !visitPill) return;
   visitPill.href = url;
   inputWrap.style.display = 'none';
   savedWrap.style.display = 'flex';
-  visitPill.style.display = 'inline-flex';
 }
 
 function editStoreUrl() {
   const inputWrap = document.getElementById('storeInputWrap');
   const savedWrap = document.getElementById('storeSavedWrap');
-  const visitPill = document.getElementById('storeVisitPill');
   const input     = document.getElementById('storeUrlInput');
+  if (!inputWrap || !savedWrap) return;
   inputWrap.style.display = 'flex';
   savedWrap.style.display = 'none';
-  visitPill.style.display = 'none';
   if (input) { input.value = localStorage.getItem(STORE_URL_LS) || ''; input.focus(); input.select(); }
 }
 
@@ -3089,9 +3419,8 @@ function showSocialSaved(platform, val) {
   const inputWrap = document.getElementById(ids.inputWrap);
   const savedWrap = document.getElementById(ids.savedWrap);
   const link      = document.getElementById(ids.link);
-  if (!inputWrap || !savedWrap || !link) return;
-  link.textContent = val.length > 22 ? val.slice(0, 22) + '…' : val;
-  link.href = SOCIAL_HREF[platform](val);
+  if (!inputWrap || !savedWrap) return;
+  if (link) link.href = SOCIAL_HREF[platform](val);
   inputWrap.style.display = 'none';
   savedWrap.style.display = 'flex';
 }
@@ -3107,117 +3436,82 @@ function editSocial(platform) {
 }
 
 /* ===== MOOD BOARD ===== */
+/* ===== MOOD BOARD — file upload + base64 ===== */
 const MOODBOARD_LS    = 'frmls_moodboard';
 const MOODBOARD_COUNT = 6;
+let moodboardData     = [];
 
 function buildMoodboardPanel() {
-  const saved = JSON.parse(localStorage.getItem(MOODBOARD_LS) || '[]');
-  renderMoodboardGrid(saved);
+  try { moodboardData = JSON.parse(localStorage.getItem(MOODBOARD_LS) || '[]'); } catch(e) { moodboardData = []; }
+  renderMoodboardGrid();
 }
 
-function renderMoodboardGrid(urls) {
+function renderMoodboardGrid() {
   const grid = document.getElementById('moodboardGrid');
   if (!grid) return;
   grid.innerHTML = '';
   for (let i = 0; i < MOODBOARD_COUNT; i++) {
-    const url  = (urls && urls[i]) || '';
+    const src  = moodboardData[i] || '';
     const slot = document.createElement('div');
-    slot.className = 'moodboard-slot' + (url ? ' filled' : '');
+    slot.className = 'moodboard-slot' + (src ? ' filled' : '');
     slot.id = 'mb-slot-' + i;
-    slot.dataset.url = url;
     slot.innerHTML = `
+      <input type="file" accept="image/*" id="mb-file-${i}" style="display:none"
+        onchange="loadMoodFile(${i},this)" />
       <div class="moodboard-slot-plus">
         <span class="moodboard-plus-icon">+</span>
         <span class="moodboard-plus-label">add image</span>
       </div>
-      <img class="moodboard-img" src="${url ? url : ''}" alt="" />
-      <button class="moodboard-slot-remove" onclick="removeMoodSlot(${i},event)" title="Remove">✕</button>
-      <div class="moodboard-url-overlay">
-        <input class="moodboard-url-field" id="mb-field-${i}" type="url" placeholder="paste image URL"
-          onkeydown="if(event.key==='Enter')confirmMoodUrl(${i});if(event.key==='Escape')cancelMoodEdit(${i})" />
-        <button class="moodboard-url-confirm" onclick="confirmMoodUrl(${i})">Add Image</button>
+      <img class="moodboard-img" src="${src}" alt="" />
+      <div class="moodboard-slot-hover-overlay">
+        <button class="moodboard-slot-remove" onclick="removeMoodSlot(${i},event)" title="Remove">✕</button>
       </div>`;
     slot.addEventListener('click', e => {
-      if (e.target.closest('.moodboard-slot-remove') || e.target.closest('.moodboard-url-overlay')) return;
-      if (!slot.classList.contains('filled')) openMoodEdit(i);
+      if (e.target.closest('.moodboard-slot-hover-overlay')) return;
+      if (!slot.classList.contains('filled')) {
+        const fi = document.getElementById('mb-file-' + i);
+        if (fi) fi.click();
+      }
     });
     grid.appendChild(slot);
   }
 }
 
-function openMoodEdit(i) {
-  document.querySelectorAll('.moodboard-slot.editing').forEach(s => s.classList.remove('editing'));
-  const slot = document.getElementById('mb-slot-' + i);
-  if (!slot) return;
-  slot.classList.add('editing');
-  const field = document.getElementById('mb-field-' + i);
-  if (field) setTimeout(() => { field.value = ''; field.focus(); }, 40);
-}
-
-function cancelMoodEdit(i) {
-  const slot = document.getElementById('mb-slot-' + i);
-  if (slot) slot.classList.remove('editing');
-}
-
-function confirmMoodUrl(i) {
-  const field = document.getElementById('mb-field-' + i);
-  const slot  = document.getElementById('mb-slot-' + i);
-  if (!field || !slot) return;
-  const url = field.value.trim();
-  if (!url) { slot.classList.remove('editing'); return; }
-  slot.dataset.url = url;
-  const img = slot.querySelector('.moodboard-img');
-  if (img) {
-    img.src = url;
-    img.onerror = () => { img.src = ''; slot.classList.remove('filled'); };
-  }
-  slot.classList.remove('editing');
-  slot.classList.add('filled');
-  saveMoodboard();
+function loadMoodFile(i, input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const base64 = e.target.result;
+    moodboardData[i] = base64;
+    saveMoodboard();
+    const slot = document.getElementById('mb-slot-' + i);
+    if (!slot) return;
+    const img = slot.querySelector('.moodboard-img');
+    if (img) img.src = base64;
+    slot.classList.add('filled');
+  };
+  reader.readAsDataURL(file);
+  // reset so same file can be re-selected
+  input.value = '';
 }
 
 function removeMoodSlot(i, e) {
   e.stopPropagation();
+  moodboardData[i] = '';
+  saveMoodboard();
   const slot = document.getElementById('mb-slot-' + i);
   if (!slot) return;
-  slot.dataset.url = '';
-  slot.classList.remove('filled', 'editing');
+  slot.classList.remove('filled');
   const img = slot.querySelector('.moodboard-img');
   if (img) img.src = '';
-  saveMoodboard();
 }
 
 function saveMoodboard() {
-  const urls = [];
-  for (let i = 0; i < MOODBOARD_COUNT; i++) {
-    const s = document.getElementById('mb-slot-' + i);
-    urls.push(s ? (s.dataset.url || '') : '');
-  }
-  localStorage.setItem(MOODBOARD_LS, JSON.stringify(urls));
+  localStorage.setItem(MOODBOARD_LS, JSON.stringify(moodboardData));
 }
 
-/* ===== PINNED NOTES ===== */
-const NOTES_LS = 'frmls_quick_note';
-let notesSaveTimer = null;
-
-function loadNotes() {
-  const ta = document.getElementById('notesTextarea');
-  if (ta) ta.value = localStorage.getItem(NOTES_LS) || '';
-}
-
-function debounceSaveNote() {
-  clearTimeout(notesSaveTimer);
-  notesSaveTimer = setTimeout(() => {
-    const ta = document.getElementById('notesTextarea');
-    if (!ta) return;
-    localStorage.setItem(NOTES_LS, ta.value);
-    const saved = document.getElementById('notesSaved');
-    if (saved) {
-      saved.classList.add('visible');
-      setTimeout(() => saved.classList.remove('visible'), 1800);
-    }
-  }, 500);
-}
+/* ===== PINNED NOTES (now in floating widget — see FN_ functions above) ===== */
 
 /* ===== QUICK SEARCH ===== */
 let searchSelectedIdx = -1;
@@ -3240,7 +3534,7 @@ const searchDashItems = [
   { label:'Store Roadmap',    desc:'Visual map of your entire store build flow',              icon:'◫', action:()=>openPanel('panel-roadmap') },
   { label:'Designer Prompts', desc:'Claude Code snippets that upgrade your Shopify theme',       icon:'⌥', action:()=>openPanel('panel-designer') },
   { label:'Email Marketing',  desc:'Email flows, copy templates, and subject line ideas',     icon:'✉', action:()=>openPanel('panel-email') },
-  { label:'What Good Looks Like',desc:'References from stores that get it right',            icon:'◎', action:()=>openPanel('panel-goodlooks') },
+  { label:'Store Inspiration',desc:'References from stores that get it right',            icon:'◎', action:()=>openPanel('panel-goodlooks') },
   { label:'Resources',        desc:'Every tool, platform, and app you need to build',        icon:'◈', action:()=>openPanel('panel-resources') },
   { label:'Mood Board',       desc:'Visual references — brands and aesthetics you love',      icon:'⊞', action:()=>openPanel('panel-moodboard') }
 ];
@@ -3435,10 +3729,11 @@ document.addEventListener('DOMContentLoaded', () => {
   updateFooter(0);
   updateSnapshot();
   loadAccentColor();
-  loadTagline();
-  loadNotes();
+  fnLoadNotes();
+  fnLoadTodos();
   loadStoreUrl();
   loadSocials();
+  loadLayoutState();
 });
 
 // Ctrl+K global shortcut

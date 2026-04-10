@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FRMLS — Store Builder System</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { height: 100%; }
@@ -193,7 +194,7 @@ body::before {
   cursor: pointer;
   box-shadow: 0 0 24px rgba(124,58,237,0.3);
   position: relative; overflow: hidden;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition: box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
   margin-bottom: 28px;
 }
@@ -239,7 +240,7 @@ body::before {
   border-radius: var(--radius-md);
   background: var(--bg-card);
   color: var(--white);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   outline: none;
 }
 .access-input::placeholder { color: #555555; }
@@ -261,7 +262,7 @@ body::before {
   border: 1px solid var(--border-mid);
   border-radius: var(--radius-md);
   color: #cccccc; cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
 }
 .btn-submit:hover {
@@ -277,7 +278,7 @@ body::before {
   margin-top: 8px;
   align-self: flex-start;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
 }
 .error-msg.visible { opacity: 1; }
@@ -394,6 +395,23 @@ function handleSubmit() {
     codeInput.select();
   }
 }
+
+/* ===== LENIS SMOOTH SCROLL ===== */
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smooth: true,
+  mouseMultiplier: 1,
+  smoothTouch: false,
+  touchMultiplier: 2,
+});
+
+function raf(time) {
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+
+requestAnimationFrame(raf);
 </script>
 </body>
 </html>

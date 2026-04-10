@@ -373,6 +373,11 @@ if (window.location.pathname.endsWith('gate.html')) {
   window.history.replaceState(null, '', '/');
 }
 
+/* ===== AUTO-BYPASS FOR VERIFIED USERS ===== */
+if (localStorage.getItem('frmlsVerified') === 'true') {
+  window.location.replace('dashboard.html');
+}
+
 const ACCESS_CODE = 'FRMLS2026';
 
 const codeInput = document.getElementById('codeInput');

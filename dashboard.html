@@ -2134,9 +2134,13 @@ if (window.location.pathname.endsWith('dashboard.html')) {
 }
 
 /* ===== GATE CHECK ===== */
-if (localStorage.getItem('frmlsVerified') !== 'true') {
-  window.location.href = 'gate.html';
-}
+document.addEventListener('DOMContentLoaded', function() {
+  const verified = localStorage.getItem('frmlsVerified');
+  console.log('[FRMLS] frmlsVerified localStorage value:', verified);
+  if (verified !== 'true') {
+    window.location.href = 'gate.html';
+  }
+});
 
 /* ===== STATE ===== */
 const state = { cat:'', vibe:'', brandName:'', audience:'', fontStyle:'', colorMood:'' };

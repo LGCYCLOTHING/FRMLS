@@ -2128,8 +2128,13 @@ body::before {
 </div>
 
 <script>
+/* ===== URL CLEANUP ===== */
+if (window.location.pathname.endsWith('dashboard.html')) {
+  window.history.replaceState(null, '', '/dashboard');
+}
+
 /* ===== GATE CHECK ===== */
-if (sessionStorage.getItem('frmlsVerified') !== 'true') {
+if (localStorage.getItem('frmlsVerified') !== 'true') {
   window.location.href = 'gate.html';
 }
 

@@ -368,6 +368,11 @@ body::before {
 </div>
 
 <script>
+/* ===== URL CLEANUP ===== */
+if (window.location.pathname.endsWith('gate.html')) {
+  window.history.replaceState(null, '', '/');
+}
+
 const ACCESS_CODE = 'FRMLS2026';
 
 const codeInput = document.getElementById('codeInput');
@@ -395,7 +400,7 @@ submitBtn.addEventListener('click', handleSubmit);
 function handleSubmit() {
   const entered = codeInput.value.trim().toUpperCase();
   if (entered === ACCESS_CODE) {
-    sessionStorage.setItem('frmlsVerified', 'true');
+    localStorage.setItem('frmlsVerified', 'true');
     window.location.href = 'dashboard.html';
   } else {
     showError();

@@ -467,10 +467,15 @@ body::before {
 .panel-close { width:32px; height:32px; background:rgba(255,255,255,0.05); border:1px solid var(--border-subtle); border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px; color:#888888; transition:all 0.2s cubic-bezier(0.16,1,0.3,1); line-height:1; }
 .panel-close:hover { background:rgba(255,255,255,0.1); color:var(--white); border-color:var(--border-mid); }
 
-.panel-body { flex:1; overflow-y:auto; padding:24px; scroll-behavior:smooth; }
+.panel-body {
+  flex:1; overflow-y:scroll; padding:24px; scroll-behavior:smooth;
+  direction:rtl;
+  scrollbar-width:thin; scrollbar-color:#7c3aed #1a1a1a;
+}
+.panel-body > * { direction:ltr; }
 .panel-body::-webkit-scrollbar { width:4px; }
-.panel-body::-webkit-scrollbar-track { background:transparent; }
-.panel-body::-webkit-scrollbar-thumb { background:#2a2a2a; border-radius:2px; }
+.panel-body::-webkit-scrollbar-track { background:#1a1a1a; border-radius:4px; }
+.panel-body::-webkit-scrollbar-thumb { background:linear-gradient(180deg,#7c3aed,#06b6d4); border-radius:4px; }
 
 /* Resource cards */
 .resource-section { margin-bottom:22px; }
@@ -697,7 +702,9 @@ body::before {
   flex-direction: column;
   padding: 24px;
   gap: 0;
+  direction: rtl;
 }
+#panel-moodboard .panel-body > * { direction: ltr; }
 .moodboard-grid {
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -2855,6 +2862,9 @@ function openPanel(id) {
   // Track last opened timestamp
   recordPanelOpen(id);
 
+  // Lock background scroll
+  document.body.style.overflow = 'hidden';
+
   requestAnimationFrame(() => {
     overlay.classList.add('visible');
     panel.classList.add('open');
@@ -2863,15 +2873,29 @@ function openPanel(id) {
 
 function closePanel(silent) {
   document.querySelectorAll('.side-panel').forEach(p => p.classList.remove('open'));
-  if (!silent) document.getElementById('panelOverlay').classList.remove('visible');
-  else {
-    // if another panel is opening immediately, keep overlay visible
+  if (!silent) {
+    document.getElementById('panelOverlay').classList.remove('visible');
+    document.body.style.overflow = '';
+  } else {
     setTimeout(() => {
       const anyOpen = document.querySelector('.side-panel.open');
-      if (!anyOpen) document.getElementById('panelOverlay').classList.remove('visible');
+      if (!anyOpen) {
+        document.getElementById('panelOverlay').classList.remove('visible');
+        document.body.style.overflow = '';
+      }
     }, 10);
   }
 }
+
+// Intercept wheel events — scroll panel content when a panel is open
+document.addEventListener('wheel', e => {
+  const panel = document.querySelector('.side-panel.open');
+  if (!panel) return;
+  const body = panel.querySelector('.panel-body');
+  if (!body) return;
+  e.preventDefault();
+  body.scrollTop += e.deltaY;
+}, { passive: false });
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {

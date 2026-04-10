@@ -913,36 +913,44 @@ body::before {
 .float-note-btn svg { display:block; }
 .float-note-panel {
   position:fixed; bottom:116px; right:20px; z-index:299;
-  width:320px; background:#111111;
+  width:380px; min-height:500px; background:#111111;
   border-radius:var(--radius-lg);
   box-shadow:0 20px 60px rgba(0,0,0,0.9);
   transform:translateY(12px) scale(0.97); opacity:0; pointer-events:none;
   transition:transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.25s ease;
-  overflow:hidden;
-  /* gradient border via outline trick */
-  position:fixed;
+  overflow:visible; display:flex; flex-direction:column;
 }
 .float-note-panel::before {
   content:''; position:absolute; inset:-1px; border-radius:calc(var(--radius-lg)+1px);
-  background:var(--grad); z-index:-1; opacity:0.45;
+  background:var(--grad); z-index:-1; opacity:0.45; pointer-events:none;
 }
 .float-note-panel.open { transform:translateY(0) scale(1); opacity:1; pointer-events:auto; }
+.float-note-panel.fn-dragged { bottom:auto; right:auto; transition:opacity 0.25s ease; }
 .fn-header {
   display:flex; align-items:center; justify-content:space-between;
   padding:12px 14px 10px; border-bottom:1px solid var(--border-subtle);
+  cursor:grab; user-select:none; border-radius:var(--radius-lg) var(--radius-lg) 0 0;
+  background:#111111; flex-shrink:0;
 }
+.fn-header:active { cursor:grabbing; }
 .fn-header-title {
   font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.15em;
   text-transform:uppercase; background:var(--grad-text);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
 }
+.fn-header-actions { display:flex; align-items:center; gap:4px; }
+.fn-clear-note-btn {
+  background:none; border:none; cursor:pointer; color:#555;
+  font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase;
+  padding:2px 6px; border-radius:4px; transition:color 0.15s, background 0.15s; line-height:1;
+}
+.fn-clear-note-btn:hover { color:#ef4444; background:rgba(239,68,68,0.1); }
 .fn-collapse-btn {
   background:none; border:none; cursor:pointer; color:#555;
-  font-size:14px; padding:2px 5px; border-radius:4px; transition:color 0.15s;
-  line-height:1;
+  font-size:14px; padding:2px 5px; border-radius:4px; transition:color 0.15s; line-height:1;
 }
 .fn-collapse-btn:hover { color:#aaa; }
-.fn-notes-section { padding:12px 14px; border-bottom:1px solid var(--border-subtle); }
+.fn-notes-section { padding:12px 14px; border-bottom:1px solid var(--border-subtle); flex-shrink:0; }
 .fn-notes-label {
   font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em;
   text-transform:uppercase; color:#d97706; margin-bottom:6px;
@@ -953,18 +961,38 @@ body::before {
   transition:opacity 0.3s, color 0.3s;
 }
 .fn-notes-saved.visible { opacity:1; color:#6ee7b7; }
+.fn-fmt-bar { display:flex; gap:4px; margin-bottom:6px; }
+.fn-fmt-btn {
+  background:rgba(255,255,255,0.05); border:1px solid var(--border-subtle);
+  border-radius:4px; color:#888; cursor:pointer; font-size:11px; font-weight:600;
+  padding:3px 8px; transition:all 0.15s; line-height:1.4; font-family:'Inter',sans-serif;
+}
+.fn-fmt-btn:hover { background:rgba(var(--accent-rgb),0.15); border-color:rgba(var(--accent-rgb),0.4); color:#ccc; }
 .fn-notes-textarea {
   width:100%; resize:none; background:transparent; border:none; outline:none;
   font-size:12px; font-family:'Inter',sans-serif; font-weight:400;
-  color:var(--white); line-height:1.6; min-height:70px; max-height:140px;
+  color:var(--white); line-height:1.6; min-height:120px;
   caret-color:var(--purple-light);
 }
 .fn-notes-textarea::placeholder { color:#3a3a3a; }
-.fn-todo-section { padding:12px 14px 14px; }
+.fn-char-count {
+  font-family:'DM Mono',monospace; font-size:9px; color:#444;
+  text-align:right; margin-top:4px; letter-spacing:0.06em;
+}
+.fn-todo-section { padding:12px 14px 14px; flex:1; }
 .fn-todo-label {
   font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em;
   text-transform:uppercase; color:#555; margin-bottom:8px;
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
 }
+.fn-todo-label-left { display:flex; align-items:center; gap:8px; }
+.fn-todo-counter { font-family:'DM Mono',monospace; font-size:9px; color:#555; letter-spacing:0.06em; }
+.fn-clear-completed {
+  background:none; border:none; cursor:pointer; color:#444;
+  font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.08em;
+  text-transform:uppercase; padding:0; transition:color 0.15s; flex-shrink:0;
+}
+.fn-clear-completed:hover { color:#ef4444; }
 .fn-todo-input-row { display:flex; align-items:center; gap:6px; margin-bottom:10px; }
 .fn-todo-input {
   flex:1; background:rgba(255,255,255,0.04); border:1px solid var(--border-subtle);
@@ -981,13 +1009,12 @@ body::before {
   transition:opacity 0.15s;
 }
 .fn-todo-add-btn:hover { opacity:0.8; }
-.fn-todo-list { display:flex; flex-direction:column; gap:5px; max-height:160px; overflow-y:auto; }
+.fn-todo-list { display:flex; flex-direction:column; gap:5px; max-height:200px; overflow-y:auto; }
 .fn-todo-list::-webkit-scrollbar { width:3px; }
 .fn-todo-list::-webkit-scrollbar-thumb { background:#2a2a2a; border-radius:2px; }
 .fn-todo-item {
   display:flex; align-items:center; gap:8px;
-  padding:5px 4px; border-radius:5px; transition:background 0.15s;
-  cursor:pointer;
+  padding:5px 4px; border-radius:5px; transition:background 0.15s; cursor:pointer;
 }
 .fn-todo-item:hover { background:rgba(255,255,255,0.03); }
 .fn-todo-check {
@@ -997,9 +1024,7 @@ body::before {
   cursor:pointer; transition:all 0.18s; flex-shrink:0;
   position:relative; overflow:hidden;
 }
-.fn-todo-check.checked {
-  background:var(--grad); border-color:transparent;
-}
+.fn-todo-check.checked { background:var(--grad); border-color:transparent; }
 .fn-todo-check.checked::after {
   content:'✓'; position:absolute; color:white; font-size:9px; font-weight:700; line-height:1;
 }
@@ -1010,11 +1035,28 @@ body::before {
 .fn-todo-item.done .fn-todo-text { text-decoration:line-through; opacity:0.38; color:#888; }
 .fn-todo-del {
   background:none; border:none; color:#3a3a3a; cursor:pointer; font-size:11px;
-  padding:2px 4px; flex-shrink:0; transition:color 0.15s; line-height:1;
-  opacity:0;
+  padding:2px 4px; flex-shrink:0; transition:color 0.15s; line-height:1; opacity:0;
 }
 .fn-todo-item:hover .fn-todo-del { opacity:1; }
 .fn-todo-del:hover { color:#ef4444; }
+.fn-resize-handle {
+  position:absolute; bottom:0; right:0; width:18px; height:18px;
+  cursor:se-resize; z-index:10;
+  background:linear-gradient(135deg, transparent 50%, rgba(255,255,255,0.12) 50%);
+  border-radius:0 0 var(--radius-lg) 0;
+}
+
+/* ===== APP RECOMMENDATION LIST ===== */
+.app-rec-list {
+  border-left:2px solid rgba(var(--accent-rgb),0.35); margin:0 0 14px; padding:0 0 0 14px;
+  display:flex; flex-direction:column; gap:6px;
+}
+.app-rec-item {
+  display:flex; align-items:baseline; gap:8px;
+  font-size:13px; font-family:'Inter',sans-serif; line-height:1.5;
+}
+.app-rec-name { font-weight:600; color:var(--white); white-space:nowrap; }
+.app-rec-desc { color:#999999; }
 
 /* ===== CUSTOMIZE PANEL (PART 4) ===== */
 .cust-section { margin-bottom:26px; }
@@ -1539,21 +1581,36 @@ body::before {
 </button>
 
 <div class="float-note-panel" id="floatNotePanel">
-  <div class="fn-header">
+  <div class="fn-header" id="fnHeader">
     <span class="fn-header-title">notes + tasks</span>
-    <button class="fn-collapse-btn" onclick="toggleFloatNote()" title="Collapse">✕</button>
+    <div class="fn-header-actions">
+      <button class="fn-clear-note-btn" onclick="fnClearNote()" title="Clear note">clear</button>
+      <button class="fn-collapse-btn" onclick="toggleFloatNote()" title="Collapse">✕</button>
+    </div>
   </div>
   <div class="fn-notes-section">
     <div class="fn-notes-label">
       <span>quick note</span>
       <span class="fn-notes-saved" id="fnNotesSaved">saved ✓</span>
     </div>
-    <textarea class="fn-notes-textarea" id="fnNotesTextarea" rows="3"
+    <div class="fn-fmt-bar">
+      <button class="fn-fmt-btn" onclick="fnFormat('bold')" title="Bold"><strong>B</strong></button>
+      <button class="fn-fmt-btn" onclick="fnFormat('italic')" title="Italic"><em>I</em></button>
+      <button class="fn-fmt-btn" onclick="fnFormat('bullet')" title="Bullet list">• List</button>
+    </div>
+    <textarea class="fn-notes-textarea" id="fnNotesTextarea" rows="4"
       placeholder="type a note — saves automatically"
-      oninput="fnDebounceSaveNote()"></textarea>
+      oninput="fnDebounceSaveNote(); fnUpdateCharCount()"></textarea>
+    <div class="fn-char-count" id="fnCharCount">0 chars</div>
   </div>
   <div class="fn-todo-section">
-    <div class="fn-todo-label">to-do</div>
+    <div class="fn-todo-label">
+      <div class="fn-todo-label-left">
+        <span>to-do</span>
+        <span class="fn-todo-counter" id="fnTodoCounter"></span>
+      </div>
+      <button class="fn-clear-completed" onclick="fnClearCompleted()" title="Remove completed tasks">clear done</button>
+    </div>
     <div class="fn-todo-input-row">
       <input class="fn-todo-input" id="fnTodoInput" type="text" placeholder="add a task..."
         onkeydown="if(event.key==='Enter')fnAddTodo()" />
@@ -1561,6 +1618,7 @@ body::before {
     </div>
     <div class="fn-todo-list" id="fnTodoList"></div>
   </div>
+  <div class="fn-resize-handle" id="fnResizeHandle"></div>
 </div>
 
 <!-- ===== SIDE PANEL: Brand Links (PART 1) ===== -->
@@ -2414,16 +2472,16 @@ function buildBrandKit() {
 
 /* ===== STEPS DATA ===== */
 const steps = [
-  { title:'Set up Shopify',          desc:'Start your free trial and choose a minimal theme — your Shopify theme works best for clean brands.',                               prompts:['homepage copy','brand tagline'] },
+  { title:'Set up Shopify',          desc:'Start your free trial and choose a minimal theme — a clean simple layout lets your products and brand do the talking.',              prompts:['homepage copy','brand tagline'] },
   { title:'Build your brand visuals', desc:'Use prompts to generate your logo brief, color palette, and visual direction before touching Shopify.',                           prompts:['logo brief','color palette'] },
-  { title:'Write your homepage',      desc:'Your homepage needs a hero headline, subhead, and section copy. All of it can be written by Claude.',                        prompts:['hero headline','about section'] },
+  { title:'Write your homepage',      desc:'Your homepage needs a hero headline, subhead, and section copy. All of it can be written using the prompts below.',           prompts:['hero headline','about section'] },
   { title:'Set up product pages',     desc:'Product descriptions, sizing info, and feature callouts — all templated to your brand voice.',                               prompts:['product description','product features'] },
-  { title:'Write your policies',      desc:'Shipping, returns, and privacy policy. Claude writes all three in minutes.',                                                 prompts:['shipping policy','return policy'] },
+  { title:'Write your policies',      desc:'Shipping, returns, and privacy policy. Use the prompts below to write all three in minutes.',                                 prompts:['shipping policy','return policy'] },
   { title:'Build your navigation',    desc:'Menu structure, collection names, and footer links that match your brand tone.',                                              prompts:['menu structure','footer copy'] },
-  { title:'Connect your domain',      desc:'Point your domain to Shopify and go live. Claude helps you write your launch announcement.',                                  prompts:['launch caption','bio copy'] },
+  { title:'Connect your domain',      desc:'Point your domain to Shopify and go live. Use the prompts below to write your launch announcement.',                          prompts:['launch caption','bio copy'] },
   { title:'Launch content',           desc:'First posts, Pinterest pins, and profile bio — all written to your brand voice.',                                            prompts:['first post','Pinterest description'] },
-  { title:'Set up email marketing',   desc:'Connect Klaviyo to your Shopify store and set up a welcome flow. Your first email goes out automatically when someone subscribes.', prompts:['welcome email','abandoned cart email'] },
-  { title:'Install your key apps',    desc:'These free Shopify apps do the heavy lifting. Install them before you launch — they increase trust and conversions immediately.',     prompts:['app setup copy','review request email'] },
+  { title:'Set up email marketing',   desc:'Download an email marketing app from the Shopify App Store — Klaviyo, Omnisend, and Mailchimp all have free tiers and connect directly to Shopify. Set up these three flows first: welcome series, abandoned cart, and post purchase.', prompts:['welcome email','abandoned cart email'] },
+  { title:'Install your key apps',    desc:'These free Shopify apps do the heavy lifting — install them before you launch to increase trust and conversions immediately.',     prompts:['app recommendations','review request email'] },
   { title:'Optimize for mobile',      desc:'Over 70% of Shopify traffic is mobile. Go through this checklist on your phone before you launch — most stores fail here.',          prompts:['mobile homepage review','mobile product page copy'] },
   { title:'Set up social profiles',   desc:'Your social presence needs to match your store before you launch. Set up Instagram and Pinterest at minimum — these are your two highest converting channels for clothing.', prompts:['Instagram bio','Pinterest board description'] }
 ];
@@ -2448,6 +2506,7 @@ const promptTemplates = {
   'welcome email':             (b,v,a) => `Write a welcome email for ${b} subscribers. Vibe: ${v}. Audience: ${a}. Subject line under 8 words, body under 100 words. Warm, on-brand, ends with a shop link CTA. No generic greetings.`,
   'abandoned cart email':      (b,v,a) => `Write an abandoned cart email for ${b}. Vibe: ${v}. Keep it short — subject line, one paragraph, one CTA button. Tone: direct but not pushy. Under 60 words.`,
   'app setup copy':            (b,v,a) => `Write the setup text for a product reviews section on a ${b} Shopify store. Vibe: ${v}. Include a headline asking for reviews, a one-line subhead, and a CTA button label. Short, clean, on-brand.`,
+  'app recommendations':       (b,v,a) => `I am building a Shopify store for ${b}, a ${v} brand targeting ${a}. Recommend the 5 best free Shopify apps I should install before launch. For each app tell me: what it does, why it matters for my brand, and how to set it up in one sentence.`,
   'review request email':      (b,v,a) => `Write a post-purchase review request email for ${b}. Audience: ${a}. Subject line under 7 words, body under 80 words. Friendly, not corporate. Ends with a direct link placeholder.`,
   'mobile homepage review':    (b,v,a) => `Review this homepage structure for mobile UX. I have: hero image, headline, subhead, featured products, about section, footer. Tell me what to cut, what to move, and what copy to shorten for mobile. Brand is ${b}, vibe is ${v}.`,
   'mobile product page copy':  (b,v,a) => `Rewrite this product description for mobile. It should be scannable in under 10 seconds. Use one hook line, 3 bullet points max, and one closing sentence. Brand: ${b}, vibe: ${v}, audience: ${a}.`,
@@ -2490,10 +2549,17 @@ function buildStepList() {
       <div class="step-body" id="body-${i}">
         <p class="step-desc">${step.desc}</p>
         <div class="tab-bar">
-          <button class="tab active" onclick="switchTab(this,'claude-${i}','body-${i}')">Claude Prompts</button>
+          <button class="tab active" onclick="switchTab(this,'claude-${i}','body-${i}')">Copy Prompts</button>
           <button class="tab"        onclick="switchTab(this,'visual-${i}','body-${i}')">Visual Prompts</button>
         </div>
         <div class="tab-panel" id="claude-${i}">
+          ${i === 9 ? `<div class="app-rec-list">
+            <div class="app-rec-item"><span class="app-rec-name">Loox</span><span class="app-rec-desc">photo reviews — builds social proof</span></div>
+            <div class="app-rec-item"><span class="app-rec-name">Judge.me</span><span class="app-rec-desc">free review app — increases trust</span></div>
+            <div class="app-rec-item"><span class="app-rec-name">Klaviyo or Omnisend</span><span class="app-rec-desc">email marketing — automated flows</span></div>
+            <div class="app-rec-item"><span class="app-rec-name">Tidio</span><span class="app-rec-desc">live chat — answer customer questions</span></div>
+            <div class="app-rec-item"><span class="app-rec-name">ReConvert</span><span class="app-rec-desc">post purchase upsell — increases order value</span></div>
+          </div>` : ''}
           ${step.prompts.map(p => `
             <div class="prompt-box">
               <div class="prompt-label">prompt — ${p}</div>
@@ -2502,7 +2568,7 @@ function buildStepList() {
             </div>`).join('')}
         </div>
         <div class="tab-panel hidden" id="visual-${i}">
-          <p class="visual-intro">Paste directly into Ideogram, DALL-E, or Midjourney for visuals matched to this step.</p>
+          <p class="visual-intro">Paste these prompts into any image generation tool — Ideogram, Midjourney, or the image generator inside ChatGPT.</p>
           <div class="prompt-box">
             <div class="prompt-label ideogram-tag">Ideogram / DALL-E</div>
             <div class="prompt-text">${visualPromptFns[i].ideogram(b,v,a)}</div>
@@ -2873,10 +2939,17 @@ function buildPromptPackPanel() {
       <div class="step-body" id="pk-body-${i}">
         <p class="step-desc">${step.desc}</p>
         <div class="tab-bar">
-          <button class="tab active" onclick="switchTab(this,'pk-claude-${i}','pk-body-${i}')">Claude Prompts</button>
+          <button class="tab active" onclick="switchTab(this,'pk-claude-${i}','pk-body-${i}')">Copy Prompts</button>
           <button class="tab"        onclick="switchTab(this,'pk-visual-${i}','pk-body-${i}')">Visual Prompts</button>
         </div>
         <div class="tab-panel" id="pk-claude-${i}">
+          ${i === 9 ? `<div class="app-rec-list">
+            <div class="app-rec-item"><span class="app-rec-name">Loox</span><span class="app-rec-desc">photo reviews — builds social proof</span></div>
+            <div class="app-rec-item"><span class="app-rec-name">Judge.me</span><span class="app-rec-desc">free review app — increases trust</span></div>
+            <div class="app-rec-item"><span class="app-rec-name">Klaviyo or Omnisend</span><span class="app-rec-desc">email marketing — automated flows</span></div>
+            <div class="app-rec-item"><span class="app-rec-name">Tidio</span><span class="app-rec-desc">live chat — answer customer questions</span></div>
+            <div class="app-rec-item"><span class="app-rec-name">ReConvert</span><span class="app-rec-desc">post purchase upsell — increases order value</span></div>
+          </div>` : ''}
           ${step.prompts.map(p => `
             <div class="prompt-box">
               <div class="prompt-label">prompt — ${p}</div>
@@ -2885,7 +2958,7 @@ function buildPromptPackPanel() {
             </div>`).join('')}
         </div>
         <div class="tab-panel hidden" id="pk-visual-${i}">
-          <p class="visual-intro">Paste directly into Ideogram, DALL-E, or Midjourney.</p>
+          <p class="visual-intro">Paste these prompts into any image generation tool — Ideogram, Midjourney, or the image generator inside ChatGPT.</p>
           <div class="prompt-box">
             <div class="prompt-label ideogram-tag">Ideogram / DALL-E</div>
             <div class="prompt-text">${visualPromptFns[i].ideogram(b,v,a)}</div>
@@ -3167,9 +3240,38 @@ function fnDebounceSaveNote() {
   }, 500);
 }
 
+function fnUpdateCharCount() {
+  const ta = document.getElementById('fnNotesTextarea');
+  const el = document.getElementById('fnCharCount');
+  if (ta && el) el.textContent = ta.value.length + ' chars';
+}
+
+function fnClearNote() {
+  if (!confirm('Clear your note?')) return;
+  const ta = document.getElementById('fnNotesTextarea');
+  if (ta) { ta.value = ''; localStorage.setItem(FN_NOTES_LS, ''); fnUpdateCharCount(); }
+}
+
+function fnFormat(type) {
+  const ta = document.getElementById('fnNotesTextarea');
+  if (!ta) return;
+  const start = ta.selectionStart, end = ta.selectionEnd;
+  const sel = ta.value.substring(start, end);
+  let replacement = '';
+  if (type === 'bold')   replacement = '**' + sel + '**';
+  if (type === 'italic') replacement = '*' + sel + '*';
+  if (type === 'bullet') replacement = sel.split('\n').map(l => l.trim() ? '- ' + l : l).join('\n');
+  ta.value = ta.value.substring(0, start) + replacement + ta.value.substring(end);
+  ta.selectionStart = start;
+  ta.selectionEnd = start + replacement.length;
+  ta.focus();
+  fnDebounceSaveNote();
+  fnUpdateCharCount();
+}
+
 function fnLoadNotes() {
   const ta = document.getElementById('fnNotesTextarea');
-  if (ta) ta.value = localStorage.getItem(FN_NOTES_LS) || '';
+  if (ta) { ta.value = localStorage.getItem(FN_NOTES_LS) || ''; fnUpdateCharCount(); }
 }
 
 function fnAddTodo() {
@@ -3194,6 +3296,15 @@ function fnDeleteTodo(id) {
   fnRenderTodos();
 }
 
+function fnClearCompleted() {
+  const doneCount = fnTodosData.filter(t => t.done).length;
+  if (!doneCount) return;
+  if (!confirm('Remove all completed tasks?')) return;
+  fnTodosData = fnTodosData.filter(t => !t.done);
+  fnSaveTodos();
+  fnRenderTodos();
+}
+
 function fnSaveTodos() {
   localStorage.setItem(FN_TODOS_LS, JSON.stringify(fnTodosData));
 }
@@ -3205,7 +3316,11 @@ function fnLoadTodos() {
 
 function fnRenderTodos() {
   const list = document.getElementById('fnTodoList');
+  const counter = document.getElementById('fnTodoCounter');
   if (!list) return;
+  const doneCount = fnTodosData.filter(t => t.done).length;
+  const total = fnTodosData.length;
+  if (counter) counter.textContent = total ? `${doneCount} of ${total} complete` : '';
   list.innerHTML = fnTodosData.map(t => `
     <div class="fn-todo-item${t.done ? ' done' : ''}" data-id="${t.id}">
       <div class="fn-todo-check${t.done ? ' checked' : ''}" onclick="fnToggleTodo(${t.id})"></div>
@@ -3228,6 +3343,61 @@ document.addEventListener('click', e => {
     panel.classList.remove('open');
   }
 });
+
+// Draggable header
+(function() {
+  let isDragging = false, dragOffX = 0, dragOffY = 0;
+  document.addEventListener('mousedown', e => {
+    const header = document.getElementById('fnHeader');
+    if (!header || !header.contains(e.target) || e.target.closest('button')) return;
+    const panel = document.getElementById('floatNotePanel');
+    if (!panel) return;
+    const rect = panel.getBoundingClientRect();
+    if (!panel.classList.contains('fn-dragged')) {
+      panel.style.top  = rect.top  + 'px';
+      panel.style.left = rect.left + 'px';
+      panel.style.bottom = 'auto';
+      panel.style.right  = 'auto';
+      panel.classList.add('fn-dragged');
+    }
+    isDragging = true;
+    dragOffX = e.clientX - rect.left;
+    dragOffY = e.clientY - rect.top;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const panel = document.getElementById('floatNotePanel');
+    if (!panel) return;
+    panel.style.left = (e.clientX - dragOffX) + 'px';
+    panel.style.top  = (e.clientY - dragOffY) + 'px';
+  });
+  document.addEventListener('mouseup', () => { isDragging = false; });
+})();
+
+// Resize handle
+(function() {
+  let isResizing = false, startX = 0, startY = 0, startW = 0, startH = 0;
+  document.addEventListener('mousedown', e => {
+    const handle = document.getElementById('fnResizeHandle');
+    if (!handle || e.target !== handle) return;
+    const panel = document.getElementById('floatNotePanel');
+    if (!panel) return;
+    isResizing = true;
+    startX = e.clientX; startY = e.clientY;
+    startW = panel.offsetWidth; startH = panel.offsetHeight;
+    e.preventDefault();
+    e.stopPropagation();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!isResizing) return;
+    const panel = document.getElementById('floatNotePanel');
+    if (!panel) return;
+    panel.style.width  = Math.max(280, startW + (e.clientX - startX)) + 'px';
+    panel.style.height = Math.max(400, startH + (e.clientY - startY)) + 'px';
+  });
+  document.addEventListener('mouseup', () => { isResizing = false; });
+})();
 
 /* ===== CUSTOMIZE PANEL (PART 4) ===== */
 const LAYOUT_LS  = 'frmls_layout_hidden';

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=1440" />
+<meta name="viewport" content="width=1080" />
 <title>FRMLS — Preview</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
@@ -23,8 +23,8 @@
 }
 
 html, body {
-  width: 1440px;
-  height: 900px;
+  width: 1080px;
+  height: 1350px;
   overflow: hidden;
   background: var(--bg);
   color: var(--white);
@@ -71,7 +71,7 @@ body::before {
 /* ===== PAGE SHELL ===== */
 .page {
   position: relative; z-index: 10;
-  width: 1440px; height: 900px;
+  width: 1080px; height: 1350px;
 }
 
 /* ===== MIDDLE — full viewport, centered ===== */
@@ -90,22 +90,22 @@ body::before {
 }
 
 .hero-brand {
-  font-size: 64px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.05;
+  font-size: 80px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.05;
   background: var(--grad-text);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   text-align: center;
 }
 
 .hero-sub {
-  font-family: 'DM Mono', monospace; font-size: 14px; letter-spacing: 0.2em;
+  font-family: 'DM Mono', monospace; font-size: 18px; letter-spacing: 0.2em;
   color: #666666; text-transform: lowercase;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .hero-desc {
-  font-size: 16px; font-weight: 400; color: var(--white);
-  opacity: 0.7; text-align: center; margin-bottom: 24px;
+  font-size: 18px; font-weight: 400; color: var(--white);
+  opacity: 0.7; text-align: center; margin-bottom: 28px;
 }
 
 /* ===== 3×3 GRID ===== */
@@ -120,10 +120,10 @@ body::before {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 18px;
-  padding: 20px 22px 16px;
+  padding: 22px 24px 18px;
   position: relative; z-index: 1;
   display: flex; flex-direction: column;
-  height: 132px;
+  min-height: 130px;
   overflow: hidden;
 }
 
@@ -143,12 +143,12 @@ body::before {
 .dash-box-icon svg { display: block; }
 
 .dash-box-title {
-  font-size: 14px; font-weight: 700; color: var(--white);
-  margin-bottom: 3px; letter-spacing: -0.01em;
+  font-size: 17px; font-weight: 700; color: var(--white);
+  margin-bottom: 4px; letter-spacing: -0.01em;
 }
 
 .dash-box-desc {
-  font-size: 11.5px; color: #cccccc; line-height: 1.45; flex: 1;
+  font-size: 14px; color: #cccccc; line-height: 1.45; flex: 1;
 }
 
 .page-url {

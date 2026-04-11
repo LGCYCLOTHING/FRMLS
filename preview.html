@@ -100,7 +100,12 @@ body::before {
 .hero-sub {
   font-family: 'DM Mono', monospace; font-size: 14px; letter-spacing: 0.2em;
   color: #666666; text-transform: lowercase;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
+}
+
+.hero-desc {
+  font-size: 16px; font-weight: 400; color: var(--white);
+  opacity: 0.7; text-align: center; margin-bottom: 24px;
 }
 
 /* ===== 3×3 GRID ===== */
@@ -146,6 +151,14 @@ body::before {
   font-size: 11.5px; color: #cccccc; line-height: 1.45; flex: 1;
 }
 
+.page-url {
+  position: absolute;
+  bottom: 20px; left: 0; right: 0;
+  text-align: center;
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.3); text-transform: lowercase;
+}
+
 /* ===== BOX COLOR ACCENTS ===== */
 .box-purple   { --box-accent: linear-gradient(135deg,#7c3aed,#9d5cf5); --box-color: #9d5cf5; }
 .box-cyan     { --box-accent: linear-gradient(135deg,#06b6d4,#22d3ee); --box-color: #22d3ee; }
@@ -174,6 +187,7 @@ body::before {
 
     <div class="hero-brand">FRMLS</div>
     <div class="hero-sub">your store. built right.</div>
+    <div class="hero-desc">Brand identity, custom prompts, designer tools, and a launch system — all in one place.</div>
 
     <!-- 3×3 DASHBOARD GRID -->
     <div class="dash-grid">
@@ -188,13 +202,13 @@ body::before {
       <div class="dash-box box-cyan">
         <span class="dash-box-icon">◧</span>
         <div class="dash-box-title">Prompt Pack</div>
-        <div class="dash-box-desc">All 12 steps with custom AI prompts.</div>
+        <div class="dash-box-desc">All 12 steps with custom prompts.</div>
       </div>
 
       <div class="dash-box box-blue">
         <span class="dash-box-icon">⌥</span>
         <div class="dash-box-title">Designer Prompts</div>
-        <div class="dash-box-desc">Claude snippets that upgrade your Shopify theme.</div>
+        <div class="dash-box-desc">Code snippets that upgrade your Shopify theme.</div>
       </div>
 
       <!-- Row 2 -->
@@ -259,6 +273,7 @@ body::before {
   </div>
   </div><!-- /main -->
 
+  <div class="page-url">frmls.com</div>
 
 </div><!-- /page -->
 

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FRMLS — Store Builder System</title>
-<script>if(location.protocol==='http:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){location.replace('https:'+location.href.slice(5));}</script>
+<script>if(location.protocol!=='https:'&&location.hostname!=='localhost'){location.replace('https:'+window.location.href.substring(window.location.protocol.length));}</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700;900&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet" />
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-V9T01KTX3V"></script>
 <script>
@@ -1109,6 +1109,14 @@ body::before {
 .cust-reorder-item.dragging { opacity:0.4; }
 .cust-drag-handle { color:#444; font-size:12px; flex-shrink:0; line-height:1; }
 .cust-reorder-label { font-size:13px; font-weight:500; color:#cccccc; flex:1; }
+.cust-arrow-btns { display:flex; flex-direction:column; gap:2px; flex-shrink:0; }
+.cust-arrow-btn {
+  background:none; border:1px solid var(--border-subtle); border-radius:4px;
+  color:#666666; cursor:pointer; font-size:9px; padding:3px 7px; line-height:1;
+  transition:color 0.15s, border-color 0.15s;
+}
+.cust-arrow-btn:hover:not(:disabled) { color:var(--white); border-color:var(--border-mid); }
+.cust-arrow-btn:disabled { opacity:0.2; cursor:default; }
 
 /* ===== STORE INSPIRATION USER CARDS ===== */
 .inspo-add-section { margin-bottom:16px; }
@@ -1143,13 +1151,13 @@ body::before {
 .mob-hamburger span { display:block; width:24px; height:2px; background:var(--white); border-radius:2px; }
 
 .mob-menu-overlay {
-  display:none; position:fixed; inset:0; z-index:490;
+  display:none; position:fixed; inset:0; z-index:510;
   background:#0d0d0d; overflow-y:auto;
   transform:translateX(-100%); transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);
 }
 .mob-menu-overlay.open { transform:translateX(0); }
 .mob-menu-close {
-  position:absolute; top:16px; right:16px; width:40px; height:40px;
+  position:absolute; top:20px; right:20px; width:40px; height:40px;
   background:none; border:none; cursor:pointer;
   display:flex; align-items:center; justify-content:center;
   font-size:22px; color:var(--white); opacity:0.7; transition:opacity 0.2s;
@@ -3837,12 +3845,16 @@ function buildCustomizePanel() {
     const orderedBoxes = order.map(id => DASH_BOXES.find(b => b.id === id)).filter(Boolean);
     const remaining    = DASH_BOXES.filter(b => !order.includes(b.id));
     const allOrdered   = [...orderedBoxes, ...remaining];
-    reorderList.innerHTML = allOrdered.map(b => `
+    reorderList.innerHTML = allOrdered.map((b, i) => `
       <div class="cust-reorder-item" draggable="true" data-id="${b.id}"
         ondragstart="custDragStart(event)" ondragover="custDragOver(event)"
         ondrop="custDrop(event)" ondragend="custDragEnd(event)" ondragleave="custDragLeave(event)">
         <span class="cust-drag-handle">⠿</span>
         <span class="cust-reorder-label">${b.label}</span>
+        <div class="cust-arrow-btns">
+          <button class="cust-arrow-btn" onclick="custMoveBox('${b.id}',-1)" ${i===0?'disabled':''} title="Move up">▲</button>
+          <button class="cust-arrow-btn" onclick="custMoveBox('${b.id}',1)" ${i===allOrdered.length-1?'disabled':''} title="Move down">▼</button>
+        </div>
       </div>`).join('');
   }
 }
@@ -3925,6 +3937,22 @@ function custDrop(e) {
 function custDragEnd(e) {
   e.currentTarget.classList.remove('dragging');
   document.querySelectorAll('.cust-reorder-item').forEach(el => el.classList.remove('drag-over'));
+}
+
+function custMoveBox(boxId, dir) {
+  const list = document.getElementById('custReorderList');
+  if (!list) return;
+  const items = [...list.querySelectorAll('.cust-reorder-item')];
+  const idx = items.findIndex(el => el.dataset.id === boxId);
+  if (idx < 0) return;
+  const targetIdx = idx + dir;
+  if (targetIdx < 0 || targetIdx >= items.length) return;
+  if (dir < 0) items[targetIdx].before(items[idx]);
+  else         items[targetIdx].after(items[idx]);
+  const newOrder = [...list.querySelectorAll('.cust-reorder-item')].map(el => el.dataset.id);
+  localStorage.setItem(ORDER_LS, JSON.stringify(newOrder));
+  applyBoxOrder(newOrder);
+  buildCustomizePanel();
 }
 
 /* ===== STORE LINK WIDGET ===== */

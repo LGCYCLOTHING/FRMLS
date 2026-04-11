@@ -74,41 +74,12 @@ body::before {
   width: 1440px; height: 900px;
 }
 
-/* ===== TOP BAR — pinned to top edge ===== */
-.top-bar {
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 80px;
-  display: flex; align-items: flex-start; justify-content: space-between;
-  padding: 30px 80px 0;
-}
-
-/* ===== MIDDLE — explicitly occupies space between header and footer ===== */
+/* ===== MIDDLE — full viewport, centered ===== */
 .main {
   position: absolute;
-  top: 80px; bottom: 44px; left: 0; right: 0;
+  inset: 0;
   display: flex; align-items: center; justify-content: center;
   padding: 0 80px;
-}
-
-.logo-mark {
-  font-size: 22px; font-weight: 900; letter-spacing: -0.03em;
-  color: var(--white); line-height: 1; display: block;
-}
-.logo-mark .accent {
-  background: var(--grad-text);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.logo-tag {
-  font-size: 10px; font-family: 'DM Mono', monospace; letter-spacing: 0.18em;
-  color: #555555; text-transform: uppercase; margin-top: 5px; display: block;
-}
-
-.top-badge {
-  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em;
-  text-transform: uppercase; color: #3a3a3a;
-  border: 1px solid rgba(255,255,255,0.05); border-radius: 20px;
-  padding: 5px 14px;
-  margin-top: 4px;
 }
 
 /* ===== HERO ===== */
@@ -119,7 +90,7 @@ body::before {
 }
 
 .hero-brand {
-  font-size: 54px; font-weight: 900; letter-spacing: -0.04em; line-height: 1.05;
+  font-size: 64px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.05;
   background: var(--grad-text);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   margin-bottom: 10px;
@@ -127,17 +98,9 @@ body::before {
 }
 
 .hero-sub {
-  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em;
-  color: #4a4a4a; text-transform: lowercase;
+  font-family: 'DM Mono', monospace; font-size: 14px; letter-spacing: 0.2em;
+  color: #666666; text-transform: lowercase;
   margin-bottom: 32px;
-}
-
-/* ===== WORKSPACE LABEL ===== */
-.workspace-label {
-  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.22em;
-  text-transform: uppercase; color: #383838;
-  margin-bottom: 10px; align-self: flex-start;
-  width: 100%;
 }
 
 /* ===== 3×3 GRID ===== */
@@ -180,13 +143,7 @@ body::before {
 }
 
 .dash-box-desc {
-  font-size: 11.5px; color: #777777; line-height: 1.45; flex: 1;
-}
-
-.dash-box-arrow {
-  font-size: 9.5px; font-family: 'DM Mono', monospace;
-  color: #2e2e2e; margin-top: 8px; text-align: right;
-  letter-spacing: 0.08em;
+  font-size: 11.5px; color: #cccccc; line-height: 1.45; flex: 1;
 }
 
 /* ===== BOX COLOR ACCENTS ===== */
@@ -200,27 +157,6 @@ body::before {
 .box-pink     { --box-accent: linear-gradient(135deg,#ec4899,#8b5cf6); --box-color: #ec4899; }
 .box-amethyst { --box-accent: linear-gradient(135deg,#a855f7,#06b6d4); --box-color: #a855f7; }
 
-/* ===== FOOTER BAR — pinned to bottom edge ===== */
-.footer-bar {
-  position: absolute;
-  bottom: 0; left: 0; right: 0; height: 44px;
-  background: rgba(10,10,10,0.97);
-  border-top: 1px solid var(--border-subtle);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 80px; z-index: 150;
-}
-
-.footer-brand {
-  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em;
-  text-transform: uppercase; color: #444444;
-}
-
-.footer-right {
-  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
-  text-transform: uppercase; font-weight: 600;
-  background: var(--grad-text);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
 </style>
 </head>
 <body>
@@ -232,23 +168,12 @@ body::before {
 
 <div class="page">
 
-  <!-- TOP BAR — absolute, doesn't affect centering -->
-  <div class="top-bar">
-    <div class="logo">
-      <span class="logo-mark">FRM<span class="accent">LS</span></span>
-      <span class="logo-tag">your store. built right.</span>
-    </div>
-    <div class="top-badge">Store Builder System</div>
-  </div>
-
-  <!-- MIDDLE — owns all space between top-bar and footer -->
+  <!-- MIDDLE — full viewport centered -->
   <div class="main">
   <div class="hero">
 
-    <div class="hero-brand">Everything you need to launch.</div>
+    <div class="hero-brand">FRMLS</div>
     <div class="hero-sub">your store. built right.</div>
-
-    <div class="workspace-label">your workspace</div>
 
     <!-- 3×3 DASHBOARD GRID -->
     <div class="dash-grid">
@@ -258,21 +183,18 @@ body::before {
         <span class="dash-box-icon">◆</span>
         <div class="dash-box-title">Brand Kit</div>
         <div class="dash-box-desc">Your colors, fonts, and tone of voice.</div>
-        <div class="dash-box-arrow">Open →</div>
       </div>
 
       <div class="dash-box box-cyan">
         <span class="dash-box-icon">◧</span>
         <div class="dash-box-title">Prompt Pack</div>
         <div class="dash-box-desc">All 12 steps with custom AI prompts.</div>
-        <div class="dash-box-arrow">Open →</div>
       </div>
 
       <div class="dash-box box-blue">
         <span class="dash-box-icon">⌥</span>
         <div class="dash-box-title">Designer Prompts</div>
         <div class="dash-box-desc">Claude snippets that upgrade your Shopify theme.</div>
-        <div class="dash-box-arrow">Open →</div>
       </div>
 
       <!-- Row 2 -->
@@ -284,23 +206,20 @@ body::before {
             <circle cx="14" cy="10" r="3.5" stroke="url(#eyeGrad)" stroke-width="1.8" fill="none"/>
           </svg>
         </span>
-        <div class="dash-box-title">What Good Looks Like</div>
+        <div class="dash-box-title">Store Inspiration</div>
         <div class="dash-box-desc">References from stores that get it right.</div>
-        <div class="dash-box-arrow">Open →</div>
       </div>
 
       <div class="dash-box box-green">
         <span class="dash-box-icon">◉</span>
         <div class="dash-box-title">Launch Checklist</div>
         <div class="dash-box-desc">Track your progress to launch day.</div>
-        <div class="dash-box-arrow">Open →</div>
       </div>
 
       <div class="dash-box box-violet">
         <span class="dash-box-icon">◫</span>
         <div class="dash-box-title">Store Roadmap</div>
         <div class="dash-box-desc">See how everything connects.</div>
-        <div class="dash-box-arrow">Open →</div>
       </div>
 
       <!-- Row 3 -->
@@ -314,14 +233,12 @@ body::before {
         </span>
         <div class="dash-box-title">Email Marketing</div>
         <div class="dash-box-desc">Flows, copy, and subject lines.</div>
-        <div class="dash-box-arrow">Open →</div>
       </div>
 
       <div class="dash-box box-pink">
         <span class="dash-box-icon">◈</span>
         <div class="dash-box-title">Resources</div>
         <div class="dash-box-desc">Every tool you need to build.</div>
-        <div class="dash-box-arrow">Open →</div>
       </div>
 
       <div class="dash-box box-amethyst">
@@ -336,18 +253,12 @@ body::before {
         </span>
         <div class="dash-box-title">Mood Board</div>
         <div class="dash-box-desc">Your visual references and inspiration.</div>
-        <div class="dash-box-arrow">Open →</div>
       </div>
 
     </div>
   </div>
   </div><!-- /main -->
 
-  <!-- FOOTER — anchored to bottom of page flow -->
-  <div class="footer-bar">
-  <span class="footer-brand">FRMLS — your store. built right.</span>
-  <span class="footer-right">Dashboard</span>
-</div>
 
 </div><!-- /page -->
 

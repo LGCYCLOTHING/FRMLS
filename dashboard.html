@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FRMLS — Store Builder System</title>
 <script>if(location.protocol!=='https:'&&location.hostname!=='localhost'){location.replace('https:'+window.location.href.substring(window.location.protocol.length));}</script>
+<script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('frmls_mode')||'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700;900&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet" />
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-V9T01KTX3V"></script>
 <script>
@@ -58,7 +59,6 @@ body {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
-  padding-bottom: 56px;
 }
 body::before {
   content: '';
@@ -130,10 +130,6 @@ body::before {
 .snap-badge-val   { font-size:13px; font-weight:500; color:#cccccc; }
 .snap-audience { font-size:12px; color:#aaaaaa; line-height:1.55; font-style:italic; border-top:1px solid var(--border-subtle); padding-top:10px; margin-top:6px; }
 
-/* ===== FOOTER BAR ===== */
-.footer-bar { position:fixed; bottom:0; left:0; right:0; height:46px; background:rgba(10,10,10,0.96); border-top:1px solid var(--border-subtle); display:flex; align-items:center; justify-content:space-between; padding:0 24px; z-index:150; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
-.footer-brand    { font-family:'DM Mono',monospace; font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:#999999; }
-.footer-progress { font-family:'DM Mono',monospace; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; background:var(--grad-text); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; font-weight:600; }
 
 /* ===== APP CONTAINER ===== */
 .app { max-width:700px; margin:0 auto; padding:3rem 1.5rem 4rem; position:relative; z-index:10; }
@@ -421,8 +417,6 @@ body::before {
   .step-status { display:none; }
   .checklist-item { padding:10px 12px; gap:10px; }
   .cl-tag { display:none; }
-  .footer-bar { padding:0 14px; }
-  .footer-brand { display:none; }
 }
 
 /* ===== DASHBOARD ===== */
@@ -1230,6 +1224,120 @@ body::before {
   .swatch { width:44px; height:44px; }
   .swatch-item { min-width:54px; }
 }
+
+/* ===== LIGHT / DARK MODE ===== */
+
+/* Smooth switching — only active while toggling (class added/removed via JS) */
+.theme-transitioning, .theme-transitioning * {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+/* Toggle button */
+.theme-toggle-btn {
+  position: fixed; top: 16px; right: 16px; z-index: 490;
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 28px; padding: 0 12px;
+  font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+  color: var(--white); background: var(--bg-card);
+  border: 1px solid var(--border-mid); border-radius: 14px;
+  cursor: pointer; white-space: nowrap;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.theme-toggle-btn:hover { background: var(--bg-card-2); border-color: rgba(var(--accent-rgb),0.4); }
+.theme-toggle-icon { font-size: 12px; line-height: 1; }
+@media (max-width: 767px) {
+  .theme-toggle-btn { right: 58px; }
+}
+
+/* Light mode variable overrides */
+[data-theme="light"] {
+  --bg: #f8f8f6;
+  --bg-card: #ffffff;
+  --bg-card-2: #f5f5f3;
+  --bg-prompt: #f9f9f7;
+  --white: #111111;
+  --text-muted: #888888;
+  --text-secondary: #555555;
+  --border-subtle: rgba(0,0,0,0.09);
+  --border-mid: rgba(0,0,0,0.15);
+}
+
+/* Orbs — same hue, reduced to ~0.08 opacity on light background */
+[data-theme="light"] .orb-purple,
+[data-theme="light"] .orb-cyan { opacity: 0.65; }
+[data-theme="light"] body::before { opacity: 0.5; }
+
+/* Panel + overlay backgrounds */
+[data-theme="light"] .side-panel { background: #ffffff; border-left-color: rgba(0,0,0,0.1); }
+[data-theme="light"] .panel-header { background: #ffffff; border-bottom-color: rgba(0,0,0,0.1); }
+[data-theme="light"] .panel-overlay { background: rgba(0,0,0,0.3); }
+
+/* Float notes */
+[data-theme="light"] .float-note-panel { background: #ffffff; }
+[data-theme="light"] .fn-header { background: #ffffff; }
+[data-theme="light"] .fn-notes-editor { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.12); }
+[data-theme="light"] .fn-notes-editor:focus { border-color: rgba(0,0,0,0.22); }
+
+/* Search modal */
+[data-theme="light"] .search-modal { background: #fafafa; border-color: rgba(0,0,0,0.12); }
+[data-theme="light"] .search-result-item:hover,
+[data-theme="light"] .search-result-item.sr-active { background: rgba(var(--accent-rgb),0.08); }
+
+/* Sidebar nav + mobile menu */
+[data-theme="light"] .sidebar-nav { /* inherits page bg */ }
+[data-theme="light"] .mob-menu-overlay { background: #f0f0ee; }
+[data-theme="light"] .mob-menu-logo { color: #555555; border-bottom-color: rgba(0,0,0,0.1); }
+[data-theme="light"] .mob-menu-item { color: #111111; border-bottom-color: rgba(0,0,0,0.07); }
+
+/* Scrollbar */
+[data-theme="light"] ::-webkit-scrollbar-track { background: #eeeeec; }
+[data-theme="light"] ::-webkit-scrollbar-thumb { background: #cccccc; }
+
+/* Secondary/muted text that's hardcoded */
+[data-theme="light"] .step-desc,
+[data-theme="light"] .subhead,
+[data-theme="light"] .resource-desc,
+[data-theme="light"] .goodlooks-desc,
+[data-theme="light"] .panel-placeholder-text,
+[data-theme="light"] .dash-box-desc { color: #666666; }
+
+[data-theme="light"] .dash-box-last,
+[data-theme="light"] .dash-box-arrow,
+[data-theme="light"] .roadmap-hint,
+[data-theme="light"] .moodboard-hint { color: #888888; }
+
+[data-theme="light"] .step-status,
+[data-theme="light"] .snap-badge-label,
+[data-theme="light"] .resource-section-title,
+[data-theme="light"] .designer-section-title,
+[data-theme="light"] .bl-section-title,
+[data-theme="light"] .cust-section-title,
+[data-theme="light"] .panel-section-title { color: #777777; }
+
+[data-theme="light"] .prompt-text,
+[data-theme="light"] .prompt-label,
+[data-theme="light"] .font-note-text { color: #555555; }
+
+[data-theme="light"] .search-result-title { color: #111111; }
+[data-theme="light"] .search-result-desc { color: #888888; }
+
+/* Cards on light bg — accent tint at 15% as requested */
+[data-theme="light"] .option-card.selected,
+[data-theme="light"] .font-card.selected,
+[data-theme="light"] .color-card.selected { background: rgba(var(--accent-rgb),0.08); }
+[data-theme="light"] .sidebar-item.sb-active { background: rgba(var(--accent-rgb),0.08); }
+
+/* Inputs on light bg */
+[data-theme="light"] .input-row input { background: #ffffff; border-color: rgba(0,0,0,0.12); color: #111111; }
+[data-theme="light"] .input-row input::placeholder { color: #aaaaaa; }
+[data-theme="light"] .store-url-input,
+[data-theme="light"] .social-input,
+[data-theme="light"] .bl-input { color: #111111; }
+
+/* Notes widget */
+[data-theme="light"] .dash-notes-widget { background: #ffffff; border-color: rgba(0,0,0,0.09); }
+[data-theme="light"] .dash-notes-textarea { color: #111111; caret-color: var(--purple); }
+[data-theme="light"] .dash-notes-textarea::placeholder { color: #aaaaaa; }
 </style>
 </head>
 <body>
@@ -1299,11 +1407,11 @@ body::before {
   </div>
 </div>
 
-<!-- ===== FOOTER BAR ===== -->
-<div class="footer-bar">
-  <span class="footer-brand">FRMLS — your store. built right.</span>
-  <span class="footer-progress" id="footerProgress">Step 1 of 7</span>
-</div>
+<!-- ===== THEME TOGGLE ===== -->
+<button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleColorMode()" aria-label="Toggle light/dark mode">
+  <span class="theme-toggle-icon" id="themeToggleIcon">🌙</span>
+  <span id="themeToggleLabel">dark</span>
+</button>
 
 <!-- ===== HAMBURGER MENU (MOBILE) ===== -->
 <button class="mob-hamburger" id="mobHamburger" onclick="toggleHamburger()" aria-label="Menu">
@@ -2540,7 +2648,6 @@ function goTo(n) {
   const nextEl = document.getElementById('screen-' + n);
   currentScreen = n;
   updateSidebar(n);
-  updateFooter(n);
 
   function activateNext() {
     if (nextEl) nextEl.classList.add('active');
@@ -2590,11 +2697,6 @@ function toggleSbSteps(btn) {
   const chev = btn.querySelector('.sb-toggle-chevron');
   const isOpen = exp.classList.toggle('open');
   chev.classList.toggle('open', isOpen);
-}
-
-function updateFooter(n) {
-  const el = document.getElementById('footerProgress');
-  if (el) el.textContent = n === 7 ? 'Dashboard' : `Step ${n + 1} of 7`;
 }
 
 /* ===== SNAPSHOT ===== */
@@ -3721,6 +3823,38 @@ function loadTheme() {
   setTheme(key);
 }
 
+/* ===== LIGHT / DARK MODE ===== */
+function toggleColorMode() {
+  const html  = document.documentElement;
+  const isLight = html.getAttribute('data-theme') === 'light';
+  const next  = isLight ? 'dark' : 'light';
+  // Enable transitions for the switch
+  html.classList.add('theme-transitioning');
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('frmls_mode', next);
+  _updateToggleUI(next);
+  setTimeout(() => html.classList.remove('theme-transitioning'), 250);
+}
+
+function initColorMode() {
+  const mode = localStorage.getItem('frmls_mode') || 'dark';
+  document.documentElement.setAttribute('data-theme', mode);
+  _updateToggleUI(mode);
+}
+
+function _updateToggleUI(mode) {
+  const icon  = document.getElementById('themeToggleIcon');
+  const label = document.getElementById('themeToggleLabel');
+  if (!icon || !label) return;
+  if (mode === 'light') {
+    icon.textContent  = '☀️';
+    label.textContent = 'light';
+  } else {
+    icon.textContent  = '🌙';
+    label.textContent = 'dark';
+  }
+}
+
 /* ===== FLOATING NOTES + TASKS (PART 3) ===== */
 const FN_NOTES_LS = 'frmls_quick_note';
 const FN_TODOS_LS = 'frmls_todos';
@@ -4462,8 +4596,9 @@ function searchKeyNav(e) {
 
 /* ===== INIT ===== */
 document.addEventListener('DOMContentLoaded', () => {
-  /* 1. Theme (no DOM dependencies) */
+  /* 1. Theme + color mode (no DOM dependencies) */
   loadTheme();
+  initColorMode();
 
   /* 2. Restore state object from localStorage */
   try {

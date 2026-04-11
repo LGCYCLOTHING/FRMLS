@@ -245,8 +245,9 @@ body::before {
 .cat-grid     { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:1.75rem; }
 .option-grid  { display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:10px; margin-bottom:1.75rem; }
 .picker-grid  { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:1.5rem; }
-@media (max-width:768px) { .cat-grid{grid-template-columns:repeat(2,1fr)} .picker-grid{grid-template-columns:repeat(2,1fr)} }
-@media (max-width:480px) { .cat-grid{grid-template-columns:1fr} .picker-grid{grid-template-columns:1fr} }
+#colorGrid    { grid-template-columns:repeat(4,1fr); }
+@media (max-width:768px) { .cat-grid{grid-template-columns:repeat(2,1fr)} .picker-grid{grid-template-columns:repeat(2,1fr)} #colorGrid{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:480px) { .cat-grid{grid-template-columns:1fr} .picker-grid{grid-template-columns:1fr} #colorGrid{grid-template-columns:1fr} }
 
 /* ===== OPTION CARDS ===== */
 .option-card, .font-card, .color-card {
@@ -275,11 +276,13 @@ body::before {
 @media (max-width:480px) { .font-preview { font-size:28px; } }
 
 /* ===== COLOR MOOD CARDS ===== */
-.color-card { padding:0; overflow:hidden; }
-.swatch-strip { display:flex; height:54px; width:100%; }
+.color-card { padding:0; overflow:hidden; min-width:0; }
+.swatch-strip { display:flex; height:52px; width:100%; }
 .swatch-strip div { flex:1; }
-.color-card-label     { font-size:13px; font-weight:600; color:var(--white); padding:9px 12px 3px; letter-spacing:-0.01em; display:block; }
-.color-card-label-sub { font-size:11px; color:#aaaaaa; padding:0 12px 10px; font-family:'DM Mono',monospace; letter-spacing:0.04em; display:block; }
+.color-card-info { padding:8px 10px 9px; }
+.color-card-name { font-size:15px; font-weight:700; color:var(--white); letter-spacing:-0.01em; display:block; }
+.color-card-vibe { font-size:12px; color:#888888; font-style:italic; display:block; margin-top:2px; line-height:1.3; }
+.color-card-ref  { font-size:11px; color:#555555; font-family:'DM Mono',monospace; letter-spacing:0.02em; display:block; margin-top:3px; }
 
 /* ===== BRAND NAME GENERATOR ===== */
 
@@ -1337,29 +1340,69 @@ body::before {
     <div class="picker-heading">Pick your color mood</div>
     <div class="picker-sub">This palette appears in your brand kit and prompt outputs.</div>
     <div class="picker-grid" id="colorGrid">
-      <div class="color-card" onclick="selectColorMood(this,'Dark & Moody')">
-        <div class="swatch-strip"><div style="background:#0a0a0a"></div><div style="background:#2a2a2a"></div><div style="background:#4a1080"></div><div style="background:#f0ece6"></div></div>
-        <span class="color-card-label">Dark & Moody</span><span class="color-card-label-sub">black · purple · off-white</span>
+      <div class="color-card" onclick="selectColorMood(this,'Quiet Luxury')">
+        <div class="swatch-strip"><div style="background:#F5F0E8"></div><div style="background:#C9A96E"></div><div style="background:#2C2C2C"></div><div style="background:#0A0A0A"></div></div>
+        <div class="color-card-info">
+          <span class="color-card-name">Quiet Luxury</span>
+          <span class="color-card-vibe">elevated, timeless, minimal.</span>
+          <span class="color-card-ref">Toteme · The Row</span>
+        </div>
       </div>
-      <div class="color-card" onclick="selectColorMood(this,'Clean Neutral')">
-        <div class="swatch-strip"><div style="background:#ffffff"></div><div style="background:#e0e0e0"></div><div style="background:#f5e6d3"></div><div style="background:#111111"></div></div>
-        <span class="color-card-label">Clean Neutral</span><span class="color-card-label-sub">white · grey · beige · black</span>
+      <div class="color-card" onclick="selectColorMood(this,'Street Editorial')">
+        <div class="swatch-strip"><div style="background:#0A0A0A"></div><div style="background:#F0EDE6"></div><div style="background:#6B6B6B"></div><div style="background:#CC2200"></div></div>
+        <div class="color-card-info">
+          <span class="color-card-name">Street Editorial</span>
+          <span class="color-card-vibe">dark, raw, high contrast.</span>
+          <span class="color-card-ref">Represent · A-Cold-Wall</span>
+        </div>
       </div>
-      <div class="color-card" onclick="selectColorMood(this,'Bold Contrast')">
-        <div class="swatch-strip"><div style="background:#0a0a0a"></div><div style="background:#ffffff"></div><div style="background:#f5e000"></div><div style="background:#e00000"></div></div>
-        <span class="color-card-label">Bold Contrast</span><span class="color-card-label-sub">black · white · yellow · red</span>
+      <div class="color-card" onclick="selectColorMood(this,'Clean Modern')">
+        <div class="swatch-strip"><div style="background:#FFFFFF"></div><div style="background:#E8E8E8"></div><div style="background:#888888"></div><div style="background:#111111"></div></div>
+        <div class="color-card-info">
+          <span class="color-card-name">Clean Modern</span>
+          <span class="color-card-vibe">minimal, product forward, no distractions.</span>
+          <span class="color-card-ref">COS · Arket</span>
+        </div>
       </div>
-      <div class="color-card" onclick="selectColorMood(this,'Earth Tones')">
-        <div class="swatch-strip"><div style="background:#b5451b"></div><div style="background:#c9a96e"></div><div style="background:#5c6e2e"></div><div style="background:#f5ead5"></div></div>
-        <span class="color-card-label">Earth Tones</span><span class="color-card-label-sub">rust · sand · olive · cream</span>
+      <div class="color-card" onclick="selectColorMood(this,'Warm Earth')">
+        <div class="swatch-strip"><div style="background:#F2EBD9"></div><div style="background:#D4B896"></div><div style="background:#C4714A"></div><div style="background:#3D2314"></div></div>
+        <div class="color-card-info">
+          <span class="color-card-name">Warm Earth</span>
+          <span class="color-card-vibe">organic, natural, approachable.</span>
+          <span class="color-card-ref">Aritzia · outdoor lifestyle</span>
+        </div>
       </div>
-      <div class="color-card" onclick="selectColorMood(this,'Neon Edge')">
-        <div class="swatch-strip"><div style="background:#0a0a0a"></div><div style="background:#00ff88"></div><div style="background:#00e5ff"></div><div style="background:#2a2a2a"></div></div>
-        <span class="color-card-label">Neon Edge</span><span class="color-card-label-sub">black · neon green · cyan</span>
+      <div class="color-card" onclick="selectColorMood(this,'Dark Matte')">
+        <div class="swatch-strip"><div style="background:#0D0D0D"></div><div style="background:#1E1E1E"></div><div style="background:#2E2E2E"></div><div style="background:#F5F5F5"></div></div>
+        <div class="color-card-info">
+          <span class="color-card-name">Dark Matte</span>
+          <span class="color-card-vibe">serious, premium, technical.</span>
+          <span class="color-card-ref">Applied Art Forms · Acronym</span>
+        </div>
       </div>
-      <div class="color-card" onclick="selectColorMood(this,'Luxury Gold')">
-        <div class="swatch-strip"><div style="background:#0a0a0a"></div><div style="background:#0d1b4b"></div><div style="background:#c9a227"></div><div style="background:#f5f0e0"></div></div>
-        <span class="color-card-label">Luxury Gold</span><span class="color-card-label-sub">black · navy · gold · ivory</span>
+      <div class="color-card" onclick="selectColorMood(this,'Soft Neutral')">
+        <div class="swatch-strip"><div style="background:#F5EEE6"></div><div style="background:#E0D5CC"></div><div style="background:#C4A99A"></div><div style="background:#2C2C2C"></div></div>
+        <div class="color-card-info">
+          <span class="color-card-name">Soft Neutral</span>
+          <span class="color-card-vibe">soft, wearable, modern feminine.</span>
+          <span class="color-card-ref">Skims · soft aesthetic</span>
+        </div>
+      </div>
+      <div class="color-card" onclick="selectColorMood(this,'Bold Mono')">
+        <div class="swatch-strip"><div style="background:#000000"></div><div style="background:#FFFFFF"></div><div style="background:#111111"></div><div style="background:#EEEEEE"></div></div>
+        <div class="color-card-info">
+          <span class="color-card-name">Bold Mono</span>
+          <span class="color-card-vibe">high contrast, graphic heavy, no distraction.</span>
+          <span class="color-card-ref">Supreme · classic streetwear</span>
+        </div>
+      </div>
+      <div class="color-card" onclick="selectColorMood(this,'Vintage Washed')">
+        <div class="swatch-strip"><div style="background:#1A1A1A"></div><div style="background:#888880"></div><div style="background:#F0EBD8"></div><div style="background:#6B5744"></div></div>
+        <div class="color-card-info">
+          <span class="color-card-name">Vintage Washed</span>
+          <span class="color-card-vibe">retro, authentic, lived in.</span>
+          <span class="color-card-ref">vintage inspired · thrift aesthetic</span>
+        </div>
       </div>
     </div>
     <div class="btn-row">
@@ -2529,12 +2572,14 @@ const brandKitData = {
 };
 
 const colorMoodPalettes = {
-  'Dark & Moody':  [{hex:'#0a0a0a',name:'Void Black',role:'background'},{hex:'#2a2a2a',name:'Charcoal',role:'secondary'},{hex:'#4a1080',name:'Deep Purple',role:'accent'},{hex:'#f0ece6',name:'Off White',role:'text'}],
-  'Clean Neutral': [{hex:'#ffffff',name:'Pure White',role:'background'},{hex:'#e0e0e0',name:'Light Grey',role:'secondary'},{hex:'#f5e6d3',name:'Warm Beige',role:'accent'},{hex:'#111111',name:'Near Black',role:'text'}],
-  'Bold Contrast': [{hex:'#0a0a0a',name:'Black',role:'background'},{hex:'#ffffff',name:'White',role:'primary'},{hex:'#f5e000',name:'Electric Yellow',role:'accent'},{hex:'#e00000',name:'Red',role:'secondary accent'}],
-  'Earth Tones':   [{hex:'#b5451b',name:'Rust',role:'primary'},{hex:'#c9a96e',name:'Sand',role:'secondary'},{hex:'#5c6e2e',name:'Olive',role:'accent'},{hex:'#f5ead5',name:'Cream',role:'background'}],
-  'Neon Edge':     [{hex:'#0a0a0a',name:'Black',role:'background'},{hex:'#00ff88',name:'Neon Green',role:'primary accent'},{hex:'#00e5ff',name:'Cyan',role:'secondary accent'},{hex:'#2a2a2a',name:'Dark Grey',role:'secondary bg'}],
-  'Luxury Gold':   [{hex:'#0a0a0a',name:'Black',role:'background'},{hex:'#0d1b4b',name:'Deep Navy',role:'secondary'},{hex:'#c9a227',name:'Gold',role:'accent'},{hex:'#f5f0e0',name:'Ivory',role:'text'}]
+  'Quiet Luxury':    [{hex:'#F5F0E8',name:'Ivory',role:'background'},{hex:'#C9A96E',name:'Camel',role:'accent'},{hex:'#2C2C2C',name:'Dark Grey',role:'secondary'},{hex:'#0A0A0A',name:'Black',role:'primary'}],
+  'Street Editorial':[{hex:'#0A0A0A',name:'Black',role:'primary'},{hex:'#F0EDE6',name:'Off White',role:'background'},{hex:'#6B6B6B',name:'Concrete',role:'secondary'},{hex:'#CC2200',name:'Red',role:'accent'}],
+  'Clean Modern':    [{hex:'#FFFFFF',name:'White',role:'background'},{hex:'#E8E8E8',name:'Light Grey',role:'secondary'},{hex:'#888888',name:'Mid Grey',role:'accent'},{hex:'#111111',name:'Black',role:'primary'}],
+  'Warm Earth':      [{hex:'#F2EBD9',name:'Cream',role:'background'},{hex:'#D4B896',name:'Sand',role:'secondary'},{hex:'#C4714A',name:'Terracotta',role:'accent'},{hex:'#3D2314',name:'Dark Brown',role:'primary'}],
+  'Dark Matte':      [{hex:'#0D0D0D',name:'Near Black',role:'primary'},{hex:'#1E1E1E',name:'Charcoal',role:'secondary'},{hex:'#2E2E2E',name:'Deep Grey',role:'tertiary'},{hex:'#F5F5F5',name:'White',role:'accent'}],
+  'Soft Neutral':    [{hex:'#F5EEE6',name:'Blush',role:'background'},{hex:'#E0D5CC',name:'Light Grey',role:'secondary'},{hex:'#C4A99A',name:'Dusty Rose',role:'accent'},{hex:'#2C2C2C',name:'Charcoal',role:'primary'}],
+  'Bold Mono':       [{hex:'#000000',name:'Black',role:'primary'},{hex:'#FFFFFF',name:'White',role:'background'},{hex:'#111111',name:'Near Black',role:'secondary'},{hex:'#EEEEEE',name:'Off White',role:'accent'}],
+  'Vintage Washed':  [{hex:'#1A1A1A',name:'Faded Black',role:'primary'},{hex:'#888880',name:'Washed Grey',role:'secondary'},{hex:'#F0EBD8',name:'Cream',role:'background'},{hex:'#6B5744',name:'Worn Brown',role:'accent'}]
 };
 
 const fontStyleMap = {

@@ -553,10 +553,7 @@ section{padding:100px 0;}
 <script>
 (function(){
   if(window.location.pathname.endsWith('gate.html')){
-    window.history.replaceState(null,'','/');
-  }
-  if(localStorage.getItem('frmlsVerified')==='true'){
-    window.location.replace('dashboard.html');
+    window.history.replaceState(null,'','/gate');
   }
 })();
 </script>

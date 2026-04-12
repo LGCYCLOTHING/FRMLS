@@ -2,10 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta http-equiv="refresh" content="0; url=gate.html" />
 <title>FRMLS</title>
 </head>
 <body>
-<script>window.location.replace('gate.html');</script>
+<script>
+  if (localStorage.getItem('frmlsVerified') === 'true') {
+    window.location.replace('dashboard.html');
+  } else {
+    window.location.replace('gate.html');
+  }
+</script>
 </body>
 </html>

@@ -856,11 +856,11 @@ mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => 
 }));
 
 // ─── LENIS + SMOOTH SCROLL ────────────────────────────────────────────────
-const lenis = new Lenis({ lerp: 0.085, smoothWheel: true });
+const lenis = new Lenis({ lerp: 0.12, smoothWheel: true });
 function rafLenis(t){ lenis.raf(t); requestAnimationFrame(rafLenis); }
 requestAnimationFrame(rafLenis);
 
-const easeInOutCubic = t => t < 0.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1;
+const easeOutQuart = t => 1 - Math.pow(1 - t, 4);
 
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
@@ -868,7 +868,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (!id || id === '#') return;
     e.preventDefault();
     const target = document.querySelector(id);
-    if (target) lenis.scrollTo(target, { duration: 1.2, easing: easeInOutCubic, offset: -80 });
+    if (target) lenis.scrollTo(target, { duration: 0.65, easing: easeOutQuart, offset: -80 });
   });
 });
 
@@ -879,11 +879,15 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   if (window.matchMedia('(max-width:768px)').matches) return;
 
   const ctx = canvas.getContext('2d');
+  // Offscreen canvas holds the static black hole — drawn once per resize,
+  // composited each frame so the rAF loop only redraws twinkling stars
+  const offscreen = document.createElement('canvas');
+  const offCtx    = offscreen.getContext('2d');
   let vw, vh, R, cx, cy, apexX, apexY, stars = [], t = 0, animId;
 
   function init() {
-    vw = canvas.width  = window.innerWidth;
-    vh = canvas.height = window.innerHeight;
+    vw = canvas.width = offscreen.width  = window.innerWidth;
+    vh = canvas.height = offscreen.height = window.innerHeight;
 
     // Sphere is massive — center sits below viewport so only crown shows
     R  = vw * 0.72;
@@ -911,23 +915,14 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     }
   }
 
-  function draw(ts) {
-    t = ts * 0.001;
-    animId = requestAnimationFrame(draw);
+  // drawStatic() renders everything except stars into the offscreen canvas.
+  // Called once on init and on resize — NOT every frame.
+  function drawStatic() {
+    offCtx.clearRect(0, 0, vw, vh);
 
-    // 1 — Background: slightly darker than the sphere so the
-    //     curved sphere edge reads clearly against it
-    ctx.fillStyle = '#06060e';
-    ctx.fillRect(0, 0, vw, vh);
-
-    // 2 — Stars with twinkle
-    for (const s of stars) {
-      const a = s.baseA * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,255,255,${a.toFixed(3)})`;
-      ctx.fill();
-    }
+    // 1 — Background
+    offCtx.fillStyle = '#06060e';
+    offCtx.fillRect(0, 0, vw, vh);
 
     // 3 — Sphere body (warm purple-navy, clearly distinct from background)
     //     This is the most important step — without a visible filled sphere
@@ -938,137 +933,128 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     sphereG.addColorStop(0.78, 'rgba(22, 13, 46, 1)');
     sphereG.addColorStop(0.93, 'rgba(14,  8, 30, 1)');
     sphereG.addColorStop(1,    'rgba( 9,  5, 20, 1)');
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(cx, cy, R, 0, Math.PI * 2);
-    ctx.fillStyle = sphereG;
-    ctx.fill();
-    ctx.restore();
+    offCtx.save();
+    offCtx.beginPath();
+    offCtx.arc(cx, cy, R, 0, Math.PI * 2);
+    offCtx.fillStyle = sphereG;
+    offCtx.fill();
+    offCtx.restore();
 
     // 4 — Horizontal ground haze at bottom of viewport
-    ctx.save();
-    ctx.translate(cx, vh);
-    ctx.scale(1, 0.11);
-    const hazeG = ctx.createRadialGradient(0, 0, 0, 0, 0, R * 0.78);
+    offCtx.save();
+    offCtx.translate(cx, vh);
+    offCtx.scale(1, 0.11);
+    const hazeG = offCtx.createRadialGradient(0, 0, 0, 0, 0, R * 0.78);
     hazeG.addColorStop(0,    'rgba(170, 85, 255, 0.55)');
     hazeG.addColorStop(0.28, 'rgba(130, 60, 230, 0.28)');
     hazeG.addColorStop(0.65, 'rgba( 90, 40, 190, 0.09)');
     hazeG.addColorStop(1,    'transparent');
-    ctx.beginPath();
-    ctx.arc(0, 0, R * 0.78, 0, Math.PI * 2);
-    ctx.fillStyle = hazeG;
-    ctx.fill();
-    ctx.restore();
+    offCtx.beginPath();
+    offCtx.arc(0, 0, R * 0.78, 0, Math.PI * 2);
+    offCtx.fillStyle = hazeG;
+    offCtx.fill();
+    offCtx.restore();
 
     // 5 — Diffuse background bloom behind apex
-    const bloomG = ctx.createRadialGradient(cx, apexY, 0, cx, apexY, R * 0.62);
+    const bloomG = offCtx.createRadialGradient(cx, apexY, 0, cx, apexY, R * 0.62);
     bloomG.addColorStop(0,    'rgba(140, 72, 255, 0.32)');
     bloomG.addColorStop(0.28, 'rgba(110, 55, 220, 0.18)');
     bloomG.addColorStop(0.58, 'rgba( 80, 38, 180, 0.07)');
     bloomG.addColorStop(1,    'transparent');
-    ctx.beginPath();
-    ctx.arc(cx, apexY, R * 0.62, 0, Math.PI * 2);
-    ctx.fillStyle = bloomG;
-    ctx.fill();
+    offCtx.beginPath();
+    offCtx.arc(cx, apexY, R * 0.62, 0, Math.PI * 2);
+    offCtx.fillStyle = bloomG;
+    offCtx.fill();
 
     // 6 — Accretion arc: light bending around the sphere edge
-    //     Drawn in multiple passes for realistic glow layering
-    const A0 = Math.PI * 1.04;   // arc start (left)
-    const A1 = Math.PI * 1.96;   // arc end (right)
+    const A0 = Math.PI * 1.04;
+    const A1 = Math.PI * 1.96;
     const SPAN = A1 - A0;
 
     // Pass A: wide outer purple halo
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(cx, cy, R, A0, A1, false);
-    ctx.strokeStyle = 'rgba(150, 75, 255, 0.09)';
-    ctx.lineWidth = 90;
-    ctx.stroke();
-    ctx.restore();
+    offCtx.save();
+    offCtx.beginPath();
+    offCtx.arc(cx, cy, R, A0, A1, false);
+    offCtx.strokeStyle = 'rgba(150, 75, 255, 0.09)';
+    offCtx.lineWidth = 90;
+    offCtx.stroke();
+    offCtx.restore();
 
     // Pass B: mid glow band
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(cx, cy, R, Math.PI * 1.06, Math.PI * 1.94, false);
-    ctx.strokeStyle = 'rgba(175, 105, 255, 0.22)';
-    ctx.lineWidth = 32;
-    ctx.shadowBlur = 50;
-    ctx.shadowColor = 'rgba(160, 90, 255, 0.65)';
-    ctx.stroke();
-    ctx.restore();
+    offCtx.save();
+    offCtx.beginPath();
+    offCtx.arc(cx, cy, R, Math.PI * 1.06, Math.PI * 1.94, false);
+    offCtx.strokeStyle = 'rgba(175, 105, 255, 0.22)';
+    offCtx.lineWidth = 32;
+    offCtx.shadowBlur = 50;
+    offCtx.shadowColor = 'rgba(160, 90, 255, 0.65)';
+    offCtx.stroke();
+    offCtx.restore();
 
-    // Pass C: segmented core — white/yellow at apex, purple mid, violet sides
-    //         This is what creates the gravitational lensing physics look
+    // Pass C: segmented core
     const SEGS = 160;
     for (let i = 0; i < SEGS; i++) {
-      const frac = i / SEGS;                       // 0=left, 0.5=apex, 1=right
-      const dist = Math.abs(frac - 0.5) * 2;      // 0 at apex, 1 at sides
+      const frac = i / SEGS;
+      const dist = Math.abs(frac - 0.5) * 2;
       const intensity = Math.pow(Math.max(0, 1 - dist), 1.6);
-
       const aA = A0 + frac * SPAN;
       const aB = A0 + (frac + 1 / SEGS) * SPAN;
-
       let r, g, b;
       if (dist < 0.10) {
-        r = 255; g = 245; b = 255;                 // pure white-hot at apex
+        r = 255; g = 245; b = 255;
       } else if (dist < 0.32) {
         const p = (dist - 0.10) / 0.22;
         r = Math.round(255 - p * 55);
         g = Math.round(245 - p * 175);
-        b = 255;                                   // white → bright purple
+        b = 255;
       } else {
         r = Math.round(185 * (1 - dist));
         g = 0;
-        b = Math.round(230 * (1 - dist));          // dim violet at sides
+        b = Math.round(230 * (1 - dist));
       }
-
       const alpha = 0.04 + intensity * 0.96;
-      const lw    = 1.5 + intensity * 4.5;
-      const blur  = 5 + intensity * 65;           // very high blur at apex
-
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(cx, cy, R, aA, aB, false);
-      ctx.strokeStyle = `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
-      ctx.lineWidth = lw;
-      ctx.shadowBlur = blur;
-      ctx.shadowColor = `rgba(${r},${g},${b},${Math.min(alpha, 1).toFixed(3)})`;
-      ctx.stroke();
-      ctx.restore();
+      offCtx.save();
+      offCtx.beginPath();
+      offCtx.arc(cx, cy, R, aA, aB, false);
+      offCtx.strokeStyle = `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
+      offCtx.lineWidth = 1.5 + intensity * 4.5;
+      offCtx.shadowBlur = 5 + intensity * 65;
+      offCtx.shadowColor = `rgba(${r},${g},${b},${Math.min(alpha, 1).toFixed(3)})`;
+      offCtx.stroke();
+      offCtx.restore();
     }
 
-    // 7 — Apex hot spot: the blazing white-yellow point where
-    //     gravity bends light hardest — this sells the whole effect
-    ctx.save();
-    const hotG = ctx.createRadialGradient(apexX, apexY, 0, apexX, apexY, R * 0.22);
+    // 7 — Apex hot spot
+    offCtx.save();
+    const hotG = offCtx.createRadialGradient(apexX, apexY, 0, apexX, apexY, R * 0.22);
     hotG.addColorStop(0,    'rgba(255, 255, 255, 1.0)');
     hotG.addColorStop(0.05, 'rgba(255, 250, 210, 0.97)');
     hotG.addColorStop(0.16, 'rgba(235, 185, 255, 0.82)');
     hotG.addColorStop(0.38, 'rgba(175, 110, 255, 0.48)');
     hotG.addColorStop(0.68, 'rgba(120,  58, 220, 0.16)');
     hotG.addColorStop(1,    'transparent');
-    ctx.beginPath();
-    ctx.arc(apexX, apexY, R * 0.22, 0, Math.PI * 2);
-    ctx.fillStyle = hotG;
-    ctx.fill();
-    ctx.restore();
+    offCtx.beginPath();
+    offCtx.arc(apexX, apexY, R * 0.22, 0, Math.PI * 2);
+    offCtx.fillStyle = hotG;
+    offCtx.fill();
+    offCtx.restore();
 
-    // 8 — Vertical light pillar shooting upward from apex
-    ctx.save();
-    ctx.filter = 'blur(18px)';
+    // 8 — Vertical light pillar
+    offCtx.save();
+    offCtx.filter = 'blur(18px)';
     const pillarH = apexY * 0.88;
-    const pillarG = ctx.createLinearGradient(0, apexY, 0, apexY - pillarH);
+    const pillarG = offCtx.createLinearGradient(0, apexY, 0, apexY - pillarH);
     pillarG.addColorStop(0,    'rgba(255, 255, 255, 0.70)');
     pillarG.addColorStop(0.10, 'rgba(235, 195, 255, 0.42)');
     pillarG.addColorStop(0.30, 'rgba(175, 105, 255, 0.18)');
     pillarG.addColorStop(0.60, 'rgba(120,  60, 220, 0.06)');
     pillarG.addColorStop(1,    'transparent');
-    ctx.fillStyle = pillarG;
-    ctx.fillRect(cx - 44, apexY - pillarH, 88, pillarH);
-    ctx.filter = 'none';
-    ctx.restore();
+    offCtx.fillStyle = pillarG;
+    offCtx.fillRect(cx - 44, apexY - pillarH, 88, pillarH);
+    offCtx.filter = 'none';
+    offCtx.restore();
 
-    // 9 — Inner secondary arc for depth (tighter ring)
+    // 9 — Inner secondary arc
     const B0 = Math.PI * 1.10, B1 = Math.PI * 1.90;
     const BSPAN = B1 - B0, BSEGS = 90;
     for (let i = 0; i < BSEGS; i++) {
@@ -1077,37 +1063,55 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       const intensity = Math.pow(Math.max(0, 1 - dist), 2.8);
       const aA = B0 + frac * BSPAN;
       const aB = B0 + (frac + 1 / BSEGS) * BSPAN;
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(cx, cy, R * 0.875, aA, aB, false);
-      ctx.strokeStyle = `rgba(210,155,255,${(0.03 + intensity * 0.40).toFixed(3)})`;
-      ctx.lineWidth = 1 + intensity * 2;
-      ctx.shadowBlur = 8 + intensity * 22;
-      ctx.shadowColor = 'rgba(210,155,255,0.55)';
-      ctx.stroke();
-      ctx.restore();
+      offCtx.save();
+      offCtx.beginPath();
+      offCtx.arc(cx, cy, R * 0.875, aA, aB, false);
+      offCtx.strokeStyle = `rgba(210,155,255,${(0.03 + intensity * 0.40).toFixed(3)})`;
+      offCtx.lineWidth = 1 + intensity * 2;
+      offCtx.shadowBlur = 8 + intensity * 22;
+      offCtx.shadowColor = 'rgba(210,155,255,0.55)';
+      offCtx.stroke();
+      offCtx.restore();
     }
 
-    // 10 — Darken sphere rim so the arc pops against the sphere body
-    ctx.save();
-    const rimG = ctx.createRadialGradient(cx, cy, R * 0.88, cx, cy, R * 1.0);
+    // 10 — Darken sphere rim
+    offCtx.save();
+    const rimG = offCtx.createRadialGradient(cx, cy, R * 0.88, cx, cy, R * 1.0);
     rimG.addColorStop(0,   'transparent');
     rimG.addColorStop(0.5, 'rgba(6, 4, 14, 0.45)');
     rimG.addColorStop(1,   'rgba(4, 2, 10, 0.90)');
-    ctx.beginPath();
-    ctx.arc(cx, cy, R, 0, Math.PI * 2);
-    ctx.fillStyle = rimG;
-    ctx.fill();
-    ctx.restore();
+    offCtx.beginPath();
+    offCtx.arc(cx, cy, R, 0, Math.PI * 2);
+    offCtx.fillStyle = rimG;
+    offCtx.fill();
+    offCtx.restore();
+  }
+
+  // Per-frame: blit static offscreen + redraw only twinkling stars
+  function draw(ts) {
+    t = ts * 0.001;
+    animId = requestAnimationFrame(draw);
+
+    ctx.drawImage(offscreen, 0, 0);
+
+    for (const s of stars) {
+      const a = s.baseA * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${a.toFixed(3)})`;
+      ctx.fill();
+    }
   }
 
   window.addEventListener('resize', () => {
     cancelAnimationFrame(animId);
     init();
-    requestAnimationFrame(draw);
+    drawStatic();
+    animId = requestAnimationFrame(draw);
   });
 
   init();
+  drawStatic();
   requestAnimationFrame(draw);
 })();
 </script>

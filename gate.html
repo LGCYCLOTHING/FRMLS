@@ -876,192 +876,200 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 (function(){
   const canvas = document.getElementById('bhCanvas');
   if (!canvas) return;
-  // hide on mobile
   if (window.matchMedia('(max-width:768px)').matches) return;
 
   const ctx = canvas.getContext('2d');
-  let W, H, cx, cy, arcR, apexX, apexY;
+  let vw, vh, R, cx, cy, apexX, apexY;
   let stars = [];
   let animId;
+  let t = 0;
 
   function init() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-    cx   = W / 2;
-    arcR = Math.min(W, H) * 0.62;
-    cy   = H * 1.08;
-    apexX = cx;                          // cos(PI*1.5) = 0
-    apexY = cy + arcR * Math.sin(Math.PI * 1.5); // cy - arcR
+    vw = canvas.width  = window.innerWidth;
+    vh = canvas.height = window.innerHeight;
 
-    // Build star field — sparse near black hole
+    R     = vw * 0.72;
+    cx    = vw / 2;
+    cy    = vh * 0.38 + R;   // sphere center below viewport; apex at ~38% vh
+    apexX = cx;
+    apexY = cy - R;           // top of sphere
+
+    // Stars — reject those inside the sphere body
     stars = [];
     let attempts = 0;
-    while (stars.length < 250 && attempts < 5000) {
+    while (stars.length < 280 && attempts < 8000) {
       attempts++;
-      const sx = Math.random() * W;
-      const sy = Math.random() * H;
+      const sx = Math.random() * vw;
+      const sy = Math.random() * (vh * 0.92);
       const dx = sx - cx, dy = sy - cy;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < arcR * 1.15 && Math.random() < 0.88) continue;
+      if (Math.sqrt(dx*dx + dy*dy) < R * 1.02) continue;
       stars.push({
         x: sx, y: sy,
-        radius: 0.4 + Math.random() * 1.1,
-        baseA:  0.05 + Math.random() * 0.30,
-        phase:  Math.random() * Math.PI * 2,
-        speed:  0.3 + Math.random() * 0.9,
+        r:        0.4  + Math.random() * 1.2,
+        baseA:    0.06 + Math.random() * 0.34,
+        speed:    0.3  + Math.random() * 1.1,
+        phase:    Math.random() * Math.PI * 2,
       });
     }
   }
 
-  const aStart = Math.PI * 1.05;
-  const aEnd   = Math.PI * 1.95;
-
   function draw(ts) {
-    const t = ts * 0.001;
+    t = ts * 0.001;
 
-    // ── Step 1: Background + vignette
+    // ── Step 1: Background
     ctx.fillStyle = '#0a0a14';
-    ctx.fillRect(0, 0, W, H);
-    const vig = ctx.createRadialGradient(cx, H * 0.5, 0, cx, H * 0.5, Math.max(W, H) * 0.72);
-    vig.addColorStop(0, 'transparent');
-    vig.addColorStop(1, 'rgba(4,3,10,0.45)');
-    ctx.fillStyle = vig;
-    ctx.fillRect(0, 0, W, H);
+    ctx.fillRect(0, 0, vw, vh);
 
-    // ── Step 2: Stars (twinkle)
+    // ── Step 2: Stars
     stars.forEach(s => {
       const alpha = s.baseA * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
       ctx.beginPath();
-      ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(255,255,255,${alpha.toFixed(3)})`;
       ctx.fill();
     });
 
-    // ── Step 3: Ground haze
+    // ── Step 3: Sphere body
     ctx.save();
-    ctx.translate(cx, H * 0.98);
-    ctx.scale(1, 0.18);
-    const haze = ctx.createRadialGradient(0, 0, 0, 0, 0, arcR * 0.9);
-    haze.addColorStop(0,   'rgba(120,60,255,0.5)');
-    haze.addColorStop(0.5, 'rgba(80,40,200,0.15)');
-    haze.addColorStop(1,   'transparent');
-    ctx.fillStyle = haze;
+    const sphereGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
+    sphereGrad.addColorStop(0,    'rgba(22, 14, 42, 1)');
+    sphereGrad.addColorStop(0.7,  'rgba(16, 10, 32, 1)');
+    sphereGrad.addColorStop(0.92, 'rgba(12,  8, 24, 1)');
+    sphereGrad.addColorStop(1,    'rgba( 8,  5, 18, 1)');
     ctx.beginPath();
-    ctx.arc(0, 0, arcR * 0.9, 0, Math.PI * 2);
+    ctx.arc(cx, cy, R, 0, Math.PI * 2);
+    ctx.fillStyle = sphereGrad;
     ctx.fill();
     ctx.restore();
 
-    // ── Step 4: Outer diffuse glow
-    const outerGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, arcR * 1.4);
-    outerGlow.addColorStop(0,    'transparent');
-    outerGlow.addColorStop(0.5,  'rgba(100,50,220,0.04)');
-    outerGlow.addColorStop(0.75, 'rgba(80,40,200,0.12)');
-    outerGlow.addColorStop(1,    'transparent');
-    ctx.fillStyle = outerGlow;
+    // ── Step 4: Ground haze
+    ctx.save();
+    ctx.translate(cx, vh);
+    ctx.scale(1, 0.15);
+    const hazeGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, R * 0.7);
+    hazeGrad.addColorStop(0,   'rgba(140, 70, 255, 0.45)');
+    hazeGrad.addColorStop(0.4, 'rgba(100, 50, 200, 0.18)');
+    hazeGrad.addColorStop(1,   'transparent');
     ctx.beginPath();
-    ctx.arc(cx, cy, arcR * 1.4, 0, Math.PI * 2);
+    ctx.arc(0, 0, R * 0.7, 0, Math.PI * 2);
+    ctx.fillStyle = hazeGrad;
+    ctx.fill();
+    ctx.restore();
+
+    // ── Step 5: Background bloom around apex
+    const bgBloom = ctx.createRadialGradient(cx, apexY, 0, cx, apexY, R * 0.55);
+    bgBloom.addColorStop(0,    'rgba(110, 60, 220, 0.22)');
+    bgBloom.addColorStop(0.35, 'rgba( 90, 45, 180, 0.10)');
+    bgBloom.addColorStop(0.7,  'rgba( 70, 35, 150, 0.04)');
+    bgBloom.addColorStop(1,    'transparent');
+    ctx.beginPath();
+    ctx.arc(cx, apexY, R * 0.55, 0, Math.PI * 2);
+    ctx.fillStyle = bgBloom;
     ctx.fill();
 
-    // ── Step 5: Dark sphere
-    const sphere = ctx.createRadialGradient(cx, cy, 0, cx, cy, arcR * 0.97);
-    sphere.addColorStop(0, 'rgba(18,12,35,1)');
-    sphere.addColorStop(1, 'rgba(8,6,20,1)');
-    ctx.fillStyle = sphere;
-    ctx.beginPath();
-    ctx.arc(cx, cy, arcR * 0.97, 0, Math.PI * 2);
-    ctx.fill();
+    // ── Step 6: Glowing arc (light bending)
+    const arcStart = Math.PI * 1.04;
+    const arcEnd   = Math.PI * 1.96;
 
-    // ── Step 6: Accretion disk — Layer A (wide outer halo)
+    // Layer 1 — wide outer purple halo
     ctx.save();
     ctx.beginPath();
-    ctx.arc(cx, cy, arcR, aStart, aEnd, false);
-    ctx.strokeStyle = 'rgba(100,50,220,0.08)';
-    ctx.lineWidth = 28;
+    ctx.arc(cx, cy, R, arcStart, arcEnd, false);
+    ctx.strokeStyle = 'rgba(120, 60, 255, 0.07)';
+    ctx.lineWidth   = 60;
     ctx.stroke();
     ctx.restore();
 
-    // Layer B (mid purple glow)
+    // Layer 2 — mid glow
     ctx.save();
-    ctx.shadowBlur  = 30;
-    ctx.shadowColor = 'rgba(160,100,255,0.4)';
     ctx.beginPath();
-    ctx.arc(cx, cy, arcR, aStart, aEnd, false);
-    ctx.strokeStyle = 'rgba(140,80,255,0.18)';
-    ctx.lineWidth   = 12;
+    ctx.arc(cx, cy, R, Math.PI * 1.06, Math.PI * 1.94, false);
+    ctx.strokeStyle = 'rgba(150, 80, 255, 0.14)';
+    ctx.lineWidth   = 22;
+    ctx.shadowBlur  = 25;
+    ctx.shadowColor = 'rgba(150, 90, 255, 0.5)';
     ctx.stroke();
     ctx.restore();
 
-    // Layer C (bright inner arc — 3× for intensity buildup)
+    // Layer 3 — segmented bright core, fades white→purple→violet from apex outward
     ctx.save();
-    ctx.shadowBlur  = 40;
-    ctx.shadowColor = 'rgba(200,150,255,0.9)';
-    ctx.strokeStyle = 'rgba(200,160,255,0.9)';
-    ctx.lineWidth   = 2.5;
-    for (let i = 0; i < 3; i++) {
+    const segments = 120;
+    const arcSpan  = arcEnd - arcStart;
+    for (let i = 0; i < segments; i++) {
+      const frac  = i / segments;
+      const angleA = arcStart + frac * arcSpan;
+      const angleB = arcStart + (frac + 1 / segments) * arcSpan;
+      const dist      = Math.abs(frac - 0.5);          // 0 at apex, 0.5 at sides
+      const intensity = Math.pow(1 - dist * 2, 2.2);
+      let r, g, b;
+      if (intensity > 0.6) {
+        r = 255; g = Math.floor(220 + 35 * intensity); b = 255;
+      } else if (intensity > 0.25) {
+        r = Math.floor(180 + 75 * intensity); g = Math.floor(100 * intensity); b = 255;
+      } else {
+        r = Math.floor(120 * intensity * 4); g = 0; b = Math.floor(180 * intensity * 4);
+      }
+      const alpha = 0.08 + intensity * 0.88;
       ctx.beginPath();
-      ctx.arc(cx, cy, arcR, aStart, aEnd, false);
+      ctx.arc(cx, cy, R, angleA, angleB, false);
+      ctx.strokeStyle = `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
+      ctx.lineWidth   = 2 + intensity * 3;
+      ctx.shadowBlur  = 8 + intensity * 35;
+      ctx.shadowColor = `rgba(${r},${g},${b},${Math.min(alpha * 0.8, 0.9).toFixed(3)})`;
       ctx.stroke();
     }
     ctx.restore();
 
-    // Layer D — Apex radial hot spot
-    const apexGrad = ctx.createRadialGradient(apexX, apexY, 0, apexX, apexY, arcR * 0.22);
-    apexGrad.addColorStop(0,    'rgba(255,255,255,1.0)');
-    apexGrad.addColorStop(0.05, 'rgba(255,240,200,0.95)');
-    apexGrad.addColorStop(0.2,  'rgba(220,180,255,0.7)');
-    apexGrad.addColorStop(0.5,  'rgba(160,100,255,0.35)');
-    apexGrad.addColorStop(1,    'transparent');
-    ctx.fillStyle = apexGrad;
-    ctx.beginPath();
-    ctx.arc(apexX, apexY, arcR * 0.22, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Apex bright arc segment (±15° around top)
+    // ── Step 7: Apex hot spot
     ctx.save();
-    ctx.shadowBlur  = 60;
-    ctx.shadowColor = 'rgba(255,240,255,1.0)';
-    ctx.strokeStyle = 'rgba(255,255,255,0.95)';
-    ctx.lineWidth   = 4;
-    ctx.lineCap     = 'round';
+    const hotGrad = ctx.createRadialGradient(apexX, apexY, 0, apexX, apexY, R * 0.18);
+    hotGrad.addColorStop(0,    'rgba(255, 255, 255, 1.0)');
+    hotGrad.addColorStop(0.08, 'rgba(255, 245, 180, 0.95)');
+    hotGrad.addColorStop(0.2,  'rgba(220, 170, 255, 0.75)');
+    hotGrad.addColorStop(0.45, 'rgba(160, 100, 255, 0.35)');
+    hotGrad.addColorStop(0.8,  'rgba(120,  60, 220, 0.08)');
+    hotGrad.addColorStop(1,    'transparent');
     ctx.beginPath();
-    ctx.arc(cx, cy, arcR, Math.PI * 1.42, Math.PI * 1.58, false);
-    ctx.stroke();
+    ctx.arc(apexX, apexY, R * 0.18, 0, Math.PI * 2);
+    ctx.fillStyle = hotGrad;
+    ctx.fill();
     ctx.restore();
 
-    // ── Step 7: Vertical light pillar
+    // ── Step 8: Vertical light pillar
     ctx.save();
-    ctx.filter = 'blur(12px)';
-    ctx.translate(cx, apexY);
-    const pillarH    = apexY * 0.6;
-    const pillarGrad = ctx.createLinearGradient(0, 0, 0, -pillarH);
-    pillarGrad.addColorStop(0,   'rgba(255,255,255,0.5)');
-    pillarGrad.addColorStop(0.3, 'rgba(200,150,255,0.15)');
-    pillarGrad.addColorStop(1,   'transparent');
+    ctx.filter = 'blur(14px)';
+    const pillarH    = apexY * 0.75;
+    const pillarGrad = ctx.createLinearGradient(0, apexY, 0, apexY - pillarH);
+    pillarGrad.addColorStop(0,    'rgba(255, 255, 255, 0.55)');
+    pillarGrad.addColorStop(0.15, 'rgba(220, 180, 255, 0.30)');
+    pillarGrad.addColorStop(0.4,  'rgba(160, 100, 255, 0.10)');
+    pillarGrad.addColorStop(1,    'transparent');
     ctx.fillStyle = pillarGrad;
-    ctx.fillRect(-30, -pillarH, 60, pillarH);
+    ctx.fillRect(cx - 35, apexY - pillarH, 70, pillarH);
     ctx.restore();
 
-    // ── Step 8: Inner secondary arc
+    // ── Step 9: Inner secondary arc
     ctx.save();
-    ctx.shadowBlur  = 20;
-    ctx.shadowColor = 'rgba(200,160,255,0.6)';
-    ctx.strokeStyle = 'rgba(180,130,255,0.45)';
-    ctx.lineWidth   = 1.5;
     ctx.beginPath();
-    ctx.arc(cx, cy, arcR * 0.88, aStart, aEnd, false);
+    ctx.arc(cx, cy, R * 0.86, Math.PI * 1.08, Math.PI * 1.92, false);
+    ctx.strokeStyle = 'rgba(180, 130, 255, 0.22)';
+    ctx.lineWidth   = 1.5;
+    ctx.shadowBlur  = 18;
+    ctx.shadowColor = 'rgba(190, 140, 255, 0.5)';
     ctx.stroke();
     ctx.restore();
 
-    // ── Step 9: Sphere edge darkening (makes arc pop)
-    const edgeDark = ctx.createRadialGradient(cx, cy, 0, cx, cy, arcR * 0.965);
-    edgeDark.addColorStop(0,    'transparent');
-    edgeDark.addColorStop(0.85, 'transparent');
-    edgeDark.addColorStop(0.95, 'rgba(8,6,20,0.6)');
-    edgeDark.addColorStop(1.0,  'rgba(5,3,15,0.95)');
-    ctx.fillStyle = edgeDark;
+    // ── Step 10: Re-darken sphere body (covers bottom of arcs cleanly)
+    ctx.save();
+    const reDarken = ctx.createRadialGradient(cx, cy, R * 0.82, cx, cy, R * 0.97);
+    reDarken.addColorStop(0,   'transparent');
+    reDarken.addColorStop(0.6, 'rgba(10, 8, 20, 0.3)');
+    reDarken.addColorStop(1,   'rgba( 8, 5, 16, 0.85)');
     ctx.beginPath();
-    ctx.arc(cx, cy, arcR * 0.965, 0, Math.PI * 2);
+    ctx.arc(cx, cy, R * 0.97, 0, Math.PI * 2);
+    ctx.fillStyle = reDarken;
     ctx.fill();
+    ctx.restore();
 
     animId = requestAnimationFrame(draw);
   }
@@ -1069,7 +1077,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   init();
   animId = requestAnimationFrame(draw);
 
-  // Debounced resize
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);

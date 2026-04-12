@@ -916,11 +916,14 @@ body::before {
   width:48px; height:48px; border-radius:50%;
   background:#1a1a1a; border:none; cursor:pointer;
   display:flex; align-items:center; justify-content:center;
-  box-shadow:0 4px 20px rgba(0,0,0,0.7);
+  box-shadow:0 0 0 1.5px rgba(var(--accent-rgb),0.45), 0 4px 20px rgba(var(--accent-rgb),0.35);
   transition:transform 0.2s cubic-bezier(0.16,1,0.3,1), box-shadow 0.2s;
 }
-.float-note-btn:hover { transform:scale(1.1); box-shadow:0 6px 28px rgba(0,0,0,0.8); }
+.float-note-btn:hover { transform:scale(1.1); box-shadow:0 0 0 1.5px rgba(var(--accent-rgb),0.7), 0 6px 28px rgba(var(--accent-rgb),0.55); }
 .float-note-btn svg { display:block; }
+/* SVG icon gradient tracks the current theme colors */
+.float-note-btn #pencilGrad stop:first-child { stop-color: var(--purple-light); }
+.float-note-btn #pencilGrad stop:last-child  { stop-color: var(--cyan-light); }
 .float-note-panel {
   position:fixed; bottom:88px; right:24px; z-index:299;
   width:380px; min-height:500px; background:#111111;

@@ -4,6 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>FRMLS — Store Builder System</title>
+<meta name="description" content="Build a Shopify store that looks like a brand. Brand identity, custom prompts, designer tools, and launch checklist — all in one system.">
+<meta property="og:title" content="FRMLS — Store Builder System">
+<meta property="og:description" content="Build a store that looks like a brand. $37 one-time.">
+<meta name="theme-color" content="#0c0c1e">
 <script>if(location.protocol!=='https:'&&location.hostname!=='localhost'){location.replace('https:'+window.location.href.substring(window.location.protocol.length));}</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-V9T01KTX3V"></script>
@@ -19,14 +23,12 @@
 html { height: 100%; scroll-behavior: smooth; }
 
 :root {
-  --bg: #0d0d1a;
+  --bg: #0c0c1e;
   --purple: #7c3aed;
   --purple-light: #9d5cf5;
   --cyan: #06b6d4;
   --cyan-light: #22d3ee;
   --white: #ffffff;
-  --border-subtle: rgba(255,255,255,0.07);
-  --border-mid: rgba(255,255,255,0.13);
   --grad-text: linear-gradient(90deg, var(--purple-light), var(--cyan-light));
 }
 
@@ -49,7 +51,7 @@ body {
   align-items: center;
   padding: 0 32px;
   height: 60px;
-  background: rgba(13,13,26,0.6);
+  background: rgba(12,12,30,0.65);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -67,7 +69,7 @@ body {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 100px;
@@ -81,7 +83,7 @@ body {
   border-radius: 100px;
   font-size: 13px;
   font-weight: 500;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.65);
   text-decoration: none;
   transition: background 0.15s, color 0.15s;
   white-space: nowrap;
@@ -90,11 +92,16 @@ body {
   background: rgba(255,255,255,0.08);
   color: #fff;
 }
+.nav-link.active {
+  background: rgba(255,255,255,0.10);
+  color: #fff;
+}
 
 .nav-right {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  gap: 12px;
 }
 
 .btn-nav-cta {
@@ -108,8 +115,74 @@ body {
   text-decoration: none;
   cursor: pointer;
   transition: opacity 0.15s, transform 0.15s;
+  white-space: nowrap;
 }
 .btn-nav-cta:hover { opacity: 0.9; transform: scale(1.02); }
+
+/* Hamburger — hidden on desktop */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+.nav-hamburger:hover { background: rgba(255,255,255,0.06); }
+.nav-hamburger span {
+  display: block;
+  height: 1.5px;
+  background: rgba(255,255,255,0.75);
+  border-radius: 2px;
+  transition: transform 0.2s, opacity 0.2s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* Mobile dropdown */
+.nav-mobile-menu {
+  display: none;
+  position: fixed;
+  top: 60px; left: 0; right: 0;
+  z-index: 999;
+  background: rgba(12,12,30,0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 12px 20px 16px;
+  flex-direction: column;
+  gap: 4px;
+}
+.nav-mobile-menu.open { display: flex; }
+.nav-mobile-link {
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  transition: background 0.12s, color 0.12s;
+}
+.nav-mobile-link:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.nav-mobile-link.active { color: #fff; background: rgba(255,255,255,0.08); }
+.nav-mobile-cta {
+  margin-top: 8px;
+  padding: 12px 14px;
+  text-align: center;
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+}
 
 /* ===== HERO ===== */
 .hero {
@@ -121,6 +194,16 @@ body {
   align-items: center;
   justify-content: flex-start;
   padding-top: 148px;
+}
+
+/* Mobile fallback glow — hidden on desktop */
+.hero-mobile-glow {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.22) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* ===== BLACK HOLE SYSTEM ===== */
@@ -168,7 +251,7 @@ body {
   position: absolute;
   left: 50%; top: 50%;
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.10);
   transform: translate(-50%, -50%);
 }
 .bhc-ring.r808 { width: 808px; height: 808px; }
@@ -185,12 +268,12 @@ body {
 }
 .bhc-dot {
   position: absolute;
-  width: 6px; height: 6px;
+  width: 5px; height: 5px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.55);
-  box-shadow: 0 0 6px 2px rgba(140,80,255,0.5);
-  top: -3px;
-  left: calc(50% - 3px);
+  background: rgba(255,255,255,0.5);
+  box-shadow: 0 0 5px 2px rgba(140,80,255,0.45);
+  top: -2.5px;
+  left: calc(50% - 2.5px);
 }
 
 /* ===== HERO CONTENT ===== */
@@ -201,7 +284,6 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0;
 }
 
 .hero-badge {
@@ -210,7 +292,7 @@ body {
   gap: 8px;
   padding: 6px 16px;
   background: rgba(124,58,237,0.12);
-  border: 1px solid rgba(124,58,237,0.3);
+  border: 1px solid rgba(124,58,237,0.28);
   border-radius: 100px;
   font-size: 12px;
   font-weight: 600;
@@ -228,7 +310,7 @@ body {
 }
 @keyframes badgePulse {
   0%,100% { opacity:1; transform:scale(1); }
-  50%      { opacity:0.5; transform:scale(0.8); }
+  50%      { opacity:0.4; transform:scale(0.75); }
 }
 
 .hero-h1 {
@@ -236,7 +318,7 @@ body {
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: -0.03em;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 .h1-plain { display: block; color: #fff; }
 .h1-grad {
@@ -249,17 +331,18 @@ body {
 
 .hero-sub {
   font-size: clamp(15px, 1.6vw, 18px);
-  color: rgba(255,255,255,0.55);
-  max-width: 480px;
-  line-height: 1.6;
-  margin-bottom: 36px;
+  color: rgba(255,255,255,0.5);
+  max-width: 460px;
+  line-height: 1.65;
+  margin-bottom: 32px;
 }
 
 .hero-btns {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
+  margin-bottom: 0;
 }
 
 .btn-primary {
@@ -279,24 +362,119 @@ body {
 .btn-dark {
   padding: 13px 28px;
   background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.11);
   border-radius: 100px;
   font-size: 15px;
   font-weight: 600;
-  color: rgba(255,255,255,0.8);
+  color: rgba(255,255,255,0.75);
   cursor: pointer;
   text-decoration: none;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s, color 0.15s;
 }
 .btn-dark:hover {
   background: rgba(255,255,255,0.09);
-  border-color: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.18);
+  color: #fff;
   transform: scale(1.02);
 }
 
-/* ===== ACCESS SECTION ===== */
+/* ===== INLINE ACCESS PANEL ===== */
+.hero-access-panel {
+  width: 100%;
+  max-width: 400px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.35s ease, margin-top 0.4s ease;
+  margin-top: 0;
+}
+.hero-access-panel.open {
+  max-height: 160px;
+  opacity: 1;
+  margin-top: 20px;
+}
+
+.hero-access-inner {
+  padding: 20px 24px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 16px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.hero-access-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 10px;
+}
+
+.hero-access-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.hero-access-input {
+  flex: 1;
+  padding: 11px 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 0.06em;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.hero-access-input::placeholder { color: rgba(255,255,255,0.18); }
+.hero-access-input:focus {
+  border-color: rgba(124,58,237,0.5);
+  background: rgba(124,58,237,0.06);
+}
+.hero-access-input.error {
+  border-color: rgba(239,68,68,0.6);
+  background: rgba(239,68,68,0.05);
+  animation: shake 0.35s ease;
+}
+
+.hero-access-btn {
+  padding: 11px 18px;
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+.hero-access-btn:hover { opacity: 0.88; }
+
+.hero-access-error {
+  font-size: 12px;
+  color: #f87171;
+  margin-bottom: 6px;
+  display: none;
+}
+.hero-access-error.visible { display: block; }
+
+.hero-access-hint {
+  font-size: 12px;
+  color: rgba(255,255,255,0.28);
+  line-height: 1.4;
+}
+
+/* ===== ACCESS SECTION (scroll fallback) ===== */
 .access-section {
   min-height: 100vh;
   display: flex;
@@ -309,7 +487,7 @@ body {
   width: 100%;
   max-width: 440px;
   background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 20px;
   padding: 48px 40px;
   backdrop-filter: blur(20px);
@@ -325,7 +503,7 @@ body {
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.3);
 }
 
 .access-title {
@@ -346,7 +524,7 @@ body {
   flex: 1;
   padding: 13px 16px;
   background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.09);
   border-radius: 12px;
   font-family: 'DM Mono', monospace;
   font-size: 15px;
@@ -356,7 +534,7 @@ body {
   outline: none;
   transition: border-color 0.15s, background 0.15s;
 }
-.access-input::placeholder { color: rgba(255,255,255,0.2); letter-spacing: 0.04em; }
+.access-input::placeholder { color: rgba(255,255,255,0.18); }
 .access-input:focus {
   border-color: rgba(124,58,237,0.5);
   background: rgba(124,58,237,0.06);
@@ -366,6 +544,7 @@ body {
   background: rgba(239,68,68,0.05);
   animation: shake 0.35s ease;
 }
+
 @keyframes shake {
   0%,100% { transform: translateX(0); }
   20%      { transform: translateX(-6px); }
@@ -397,8 +576,8 @@ body {
 
 .access-hint {
   font-size: 13px;
-  color: rgba(255,255,255,0.3);
-  line-height: 1.5;
+  color: rgba(255,255,255,0.28);
+  line-height: 1.55;
   margin-top: -4px;
 }
 .access-hint a {
@@ -412,16 +591,50 @@ body {
   padding: 24px 32px;
   text-align: center;
   font-size: 12px;
-  color: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.18);
   border-top: 1px solid rgba(255,255,255,0.05);
 }
 
 /* ===== RESPONSIVE ===== */
-@media (max-width: 600px) {
-  .nav { padding: 0 16px; }
+@media (max-width: 768px) {
+  /* Nav: show hamburger, hide center links */
+  .nav {
+    padding: 0 20px;
+    grid-template-columns: 1fr auto;
+  }
   .nav-links { display: none; }
-  .hero { padding-top: 120px; }
-  .access-card { padding: 32px 24px; }
+  .nav-right { gap: 8px; }
+  .btn-nav-cta { display: none; }
+  .nav-hamburger { display: flex; }
+
+  /* Hero: hide heavy canvas, show gradient glow */
+  .hero {
+    padding-top: 110px;
+  }
+  .hero-black-hole { display: none; }
+  .hero-mobile-glow { display: block; }
+
+  /* Hero text */
+  .hero-sub { max-width: 340px; }
+
+  /* Stack buttons vertically */
+  .hero-btns {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 300px;
+  }
+  .btn-primary, .btn-dark {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Inline panel full width */
+  .hero-access-panel { max-width: 100%; }
+  .hero-content { width: 100%; padding: 0 24px; }
+
+  /* Scroll access section */
+  .access-card { padding: 32px 22px; }
   .access-input-row { flex-direction: column; }
   .btn-enter { width: 100%; }
 }
@@ -444,26 +657,43 @@ body {
 <!-- NAV -->
 <nav class="nav">
   <a href="intro.html" class="nav-logo">FRMLS</a>
+
+  <!-- Desktop center links -->
   <div class="nav-links">
-    <a href="intro.html#features" class="nav-link">Features</a>
-    <a href="intro.html#inside" class="nav-link">What's Inside</a>
-    <a href="intro.html#pricing" class="nav-link">Pricing</a>
+    <a href="intro.html#features"  class="nav-link">Features</a>
+    <a href="intro.html#inside"    class="nav-link">What's Inside</a>
+    <a href="intro.html#pricing"   class="nav-link">Pricing</a>
     <a href="intro.html#resources" class="nav-link">Resources</a>
-    <a href="#access" class="nav-link">Sign In</a>
+    <a href="#"                    class="nav-link active" id="navSignIn">Sign In</a>
   </div>
+
   <div class="nav-right">
     <a href="https://whop.com/frmls" target="_blank" class="btn-nav-cta">Get Access — $37</a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- Mobile dropdown -->
+<div class="nav-mobile-menu" id="mobileMenu">
+  <a href="intro.html#features"  class="nav-mobile-link">Features</a>
+  <a href="intro.html#inside"    class="nav-mobile-link">What's Inside</a>
+  <a href="intro.html#pricing"   class="nav-mobile-link">Pricing</a>
+  <a href="intro.html#resources" class="nav-mobile-link">Resources</a>
+  <a href="#"                    class="nav-mobile-link active" id="mobileSignIn">Sign In</a>
+  <a href="https://whop.com/frmls" target="_blank" class="nav-mobile-cta">Get Access — $37</a>
+</div>
 
 <!-- HERO -->
 <section class="hero hero-black-hole-visible">
 
+  <!-- Mobile radial glow (replaces canvas on small screens) -->
+  <div class="hero-mobile-glow"></div>
+
   <!-- BLACK HOLE -->
   <div class="hero-black-hole">
     <canvas id="bhCanvas" width="1440" height="810"></canvas>
-
-    <!-- CSS ring system -->
     <div class="hero-black-hole-circles">
 
       <!-- Ring 808 -->
@@ -510,15 +740,37 @@ body {
       <span class="h1-grad">looks like a brand.</span>
     </h1>
     <p class="hero-sub">The complete system for building Shopify stores that convert. Templates, copywriting, and strategy — all in one place.</p>
+
     <div class="hero-btns">
       <a href="https://whop.com/frmls" target="_blank" class="btn-primary">Get Access — $37</a>
-      <a href="#access" class="btn-dark" id="scrollToAccess">Already have access?</a>
+      <button class="btn-dark" id="toggleAccess">Already have access?</button>
     </div>
+
+    <!-- Inline access panel -->
+    <div class="hero-access-panel" id="heroPanel">
+      <div class="hero-access-inner">
+        <div class="hero-access-label">Access Code</div>
+        <div class="hero-access-row">
+          <input
+            type="text"
+            id="heroCodeInput"
+            class="hero-access-input"
+            placeholder="XXXXXXXXXX"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button class="hero-access-btn" id="heroBtnEnter">Enter</button>
+        </div>
+        <div class="hero-access-error" id="heroAccessError">Incorrect code — check your Whop welcome message.</div>
+        <div class="hero-access-hint">Your code is in your Whop welcome message.</div>
+      </div>
+    </div>
+
   </div>
 
 </section>
 
-<!-- ACCESS SECTION -->
+<!-- ACCESS SECTION — scroll fallback -->
 <section class="access-section" id="access">
   <div class="access-card">
     <div>
@@ -535,7 +787,7 @@ body {
           autocomplete="off"
           spellcheck="false"
         />
-        <button class="btn-enter" onclick="handleSubmit()">Enter</button>
+        <button class="btn-enter" id="scrollBtnEnter">Enter</button>
       </div>
       <div class="access-error" id="accessError">Incorrect code. Check your Whop welcome message.</div>
     </div>
@@ -551,89 +803,199 @@ body {
 </footer>
 
 <script>
-// ─── LENIS SMOOTH SCROLL ───────────────────────────────────────────────────
+// ─── AUTH ─────────────────────────────────────────────────────────────────
+const ACCESS_CODE = 'FRMLS2026';
+
+function attemptAccess(inputEl, errorEl) {
+  const entered = inputEl.value.trim().toUpperCase();
+  if (entered === ACCESS_CODE) {
+    localStorage.setItem('frmlsVerified', 'true');
+    window.location.href = 'dashboard.html';
+  } else {
+    inputEl.classList.add('error');
+    errorEl.classList.add('visible');
+    setTimeout(() => inputEl.classList.remove('error'), 400);
+    inputEl.select();
+  }
+}
+
+function clearError(inputEl, errorEl) {
+  if (errorEl.classList.contains('visible')) {
+    errorEl.classList.remove('visible');
+    inputEl.classList.remove('error');
+  }
+}
+
+// Hero inline panel
+const heroInput  = document.getElementById('heroCodeInput');
+const heroError  = document.getElementById('heroAccessError');
+document.getElementById('heroBtnEnter').addEventListener('click', () => attemptAccess(heroInput, heroError));
+heroInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') attemptAccess(heroInput, heroError);
+  else clearError(heroInput, heroError);
+});
+
+// Scroll section
+const codeInput  = document.getElementById('codeInput');
+const accessError = document.getElementById('accessError');
+document.getElementById('scrollBtnEnter').addEventListener('click', () => attemptAccess(codeInput, accessError));
+codeInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') attemptAccess(codeInput, accessError);
+  else clearError(codeInput, accessError);
+});
+
+// ─── INLINE PANEL TOGGLE ──────────────────────────────────────────────────
+const toggleBtn = document.getElementById('toggleAccess');
+const heroPanel = document.getElementById('heroPanel');
+let panelOpen   = false;
+
+toggleBtn.addEventListener('click', () => {
+  panelOpen = !panelOpen;
+  heroPanel.classList.toggle('open', panelOpen);
+  toggleBtn.textContent = panelOpen ? 'Hide' : 'Already have access?';
+  if (panelOpen) {
+    setTimeout(() => heroInput.focus(), 420);
+  }
+});
+
+// ─── HAMBURGER ────────────────────────────────────────────────────────────
+const hamburger  = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+hamburger.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('open', open);
+});
+
+// Close mobile menu on link click
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+  });
+});
+
+// ─── LENIS SMOOTH SCROLL ──────────────────────────────────────────────────
 const lenis = new Lenis({ lerp: 0.085, smoothWheel: true });
 function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
 requestAnimationFrame(raf);
 
-// Scroll buttons
-document.querySelectorAll('a[href="#access"]').forEach(el => {
-  el.addEventListener('click', e => {
-    e.preventDefault();
-    lenis.scrollTo('#access', { duration: 1.2, easing: t => 1 - Math.pow(1 - t, 3) });
-  });
-});
-
 // ─── CANVAS BLACK HOLE ────────────────────────────────────────────────────
 (function(){
   const canvas = document.getElementById('bhCanvas');
-  const ctx    = canvas.getContext('2d');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
   const W = 1440, H = 810;
   canvas.width  = W;
   canvas.height = H;
 
-  // Stars
-  const stars = Array.from({length: 300}, () => ({
-    x: Math.random() * W,
-    y: Math.random() * H,
-    r: Math.random() * 1.2 + 0.2,
-    a: Math.random() * 0.7 + 0.15,
-  }));
+  // Star field — sparse in center, denser toward edges
+  const stars = Array.from({length: 300}, () => {
+    // Bias toward edges: use sqrt of random for radius, then convert to x/y
+    const angle = Math.random() * Math.PI * 2;
+    const edgeBias = Math.random(); // 0=center, 1=edge
+    const r = Math.sqrt(edgeBias); // sqrt distribution — more toward edges
+    // Map r=0..1 to within canvas bounds from center (720, 405)
+    const cx = W / 2, cy = H / 2;
+    const maxR = Math.sqrt(cx * cx + cy * cy);
+    return {
+      x: cx + Math.cos(angle) * r * maxR,
+      y: cy + Math.sin(angle) * r * maxR,
+      radius:    Math.random() * 1.3 + 0.15,
+      baseA:     Math.random() * 0.65 + 0.15,
+      phase:     Math.random() * Math.PI * 2,
+      speed:     0.3 + Math.random() * 0.9,
+    };
+  });
 
-  function draw(){
+  // Arc params
+  const arcCX  = 720, arcCY = 810;
+  const arcR   = 380;
+  const arcR2  = 340; // inner arc
+  // 200° to 340° in canvas radians (0=right, clockwise)
+  const aStart = (200 / 180) * Math.PI;
+  const aEnd   = (340 / 180) * Math.PI;
+
+  // Pre-build arc gradient (constant)
+  const arcGrad = ctx.createLinearGradient(arcCX - arcR, 0, arcCX + arcR, 0);
+  arcGrad.addColorStop(0,    'transparent');
+  arcGrad.addColorStop(0.15, 'rgba(90,50,200,0.55)');
+  arcGrad.addColorStop(0.38, 'rgba(160,110,255,0.85)');
+  arcGrad.addColorStop(0.5,  'rgba(255,255,255,1)');
+  arcGrad.addColorStop(0.62, 'rgba(160,110,255,0.85)');
+  arcGrad.addColorStop(0.85, 'rgba(90,50,200,0.55)');
+  arcGrad.addColorStop(1,    'transparent');
+
+  const arcGrad2 = ctx.createLinearGradient(arcCX - arcR2, 0, arcCX + arcR2, 0);
+  arcGrad2.addColorStop(0,   'transparent');
+  arcGrad2.addColorStop(0.2, 'rgba(80,40,180,0.3)');
+  arcGrad2.addColorStop(0.5, 'rgba(140,90,255,0.5)');
+  arcGrad2.addColorStop(0.8, 'rgba(80,40,180,0.3)');
+  arcGrad2.addColorStop(1,   'transparent');
+
+  function draw(ts) {
+    const time = ts * 0.001; // seconds
+
     // Background
-    ctx.fillStyle = '#0d0d1a';
+    ctx.fillStyle = '#0c0c1e';
     ctx.fillRect(0, 0, W, H);
 
-    // Stars
+    // Stars with twinkle
     stars.forEach(s => {
+      const alpha = s.baseA * (0.5 + 0.5 * Math.sin(time * s.speed + s.phase));
       ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,255,255,${s.a})`;
+      ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${alpha.toFixed(3)})`;
       ctx.fill();
     });
 
-    // Bloom glow
-    const bloom = ctx.createRadialGradient(720, 540, 0, 720, 540, 350);
-    bloom.addColorStop(0,   'rgba(140,80,255,0.5)');
-    bloom.addColorStop(0.5, 'rgba(100,60,220,0.2)');
+    // Bloom glow — elongated ellipse
+    ctx.save();
+    ctx.translate(720, 540);
+    ctx.scale(1.6, 1);
+    const bloom = ctx.createRadialGradient(0, 0, 0, 0, 0, 260);
+    bloom.addColorStop(0,   'rgba(130,70,255,0.45)');
+    bloom.addColorStop(0.5, 'rgba(90,50,210,0.18)');
     bloom.addColorStop(1,   'transparent');
     ctx.fillStyle = bloom;
-    ctx.fillRect(0, 0, W, H);
+    ctx.beginPath();
+    ctx.arc(0, 0, 260, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
 
     // Black disk
-    const disk = ctx.createRadialGradient(720, 810, 0, 720, 810, 260);
+    const disk = ctx.createRadialGradient(arcCX, arcCY, 0, arcCX, arcCY, 270);
     disk.addColorStop(0,   '#000');
-    disk.addColorStop(0.7, 'rgba(0,0,0,0.85)');
+    disk.addColorStop(0.65,'rgba(0,0,0,0.9)');
     disk.addColorStop(1,   'transparent');
     ctx.fillStyle = disk;
     ctx.beginPath();
-    ctx.arc(720, 810, 260, 0, Math.PI * 2);
+    ctx.arc(arcCX, arcCY, 270, 0, Math.PI * 2);
     ctx.fill();
 
-    // Arc (glowing upper dome) — 3 glow layers
-    const arcCX = 720, arcCY = 810, arcR = 380;
-    const aStart = Math.PI * 1.08, aEnd = Math.PI * 1.92;
+    // Inner arc — 50% opacity, softer
+    ctx.save();
+    ctx.globalAlpha = 0.5;
+    ctx.shadowColor = 'rgba(120,70,255,0.6)';
+    ctx.shadowBlur  = 30;
+    ctx.strokeStyle = arcGrad2;
+    ctx.lineWidth   = 4;
+    ctx.lineCap     = 'round';
+    ctx.beginPath();
+    ctx.arc(arcCX, arcCY, arcR2, aStart, aEnd, false);
+    ctx.stroke();
+    ctx.restore();
 
-    const arcGrad = ctx.createLinearGradient(arcCX - arcR, 0, arcCX + arcR, 0);
-    arcGrad.addColorStop(0,    'transparent');
-    arcGrad.addColorStop(0.18, 'rgba(100,60,220,0.6)');
-    arcGrad.addColorStop(0.42, 'rgba(180,130,255,0.9)');
-    arcGrad.addColorStop(0.5,  'rgba(255,255,255,1)');
-    arcGrad.addColorStop(0.58, 'rgba(180,130,255,0.9)');
-    arcGrad.addColorStop(0.82, 'rgba(100,60,220,0.6)');
-    arcGrad.addColorStop(1,    'transparent');
-
+    // Outer arc — 3 glow layers
     const layers = [
-      { lw: 28, blur: 80, alpha: 0.9 },
-      { lw: 14, blur: 40, alpha: 0.5 },
-      { lw: 5,  blur: 20, alpha: 0.3 },
+      { lw: 26, blur: 75, alpha: 0.85 },
+      { lw: 10, blur: 38, alpha: 0.55 },
+      { lw: 3,  blur: 14, alpha: 0.35 },
     ];
-
     layers.forEach(({ lw, blur, alpha }) => {
       ctx.save();
       ctx.globalAlpha = alpha;
-      ctx.shadowColor = 'rgba(140,80,255,0.9)';
+      ctx.shadowColor = 'rgba(140,80,255,0.95)';
       ctx.shadowBlur  = blur;
       ctx.strokeStyle = arcGrad;
       ctx.lineWidth   = lw;
@@ -643,40 +1005,23 @@ document.querySelectorAll('a[href="#access"]').forEach(el => {
       ctx.stroke();
       ctx.restore();
     });
+
+    // White peak — crisp 3px line on top of glow
+    ctx.save();
+    ctx.globalAlpha = 0.92;
+    ctx.strokeStyle = arcGrad;
+    ctx.lineWidth   = 3;
+    ctx.lineCap     = 'round';
+    ctx.beginPath();
+    ctx.arc(arcCX, arcCY, arcR, aStart, aEnd, false);
+    ctx.stroke();
+    ctx.restore();
+
+    requestAnimationFrame(draw);
   }
 
-  draw();
+  requestAnimationFrame(draw);
 })();
-
-// ─── ACCESS CODE ──────────────────────────────────────────────────────────
-const ACCESS_CODE = 'FRMLS2026';
-const codeInput   = document.getElementById('codeInput');
-const accessError = document.getElementById('accessError');
-
-function showError(){
-  codeInput.classList.add('error');
-  accessError.classList.add('visible');
-  setTimeout(() => codeInput.classList.remove('error'), 400);
-}
-
-function handleSubmit(){
-  const entered = codeInput.value.trim().toUpperCase();
-  if (entered === ACCESS_CODE) {
-    localStorage.setItem('frmlsVerified', 'true');
-    window.location.href = 'dashboard.html';
-  } else {
-    showError();
-    codeInput.select();
-  }
-}
-
-codeInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') handleSubmit();
-  if (accessError.classList.contains('visible')) {
-    accessError.classList.remove('visible');
-    codeInput.classList.remove('error');
-  }
-});
 </script>
 
 </body>

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>FRMLS — Preview</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -536,9 +537,61 @@ html, body {
   }
 }
 
-/* Nav hidden on desktop */
-#slide-nav {
+/* Nav + download bar hidden on desktop */
+#slide-nav, #slide-download-bar {
   display: none;
+}
+
+@media (max-width: 768px) {
+  #slide-download-bar {
+    display: flex;
+    width: 100vw;
+    padding: 2px 24px 36px;
+    background: var(--bg);
+  }
+
+  #download-btn {
+    flex: 1;
+    height: 52px;
+    border-radius: 14px;
+    border: none;
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.85);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s;
+  }
+  #download-btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, rgba(157,92,245,0.6), rgba(34,211,238,0.6)) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  #download-btn:active {
+    background: rgba(157,92,245,0.12);
+  }
+  #download-btn.loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .btn-icon {
+    font-size: 18px;
+    line-height: 1;
+  }
 }
 </style>
 </head>
@@ -763,7 +816,7 @@ html, body {
 </div>
 
 
-<!-- Mobile slide navigator (hidden on desktop via CSS) -->
+<!-- Mobile slide navigator + download bar (hidden on desktop via CSS) -->
 <div id="slide-nav">
   <button class="slide-nav-btn" id="nav-prev" aria-label="Previous slide">&#8592;</button>
   <div class="slide-nav-center">
@@ -771,6 +824,13 @@ html, body {
     <div class="slide-nav-count"><span id="nav-current">1</span> / <span id="nav-total">5</span></div>
   </div>
   <button class="slide-nav-btn" id="nav-next" aria-label="Next slide">&#8594;</button>
+</div>
+
+<div id="slide-download-bar">
+  <button id="download-btn">
+    <span class="btn-icon">↓</span>
+    <span class="btn-label">save slide</span>
+  </button>
 </div>
 
 <script>
@@ -839,6 +899,65 @@ html, body {
     document.getElementById('nav-next').addEventListener('click', function() {
       if (current < total - 1) { current++; showSlide(current); }
     });
+
+    // ── Download current slide as full-res PNG ─────────────────────
+    var downloadBtn = document.getElementById('download-btn');
+    var btnLabel = downloadBtn ? downloadBtn.querySelector('.btn-label') : null;
+
+    if (downloadBtn) {
+      downloadBtn.addEventListener('click', function() {
+        var activeSlide = slides[current];
+        if (!activeSlide || !window.htmlToImage) return;
+
+        // Show loading state
+        downloadBtn.classList.add('loading');
+        if (btnLabel) btnLabel.textContent = 'generating…';
+
+        // Clone the slide off-screen at full 1080×1080 so the page
+        // doesn't flash and the mobile scale transform is not applied.
+        var clone = activeSlide.cloneNode(true);
+        clone.style.cssText = [
+          'position:fixed',
+          'top:-9999px',
+          'left:-9999px',
+          'width:1080px',
+          'height:1080px',
+          'transform:none',
+          'overflow:hidden',
+          'z-index:-1'
+        ].join(';');
+        var cloneInner = clone.querySelector('.slide-inner');
+        if (cloneInner) {
+          cloneInner.style.transform = 'none';
+          cloneInner.style.transformOrigin = 'initial';
+        }
+        document.body.appendChild(clone);
+
+        window.htmlToImage.toPng(clone, {
+          width: 1080,
+          height: 1080,
+          pixelRatio: 1,
+          skipFonts: false
+        }).then(function(dataUrl) {
+          document.body.removeChild(clone);
+          downloadBtn.classList.remove('loading');
+          if (btnLabel) btnLabel.textContent = 'save slide';
+
+          var filename = 'frmls-slide-' + (current + 1) + '.png';
+          var a = document.createElement('a');
+          a.href = dataUrl;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }).catch(function(err) {
+          document.body.removeChild(clone);
+          downloadBtn.classList.remove('loading');
+          if (btnLabel) btnLabel.textContent = 'save slide';
+          console.error('Capture failed:', err);
+        });
+      });
+    }
 
     // ── Init ──────────────────────────────────────────────────────
     applySlideScale();

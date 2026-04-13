@@ -549,6 +549,27 @@ html, body {
     display: flex;
   }
 
+  /* Disable text selection and long-press callout on slide content */
+  .slide-wrap {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  /* Rendered PNG overlay — covers the slide so long-press triggers
+     the native iOS "Save to Photos" / Android save sheet */
+  .slide-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 200;
+    display: block;
+    -webkit-touch-callout: default; /* re-enable save on the img itself */
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
   #slide-download-bar {
     display: flex;
     width: 100vw;
@@ -844,6 +865,7 @@ html, body {
     var slides = document.querySelectorAll('.slide-wrap');
     var total = slides.length;
     var current = 0;
+    var slideCache = new Array(total).fill(null); // stores rendered dataUrls
 
     // ── Scale slides to fit mobile ────────────────────────────────
     function applySlideScale() {
@@ -893,7 +915,6 @@ html, body {
       if (window.innerWidth < 768) {
         showSlide(current);
       } else {
-        // Desktop: show all slides, clear active class
         slides.forEach(function(s) { s.classList.remove('active'); });
       }
     }
@@ -906,61 +927,99 @@ html, body {
       if (current < total - 1) { current++; showSlide(current); }
     });
 
-    // ── Download current slide as full-res PNG ─────────────────────
+    // ── Render one slide to a PNG dataUrl and cache it ────────────
+    // Clones the slide off-screen at true 1080×1080 (no scale transform),
+    // captures it, then appends a real <img> over the slide so iOS
+    // long-press shows "Save to Photos" instead of text selection.
+    function renderSlide(index, done) {
+      if (slideCache[index]) { if (done) done(); return; }
+      if (!window.htmlToImage) { if (done) done(); return; }
+
+      var slide = slides[index];
+      var clone = slide.cloneNode(true);
+
+      // Strip any previously-added img overlays from the clone
+      var prevImg = clone.querySelector('.slide-image');
+      if (prevImg) prevImg.parentNode.removeChild(prevImg);
+
+      clone.style.cssText = [
+        'position:fixed', 'top:-9999px', 'left:0',
+        'width:1080px', 'height:1080px',
+        'transform:none', 'overflow:hidden',
+        'z-index:-9999', 'pointer-events:none', 'visibility:hidden'
+      ].join(';');
+      var cloneInner = clone.querySelector('.slide-inner');
+      if (cloneInner) {
+        cloneInner.style.transform = 'none';
+        cloneInner.style.transformOrigin = 'initial';
+      }
+      document.body.appendChild(clone);
+
+      window.htmlToImage.toPng(clone, {
+        width: 1080, height: 1080, pixelRatio: 1, skipFonts: false
+      }).then(function(dataUrl) {
+        if (clone.parentNode) document.body.removeChild(clone);
+        slideCache[index] = dataUrl;
+
+        // Overlay a real <img> so long-press → "Save to Photos" on iOS
+        var img = document.createElement('img');
+        img.className = 'slide-image';
+        img.src = dataUrl;
+        img.alt = 'FRMLS slide ' + (index + 1);
+        slide.appendChild(img);
+
+        if (done) done();
+      }).catch(function() {
+        if (clone.parentNode) document.body.removeChild(clone);
+        if (done) done();
+      });
+    }
+
+    // ── Pre-render all slides in the background (mobile only) ─────
+    function startBackgroundRender() {
+      if (window.innerWidth >= 768 || !window.htmlToImage) return;
+      var queue = [];
+      for (var i = 0; i < total; i++) queue.push(i);
+      (function next() {
+        if (!queue.length) return;
+        renderSlide(queue.shift(), next);
+      })();
+    }
+
+    // ── Download button ───────────────────────────────────────────
     var downloadBtn = document.getElementById('download-btn');
     var btnLabel = downloadBtn ? downloadBtn.querySelector('.btn-label') : null;
 
     if (downloadBtn) {
       downloadBtn.addEventListener('click', function() {
-        var activeSlide = slides[current];
-        if (!activeSlide || !window.htmlToImage) return;
+        var filename = 'frmls-slide-' + (current + 1) + '.png';
 
-        // Show loading state
-        downloadBtn.classList.add('loading');
-        if (btnLabel) btnLabel.textContent = 'generating…';
-
-        // Clone the slide off-screen at full 1080×1080 so the page
-        // doesn't flash and the mobile scale transform is not applied.
-        var clone = activeSlide.cloneNode(true);
-        clone.style.cssText = [
-          'position:fixed',
-          'top:-9999px',
-          'left:-9999px',
-          'width:1080px',
-          'height:1080px',
-          'transform:none',
-          'overflow:hidden',
-          'z-index:-1'
-        ].join(';');
-        var cloneInner = clone.querySelector('.slide-inner');
-        if (cloneInner) {
-          cloneInner.style.transform = 'none';
-          cloneInner.style.transformOrigin = 'initial';
-        }
-        document.body.appendChild(clone);
-
-        window.htmlToImage.toPng(clone, {
-          width: 1080,
-          height: 1080,
-          pixelRatio: 1,
-          skipFonts: false
-        }).then(function(dataUrl) {
-          document.body.removeChild(clone);
-          downloadBtn.classList.remove('loading');
-          if (btnLabel) btnLabel.textContent = 'save slide';
-
-          var filename = 'frmls-slide-' + (current + 1) + '.png';
+        function triggerDownload(dataUrl) {
           var a = document.createElement('a');
           a.href = dataUrl;
           a.download = filename;
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
-        }).catch(function(err) {
-          document.body.removeChild(clone);
           downloadBtn.classList.remove('loading');
           if (btnLabel) btnLabel.textContent = 'save slide';
-          console.error('Capture failed:', err);
+        }
+
+        // Reuse cached PNG if the slide was already rendered
+        if (slideCache[current]) {
+          triggerDownload(slideCache[current]);
+          return;
+        }
+
+        downloadBtn.classList.add('loading');
+        if (btnLabel) btnLabel.textContent = 'generating…';
+        renderSlide(current, function() {
+          if (slideCache[current]) {
+            triggerDownload(slideCache[current]);
+          } else {
+            downloadBtn.classList.remove('loading');
+            if (btnLabel) btnLabel.textContent = 'save slide';
+          }
         });
       });
     }
@@ -968,6 +1027,8 @@ html, body {
     // ── Init ──────────────────────────────────────────────────────
     applySlideScale();
     initMobile();
+    // Start background rendering after first paint so slide 1 appears fast
+    setTimeout(startBackgroundRender, 600);
     window.addEventListener('resize', function() {
       applySlideScale();
       initMobile();

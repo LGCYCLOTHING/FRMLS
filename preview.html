@@ -856,7 +856,7 @@ html, body {
 <div id="slide-download-bar">
   <button id="download-btn">
     <span class="btn-icon">↓</span>
-    <span class="btn-label">save slide</span>
+    <span class="btn-label">save to photos</span>
   </button>
 </div>
 
@@ -986,28 +986,50 @@ html, body {
       })();
     }
 
-    // ── Download button ───────────────────────────────────────────
+    // ── Save button ───────────────────────────────────────────────
     var downloadBtn = document.getElementById('download-btn');
     var btnLabel = downloadBtn ? downloadBtn.querySelector('.btn-label') : null;
 
+    // Convert dataUrl → Blob for Web Share API
+    function dataUrlToBlob(dataUrl) {
+      var parts = dataUrl.split(',');
+      var mime = parts[0].match(/:(.*?);/)[1];
+      var bstr = atob(parts[1]);
+      var n = bstr.length;
+      var u8 = new Uint8Array(n);
+      while (n--) u8[n] = bstr.charCodeAt(n);
+      return new Blob([u8], { type: mime });
+    }
+
+    function saveImage(dataUrl) {
+      var filename = 'frmls-slide-' + (current + 1) + '.png';
+      var blob = dataUrlToBlob(dataUrl);
+      var file = new File([blob], filename, { type: 'image/png' });
+
+      // iOS Safari: use Web Share API → native sheet with "Save Image"
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file] }).catch(function() {});
+      } else {
+        // Android Chrome / desktop: direct download
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+      }
+
+      downloadBtn.classList.remove('loading');
+      if (btnLabel) btnLabel.textContent = 'save to photos';
+    }
+
     if (downloadBtn) {
       downloadBtn.addEventListener('click', function() {
-        var filename = 'frmls-slide-' + (current + 1) + '.png';
-
-        function triggerDownload(dataUrl) {
-          var a = document.createElement('a');
-          a.href = dataUrl;
-          a.download = filename;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          downloadBtn.classList.remove('loading');
-          if (btnLabel) btnLabel.textContent = 'save slide';
-        }
-
-        // Reuse cached PNG if the slide was already rendered
+        // Reuse cached PNG if already rendered — instant
         if (slideCache[current]) {
-          triggerDownload(slideCache[current]);
+          saveImage(slideCache[current]);
           return;
         }
 
@@ -1015,10 +1037,10 @@ html, body {
         if (btnLabel) btnLabel.textContent = 'generating…';
         renderSlide(current, function() {
           if (slideCache[current]) {
-            triggerDownload(slideCache[current]);
+            saveImage(slideCache[current]);
           } else {
             downloadBtn.classList.remove('loading');
-            if (btnLabel) btnLabel.textContent = 'save slide';
+            if (btnLabel) btnLabel.textContent = 'save to photos';
           }
         });
       });

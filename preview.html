@@ -620,6 +620,363 @@ html, body {
     line-height: 1;
   }
 }
+
+
+/* ================================================= */
+/* ========= BEHIND THE BUILD SERIES ============== */
+/* ================================================= */
+
+/* Series pill badge */
+.btb-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 20px;
+  border-radius: 100px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.6);
+  position: relative;
+  margin-bottom: 38px;
+}
+.btb-badge::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 100px;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, rgba(157,92,245,0.8), rgba(34,211,238,0.8)) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+}
+
+/* Step mono label */
+.btb-step {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.09em;
+  color: rgba(255,255,255,0.32);
+  margin-bottom: 14px;
+}
+
+/* Slide headline */
+.btb-headline {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Muted caption below content */
+.btb-muted {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.32);
+  text-align: center;
+  line-height: 1.5;
+  margin-top: 22px;
+}
+
+/* Generic selected card gradient border mixin via ::before */
+.sel-border {
+  position: relative;
+  overflow: hidden;
+}
+.sel-border::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  border: 1.5px solid transparent;
+  background: linear-gradient(135deg, rgba(157,92,245,0.95), rgba(34,211,238,0.95)) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── SLIDE B2: Category grid (3×2) ── */
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+  width: 100%;
+}
+.cat-card {
+  background: #111111;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 20px 14px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  position: relative;
+  overflow: hidden;
+}
+.cat-card-icon {
+  font-size: 20px;
+  line-height: 1;
+  color: rgba(255,255,255,0.45);
+}
+.cat-card-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.65);
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+.cat-card.sel {
+  background: rgba(124,58,237,0.10);
+}
+.cat-card.sel .cat-card-icon,
+.cat-card.sel .cat-card-label { color: rgba(255,255,255,0.95); }
+
+/* ── SLIDE B3: Vibe cards (2×2) ── */
+.vibe-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 13px;
+  width: 100%;
+}
+.vibe-card {
+  background: #111111;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  position: relative;
+  overflow: hidden;
+  min-height: 96px;
+}
+.vibe-card-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.80);
+  letter-spacing: -0.01em;
+}
+.vibe-card-sub {
+  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  color: rgba(255,255,255,0.30);
+  letter-spacing: 0.04em;
+}
+.vibe-card.sel { background: rgba(124,58,237,0.09); }
+.vibe-card.sel .vibe-card-name { color: rgba(255,255,255,0.98); }
+
+/* ── SLIDE B4: Font cards ── */
+.font-row {
+  display: flex;
+  gap: 11px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+.font-card {
+  flex: 1;
+  background: #111111;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 18px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  min-height: 96px;
+  justify-content: center;
+}
+.font-sample {
+  font-size: 26px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.82);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.font-sample.italic  { font-style: italic; font-weight: 700; }
+.font-sample.upper   { letter-spacing: -0.02em; text-transform: uppercase; font-size: 22px; }
+.font-card-lbl {
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  color: rgba(255,255,255,0.30);
+  letter-spacing: 0.07em;
+  text-align: center;
+}
+.font-card.sel { background: rgba(124,58,237,0.09); }
+.font-card.sel .font-sample { color: rgba(255,255,255,0.98); }
+
+/* ── SLIDE B4: Color palette strips ── */
+.palette-row {
+  display: flex;
+  gap: 11px;
+  width: 100%;
+}
+.palette-card {
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.07);
+  position: relative;
+}
+.palette-card.sel {
+  border: 1.5px solid transparent;
+  background: linear-gradient(#111, #111) padding-box,
+              linear-gradient(135deg, rgba(157,92,245,0.9), rgba(34,211,238,0.9)) border-box;
+}
+.palette-swatches {
+  display: flex;
+  flex-direction: column;
+  height: 76px;
+}
+.psw { flex: 1; }
+.palette-name {
+  font-size: 9px;
+  font-family: 'DM Mono', monospace;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.06em;
+  padding: 6px 7px;
+  background: #111111;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── SLIDE B5: Brand kit card ── */
+.bk-outer {
+  width: 72%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+}
+.bk-card {
+  background: #111111;
+  border-radius: 20px;
+  padding: 30px 26px;
+  position: relative;
+  overflow: hidden;
+}
+.bk-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, rgba(157,92,245,0.55), rgba(34,211,238,0.55)) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.bk-brand-name {
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+}
+.bk-swatches {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.bk-sw-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.bk-sw {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.09);
+}
+.bk-sw-hex {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: rgba(255,255,255,0.28);
+  letter-spacing: 0.03em;
+}
+.bk-fonts {
+  display: flex;
+  gap: 28px;
+  margin-bottom: 16px;
+}
+.bk-font-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.bk-font-lbl {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,0.28);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.bk-font-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.82);
+  letter-spacing: -0.01em;
+}
+.bk-tone {
+  font-size: 12px;
+  font-style: italic;
+  color: rgba(255,255,255,0.32);
+  line-height: 1.5;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding-top: 13px;
+}
+
+/* ── SLIDE B6: CTA ── */
+.btb-cta-hl {
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  text-align: center;
+  margin-bottom: 32px;
+}
+.btb-cta-sub {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 12px;
+}
+.btb-cta-muted {
+  font-size: 16px;
+  color: rgba(255,255,255,0.38);
+  text-align: center;
+}
+.btb-cta-logo {
+  font-family: 'Inter', sans-serif;
+  font-size: 19px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: absolute;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
 </style>
 </head>
 <body>
@@ -839,6 +1196,247 @@ html, body {
     </div>
 
     <div class="slide-logo">FRMLS</div>
+  </div>
+</div>
+
+
+<!-- ================================================= -->
+<!-- ===== BEHIND THE BUILD — SLIDE B1: HOOK     ===== -->
+<!-- ================================================= -->
+<div class="slide-wrap" id="btb-1">
+  <div class="slide-orb slide-orb-p"></div>
+  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-noise"></div>
+  <div class="slide-inner">
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+      <div class="btb-badge">behind the build</div>
+      <div class="btb-cta-hl grad-text" style="font-size:64px;margin-bottom:20px;line-height:1.1;">how FRMLS builds<br>your brand identity.</div>
+      <div style="font-size:18px;color:rgba(255,255,255,0.42);font-weight:400;line-height:1.6;">a 5 minute flow that personalizes everything.</div>
+    </div>
+    <div class="slide-logo">FRMLS</div>
+  </div>
+</div>
+
+<!-- ================================================= -->
+<!-- ===== BEHIND THE BUILD — SLIDE B2: CATEGORY ===== -->
+<!-- ================================================= -->
+<div class="slide-wrap" id="btb-2">
+  <div class="slide-orb slide-orb-p"></div>
+  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-noise"></div>
+  <div class="slide-inner">
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;">
+      <div class="btb-step">step 01 — what are you selling?</div>
+      <div class="btb-headline">pick your category.</div>
+      <div class="cat-grid">
+        <div class="cat-card">
+          <div class="cat-card-icon">▲</div>
+          <div class="cat-card-label">Streetwear</div>
+        </div>
+        <div class="cat-card sel sel-border">
+          <div class="cat-card-icon">▪</div>
+          <div class="cat-card-label">Minimalist</div>
+        </div>
+        <div class="cat-card">
+          <div class="cat-card-icon">◉</div>
+          <div class="cat-card-label">Athletic</div>
+        </div>
+        <div class="cat-card">
+          <div class="cat-card-icon">◆</div>
+          <div class="cat-card-label">Accessories</div>
+        </div>
+        <div class="cat-card">
+          <div class="cat-card-icon">★</div>
+          <div class="cat-card-label">Luxury</div>
+        </div>
+        <div class="cat-card">
+          <div class="cat-card-icon">○</div>
+          <div class="cat-card-label">Vintage</div>
+        </div>
+      </div>
+      <div class="btb-muted">this shapes every prompt you get.</div>
+    </div>
+    <div class="slide-logo">FRMLS</div>
+  </div>
+</div>
+
+<!-- ================================================= -->
+<!-- ===== BEHIND THE BUILD — SLIDE B3: VIBE      ===== -->
+<!-- ================================================= -->
+<div class="slide-wrap" id="btb-3">
+  <div class="slide-orb slide-orb-p"></div>
+  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-noise"></div>
+  <div class="slide-inner">
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;">
+      <div class="btb-step">step 02 — pick your aesthetic.</div>
+      <div class="btb-headline">define how your brand feels.</div>
+      <div class="vibe-grid">
+        <div class="vibe-card">
+          <div class="vibe-card-name">Dark &amp; Editorial</div>
+          <div class="vibe-card-sub">cinematic</div>
+        </div>
+        <div class="vibe-card sel sel-border">
+          <div class="vibe-card-name">Clean &amp; Minimal</div>
+          <div class="vibe-card-sub">refined</div>
+        </div>
+        <div class="vibe-card">
+          <div class="vibe-card-name">Raw &amp; Bold</div>
+          <div class="vibe-card-sub">unfiltered</div>
+        </div>
+        <div class="vibe-card">
+          <div class="vibe-card-name">Soft &amp; Neutral</div>
+          <div class="vibe-card-sub">quiet</div>
+        </div>
+      </div>
+      <div class="btb-muted">this sets the tone for your copy and design.</div>
+    </div>
+    <div class="slide-logo">FRMLS</div>
+  </div>
+</div>
+
+<!-- ================================================= -->
+<!-- ===== BEHIND THE BUILD — SLIDE B4: FONT+COLOR === -->
+<!-- ================================================= -->
+<div class="slide-wrap" id="btb-4">
+  <div class="slide-orb slide-orb-p"></div>
+  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-noise"></div>
+  <div class="slide-inner">
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;">
+      <div class="btb-step">step 03 — typography and color.</div>
+      <div class="btb-headline" style="margin-bottom:22px;">pick your visual direction.</div>
+
+      <!-- Font cards -->
+      <div class="font-row">
+        <div class="font-card">
+          <div class="font-sample italic">Ag</div>
+          <div class="font-card-lbl">sharp serif</div>
+        </div>
+        <div class="font-card sel sel-border">
+          <div class="font-sample">Ag</div>
+          <div class="font-card-lbl">clean sans</div>
+        </div>
+        <div class="font-card">
+          <div class="font-sample upper">AG</div>
+          <div class="font-card-lbl">bold grotesque</div>
+        </div>
+      </div>
+
+      <!-- Palette strips -->
+      <div class="palette-row">
+        <div class="palette-card sel">
+          <div class="palette-swatches">
+            <div class="psw" style="background:#0a0a0a;"></div>
+            <div class="psw" style="background:#1a1a1a;"></div>
+            <div class="psw" style="background:#3a3a3a;"></div>
+            <div class="psw" style="background:#5a5a5a;"></div>
+          </div>
+          <div class="palette-name">dark &amp; moody</div>
+        </div>
+        <div class="palette-card">
+          <div class="palette-swatches">
+            <div class="psw" style="background:#f5f5f0;"></div>
+            <div class="psw" style="background:#e8e3dc;"></div>
+            <div class="psw" style="background:#c5bab0;"></div>
+            <div class="psw" style="background:#8a7d72;"></div>
+          </div>
+          <div class="palette-name">clean neutral</div>
+        </div>
+        <div class="palette-card">
+          <div class="palette-swatches">
+            <div class="psw" style="background:#1a1520;"></div>
+            <div class="psw" style="background:#2d2538;"></div>
+            <div class="psw" style="background:#c9b99a;"></div>
+            <div class="psw" style="background:#f2ede8;"></div>
+          </div>
+          <div class="palette-name">quiet luxury</div>
+        </div>
+        <div class="palette-card">
+          <div class="palette-swatches">
+            <div class="psw" style="background:#0f0f0f;"></div>
+            <div class="psw" style="background:#1a1a1a;"></div>
+            <div class="psw" style="background:#f0f0f0;"></div>
+            <div class="psw" style="background:#d4ff00;"></div>
+          </div>
+          <div class="palette-name">street editorial</div>
+        </div>
+      </div>
+
+      <div class="btb-muted">your brand kit generates from these choices.</div>
+    </div>
+    <div class="slide-logo">FRMLS</div>
+  </div>
+</div>
+
+<!-- ================================================= -->
+<!-- ===== BEHIND THE BUILD — SLIDE B5: BRAND KIT ==== -->
+<!-- ================================================= -->
+<div class="slide-wrap" id="btb-5">
+  <div class="slide-orb slide-orb-p"></div>
+  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-noise"></div>
+  <div class="slide-inner">
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;">
+      <div class="btb-step">the result.</div>
+      <div class="btb-headline" style="margin-bottom:24px;">your brand kit. generated.</div>
+
+      <div class="bk-outer">
+        <div class="bk-card">
+          <div class="bk-brand-name">MNML CLUB</div>
+          <div class="bk-swatches">
+            <div class="bk-sw-wrap">
+              <div class="bk-sw" style="background:#0a0a0a;"></div>
+              <div class="bk-sw-hex">0A0A0A</div>
+            </div>
+            <div class="bk-sw-wrap">
+              <div class="bk-sw" style="background:#f5f5f0;border-color:rgba(255,255,255,0.2);"></div>
+              <div class="bk-sw-hex">F5F5F0</div>
+            </div>
+            <div class="bk-sw-wrap">
+              <div class="bk-sw" style="background:#c8b898;"></div>
+              <div class="bk-sw-hex">C8B898</div>
+            </div>
+            <div class="bk-sw-wrap">
+              <div class="bk-sw" style="background:#8a7d6e;"></div>
+              <div class="bk-sw-hex">8A7D6E</div>
+            </div>
+          </div>
+          <div class="bk-fonts">
+            <div class="bk-font-group">
+              <div class="bk-font-lbl">Display</div>
+              <div class="bk-font-name">Inter</div>
+            </div>
+            <div class="bk-font-group">
+              <div class="bk-font-lbl">Body</div>
+              <div class="bk-font-name">DM Mono</div>
+            </div>
+          </div>
+          <div class="bk-tone">refined. quiet. no unnecessary words.</div>
+        </div>
+      </div>
+
+      <div class="btb-muted">everything builds from this.</div>
+    </div>
+    <div class="slide-logo">FRMLS</div>
+  </div>
+</div>
+
+<!-- ================================================= -->
+<!-- ===== BEHIND THE BUILD — SLIDE B6: CTA      ===== -->
+<!-- ================================================= -->
+<div class="slide-wrap" id="btb-6">
+  <div class="slide-orb slide-orb-p"></div>
+  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-noise"></div>
+  <div class="slide-inner">
+    <div class="slide-5-border"></div>
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+      <div class="btb-cta-hl grad-text">your brand.<br>in 5 minutes.</div>
+      <div class="btb-cta-sub">go through the flow at frmls.com</div>
+      <div class="btb-cta-muted">every prompt. pre-filled with your brand info.</div>
+    </div>
+    <div class="btb-cta-logo">FRMLS</div>
   </div>
 </div>
 

@@ -543,6 +543,12 @@ html, body {
 }
 
 @media (max-width: 768px) {
+  /* Re-assert nav display here — the global display:none above would
+     otherwise override the rule in the earlier media query block */
+  #slide-nav {
+    display: flex;
+  }
+
   #slide-download-bar {
     display: flex;
     width: 100vw;

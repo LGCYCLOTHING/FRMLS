@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>FRMLS — Preview</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -928,12 +928,12 @@ html, body {
     });
 
     // ── Render one slide to a PNG dataUrl and cache it ────────────
-    // Clones the slide off-screen at true 1080×1080 (no scale transform),
-    // captures it, then appends a real <img> over the slide so iOS
-    // long-press shows "Save to Photos" instead of text selection.
+    // Places the slide off-screen at full 1080×1080 (no scale transform),
+    // captures it with html2canvas, then appends a real <img> over the
+    // slide so the Web Share / save-to-photos flow works properly.
     function renderSlide(index, done) {
       if (slideCache[index]) { if (done) done(); return; }
-      if (!window.htmlToImage) { if (done) done(); return; }
+      if (!window.html2canvas) { if (done) done(); return; }
 
       var slide = slides[index];
       var clone = slide.cloneNode(true);
@@ -942,23 +942,42 @@ html, body {
       var prevImg = clone.querySelector('.slide-image');
       if (prevImg) prevImg.parentNode.removeChild(prevImg);
 
+      // Position off-screen to the LEFT — visible to the browser so it
+      // actually paints, but never in the viewport. No visibility:hidden
+      // because iOS Safari silently skips rendering hidden elements.
       clone.style.cssText = [
-        'position:fixed', 'top:-9999px', 'left:0',
-        'width:1080px', 'height:1080px',
-        'transform:none', 'overflow:hidden',
-        'z-index:-9999', 'pointer-events:none', 'visibility:hidden'
+        'position:fixed',
+        'top:0',
+        'left:-1200px',
+        'width:1080px',
+        'height:1080px',
+        'transform:none',
+        'overflow:hidden',
+        'z-index:9999',
+        'pointer-events:none',
+        'background:#0a0a0a'
       ].join(';');
+
       var cloneInner = clone.querySelector('.slide-inner');
       if (cloneInner) {
         cloneInner.style.transform = 'none';
-        cloneInner.style.transformOrigin = 'initial';
+        cloneInner.style.transformOrigin = 'top left';
       }
       document.body.appendChild(clone);
 
-      window.htmlToImage.toPng(clone, {
-        width: 1080, height: 1080, pixelRatio: 1, skipFonts: false
-      }).then(function(dataUrl) {
+      window.html2canvas(clone, {
+        width: 1080,
+        height: 1080,
+        scale: 1,
+        backgroundColor: '#0a0a0a',
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        x: 0,
+        y: 0
+      }).then(function(canvas) {
         if (clone.parentNode) document.body.removeChild(clone);
+        var dataUrl = canvas.toDataURL('image/png');
         slideCache[index] = dataUrl;
 
         // Overlay a real <img> so long-press → "Save to Photos" on iOS
@@ -969,15 +988,16 @@ html, body {
         slide.appendChild(img);
 
         if (done) done();
-      }).catch(function() {
+      }).catch(function(err) {
         if (clone.parentNode) document.body.removeChild(clone);
+        console.error('Render failed:', err);
         if (done) done();
       });
     }
 
     // ── Pre-render all slides in the background (mobile only) ─────
     function startBackgroundRender() {
-      if (window.innerWidth >= 768 || !window.htmlToImage) return;
+      if (window.innerWidth >= 768 || !window.html2canvas) return;
       var queue = [];
       for (var i = 0; i < total; i++) queue.push(i);
       (function next() {

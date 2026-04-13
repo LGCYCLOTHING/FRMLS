@@ -556,20 +556,6 @@ html, body {
     -webkit-touch-callout: none;
   }
 
-  /* Rendered PNG overlay — covers the slide so long-press triggers
-     the native iOS "Save to Photos" / Android save sheet */
-  .slide-image {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 200;
-    display: block;
-    -webkit-touch-callout: default; /* re-enable save on the img itself */
-    -webkit-user-select: none;
-    user-select: none;
-  }
-
   #slide-download-bar {
     display: flex;
     width: 100vw;
@@ -1575,16 +1561,7 @@ html, body {
         y: 0
       }).then(function(canvas) {
         if (clone.parentNode) document.body.removeChild(clone);
-        var dataUrl = canvas.toDataURL('image/png');
-        slideCache[index] = dataUrl;
-
-        // Overlay a real <img> so long-press → "Save to Photos" on iOS
-        var img = document.createElement('img');
-        img.className = 'slide-image';
-        img.src = dataUrl;
-        img.alt = 'FRMLS slide ' + (index + 1);
-        slide.appendChild(img);
-
+        slideCache[index] = canvas.toDataURL('image/png');
         if (done) done();
       }).catch(function(err) {
         if (clone.parentNode) document.body.removeChild(clone);

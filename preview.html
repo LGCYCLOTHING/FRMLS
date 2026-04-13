@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=1080" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>FRMLS — Preview</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
@@ -23,18 +23,24 @@
 }
 
 html, body {
-  width: 1080px;
-  height: 1350px;
-  overflow: hidden;
   background: var(--bg);
   color: var(--white);
   font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
 }
 
-/* ===== AMBIENT BG ===== */
-body::before {
+/* ===== PRODUCT PAGE WRAPPER (1080×1350) ===== */
+#product-page {
+  width: 1080px;
+  height: 1350px;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg);
+}
+
+#product-page::before {
   content: '';
-  position: fixed; inset: -60px;
+  position: absolute; inset: -60px;
   background:
     radial-gradient(ellipse 80% 60% at 20% 10%, rgba(124,58,237,0.09) 0%, transparent 60%),
     radial-gradient(ellipse 60% 50% at 80% 80%, rgba(6,182,212,0.07) 0%, transparent 55%),
@@ -42,14 +48,13 @@ body::before {
   pointer-events: none; z-index: 0;
 }
 
-/* ===== ORBS ===== */
-.orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; }
+/* ===== ORBS (product page) ===== */
+.orb { position: absolute; border-radius: 50%; pointer-events: none; z-index: 0; }
 .orb-purple { width: 700px; height: 700px; background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%); top: -250px; left: -180px; }
 .orb-cyan   { width: 600px; height: 600px; background: radial-gradient(circle, rgba(6,182,212,0.09) 0%, transparent 70%); bottom: -180px; right: -120px; }
 
-/* ===== CENTER GLOW ===== */
 .center-glow {
-  position: fixed;
+  position: absolute;
   width: 1000px; height: 700px;
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
@@ -60,9 +65,8 @@ body::before {
   pointer-events: none; z-index: 0;
 }
 
-/* ===== NOISE ===== */
 .noise-overlay {
-  position: fixed; inset: 0; pointer-events: none; z-index: 200;
+  position: absolute; inset: 0; pointer-events: none; z-index: 200;
   opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 180px 180px;
@@ -74,7 +78,6 @@ body::before {
   width: 1080px; height: 1350px;
 }
 
-/* ===== MIDDLE — full viewport, centered ===== */
 .main {
   position: absolute;
   inset: 0;
@@ -82,7 +85,6 @@ body::before {
   padding: 0 80px;
 }
 
-/* ===== HERO ===== */
 .hero {
   width: 100%;
   display: flex; flex-direction: column;
@@ -108,7 +110,6 @@ body::before {
   opacity: 0.7; text-align: center; margin-bottom: 28px;
 }
 
-/* ===== 3×3 GRID ===== */
 .dash-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -159,7 +160,6 @@ body::before {
   color: rgba(255,255,255,0.3); text-transform: lowercase;
 }
 
-/* ===== BOX COLOR ACCENTS ===== */
 .box-purple   { --box-accent: linear-gradient(135deg,#7c3aed,#9d5cf5); --box-color: #9d5cf5; }
 .box-cyan     { --box-accent: linear-gradient(135deg,#06b6d4,#22d3ee); --box-color: #22d3ee; }
 .box-blue     { --box-accent: linear-gradient(135deg,#3b82f6,#60a5fa); --box-color: #60a5fa; }
@@ -170,9 +170,305 @@ body::before {
 .box-pink     { --box-accent: linear-gradient(135deg,#ec4899,#8b5cf6); --box-color: #ec4899; }
 .box-amethyst { --box-accent: linear-gradient(135deg,#a855f7,#06b6d4); --box-color: #a855f7; }
 
+
+/* ======================================= */
+/* ========= INSTAGRAM CAROUSEL SLIDES === */
+/* ======================================= */
+
+.slide-wrap {
+  width: 1080px;
+  height: 1080px;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg);
+  margin-top: 4px;
+}
+
+/* Ambient background per slide */
+.slide-wrap::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 15% 15%, rgba(124,58,237,0.11) 0%, transparent 60%),
+    radial-gradient(ellipse 65% 50% at 85% 85%, rgba(6,182,212,0.09) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 45% at 55% 45%, rgba(109,40,217,0.05) 0%, transparent 50%);
+  pointer-events: none; z-index: 0;
+}
+
+/* Per-slide orbs */
+.slide-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+.slide-orb-p {
+  width: 620px; height: 620px;
+  background: radial-gradient(circle, rgba(124,58,237,0.13) 0%, transparent 70%);
+  top: -220px; left: -160px;
+}
+.slide-orb-c {
+  width: 520px; height: 520px;
+  background: radial-gradient(circle, rgba(6,182,212,0.10) 0%, transparent 70%);
+  bottom: -160px; right: -110px;
+}
+
+/* Per-slide noise */
+.slide-noise {
+  position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='sn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23sn)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* Slide content area */
+.slide-inner {
+  width: 1080px;
+  height: 1080px;
+  padding: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+}
+
+/* ===== SHARED HELPERS ===== */
+.grad-text {
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.slide-logo {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: absolute;
+  bottom: 52px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.mono-muted {
+  font-family: 'DM Mono', monospace;
+  color: rgba(255,255,255,0.30);
+  letter-spacing: 0.1em;
+  font-size: 14px;
+}
+
+/* ===== SLIDE 1 — HOOK ===== */
+.s1-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.s1-line1 {
+  font-size: 72px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  color: var(--white);
+}
+.s1-line2 {
+  font-size: 72px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  display: block;
+}
+.s1-tip {
+  margin-top: 36px;
+}
+
+/* ===== SLIDE 2 — THE PROBLEM ===== */
+.s2-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.s2-headline {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  color: var(--white);
+  margin-bottom: 28px;
+}
+.s2-sub {
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.38);
+  line-height: 1.6;
+}
+
+/* ===== SLIDE 3 — THE TIP ===== */
+.s3-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.s3-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 22px;
+  border-radius: 100px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.65);
+  position: relative;
+  margin-bottom: 42px;
+}
+.s3-badge::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 100px;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, rgba(157,92,245,0.8), rgba(34,211,238,0.8)) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+}
+.s3-headline {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  color: var(--white);
+  margin-bottom: 38px;
+}
+.s3-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+}
+.s3-item {
+  font-size: 20px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: left;
+}
+.s3-dash {
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ===== SLIDE 4 — WHY IT MATTERS ===== */
+.s4-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.s4-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 30px;
+}
+.s4-line {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  color: var(--white);
+}
+.s4-sub {
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.38);
+  line-height: 1.6;
+}
+
+/* ===== SLIDE 5 — CTA ===== */
+.s5-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.s5-headline {
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 36px;
+}
+.s5-follow {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--white);
+  margin-bottom: 14px;
+}
+.s5-cta {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.40);
+}
+.s5-url {
+  font-size: 19px;
+  font-weight: 700;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Slide 5 gradient border overlay */
+.slide-5-border {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid;
+  border-image: linear-gradient(135deg, rgba(157,92,245,0.55) 0%, rgba(34,211,238,0.55) 100%) 1;
+  pointer-events: none;
+  z-index: 50;
+}
+
+
+/* ======================================= */
+/* ============ MOBILE RESPONSIVE ======== */
+/* ======================================= */
+
+@media (max-width: 768px) {
+  /* Slides become square, filling phone width */
+  .slide-wrap {
+    width: 100vw;
+    height: 100vw;
+  }
+  /* Inner 1080px content scales down proportionally via JS */
+  .slide-inner {
+    transform-origin: top left;
+  }
+}
 </style>
 </head>
 <body>
+
+<!-- ===== PRODUCT PAGE (1080×1350) ===== -->
+<div id="product-page">
 
 <div class="orb orb-purple"></div>
 <div class="orb orb-cyan"></div>
@@ -181,7 +477,6 @@ body::before {
 
 <div class="page">
 
-  <!-- MIDDLE — full viewport centered -->
   <div class="main">
   <div class="hero">
 
@@ -189,10 +484,8 @@ body::before {
     <div class="hero-sub">your store. built right.</div>
     <div class="hero-desc">Brand identity, custom prompts, designer tools, and a launch system — all in one place.</div>
 
-    <!-- 3×3 DASHBOARD GRID -->
     <div class="dash-grid">
 
-      <!-- Row 1 -->
       <div class="dash-box box-purple">
         <span class="dash-box-icon">◆</span>
         <div class="dash-box-title">Brand Kit</div>
@@ -211,7 +504,6 @@ body::before {
         <div class="dash-box-desc">Code snippets that upgrade your Shopify theme.</div>
       </div>
 
-      <!-- Row 2 -->
       <div class="dash-box box-orange">
         <span class="dash-box-icon">
           <svg width="20" height="14" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -236,7 +528,6 @@ body::before {
         <div class="dash-box-desc">See how everything connects.</div>
       </div>
 
-      <!-- Row 3 -->
       <div class="dash-box box-yellow">
         <span class="dash-box-icon">
           <svg width="20" height="16" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -271,11 +562,154 @@ body::before {
 
     </div>
   </div>
-  </div><!-- /main -->
+  </div>
 
   <div class="page-url">frmls.com</div>
 
-</div><!-- /page -->
+</div>
+</div><!-- /#product-page -->
+
+
+<!-- ======================================= -->
+<!-- === SLIDE 1 — HOOK                  === -->
+<!-- ======================================= -->
+<div class="slide-wrap" id="slide-1">
+  <div class="slide-orb slide-orb-p"></div>
+  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-noise"></div>
+  <div class="slide-inner">
+
+    <div class="s1-body">
+      <div class="s1-line1">brand identity</div>
+      <div class="s1-line2 grad-text">before Shopify.</div>
+      <div class="s1-tip mono-muted">tip 01</div>
+    </div>
+
+    <div class="slide-logo">FRMLS</div>
+  </div>
+</div>
+
+
+<!-- ======================================= -->
+<!-- === SLIDE 2 — THE PROBLEM           === -->
+<!-- ======================================= -->
+<div class="slide-wrap" id="slide-2">
+  <div class="slide-orb slide-orb-p"></div>
+  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-noise"></div>
+  <div class="slide-inner">
+
+    <div class="s2-body">
+      <div class="s2-headline">most stores look like templates<br>because founders skip one step.</div>
+      <div class="s2-sub">that step is brand identity.</div>
+    </div>
+
+    <div class="slide-logo">FRMLS</div>
+  </div>
+</div>
+
+
+<!-- ======================================= -->
+<!-- === SLIDE 3 — THE TIP               === -->
+<!-- ======================================= -->
+<div class="slide-wrap" id="slide-3">
+  <div class="slide-orb slide-orb-p"></div>
+  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-noise"></div>
+  <div class="slide-inner">
+
+    <div class="s3-body">
+      <div class="s3-badge">the fix</div>
+      <div class="s3-headline">before you open Shopify, write down:</div>
+      <div class="s3-list">
+        <div class="s3-item">
+          <span class="s3-dash">—</span>
+          <span>what your brand feels like in 3 words</span>
+        </div>
+        <div class="s3-item">
+          <span class="s3-dash">—</span>
+          <span>who your customer is in one sentence</span>
+        </div>
+        <div class="s3-item">
+          <span class="s3-dash">—</span>
+          <span>3 brands you want yours to feel like</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-logo">FRMLS</div>
+  </div>
+</div>
+
+
+<!-- ======================================= -->
+<!-- === SLIDE 4 — WHY IT MATTERS        === -->
+<!-- ======================================= -->
+<div class="slide-wrap" id="slide-4">
+  <div class="slide-orb slide-orb-p"></div>
+  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-noise"></div>
+  <div class="slide-inner">
+
+    <div class="s4-body">
+      <div class="s4-group">
+        <div class="s4-line">everything after this —</div>
+        <div class="s4-line grad-text">colors. fonts. copy. photography.</div>
+        <div class="s4-line">should match those answers.</div>
+      </div>
+      <div class="s4-sub">skip this and your store looks like everyone else.</div>
+    </div>
+
+    <div class="slide-logo">FRMLS</div>
+  </div>
+</div>
+
+
+<!-- ======================================= -->
+<!-- === SLIDE 5 — CTA                   === -->
+<!-- ======================================= -->
+<div class="slide-wrap" id="slide-5">
+  <div class="slide-orb slide-orb-p"></div>
+  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-noise"></div>
+  <div class="slide-inner">
+    <div class="slide-5-border"></div>
+
+    <div class="s5-body">
+      <div class="s5-headline grad-text">your store.<br>built right.</div>
+      <div class="s5-follow">follow for 11 more tips.</div>
+      <div class="s5-cta">or build your whole store at <span class="s5-url">frmls.com</span></div>
+    </div>
+
+    <div class="slide-logo">FRMLS</div>
+  </div>
+</div>
+
+
+<script>
+  // Scale carousel slides proportionally on screens under 768px
+  // Uses transform: scale so all content (text, spacing, logo) scales uniformly
+  (function() {
+    function applySlideScale() {
+      var innerNodes = document.querySelectorAll('.slide-inner');
+      var vw = window.innerWidth;
+      if (vw < 768) {
+        var scale = vw / 1080;
+        innerNodes.forEach(function(el) {
+          el.style.transform = 'scale(' + scale + ')';
+          el.style.transformOrigin = 'top left';
+        });
+      } else {
+        innerNodes.forEach(function(el) {
+          el.style.transform = '';
+          el.style.transformOrigin = '';
+        });
+      }
+    }
+    applySlideScale();
+    window.addEventListener('resize', applySlideScale);
+  })();
+</script>
 
 </body>
 </html>

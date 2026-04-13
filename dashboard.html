@@ -452,6 +452,101 @@ body::before {
 .dash-box-arrow { font-size:11px; font-family:'DM Mono',monospace; color:#555555; margin-top:5px; text-align:right; letter-spacing:0.08em; transition:color 0.2s; }
 .dash-box:hover .dash-box-arrow { color:#aaaaaa; }
 
+/* ===== SUPPLIER HUB ===== */
+.sh-section { margin-bottom:0; }
+.sh-section-title { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:#666666; margin-bottom:12px; }
+.sh-divider { border:none; border-top:1px solid var(--border-subtle); margin:22px 0; }
+.sh-add-btn { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; padding:7px 14px; border:1px solid var(--border-mid); border-radius:var(--radius-sm); background:transparent; cursor:pointer; color:#cccccc; transition:all 0.2s; margin-bottom:14px; }
+.sh-add-btn:hover { background:rgba(var(--accent-rgb),0.12); border-color:rgba(var(--accent-rgb),0.4); color:var(--white); }
+.sh-inline-form { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:16px; margin-bottom:14px; display:none; }
+.sh-inline-form.open { display:block; }
+.sh-form-row { margin-bottom:10px; }
+.sh-form-row label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#aaaaaa; display:block; margin-bottom:5px; }
+.sh-form-row input, .sh-form-row select, .sh-form-row textarea { width:100%; padding:9px 12px; font-size:13px; font-family:'Inter',sans-serif; font-weight:500; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); background:#1a1a1a; color:var(--white); outline:none; transition:border-color 0.2s; }
+.sh-form-row input:focus, .sh-form-row select:focus, .sh-form-row textarea:focus { border-color:var(--purple); }
+.sh-form-row select option { background:#1a1a1a; }
+.sh-form-row textarea { resize:vertical; min-height:64px; }
+.sh-form-actions { display:flex; gap:8px; margin-top:12px; }
+.sh-save-btn { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; padding:7px 14px; border:none; border-radius:var(--radius-sm); background:var(--grad); cursor:pointer; color:#fff; transition:opacity 0.2s; }
+.sh-save-btn:hover { opacity:0.85; }
+.sh-cancel-btn { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; padding:7px 14px; border:1px solid var(--border-mid); border-radius:var(--radius-sm); background:transparent; cursor:pointer; color:#aaaaaa; transition:all 0.2s; }
+.sh-cancel-btn:hover { color:var(--white); }
+/* Supplier cards */
+.sh-supplier-card { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px 16px; margin-bottom:8px; }
+.sh-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:8px; }
+.sh-card-name { font-size:14px; font-weight:700; color:var(--white); }
+.sh-card-badges { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:6px; }
+.sh-badge { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.08em; padding:2px 8px; border-radius:20px; font-weight:500; }
+.sh-badge-platform { background:rgba(124,58,237,0.18); color:#a78bfa; border:1px solid rgba(124,58,237,0.3); }
+.sh-badge-active   { background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.3); }
+.sh-badge-sampling { background:rgba(245,158,11,0.15); color:#fbbf24; border:1px solid rgba(245,158,11,0.3); }
+.sh-badge-negotiating { background:rgba(6,182,212,0.15); color:#22d3ee; border:1px solid rgba(6,182,212,0.3); }
+.sh-badge-onhold   { background:rgba(100,100,100,0.15); color:#888888; border:1px solid rgba(100,100,100,0.3); }
+.sh-card-info { font-size:12px; color:#aaaaaa; line-height:1.6; }
+.sh-card-actions { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+.sh-card-btn { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; padding:5px 10px; border:1px solid var(--border-mid); border-radius:var(--radius-sm); background:transparent; cursor:pointer; color:#aaaaaa; transition:all 0.2s; }
+.sh-card-btn:hover { color:var(--white); background:rgba(255,255,255,0.06); }
+.sh-card-btn.danger:hover { color:#f87171; border-color:rgba(248,113,113,0.4); background:rgba(248,113,113,0.08); }
+/* Order / Sample table */
+.sh-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; margin-bottom:10px; }
+.sh-table { width:100%; border-collapse:collapse; min-width:560px; font-size:12px; }
+.sh-table th { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:#666666; padding:8px 10px; text-align:left; border-bottom:1px solid var(--border-subtle); white-space:nowrap; }
+.sh-table td { padding:9px 10px; border-bottom:1px solid rgba(255,255,255,0.04); color:#cccccc; vertical-align:top; }
+.sh-table tr:last-child td { border-bottom:none; }
+.sh-table tr:hover td { background:rgba(255,255,255,0.02); }
+.sh-status-ordered    { color:#a78bfa; }
+.sh-status-inprod     { color:#fbbf24; }
+.sh-status-shipped    { color:#22d3ee; }
+.sh-status-delivered  { color:#34d399; }
+.sh-status-requested  { color:#a78bfa; }
+.sh-status-intransit  { color:#fbbf24; }
+.sh-status-received   { color:#22d3ee; }
+.sh-status-approved   { color:#34d399; }
+.sh-status-rejected   { color:#f87171; }
+/* Cost calculator */
+.sh-calc-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.sh-calc-results { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:16px; margin-bottom:12px; }
+.sh-calc-row { display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.sh-calc-row:last-child { border-bottom:none; }
+.sh-calc-label { font-size:13px; color:#aaaaaa; }
+.sh-calc-val { font-size:15px; font-weight:700; background:linear-gradient(90deg,#f59e0b,#f97316); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+/* Packaging notes */
+.sh-notes-area { width:100%; min-height:120px; padding:12px 14px; font-size:13px; font-family:'Inter',sans-serif; font-weight:500; border:1px solid var(--border-subtle); border-radius:var(--radius-md); background:var(--bg-card); color:var(--white); outline:none; resize:vertical; transition:border-color 0.2s; line-height:1.65; }
+.sh-notes-area:focus { border-color:var(--purple); }
+/* Reorder reminders */
+.sh-reminder-row { display:flex; align-items:center; gap:8px; padding:9px 12px; background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); margin-bottom:6px; }
+.sh-reminder-row.sh-warn { border-color:rgba(245,158,11,0.45); background:rgba(245,158,11,0.06); }
+.sh-reminder-row.sh-overdue { border-color:rgba(248,113,113,0.45); background:rgba(248,113,113,0.06); }
+.sh-reminder-product { flex:1; font-size:13px; color:var(--white); }
+.sh-reminder-date { font-family:'DM Mono',monospace; font-size:11px; color:#888888; }
+.sh-reminder-row.sh-warn .sh-reminder-date { color:#fbbf24; }
+.sh-reminder-row.sh-overdue .sh-reminder-date { color:#f87171; }
+/* Light mode overrides for supplier hub */
+[data-theme="light"] .sh-inline-form { background:#f5f4f0; border-color:#e0ddd8; }
+[data-theme="light"] .sh-form-row input, [data-theme="light"] .sh-form-row select, [data-theme="light"] .sh-form-row textarea { background:#ffffff; border-color:#d8d6d0; color:#111111; }
+[data-theme="light"] .sh-form-row select option { background:#ffffff; color:#111111; }
+[data-theme="light"] .sh-supplier-card, [data-theme="light"] .sh-calc-results { background:#ffffff; border-color:#e0ddd8; }
+[data-theme="light"] .sh-card-name { color:#111111; }
+[data-theme="light"] .sh-card-info { color:#555555; }
+[data-theme="light"] .sh-card-btn { color:#555555; border-color:#d8d6d0; }
+[data-theme="light"] .sh-table th { color:#888888; border-color:#e0ddd8; }
+[data-theme="light"] .sh-table td { color:#333333; border-color:#f0eee9; }
+[data-theme="light"] .sh-calc-label { color:#555555; }
+[data-theme="light"] .sh-notes-area { background:#ffffff; border-color:#d8d6d0; color:#111111; }
+[data-theme="light"] .sh-reminder-row { background:#ffffff; border-color:#e0ddd8; }
+[data-theme="light"] .sh-reminder-product { color:#111111; }
+/* Templates section in Resources */
+.tmpl-card { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px 16px; margin-bottom:8px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.tmpl-info { flex:1; min-width:0; }
+.tmpl-name { font-size:14px; font-weight:700; color:var(--white); margin-bottom:3px; }
+.tmpl-desc { font-size:12px; color:#888888; }
+.tmpl-dl-btn { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 12px; border:1px solid var(--border-mid); border-radius:var(--radius-sm); background:transparent; cursor:pointer; color:#aaaaaa; white-space:nowrap; transition:all 0.2s; flex-shrink:0; }
+.tmpl-dl-btn:hover { background:rgba(245,158,11,0.12); border-color:rgba(245,158,11,0.4); color:#fbbf24; }
+[data-theme="light"] .tmpl-card { background:#ffffff; border-color:#e0ddd8; }
+[data-theme="light"] .tmpl-name { color:#111111; }
+[data-theme="light"] .tmpl-desc { color:#888888; }
+[data-theme="light"] .tmpl-dl-btn { border-color:#d8d6d0; color:#555555; }
+
 /* ===== SIDE PANEL OVERLAY ===== */
 .panel-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:400; opacity:0; pointer-events:none; transition:opacity 0.25s ease; backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px); }
 .panel-overlay.visible { opacity:1; pointer-events:auto; }
@@ -2082,6 +2177,20 @@ body::before {
         <div class="dash-box-last" id="last-panel-email">not opened yet</div>
         <div class="dash-box-arrow">Open →</div>
       </div>
+      <div class="dash-box" id="box-supplier" data-panel="panel-supplier" onclick="openPanel('panel-supplier')">
+        <div class="dash-box-icon">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="supplierGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#f97316"/></linearGradient></defs>
+            <rect x="2" y="9" width="22" height="15" rx="2" stroke="url(#supplierGrad)" stroke-width="1.8" fill="none"/>
+            <path d="M8 9V6a5 5 0 0 1 10 0v3" stroke="url(#supplierGrad)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+            <path d="M2 14h22" stroke="url(#supplierGrad)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="dash-box-title">Supplier Hub</div>
+        <div class="dash-box-desc">Manage suppliers, orders, and costs.</div>
+        <div class="dash-box-last" id="last-panel-supplier">not opened yet</div>
+        <div class="dash-box-arrow">Open →</div>
+      </div>
       <div class="dash-box" id="box-moodboard" data-panel="panel-moodboard" onclick="openPanel('panel-moodboard')">
         <div class="dash-box-icon">
           <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
@@ -2491,6 +2600,158 @@ body::before {
   </div>
 </div>
 
+<!-- ===== SIDE PANEL: Supplier Hub ===== -->
+<div class="side-panel" id="panel-supplier">
+  <div class="panel-header">
+    <span class="panel-title">Supplier Hub</span>
+    <button class="panel-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="panel-body">
+
+    <!-- SECTION 1: My Suppliers -->
+    <div class="sh-section">
+      <div class="sh-section-title">My Suppliers</div>
+      <button class="sh-add-btn" onclick="shToggleForm('sh-supplier-form')">+ Add Supplier</button>
+      <div class="sh-inline-form" id="sh-supplier-form">
+        <div class="sh-form-row"><label>Supplier Name</label><input type="text" id="sh-s-name" placeholder="e.g. Sunrise Trading Co." /></div>
+        <div class="sh-form-row"><label>Platform</label>
+          <select id="sh-s-platform"><option>Alibaba</option><option>Faire</option><option>Local</option><option>Other</option></select>
+        </div>
+        <div class="sh-form-row"><label>Product Category</label><input type="text" id="sh-s-product" placeholder="e.g. Candles, Apparel" /></div>
+        <div class="sh-form-row"><label>Contact Info</label><input type="text" id="sh-s-contact" placeholder="email or WeChat" /></div>
+        <div class="sh-form-row"><label>Status</label>
+          <select id="sh-s-status"><option>Active</option><option>Sampling</option><option>Negotiating</option><option>On Hold</option></select>
+        </div>
+        <div class="sh-form-row"><label>Notes</label><textarea id="sh-s-notes" placeholder="MOQ, lead time, pricing notes…"></textarea></div>
+        <div class="sh-form-actions">
+          <button class="sh-save-btn" onclick="shSaveSupplier()">Save</button>
+          <button class="sh-cancel-btn" onclick="shToggleForm('sh-supplier-form')">Cancel</button>
+        </div>
+      </div>
+      <div id="sh-supplier-list"></div>
+    </div>
+
+    <hr class="sh-divider">
+
+    <!-- SECTION 2: Order Tracker -->
+    <div class="sh-section">
+      <div class="sh-section-title">Order Tracker</div>
+      <button class="sh-add-btn" onclick="shToggleForm('sh-order-form')">+ Add Order</button>
+      <div class="sh-inline-form" id="sh-order-form">
+        <div class="sh-form-row"><label>Product</label><input type="text" id="sh-o-product" placeholder="Product name" /></div>
+        <div class="sh-form-row"><label>Supplier</label><input type="text" id="sh-o-supplier" placeholder="Supplier name" /></div>
+        <div class="sh-form-row"><label>Units</label><input type="number" id="sh-o-units" placeholder="0" /></div>
+        <div class="sh-form-row"><label>Unit Cost ($)</label><input type="number" id="sh-o-unitcost" placeholder="0.00" step="0.01" /></div>
+        <div class="sh-form-row"><label>Deposit Paid ($)</label><input type="number" id="sh-o-deposit" placeholder="0.00" step="0.01" /></div>
+        <div class="sh-form-row"><label>Order Date</label><input type="date" id="sh-o-orderdate" /></div>
+        <div class="sh-form-row"><label>ETA</label><input type="date" id="sh-o-eta" /></div>
+        <div class="sh-form-row"><label>Status</label>
+          <select id="sh-o-status"><option>Ordered</option><option>In Production</option><option>Shipped</option><option>Delivered</option></select>
+        </div>
+        <div class="sh-form-actions">
+          <button class="sh-save-btn" onclick="shSaveOrder()">Save</button>
+          <button class="sh-cancel-btn" onclick="shToggleForm('sh-order-form')">Cancel</button>
+        </div>
+      </div>
+      <div class="sh-table-wrap">
+        <table class="sh-table" id="sh-order-table">
+          <thead><tr><th>Product</th><th>Supplier</th><th>Units</th><th>Unit $</th><th>Total</th><th>Deposit</th><th>Balance</th><th>Order Date</th><th>ETA</th><th>Status</th><th></th></tr></thead>
+          <tbody id="sh-order-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="sh-divider">
+
+    <!-- SECTION 3: Sample Tracker -->
+    <div class="sh-section">
+      <div class="sh-section-title">Sample Tracker</div>
+      <button class="sh-add-btn" onclick="shToggleForm('sh-sample-form')">+ Add Sample</button>
+      <div class="sh-inline-form" id="sh-sample-form">
+        <div class="sh-form-row"><label>Product</label><input type="text" id="sh-sm-product" placeholder="Product name" /></div>
+        <div class="sh-form-row"><label>Supplier</label><input type="text" id="sh-sm-supplier" placeholder="Supplier name" /></div>
+        <div class="sh-form-row"><label>Date Requested</label><input type="date" id="sh-sm-requested" /></div>
+        <div class="sh-form-row"><label>Date Received</label><input type="date" id="sh-sm-received" /></div>
+        <div class="sh-form-row"><label>Status</label>
+          <select id="sh-sm-status"><option>Requested</option><option>In Transit</option><option>Received</option><option>Approved</option><option>Rejected</option></select>
+        </div>
+        <div class="sh-form-row"><label>Notes</label><input type="text" id="sh-sm-notes" placeholder="quality notes, defects, etc." /></div>
+        <div class="sh-form-actions">
+          <button class="sh-save-btn" onclick="shSaveSample()">Save</button>
+          <button class="sh-cancel-btn" onclick="shToggleForm('sh-sample-form')">Cancel</button>
+        </div>
+      </div>
+      <div class="sh-table-wrap">
+        <table class="sh-table" id="sh-sample-table">
+          <thead><tr><th>Product</th><th>Supplier</th><th>Requested</th><th>Received</th><th>Status</th><th>Notes</th><th></th></tr></thead>
+          <tbody id="sh-sample-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="sh-divider">
+
+    <!-- SECTION 4: Cost Calculator -->
+    <div class="sh-section">
+      <div class="sh-section-title">Cost Calculator</div>
+      <div class="sh-calc-grid">
+        <div class="sh-form-row"><label>Unit Cost ($)</label><input type="number" id="sh-c-unit" placeholder="0.00" step="0.01" oninput="shCalc()" /></div>
+        <div class="sh-form-row"><label>Shipping / Unit ($)</label><input type="number" id="sh-c-ship" placeholder="0.00" step="0.01" oninput="shCalc()" /></div>
+        <div class="sh-form-row"><label>Duties (%)</label><input type="number" id="sh-c-duties" placeholder="0" step="0.1" oninput="shCalc()" /></div>
+        <div class="sh-form-row"><label>Packaging / Unit ($)</label><input type="number" id="sh-c-pack" placeholder="0.00" step="0.01" oninput="shCalc()" /></div>
+      </div>
+      <div class="sh-calc-results" id="sh-calc-results">
+        <div class="sh-calc-row"><span class="sh-calc-label">Landed Cost / Unit</span><span class="sh-calc-val" id="sh-r-landed">—</span></div>
+        <div class="sh-calc-row"><span class="sh-calc-label">Retail at 3x</span><span class="sh-calc-val" id="sh-r-3x">—</span></div>
+        <div class="sh-calc-row"><span class="sh-calc-label">Retail at 4x</span><span class="sh-calc-val" id="sh-r-4x">—</span></div>
+        <div class="sh-calc-row"><span class="sh-calc-label">Margin at 3x</span><span class="sh-calc-val" id="sh-r-m3">—</span></div>
+        <div class="sh-calc-row"><span class="sh-calc-label">Margin at 4x</span><span class="sh-calc-val" id="sh-r-m4">—</span></div>
+      </div>
+      <button class="sh-card-btn" onclick="shCopyCalc(this)">Copy Results</button>
+    </div>
+
+    <hr class="sh-divider">
+
+    <!-- SECTION 5: Supplier Prompt Pack -->
+    <div class="sh-section">
+      <div class="sh-section-title">Supplier Prompts</div>
+      <div class="prompt-box"><div class="prompt-label">First Contact</div><div class="prompt-text">Write a professional first message to a supplier on Alibaba for [product]. Ask about minimum order quantity, pricing tiers, sample availability, and lead times. Concise and professional.</div><button class="copy-btn" onclick="copyRaw(this,'Write a professional first message to a supplier on Alibaba for [product]. Ask about minimum order quantity, pricing tiers, sample availability, and lead times. Concise and professional.')">copy prompt</button></div>
+      <div class="prompt-box"><div class="prompt-label">Sample Request</div><div class="prompt-text">Write a message requesting a sample from a supplier I have already contacted. Product: [product]. Confirm sample cost, shipping method, and timeline.</div><button class="copy-btn" onclick="copyRaw(this,'Write a message requesting a sample from a supplier I have already contacted. Product: [product]. Confirm sample cost, shipping method, and timeline.')">copy prompt</button></div>
+      <div class="prompt-box"><div class="prompt-label">Price Negotiation</div><div class="prompt-text">Write a polite but firm price negotiation message. Current quoted price: [price]. Negotiate down 10-15% based on order volume. Respectful tone.</div><button class="copy-btn" onclick="copyRaw(this,'Write a polite but firm price negotiation message. Current quoted price: [price]. Negotiate down 10-15% based on order volume. Respectful tone.')">copy prompt</button></div>
+      <div class="prompt-box"><div class="prompt-label">Follow Up</div><div class="prompt-text">Write a follow up message to a supplier who has not responded in 5 days. Short, friendly, professional.</div><button class="copy-btn" onclick="copyRaw(this,'Write a follow up message to a supplier who has not responded in 5 days. Short, friendly, professional.')">copy prompt</button></div>
+      <div class="prompt-box"><div class="prompt-label">Bulk Order Confirmation</div><div class="prompt-text">Write a message confirming a bulk order. Include product specs, quantity, agreed price, payment terms, packaging requirements, and requested delivery date.</div><button class="copy-btn" onclick="copyRaw(this,'Write a message confirming a bulk order. Include product specs, quantity, agreed price, payment terms, packaging requirements, and requested delivery date.')">copy prompt</button></div>
+      <div class="prompt-box"><div class="prompt-label">Dispute or Issue</div><div class="prompt-text">Write a professional message about a quality issue with received goods. Problem: [describe issue]. Seeking replacement, refund, or discount on next order.</div><button class="copy-btn" onclick="copyRaw(this,'Write a professional message about a quality issue with received goods. Problem: [describe issue]. Seeking replacement, refund, or discount on next order.')">copy prompt</button></div>
+      <div class="prompt-box"><div class="prompt-label">Packaging Brief</div><div class="prompt-text">Write a packaging brief describing exactly how I want my products packaged. Brand: [brand]. Product: [product]. Include outer box, inner tissue, insert card, mailer bag, seal sticker.</div><button class="copy-btn" onclick="copyRaw(this,'Write a packaging brief describing exactly how I want my products packaged. Brand: [brand]. Product: [product]. Include outer box, inner tissue, insert card, mailer bag, seal sticker.')">copy prompt</button></div>
+      <div class="prompt-box"><div class="prompt-label">Reorder</div><div class="prompt-text">Write a reorder message to an existing supplier. Product: [product]. Previous order quantity: [qty]. Confirm current pricing and lead time.</div><button class="copy-btn" onclick="copyRaw(this,'Write a reorder message to an existing supplier. Product: [product]. Previous order quantity: [qty]. Confirm current pricing and lead time.')">copy prompt</button></div>
+    </div>
+
+    <hr class="sh-divider">
+
+    <!-- SECTION 6: Packaging Notes -->
+    <div class="sh-section">
+      <div class="sh-section-title">Packaging Notes</div>
+      <textarea class="sh-notes-area" id="sh-pkg-notes" placeholder="Document your packaging setup here — box type, tissue color, insert card copy, mailer style, seal design." oninput="shSavePkgNotes()"></textarea>
+      <div style="display:flex;justify-content:flex-end;margin-top:8px">
+        <button class="sh-card-btn" onclick="shCopyPkgNotes(this)">Copy Notes</button>
+      </div>
+    </div>
+
+    <hr class="sh-divider">
+
+    <!-- SECTION 7: Reorder Reminders -->
+    <div class="sh-section">
+      <div class="sh-section-title">Reorder Reminders</div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <input type="text" id="sh-rem-product" placeholder="Product name" style="flex:1;min-width:120px;padding:9px 12px;font-size:13px;font-family:'Inter',sans-serif;font-weight:500;border:1px solid var(--border-subtle);border-radius:var(--radius-sm);background:#1a1a1a;color:var(--white);outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--purple)'" onblur="this.style.borderColor=''" />
+        <input type="date" id="sh-rem-date" style="padding:9px 12px;font-size:13px;font-family:'Inter',sans-serif;font-weight:500;border:1px solid var(--border-subtle);border-radius:var(--radius-sm);background:#1a1a1a;color:var(--white);outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--purple)'" onblur="this.style.borderColor=''" />
+        <button class="sh-add-btn" style="margin-bottom:0" onclick="shAddReminder()">+ Add</button>
+      </div>
+      <div id="sh-reminder-list"></div>
+    </div>
+
+  </div>
+</div>
+
 <!-- ===== SIDE PANEL: Resources ===== -->
 <div class="side-panel" id="panel-resources">
   <div class="panel-header">
@@ -2524,6 +2785,13 @@ body::before {
       <div class="resource-section-title">Reviews</div>
       <div class="resource-card" onclick="window.open('https://loox.io','_blank')"><div class="resource-name">Loox</div><div class="resource-url">loox.io</div><div class="resource-desc">Photo review app for Shopify. Builds trust fast.</div></div>
     </div>
+    <hr class="sh-divider" style="margin:18px 0">
+    <div class="resource-section-title" style="background:linear-gradient(90deg,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:12px">Templates</div>
+    <div class="tmpl-card"><div class="tmpl-info"><div class="tmpl-name">Inventory Tracker</div><div class="tmpl-desc">Products, SKUs, stock levels, reorder points, and supplier info.</div></div><button class="tmpl-dl-btn" onclick="dlCsv('inventory-tracker')">Download</button></div>
+    <div class="tmpl-card"><div class="tmpl-info"><div class="tmpl-name">Order History</div><div class="tmpl-desc">Full order log — units, costs, deposits, ETAs, and delivery status.</div></div><button class="tmpl-dl-btn" onclick="dlCsv('order-history')">Download</button></div>
+    <div class="tmpl-card"><div class="tmpl-info"><div class="tmpl-name">Cost & Pricing Calculator</div><div class="tmpl-desc">Landed cost, retail pricing at 3x and 4x, and margin analysis.</div></div><button class="tmpl-dl-btn" onclick="dlCsv('cost-pricing')">Download</button></div>
+    <div class="tmpl-card"><div class="tmpl-info"><div class="tmpl-name">Sales Tracker</div><div class="tmpl-desc">Daily sales by platform — revenue, refunds, and net income.</div></div><button class="tmpl-dl-btn" onclick="dlCsv('sales-tracker')">Download</button></div>
+    <div class="tmpl-card"><div class="tmpl-info"><div class="tmpl-name">Expense Tracker</div><div class="tmpl-desc">Business expenses by category — inventory, shipping, marketing, and more.</div></div><button class="tmpl-dl-btn" onclick="dlCsv('expense-tracker')">Download</button></div>
   </div>
 </div>
 
@@ -3355,7 +3623,7 @@ function refreshLastOpenedLabel(panelId) {
 }
 
 function refreshLastOpenedLabels() {
-  const panels = ['panel-brandkit','panel-prompts','panel-designer','panel-goodlooks','panel-checklist','panel-resources','panel-roadmap','panel-email','panel-moodboard'];
+  const panels = ['panel-brandkit','panel-prompts','panel-designer','panel-goodlooks','panel-checklist','panel-resources','panel-roadmap','panel-email','panel-moodboard','panel-supplier'];
   panels.forEach(id => refreshLastOpenedLabel(id));
 }
 
@@ -3471,6 +3739,7 @@ function openPanel(id) {
   if (id === 'panel-moodboard')  buildMoodboardPanel();
   if (id === 'panel-customize')  buildCustomizePanel();
   if (id === 'panel-goodlooks')  inspoRenderUserCards();
+  if (id === 'panel-supplier') { shRenderSuppliers(); shRenderOrders(); shRenderSamples(); shLoadPkgNotes(); shRenderReminders(); }
 
   // Track last opened timestamp
   recordPanelOpen(id);
@@ -4906,6 +5175,372 @@ function raf(time) {
 }
 
 requestAnimationFrame(raf);
+
+/* ===== SUPPLIER HUB ===== */
+
+function shToggleForm(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('open');
+}
+
+/* ---- My Suppliers ---- */
+function shGetSuppliers() { try { return JSON.parse(localStorage.getItem('sh_suppliers') || '[]'); } catch(e){ return []; } }
+function shSetSuppliers(d) { localStorage.setItem('sh_suppliers', JSON.stringify(d)); }
+
+function shSaveSupplier() {
+  const name    = document.getElementById('sh-s-name').value.trim();
+  if (!name) { alert('Please enter a supplier name.'); return; }
+  const data = shGetSuppliers();
+  data.push({
+    id: Date.now(),
+    name,
+    platform: document.getElementById('sh-s-platform').value,
+    product:  document.getElementById('sh-s-product').value.trim(),
+    contact:  document.getElementById('sh-s-contact').value.trim(),
+    status:   document.getElementById('sh-s-status').value,
+    notes:    document.getElementById('sh-s-notes').value.trim()
+  });
+  shSetSuppliers(data);
+  ['sh-s-name','sh-s-product','sh-s-contact','sh-s-notes'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  shToggleForm('sh-supplier-form');
+  shRenderSuppliers();
+}
+
+function shDeleteSupplier(id) {
+  shSetSuppliers(shGetSuppliers().filter(s => s.id !== id));
+  shRenderSuppliers();
+}
+
+function shStatusClass(status) {
+  const map = { 'Active':'sh-badge-active','Sampling':'sh-badge-sampling','Negotiating':'sh-badge-negotiating','On Hold':'sh-badge-onhold' };
+  return map[status] || '';
+}
+
+function shRenderSuppliers() {
+  const list = document.getElementById('sh-supplier-list');
+  if (!list) return;
+  const data = shGetSuppliers();
+  if (!data.length) { list.innerHTML = '<div style="font-size:13px;color:#555;padding:8px 0">No suppliers yet. Add your first one above.</div>'; return; }
+  list.innerHTML = data.map(s => `
+    <div class="sh-supplier-card">
+      <div class="sh-card-top">
+        <div class="sh-card-name">${shEsc(s.name)}</div>
+      </div>
+      <div class="sh-card-badges">
+        <span class="sh-badge sh-badge-platform">${shEsc(s.platform)}</span>
+        <span class="sh-badge ${shStatusClass(s.status)}">${shEsc(s.status)}</span>
+      </div>
+      <div class="sh-card-info">
+        ${s.product ? `<div>Category: ${shEsc(s.product)}</div>` : ''}
+        ${s.contact ? `<div>Contact: ${shEsc(s.contact)}</div>` : ''}
+        ${s.notes   ? `<div style="margin-top:4px;color:#777">${shEsc(s.notes)}</div>` : ''}
+      </div>
+      <div class="sh-card-actions">
+        <button class="sh-card-btn" onclick="shCopyContact(${s.id})">Copy Contact</button>
+        <button class="sh-card-btn danger" onclick="shDeleteSupplier(${s.id})">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function shCopyContact(id) {
+  const s = shGetSuppliers().find(x => x.id === id);
+  if (!s) return;
+  const text = `Supplier: ${s.name}\nPlatform: ${s.platform}\nContact: ${s.contact || '—'}\nCategory: ${s.product || '—'}\nStatus: ${s.status}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector(`[onclick="shCopyContact(${id})"]`);
+    if (btn) { btn.textContent = 'Copied!'; setTimeout(() => { btn.textContent = 'Copy Contact'; }, 1500); }
+  });
+}
+
+function shEsc(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ---- Order Tracker ---- */
+function shGetOrders() { try { return JSON.parse(localStorage.getItem('sh_orders') || '[]'); } catch(e){ return []; } }
+function shSetOrders(d) { localStorage.setItem('sh_orders', JSON.stringify(d)); }
+
+function shSaveOrder() {
+  const product = document.getElementById('sh-o-product').value.trim();
+  if (!product) { alert('Please enter a product name.'); return; }
+  const units    = parseFloat(document.getElementById('sh-o-units').value)    || 0;
+  const unitcost = parseFloat(document.getElementById('sh-o-unitcost').value) || 0;
+  const deposit  = parseFloat(document.getElementById('sh-o-deposit').value)  || 0;
+  const data = shGetOrders();
+  data.push({
+    id: Date.now(),
+    product,
+    supplier:  document.getElementById('sh-o-supplier').value.trim(),
+    units, unitcost,
+    total:     units * unitcost,
+    deposit,
+    balance:   (units * unitcost) - deposit,
+    orderdate: document.getElementById('sh-o-orderdate').value,
+    eta:       document.getElementById('sh-o-eta').value,
+    status:    document.getElementById('sh-o-status').value
+  });
+  shSetOrders(data);
+  ['sh-o-product','sh-o-supplier','sh-o-units','sh-o-unitcost','sh-o-deposit','sh-o-orderdate','sh-o-eta'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  shToggleForm('sh-order-form');
+  shRenderOrders();
+}
+
+function shDeleteOrder(id) { shSetOrders(shGetOrders().filter(o => o.id !== id)); shRenderOrders(); }
+
+function shOrderStatusClass(s) {
+  const map = { 'Ordered':'sh-status-ordered','In Production':'sh-status-inprod','Shipped':'sh-status-shipped','Delivered':'sh-status-delivered' };
+  return map[s] || '';
+}
+
+function shRenderOrders() {
+  const tbody = document.getElementById('sh-order-body');
+  if (!tbody) return;
+  const data = shGetOrders();
+  if (!data.length) { tbody.innerHTML = '<tr><td colspan="11" style="color:#555;font-size:12px;padding:12px 10px">No orders yet.</td></tr>'; return; }
+  tbody.innerHTML = data.map(o => `
+    <tr>
+      <td>${shEsc(o.product)}</td>
+      <td>${shEsc(o.supplier)}</td>
+      <td>${o.units}</td>
+      <td>$${o.unitcost.toFixed(2)}</td>
+      <td>$${o.total.toFixed(2)}</td>
+      <td>$${o.deposit.toFixed(2)}</td>
+      <td>$${o.balance.toFixed(2)}</td>
+      <td>${o.orderdate||'—'}</td>
+      <td>${o.eta||'—'}</td>
+      <td class="${shOrderStatusClass(o.status)}">${shEsc(o.status)}</td>
+      <td style="white-space:nowrap">
+        <button class="sh-card-btn" style="margin-bottom:4px" onclick="shCopyOrder(${o.id})">Copy</button>
+        <button class="sh-card-btn danger" onclick="shDeleteOrder(${o.id})">Del</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function shCopyOrder(id) {
+  const o = shGetOrders().find(x => x.id === id);
+  if (!o) return;
+  const text = `Order Summary\nProduct: ${o.product}\nSupplier: ${o.supplier||'—'}\nUnits: ${o.units}\nUnit Cost: $${o.unitcost.toFixed(2)}\nTotal: $${o.total.toFixed(2)}\nDeposit: $${o.deposit.toFixed(2)}\nBalance Due: $${o.balance.toFixed(2)}\nOrder Date: ${o.orderdate||'—'}\nETA: ${o.eta||'—'}\nStatus: ${o.status}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector(`[onclick="shCopyOrder(${id})"]`);
+    if (btn) { btn.textContent = 'Copied!'; setTimeout(() => { btn.textContent = 'Copy'; }, 1500); }
+  });
+}
+
+/* ---- Sample Tracker ---- */
+function shGetSamples() { try { return JSON.parse(localStorage.getItem('sh_samples') || '[]'); } catch(e){ return []; } }
+function shSetSamples(d) { localStorage.setItem('sh_samples', JSON.stringify(d)); }
+
+function shSaveSample() {
+  const product = document.getElementById('sh-sm-product').value.trim();
+  if (!product) { alert('Please enter a product name.'); return; }
+  const data = shGetSamples();
+  data.push({
+    id: Date.now(),
+    product,
+    supplier:  document.getElementById('sh-sm-supplier').value.trim(),
+    requested: document.getElementById('sh-sm-requested').value,
+    received:  document.getElementById('sh-sm-received').value,
+    status:    document.getElementById('sh-sm-status').value,
+    notes:     document.getElementById('sh-sm-notes').value.trim()
+  });
+  shSetSamples(data);
+  ['sh-sm-product','sh-sm-supplier','sh-sm-requested','sh-sm-received','sh-sm-notes'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  shToggleForm('sh-sample-form');
+  shRenderSamples();
+}
+
+function shDeleteSample(id) { shSetSamples(shGetSamples().filter(s => s.id !== id)); shRenderSamples(); }
+
+function shSampleStatusClass(s) {
+  const map = { 'Requested':'sh-status-requested','In Transit':'sh-status-intransit','Received':'sh-status-received','Approved':'sh-status-approved','Rejected':'sh-status-rejected' };
+  return map[s] || '';
+}
+
+function shRenderSamples() {
+  const tbody = document.getElementById('sh-sample-body');
+  if (!tbody) return;
+  const data = shGetSamples();
+  if (!data.length) { tbody.innerHTML = '<tr><td colspan="7" style="color:#555;font-size:12px;padding:12px 10px">No samples yet.</td></tr>'; return; }
+  tbody.innerHTML = data.map(s => `
+    <tr>
+      <td>${shEsc(s.product)}</td>
+      <td>${shEsc(s.supplier)}</td>
+      <td>${s.requested||'—'}</td>
+      <td>${s.received||'—'}</td>
+      <td class="${shSampleStatusClass(s.status)}">${shEsc(s.status)}</td>
+      <td>${shEsc(s.notes)}</td>
+      <td style="white-space:nowrap">
+        <button class="sh-card-btn" style="margin-bottom:4px" onclick="shCopySample(${s.id})">Copy</button>
+        <button class="sh-card-btn danger" onclick="shDeleteSample(${s.id})">Del</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function shCopySample(id) {
+  const s = shGetSamples().find(x => x.id === id);
+  if (!s) return;
+  const text = `Sample Details\nProduct: ${s.product}\nSupplier: ${s.supplier||'—'}\nRequested: ${s.requested||'—'}\nReceived: ${s.received||'—'}\nStatus: ${s.status}\nNotes: ${s.notes||'—'}`;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector(`[onclick="shCopySample(${id})"]`);
+    if (btn) { btn.textContent = 'Copied!'; setTimeout(() => { btn.textContent = 'Copy'; }, 1500); }
+  });
+}
+
+/* ---- Cost Calculator ---- */
+function shCalc() {
+  const unit    = parseFloat(document.getElementById('sh-c-unit').value)   || 0;
+  const ship    = parseFloat(document.getElementById('sh-c-ship').value)   || 0;
+  const duties  = parseFloat(document.getElementById('sh-c-duties').value) || 0;
+  const pack    = parseFloat(document.getElementById('sh-c-pack').value)   || 0;
+  const duty$   = unit * (duties / 100);
+  const landed  = unit + ship + duty$ + pack;
+  const r3      = landed * 3;
+  const r4      = landed * 4;
+  const m3      = landed > 0 ? ((r3 - landed) / r3 * 100) : 0;
+  const m4      = landed > 0 ? ((r4 - landed) / r4 * 100) : 0;
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  set('sh-r-landed', `$${landed.toFixed(2)}`);
+  set('sh-r-3x',     `$${r3.toFixed(2)}`);
+  set('sh-r-4x',     `$${r4.toFixed(2)}`);
+  set('sh-r-m3',     `${m3.toFixed(1)}%`);
+  set('sh-r-m4',     `${m4.toFixed(1)}%`);
+}
+
+function shCopyCalc(btn) {
+  const get = id => { const el = document.getElementById(id); return el ? el.textContent : '—'; };
+  const unit   = document.getElementById('sh-c-unit').value   || '0';
+  const ship   = document.getElementById('sh-c-ship').value   || '0';
+  const duties = document.getElementById('sh-c-duties').value || '0';
+  const pack   = document.getElementById('sh-c-pack').value   || '0';
+  const text = `Cost Calculation\nUnit Cost: $${unit}\nShipping/Unit: $${ship}\nDuties: ${duties}%\nPackaging/Unit: $${pack}\n---\nLanded Cost/Unit: ${get('sh-r-landed')}\nRetail at 3x: ${get('sh-r-3x')}\nRetail at 4x: ${get('sh-r-4x')}\nMargin at 3x: ${get('sh-r-m3')}\nMargin at 4x: ${get('sh-r-m4')}`;
+  navigator.clipboard.writeText(text).then(() => {
+    if (btn) { const orig = btn.textContent; btn.textContent = 'Copied!'; setTimeout(() => { btn.textContent = orig; }, 1500); }
+  });
+}
+
+/* ---- Packaging Notes ---- */
+function shSavePkgNotes() {
+  const el = document.getElementById('sh-pkg-notes');
+  if (el) localStorage.setItem('sh_pkg_notes', el.value);
+}
+
+function shLoadPkgNotes() {
+  const el = document.getElementById('sh-pkg-notes');
+  if (el) el.value = localStorage.getItem('sh_pkg_notes') || '';
+}
+
+function shCopyPkgNotes(btn) {
+  const el = document.getElementById('sh-pkg-notes');
+  if (!el || !el.value.trim()) return;
+  navigator.clipboard.writeText(el.value).then(() => {
+    if (btn) { const orig = btn.textContent; btn.textContent = 'Copied!'; setTimeout(() => { btn.textContent = orig; }, 1500); }
+  });
+}
+
+/* ---- Reorder Reminders ---- */
+function shGetReminders() { try { return JSON.parse(localStorage.getItem('sh_reminders') || '[]'); } catch(e){ return []; } }
+function shSetReminders(d) { localStorage.setItem('sh_reminders', JSON.stringify(d)); }
+
+function shAddReminder() {
+  const product = document.getElementById('sh-rem-product').value.trim();
+  const date    = document.getElementById('sh-rem-date').value;
+  if (!product || !date) { alert('Enter a product name and date.'); return; }
+  const data = shGetReminders();
+  data.push({ id: Date.now(), product, date });
+  shSetReminders(data);
+  document.getElementById('sh-rem-product').value = '';
+  document.getElementById('sh-rem-date').value = '';
+  shRenderReminders();
+}
+
+function shDeleteReminder(id) { shSetReminders(shGetReminders().filter(r => r.id !== id)); shRenderReminders(); }
+
+function shRenderReminders() {
+  const list = document.getElementById('sh-reminder-list');
+  if (!list) return;
+  const data = shGetReminders().sort((a, b) => a.date.localeCompare(b.date));
+  if (!data.length) { list.innerHTML = '<div style="font-size:13px;color:#555;padding:8px 0">No reminders yet.</div>'; return; }
+  const today = new Date(); today.setHours(0,0,0,0);
+  list.innerHTML = data.map(r => {
+    const d = new Date(r.date + 'T00:00:00');
+    const diff = Math.ceil((d - today) / 86400000);
+    const cls = diff < 0 ? 'sh-overdue' : diff <= 30 ? 'sh-warn' : '';
+    const label = diff < 0 ? `${Math.abs(diff)}d overdue` : diff === 0 ? 'today' : `${diff}d away`;
+    return `<div class="sh-reminder-row ${cls}">
+      <span class="sh-reminder-product">${shEsc(r.product)}</span>
+      <span class="sh-reminder-date">${r.date} &nbsp;·&nbsp; ${label}</span>
+      <button class="sh-card-btn danger" onclick="shDeleteReminder(${r.id})">Del</button>
+    </div>`;
+  }).join('');
+}
+
+/* ===== CSV DOWNLOAD TEMPLATES ===== */
+function dlCsv(name) {
+  const templates = {
+    'inventory-tracker': {
+      filename: 'inventory-tracker.csv',
+      headers: ['Product Name','SKU','Category','Units In Stock','Reorder Level','Supplier','Unit Cost','Last Updated','Notes'],
+      rows: [
+        ['Lavender Soy Candle','CND-001','Candles','45','20','Sunrise Trading','4.50','2024-03-15','Best seller — reorder asap'],
+        ['Silk Scrunchie Set','SCR-002','Hair Accessories','120','50','Faire Wholesale','2.80','2024-03-12','3 colors in stock'],
+        ['Linen Pouch Bag','BAG-003','Packaging','200','75','Local Supplier','1.20','2024-03-10','Used for all candle orders']
+      ]
+    },
+    'order-history': {
+      filename: 'order-history.csv',
+      headers: ['Order ID','Product','Supplier','Units Ordered','Unit Cost','Total Cost','Deposit Paid','Balance Due','Order Date','ETA','Delivery Date','Status','Notes'],
+      rows: [
+        ['ORD-001','Lavender Soy Candle','Sunrise Trading','200','4.50','900.00','450.00','450.00','2024-02-01','2024-03-15','2024-03-14','Delivered','Arrived 1 day early'],
+        ['ORD-002','Silk Scrunchie Set','Faire Wholesale','500','2.80','1400.00','700.00','700.00','2024-02-20','2024-04-01','','In Production','2nd colorway added'],
+        ['ORD-003','Linen Pouch Bag','Local Supplier','1000','1.20','1200.00','600.00','600.00','2024-03-01','2024-03-28','','Shipped','Tracking: 1Z999AA1']
+      ]
+    },
+    'cost-pricing': {
+      filename: 'cost-pricing.csv',
+      headers: ['Product','Unit Cost','Shipping Per Unit','Duties Percent','Packaging Per Unit','Landed Cost','Retail at 3x','Retail at 4x','Margin at 3x','Margin at 4x'],
+      rows: [
+        ['Lavender Soy Candle','4.50','0.80','5','0.50','6.075','18.23','24.30','66.7%','75.0%'],
+        ['Silk Scrunchie Set','2.80','0.40','5','0.30','3.64','10.92','14.56','66.7%','75.0%'],
+        ['Linen Pouch Bag','1.20','0.20','0','0.10','1.50','4.50','6.00','66.7%','75.0%']
+      ]
+    },
+    'sales-tracker': {
+      filename: 'sales-tracker.csv',
+      headers: ['Date','Platform','Product','Units Sold','Sale Price','Revenue','Refunds','Net Revenue','Notes'],
+      rows: [
+        ['2024-03-15','Shopify','Lavender Soy Candle','8','28.00','224.00','0','224.00','Weekend sale spike'],
+        ['2024-03-16','TikTok Shop','Silk Scrunchie Set','22','18.00','396.00','18.00','378.00','1 return processed'],
+        ['2024-03-17','Shopify','Linen Pouch Bag','5','12.00','60.00','0','60.00','Add-on purchase']
+      ]
+    },
+    'expense-tracker': {
+      filename: 'expense-tracker.csv',
+      headers: ['Date','Category','Description','Amount','Payment Method','Receipt','Notes'],
+      rows: [
+        ['2024-03-01','Inventory','Candle wax bulk order','450.00','Credit Card','receipt-001.pdf','Net 30 terms'],
+        ['2024-03-05','Packaging','Custom mailer bags x500','95.00','Bank Transfer','receipt-002.pdf','Branded with logo'],
+        ['2024-03-10','Marketing','Meta Ads — March campaign','200.00','Credit Card','receipt-003.pdf','ROAS 3.2x']
+      ]
+    }
+  };
+  const tmpl = templates[name];
+  if (!tmpl) return;
+  const csvEscape = v => `"${String(v).replace(/"/g,'""')}"`;
+  const lines = [
+    tmpl.headers.map(csvEscape).join(','),
+    ...tmpl.rows.map(r => r.map(csvEscape).join(','))
+  ];
+  const blob = new Blob([lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = tmpl.filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
 </script>
 </body>
 </html>

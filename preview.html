@@ -608,65 +608,93 @@ html, body {
 }
 
 
-/* ================================================= */
-/* ========= BEHIND THE BUILD SERIES ============== */
-/* ================================================= */
+/* ======================================================= */
+/* ===== BEHIND THE BUILD — new visual language ========= */
+/* Warm amber-purple palette, bigger type, editorial feel */
+/* Clearly different from the cool-toned Tip series       */
+/* ======================================================= */
 
-/* Series pill badge */
+/* Warm amber→purple gradient text for BTB series */
+.btb-grad {
+  background: linear-gradient(135deg, #a855f7, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Series badge — squared corners vs tip series pill */
 .btb-badge {
   display: inline-flex;
   align-items: center;
-  padding: 7px 20px;
-  border-radius: 100px;
+  padding: 8px 20px;
+  border-radius: 8px;
   font-family: 'DM Mono', monospace;
   font-size: 12px;
-  letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.52);
   position: relative;
-  margin-bottom: 38px;
+  margin-bottom: 40px;
 }
 .btb-badge::before {
   content: '';
   position: absolute; inset: 0;
-  border-radius: 100px;
+  border-radius: 8px;
   border: 1px solid transparent;
-  background: linear-gradient(135deg, rgba(157,92,245,0.8), rgba(34,211,238,0.8)) border-box;
+  background: linear-gradient(135deg, rgba(168,85,247,0.75), rgba(245,158,11,0.75)) border-box;
   -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
 }
 
-/* Step mono label */
+/* Step label — bigger, more prominent */
 .btb-step {
   font-family: 'DM Mono', monospace;
-  font-size: 13px;
-  letter-spacing: 0.09em;
-  color: rgba(255,255,255,0.32);
-  margin-bottom: 14px;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 16px;
 }
 
-/* Slide headline */
+/* Headline — much bigger */
 .btb-headline {
-  font-size: 32px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.18;
   color: var(--white);
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 32px;
 }
 
-/* Muted caption below content */
+/* Muted caption — bigger */
 .btb-muted {
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 400;
-  color: rgba(255,255,255,0.32);
+  color: rgba(255,255,255,0.30);
   text-align: center;
-  line-height: 1.5;
-  margin-top: 22px;
+  line-height: 1.55;
+  margin-top: 24px;
 }
 
-/* Generic selected card gradient border mixin via ::before */
+/* Large faint step number — distinctive BTB background element */
+.btb-bg-num {
+  position: absolute;
+  font-size: 340px;
+  font-weight: 900;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(168,85,247,0.07);
+  bottom: 50px;
+  right: 20px;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+}
+
+/* Selected card border — warm amber-purple (replaces cool cyan version) */
 .sel-border {
   position: relative;
   overflow: hidden;
@@ -676,7 +704,7 @@ html, body {
   position: absolute; inset: 0;
   border-radius: inherit;
   border: 1.5px solid transparent;
-  background: linear-gradient(135deg, rgba(157,92,245,0.95), rgba(34,211,238,0.95)) border-box;
+  background: linear-gradient(135deg, rgba(168,85,247,0.95), rgba(245,158,11,0.95)) border-box;
   -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
@@ -688,137 +716,135 @@ html, body {
 .cat-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 11px;
+  gap: 13px;
   width: 100%;
 }
 .cat-card {
-  background: #111111;
-  border: 1px solid rgba(255,255,255,0.07);
+  background: #171717;
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 14px;
-  padding: 20px 14px 18px;
+  padding: 22px 14px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 9px;
+  gap: 11px;
   position: relative;
   overflow: hidden;
 }
 .cat-card-icon {
-  font-size: 20px;
+  font-size: 22px;
   line-height: 1;
-  color: rgba(255,255,255,0.45);
+  color: rgba(255,255,255,0.38);
 }
 .cat-card-label {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255,255,255,0.60);
   letter-spacing: 0.01em;
   text-align: center;
 }
-.cat-card.sel {
-  background: rgba(124,58,237,0.10);
-}
+.cat-card.sel { background: rgba(168,85,247,0.10); }
 .cat-card.sel .cat-card-icon,
-.cat-card.sel .cat-card-label { color: rgba(255,255,255,0.95); }
+.cat-card.sel .cat-card-label { color: rgba(255,255,255,0.96); }
 
 /* ── SLIDE B3: Vibe cards (2×2) ── */
 .vibe-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 13px;
+  gap: 14px;
   width: 100%;
 }
 .vibe-card {
-  background: #111111;
-  border: 1px solid rgba(255,255,255,0.07);
+  background: #171717;
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 16px;
-  padding: 22px 20px;
+  padding: 26px 22px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 5px;
+  gap: 7px;
   position: relative;
   overflow: hidden;
-  min-height: 96px;
+  min-height: 106px;
 }
 .vibe-card-name {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 700;
-  color: rgba(255,255,255,0.80);
+  color: rgba(255,255,255,0.75);
   letter-spacing: -0.01em;
 }
 .vibe-card-sub {
-  font-size: 12px;
+  font-size: 13px;
   font-family: 'DM Mono', monospace;
-  color: rgba(255,255,255,0.30);
-  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.28);
+  letter-spacing: 0.05em;
 }
-.vibe-card.sel { background: rgba(124,58,237,0.09); }
+.vibe-card.sel { background: rgba(168,85,247,0.09); }
 .vibe-card.sel .vibe-card-name { color: rgba(255,255,255,0.98); }
 
 /* ── SLIDE B4: Font cards ── */
 .font-row {
   display: flex;
-  gap: 11px;
+  gap: 13px;
   width: 100%;
-  margin-bottom: 12px;
+  margin-bottom: 13px;
 }
 .font-card {
   flex: 1;
-  background: #111111;
-  border: 1px solid rgba(255,255,255,0.07);
+  background: #171717;
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 14px;
-  padding: 18px 14px 16px;
+  padding: 22px 14px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   position: relative;
   overflow: hidden;
-  min-height: 96px;
+  min-height: 106px;
   justify-content: center;
 }
 .font-sample {
-  font-size: 26px;
+  font-size: 30px;
   font-weight: 800;
-  color: rgba(255,255,255,0.82);
+  color: rgba(255,255,255,0.78);
   letter-spacing: -0.03em;
   line-height: 1;
 }
 .font-sample.italic  { font-style: italic; font-weight: 700; }
-.font-sample.upper   { letter-spacing: -0.02em; text-transform: uppercase; font-size: 22px; }
+.font-sample.upper   { letter-spacing: -0.02em; text-transform: uppercase; font-size: 24px; }
 .font-card-lbl {
-  font-size: 10px;
+  font-size: 11px;
   font-family: 'DM Mono', monospace;
-  color: rgba(255,255,255,0.30);
-  letter-spacing: 0.07em;
+  color: rgba(255,255,255,0.28);
+  letter-spacing: 0.08em;
   text-align: center;
 }
-.font-card.sel { background: rgba(124,58,237,0.09); }
+.font-card.sel { background: rgba(168,85,247,0.09); }
 .font-card.sel .font-sample { color: rgba(255,255,255,0.98); }
 
 /* ── SLIDE B4: Color palette strips ── */
 .palette-row {
   display: flex;
-  gap: 11px;
+  gap: 13px;
   width: 100%;
 }
 .palette-card {
   flex: 1;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.08);
   position: relative;
 }
 .palette-card.sel {
   border: 1.5px solid transparent;
-  background: linear-gradient(#111, #111) padding-box,
-              linear-gradient(135deg, rgba(157,92,245,0.9), rgba(34,211,238,0.9)) border-box;
+  background: linear-gradient(#171717, #171717) padding-box,
+              linear-gradient(135deg, rgba(168,85,247,0.9), rgba(245,158,11,0.9)) border-box;
 }
 .palette-swatches {
   display: flex;
   flex-direction: column;
-  height: 76px;
+  height: 80px;
 }
 .psw { flex: 1; }
 .palette-name {
@@ -826,8 +852,8 @@ html, body {
   font-family: 'DM Mono', monospace;
   color: rgba(255,255,255,0.35);
   letter-spacing: 0.06em;
-  padding: 6px 7px;
-  background: #111111;
+  padding: 7px 7px;
+  background: #171717;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -836,16 +862,15 @@ html, body {
 
 /* ── SLIDE B5: Brand kit card ── */
 .bk-outer {
-  width: 72%;
+  width: 74%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  position: relative;
 }
 .bk-card {
-  background: #111111;
+  background: #161616;
   border-radius: 20px;
-  padding: 30px 26px;
+  padding: 32px 28px;
   position: relative;
   overflow: hidden;
 }
@@ -854,106 +879,106 @@ html, body {
   position: absolute; inset: 0;
   border-radius: 20px;
   border: 1px solid transparent;
-  background: linear-gradient(135deg, rgba(157,92,245,0.55), rgba(34,211,238,0.55)) border-box;
+  background: linear-gradient(135deg, rgba(168,85,247,0.5), rgba(245,158,11,0.5)) border-box;
   -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
   pointer-events: none;
 }
 .bk-brand-name {
-  font-size: 34px;
+  font-size: 38px;
   font-weight: 900;
   letter-spacing: -0.03em;
   line-height: 1;
-  background: var(--grad-text);
+  background: linear-gradient(135deg, #a855f7, #f59e0b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 .bk-swatches {
   display: flex;
-  gap: 10px;
-  margin-bottom: 18px;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 .bk-sw-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 .bk-sw {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  border-radius: 9px;
   border: 1px solid rgba(255,255,255,0.09);
 }
 .bk-sw-hex {
   font-family: 'DM Mono', monospace;
-  font-size: 8px;
+  font-size: 9px;
   color: rgba(255,255,255,0.28);
   letter-spacing: 0.03em;
 }
 .bk-fonts {
   display: flex;
-  gap: 28px;
-  margin-bottom: 16px;
+  gap: 32px;
+  margin-bottom: 18px;
 }
 .bk-font-group {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 .bk-font-lbl {
   font-family: 'DM Mono', monospace;
-  font-size: 9px;
+  font-size: 10px;
   color: rgba(255,255,255,0.28);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 .bk-font-name {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   color: rgba(255,255,255,0.82);
   letter-spacing: -0.01em;
 }
 .bk-tone {
-  font-size: 12px;
+  font-size: 13px;
   font-style: italic;
-  color: rgba(255,255,255,0.32);
+  color: rgba(255,255,255,0.30);
   line-height: 1.5;
   border-top: 1px solid rgba(255,255,255,0.07);
-  padding-top: 13px;
+  padding-top: 14px;
 }
 
 /* ── SLIDE B6: CTA ── */
 .btb-cta-hl {
-  font-size: 52px;
+  font-size: 62px;
   font-weight: 800;
   letter-spacing: -0.03em;
-  line-height: 1.15;
+  line-height: 1.1;
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 34px;
 }
 .btb-cta-sub {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
   color: var(--white);
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 .btb-cta-muted {
-  font-size: 16px;
+  font-size: 17px;
   color: rgba(255,255,255,0.38);
   text-align: center;
 }
 .btb-cta-logo {
   font-family: 'Inter', sans-serif;
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 900;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  background: var(--grad-text);
+  background: linear-gradient(135deg, #a855f7, #f59e0b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -962,6 +987,16 @@ html, body {
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
+}
+
+/* BTB gradient border for the CTA slide edge */
+.btb-6-border {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid;
+  border-image: linear-gradient(135deg, rgba(168,85,247,0.55) 0%, rgba(245,158,11,0.55) 100%) 1;
+  pointer-events: none;
+  z-index: 50;
 }
 </style>
 </head>
@@ -1191,15 +1226,16 @@ html, body {
 <!-- ================================================= -->
 <div class="slide-wrap" id="btb-1">
   <div class="slide-orb slide-orb-p"></div>
-  <div class="slide-orb slide-orb-c"></div>
+  <!-- amber orb instead of cyan — warm BTB palette -->
+  <div class="slide-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,0.09) 0%,transparent 70%);bottom:-150px;right:-100px;"></div>
   <div class="slide-noise"></div>
   <div class="slide-inner">
     <div style="display:flex;flex-direction:column;align-items:center;text-align:center;">
       <div class="btb-badge">behind the build</div>
-      <div class="btb-cta-hl grad-text" style="font-size:64px;margin-bottom:20px;line-height:1.1;">how FRMLS builds<br>your brand identity.</div>
-      <div style="font-size:18px;color:rgba(255,255,255,0.42);font-weight:400;line-height:1.6;">a 5 minute flow that personalizes everything.</div>
+      <div class="btb-cta-hl btb-grad" style="font-size:68px;margin-bottom:22px;line-height:1.08;">how FRMLS builds<br>your brand identity.</div>
+      <div style="font-size:20px;color:rgba(255,255,255,0.40);font-weight:400;line-height:1.6;">a 5 minute flow that personalizes everything.</div>
     </div>
-    <div class="slide-logo">FRMLS</div>
+    <div class="btb-cta-logo">FRMLS</div>
   </div>
 </div>
 
@@ -1208,10 +1244,11 @@ html, body {
 <!-- ================================================= -->
 <div class="slide-wrap" id="btb-2">
   <div class="slide-orb slide-orb-p"></div>
-  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,0.09) 0%,transparent 70%);bottom:-150px;right:-100px;"></div>
   <div class="slide-noise"></div>
   <div class="slide-inner">
-    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;">
+    <div class="btb-bg-num">01</div>
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;position:relative;z-index:5;">
       <div class="btb-step">step 01 — what are you selling?</div>
       <div class="btb-headline">pick your category.</div>
       <div class="cat-grid">
@@ -1242,7 +1279,7 @@ html, body {
       </div>
       <div class="btb-muted">this shapes every prompt you get.</div>
     </div>
-    <div class="slide-logo">FRMLS</div>
+    <div class="btb-cta-logo">FRMLS</div>
   </div>
 </div>
 
@@ -1251,12 +1288,13 @@ html, body {
 <!-- ================================================= -->
 <div class="slide-wrap" id="btb-3">
   <div class="slide-orb slide-orb-p"></div>
-  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,0.09) 0%,transparent 70%);bottom:-150px;right:-100px;"></div>
   <div class="slide-noise"></div>
   <div class="slide-inner">
-    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;">
+    <div class="btb-bg-num">02</div>
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;position:relative;z-index:5;">
       <div class="btb-step">step 02 — pick your aesthetic.</div>
-      <div class="btb-headline">define how your brand feels.</div>
+      <div class="btb-headline">define how your<br>brand feels.</div>
       <div class="vibe-grid">
         <div class="vibe-card">
           <div class="vibe-card-name">Dark &amp; Editorial</div>
@@ -1277,7 +1315,7 @@ html, body {
       </div>
       <div class="btb-muted">this sets the tone for your copy and design.</div>
     </div>
-    <div class="slide-logo">FRMLS</div>
+    <div class="btb-cta-logo">FRMLS</div>
   </div>
 </div>
 
@@ -1286,14 +1324,13 @@ html, body {
 <!-- ================================================= -->
 <div class="slide-wrap" id="btb-4">
   <div class="slide-orb slide-orb-p"></div>
-  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,0.09) 0%,transparent 70%);bottom:-150px;right:-100px;"></div>
   <div class="slide-noise"></div>
   <div class="slide-inner">
-    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;">
+    <div class="btb-bg-num">03</div>
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;position:relative;z-index:5;">
       <div class="btb-step">step 03 — typography and color.</div>
-      <div class="btb-headline" style="margin-bottom:22px;">pick your visual direction.</div>
-
-      <!-- Font cards -->
+      <div class="btb-headline" style="margin-bottom:24px;">pick your visual direction.</div>
       <div class="font-row">
         <div class="font-card">
           <div class="font-sample italic">Ag</div>
@@ -1308,8 +1345,6 @@ html, body {
           <div class="font-card-lbl">bold grotesque</div>
         </div>
       </div>
-
-      <!-- Palette strips -->
       <div class="palette-row">
         <div class="palette-card sel">
           <div class="palette-swatches">
@@ -1348,10 +1383,9 @@ html, body {
           <div class="palette-name">street editorial</div>
         </div>
       </div>
-
       <div class="btb-muted">your brand kit generates from these choices.</div>
     </div>
-    <div class="slide-logo">FRMLS</div>
+    <div class="btb-cta-logo">FRMLS</div>
   </div>
 </div>
 
@@ -1360,13 +1394,12 @@ html, body {
 <!-- ================================================= -->
 <div class="slide-wrap" id="btb-5">
   <div class="slide-orb slide-orb-p"></div>
-  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,0.09) 0%,transparent 70%);bottom:-150px;right:-100px;"></div>
   <div class="slide-noise"></div>
   <div class="slide-inner">
     <div style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;">
       <div class="btb-step">the result.</div>
-      <div class="btb-headline" style="margin-bottom:24px;">your brand kit. generated.</div>
-
+      <div class="btb-headline" style="margin-bottom:26px;">your brand kit. generated.</div>
       <div class="bk-outer">
         <div class="bk-card">
           <div class="bk-brand-name">MNML CLUB</div>
@@ -1401,10 +1434,9 @@ html, body {
           <div class="bk-tone">refined. quiet. no unnecessary words.</div>
         </div>
       </div>
-
       <div class="btb-muted">everything builds from this.</div>
     </div>
-    <div class="slide-logo">FRMLS</div>
+    <div class="btb-cta-logo">FRMLS</div>
   </div>
 </div>
 
@@ -1413,12 +1445,12 @@ html, body {
 <!-- ================================================= -->
 <div class="slide-wrap" id="btb-6">
   <div class="slide-orb slide-orb-p"></div>
-  <div class="slide-orb slide-orb-c"></div>
+  <div class="slide-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,0.09) 0%,transparent 70%);bottom:-150px;right:-100px;"></div>
   <div class="slide-noise"></div>
   <div class="slide-inner">
-    <div class="slide-5-border"></div>
+    <div class="btb-6-border"></div>
     <div style="display:flex;flex-direction:column;align-items:center;text-align:center;">
-      <div class="btb-cta-hl grad-text">your brand.<br>in 5 minutes.</div>
+      <div class="btb-cta-hl btb-grad">your brand.<br>in 5 minutes.</div>
       <div class="btb-cta-sub">go through the flow at frmls.com</div>
       <div class="btb-cta-muted">every prompt. pre-filled with your brand info.</div>
     </div>

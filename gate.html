@@ -158,25 +158,17 @@ body{
 
 .bh-video{
   position:absolute;
-  width:90vw;
-  min-width:1200px;
+  width:130vw;
+  min-width:1400px;
   left:50%;
   transform:translateX(-50%);
-  bottom:calc(160px - 42vw);
+  bottom:calc(160px - 50vw);
   top:auto;
   mask-image:radial-gradient(60% 55% at 50% 50%,white 55%,transparent 100%);
   -webkit-mask-image:radial-gradient(60% 55% at 50% 50%,white 55%,transparent 100%);
   z-index:1;
   pointer-events:none;
-  filter:hue-rotate(170deg) saturate(1.8) brightness(0.95);
-}
-
-/* mobile glow (canvas hidden on mobile) */
-.hero-mobile-glow{
-  display:none;
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 100%,rgba(124,58,237,0.22) 0%,transparent 70%);
-  pointer-events:none;z-index:1;
+  filter:hue-rotate(230deg) saturate(2.0) brightness(0.9);
 }
 
 /* ── HERO CONTENT ─────────────────────────────────────────────────────── */
@@ -309,10 +301,10 @@ body{
 /* ── BROWSER MOCKUP ───────────────────────────────────────────────────── */
 .hero-mockup{
   position:absolute;
-  bottom:-20px;
+  bottom:0;
   width:min(860px,90vw);
   left:50%;transform:translateX(-50%);
-  z-index:20;
+  z-index:2;
   border-radius:12px 12px 0 0;
   border:1px solid rgba(255,255,255,0.10);
   box-shadow:0 -20px 80px rgba(100,50,220,0.25);
@@ -528,15 +520,19 @@ section{padding:100px 0;}
   .btn-nav-cta{display:none;}
   .nav-hamburger{display:flex;}
 
-  .hero-content{padding-top:calc(64px + 6vh);}
-  #bhCanvas{display:none;}
-  .hero-mobile-glow{display:block;}
+  .hero-content{padding-top:calc(64px + 6vh);padding-left:20px;padding-right:20px;}
+  .hero-mobile-glow{display:none;}
   .hero-mockup{display:none;}
+  .bh-video{
+    width:240vw;
+    min-width:unset;
+    bottom:-10vw;
+    filter:hue-rotate(230deg) saturate(2.0) brightness(0.9);
+  }
 
   .hero-btns{flex-direction:column;align-items:center;width:100%;max-width:300px;}
   .btn-primary,.btn-dark{width:100%;text-align:center;}
   .hero-access-panel{max-width:100%;}
-  .hero-content{padding-left:20px;padding-right:20px;}
 
   section{padding:70px 0;}
   .container{padding:0 20px;}
@@ -601,9 +597,6 @@ section{padding:100px 0;}
 
 <!-- ── HERO ──────────────────────────────────────────────────────────── -->
 <section class="hero" style="padding:0;">
-
-  <!-- Mobile glow (canvas hidden on mobile) -->
-  <div class="hero-mobile-glow"></div>
 
   <!-- Black hole video -->
   <video class="bh-video" autoplay muted loop playsinline>

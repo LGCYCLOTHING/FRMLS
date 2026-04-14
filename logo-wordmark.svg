@@ -1,53 +1,58 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 100" width="500" height="100">
   <!--
     FRMLS logo-wordmark.svg — 500×100px transparent background
-    Montserrat 900 (Black) via @import — loads when opened directly.
-    Falls back to system-ui Black / Inter 900 when used as <img>.
+    Space Grotesk 700 via @import — max weight available in that family.
+    Falls back to Inter 900 / system-ui Black when used as <img>.
+    Full word "FRMLS" gets the purple→cyan left-to-right gradient.
   -->
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&amp;display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;display=swap');
   </style>
   <defs>
-    <!-- Mini icon: background circle gradient -->
+    <!-- Mini icon: bg circle -->
     <radialGradient id="w-bg" cx="50%" cy="50%" r="50%">
-      <stop offset="0%"   stop-color="#1e053e"/>
-      <stop offset="55%"  stop-color="#0c0618"/>
+      <stop offset="0%"   stop-color="#160330"/>
+      <stop offset="55%"  stop-color="#0a0614"/>
       <stop offset="100%" stop-color="#0a0a0a"/>
     </radialGradient>
-    <!-- Mini icon: chevron fill — purple left → cyan right -->
-    <linearGradient id="w-fg" x1="72" y1="200" x2="316" y2="200" gradientUnits="userSpaceOnUse">
+    <!-- Mini icon: shape fill -->
+    <linearGradient id="w-fg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%"   stop-color="#7c3aed"/>
       <stop offset="100%" stop-color="#06b6d4"/>
     </linearGradient>
-    <!-- Mini icon: chevron top-edge sheen -->
-    <linearGradient id="w-hl" x1="72" y1="200" x2="316" y2="200" gradientUnits="userSpaceOnUse">
-      <stop offset="0%"   stop-color="rgba(255,255,255,0.22)"/>
-      <stop offset="60%"  stop-color="rgba(255,255,255,0.06)"/>
-      <stop offset="100%" stop-color="rgba(255,255,255,0.00)"/>
+    <!-- Mini icon: glow layer -->
+    <linearGradient id="w-fg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#9d5cf5"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
     </linearGradient>
     <!-- Mini icon: ambient glows -->
-    <radialGradient id="w-gp" cx="25%" cy="50%" r="48%">
-      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0.60"/>
+    <radialGradient id="w-gp" cx="35%" cy="38%" r="46%">
+      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0.55"/>
       <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="w-gc" cx="80%" cy="50%" r="38%">
-      <stop offset="0%"   stop-color="#06b6d4" stop-opacity="0.50"/>
+    <radialGradient id="w-gc" cx="68%" cy="65%" r="40%">
+      <stop offset="0%"   stop-color="#06b6d4" stop-opacity="0.48"/>
       <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
     </radialGradient>
-    <filter id="w-gblur" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="24"/>
+    <filter id="w-blur-h" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="28"/>
     </filter>
     <clipPath id="w-cc">
       <circle cx="200" cy="200" r="200"/>
     </clipPath>
-    <!-- "S" letter horizontal gradient: purple → cyan -->
-    <linearGradient id="w-sg" x1="0%" y1="0%" x2="100%" y2="0%">
+    <!--
+      Full-word gradient: purple (F end) → cyan (S end).
+      gradientUnits="objectBoundingBox" (default) maps 0%→leftmost
+      edge of the text element and 100%→rightmost edge, so the
+      entire "FRMLS" word gets the gradient naturally.
+    -->
+    <linearGradient id="word-grad" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%"   stop-color="#7c3aed"/>
       <stop offset="100%" stop-color="#06b6d4"/>
     </linearGradient>
   </defs>
 
-  <!-- ── Mini icon: 64×64px at x=2, y=18 (vertically centered in 100px) ── -->
+  <!-- ── Mini icon: 64×64 at x=2, y=18 (vertically centered in 100px) ── -->
   <svg x="2" y="18" width="64" height="64" viewBox="0 0 400 400">
     <circle cx="200" cy="200" r="200" fill="url(#w-bg)"/>
     <g clip-path="url(#w-cc)">
@@ -55,27 +60,33 @@
       <circle cx="200" cy="200" r="200" fill="url(#w-gc)"/>
     </g>
     <!-- Blurred glow copy -->
-    <path d="M 316,200 L 72,100 L 72,150 L 264,200 L 72,250 L 72,300 Z"
-          fill="url(#w-fg)" opacity="0.50" filter="url(#w-gblur)"
-          clip-path="url(#w-cc)"/>
-    <!-- Chevron mark -->
-    <path d="M 316,200 L 72,100 L 72,150 L 264,200 L 72,250 L 72,300 Z"
+    <path d="M 212,64 C 260,60 314,94 320,148 C 327,196 300,224 294,272
+             C 288,312 265,336 224,342 C 186,348 148,328 120,294
+             C 90,258 84,212 92,166 C 100,120 132,80 174,66
+             C 187,62 198,65 212,64 Z"
+          fill="url(#w-fg2)" opacity="0.55"
+          filter="url(#w-blur-h)" clip-path="url(#w-cc)"/>
+    <!-- Primary organic shape -->
+    <path d="M 212,64 C 260,60 314,94 320,148 C 327,196 300,224 294,272
+             C 288,312 265,336 224,342 C 186,348 148,328 120,294
+             C 90,258 84,212 92,166 C 100,120 132,80 174,66
+             C 187,62 198,65 212,64 Z"
           fill="url(#w-fg)"/>
-    <!-- Sheen highlight -->
-    <path d="M 316,200 L 72,100 L 72,116 L 300,200 Z"
-          fill="url(#w-hl)"/>
     <!-- Inner ring -->
-    <circle cx="200" cy="200" r="192" fill="none"
+    <circle cx="200" cy="200" r="193" fill="none"
             stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
   </svg>
 
-  <!-- ── FRMLS wordmark — maximum weight, thick and confident ── -->
-  <!-- Montserrat 900 (Black). Baseline y=72 centers ~56px caps in 100px canvas. -->
+  <!--
+    ── FRMLS wordmark ──
+    Space Grotesk 700 (max weight). Full word gets purple→cyan gradient.
+    Baseline y=72 centers the ~56px cap-height text in the 100px canvas.
+    Text anchor at x=82 (icon 64px + gap 16px + margin 2px).
+  -->
   <text x="82" y="72"
-        font-family="'Montserrat', 'Inter', system-ui, -apple-system, sans-serif"
-        font-size="56"
-        font-weight="900"
-        style="letter-spacing:-0.02em">
-    <tspan fill="#ffffff">FRML</tspan><tspan fill="url(#w-sg)">S</tspan>
-  </text>
+        font-family="'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif"
+        font-size="58"
+        font-weight="700"
+        fill="url(#word-grad)"
+        style="letter-spacing:-0.02em">FRMLS</text>
 </svg>

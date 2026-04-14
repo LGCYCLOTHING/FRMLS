@@ -1,41 +1,44 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
   <!--
     FRMLS logo-icon.svg — 400×400
-    Geometric chevron ">" mark, inspired by Linear / Vercel precision.
-    Bold filled polygon, purple→cyan left-to-right gradient.
+    Abstract organic shape — fluid irregular polygon with personality.
+    Inspired by Claude / Reflect: non-symmetrical, alive, not perfectly geometric.
+    Filled with purple→cyan diagonal gradient.
   -->
   <defs>
-    <!-- Background radial: deep purple center → near-black edges -->
+    <!-- Background dark circle -->
     <radialGradient id="bg" cx="50%" cy="50%" r="50%">
-      <stop offset="0%"   stop-color="#1e053e"/>
-      <stop offset="55%"  stop-color="#0c0618"/>
+      <stop offset="0%"   stop-color="#160330"/>
+      <stop offset="55%"  stop-color="#0a0614"/>
       <stop offset="100%" stop-color="#0a0a0a"/>
     </radialGradient>
-    <!-- Chevron fill: purple left → cyan right across the mark -->
-    <linearGradient id="fg" x1="72" y1="200" x2="316" y2="200" gradientUnits="userSpaceOnUse">
+    <!-- Shape fill: purple top-left → cyan bottom-right -->
+    <linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%"   stop-color="#7c3aed"/>
       <stop offset="100%" stop-color="#06b6d4"/>
     </linearGradient>
-    <!-- Sheen highlight on top edge of upper arm -->
-    <linearGradient id="hl" x1="72" y1="200" x2="316" y2="200" gradientUnits="userSpaceOnUse">
-      <stop offset="0%"   stop-color="rgba(255,255,255,0.22)"/>
-      <stop offset="60%"  stop-color="rgba(255,255,255,0.06)"/>
-      <stop offset="100%" stop-color="rgba(255,255,255,0.00)"/>
+    <!-- Glow copy: same gradient, more saturated for the blur layer -->
+    <linearGradient id="fg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#9d5cf5"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
     </linearGradient>
-    <!-- Purple ambient glow — left/open end -->
-    <radialGradient id="gp" cx="25%" cy="50%" r="48%">
-      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0.60"/>
+    <!-- Ambient radial glow — purple, left of center -->
+    <radialGradient id="gp" cx="35%" cy="38%" r="46%">
+      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0.55"/>
       <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
     </radialGradient>
-    <!-- Cyan ambient glow — right/tip end -->
-    <radialGradient id="gc" cx="80%" cy="50%" r="38%">
-      <stop offset="0%"   stop-color="#06b6d4" stop-opacity="0.50"/>
+    <!-- Ambient radial glow — cyan, right of center -->
+    <radialGradient id="gc" cx="68%" cy="65%" r="40%">
+      <stop offset="0%"   stop-color="#06b6d4" stop-opacity="0.48"/>
       <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
     </radialGradient>
-    <filter id="glow-blur" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="24"/>
+    <filter id="blur-heavy" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="28"/>
     </filter>
-    <clipPath id="cc">
+    <filter id="blur-light" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+    <clipPath id="circle-clip">
       <circle cx="200" cy="200" r="200"/>
     </clipPath>
   </defs>
@@ -43,37 +46,69 @@
   <!-- Dark circle background -->
   <circle cx="200" cy="200" r="200" fill="url(#bg)"/>
 
-  <!-- Ambient glows clipped to the circle -->
-  <g clip-path="url(#cc)">
+  <!-- Ambient glow fills (clipped to circle) -->
+  <g clip-path="url(#circle-clip)">
     <circle cx="200" cy="200" r="200" fill="url(#gp)"/>
     <circle cx="200" cy="200" r="200" fill="url(#gc)"/>
   </g>
 
-  <!-- Blurred glow copy of the chevron underneath (depth/luminance) -->
-  <path d="M 316,200 L 72,100 L 72,150 L 264,200 L 72,250 L 72,300 Z"
-        fill="url(#fg)" opacity="0.50" filter="url(#glow-blur)"
-        clip-path="url(#cc)"/>
+  <!--
+    Organic shape — a fluid, non-symmetrical abstract form.
+    The path has irregular curve tensions: some tight corners,
+    some relaxed sweeping arcs. No two sides are the same.
+    Think of it as a shape that has "grown" rather than been drawn.
+  -->
 
-  <!-- Primary chevron — bold, sharp, geometric ">" pointing right -->
-  <path d="M 316,200 L 72,100 L 72,150 L 264,200 L 72,250 L 72,300 Z"
-        fill="url(#fg)"/>
+  <!-- Blurred glow copy behind the shape (depth and luminance) -->
+  <path d="
+    M 212,64
+    C 260,60 314,94 320,148
+    C 327,196 300,224 294,272
+    C 288,312 265,336 224,342
+    C 186,348 148,328 120,294
+    C 90,258 84,212 92,166
+    C 100,120 132,80 174,66
+    C 187,62 198,65 212,64 Z"
+    fill="url(#fg2)"
+    opacity="0.55"
+    filter="url(#blur-heavy)"
+    clip-path="url(#circle-clip)"/>
 
-  <!-- Sheen: thin highlight triangle along the upper arm's top edge -->
-  <path d="M 316,200 L 72,100 L 72,116 L 300,200 Z"
-        fill="url(#hl)"/>
+  <!-- Primary organic shape — clean fill, sharp edges -->
+  <path d="
+    M 212,64
+    C 260,60 314,94 320,148
+    C 327,196 300,224 294,272
+    C 288,312 265,336 224,342
+    C 186,348 148,328 120,294
+    C 90,258 84,212 92,166
+    C 100,120 132,80 174,66
+    C 187,62 198,65 212,64 Z"
+    fill="url(#fg)"/>
 
-  <!-- Subtle inner ring on the dark circle (premium bezel feel) -->
-  <circle cx="200" cy="200" r="192" fill="none"
-          stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+  <!-- Soft inner sheen — a subtle lighter highlight in the upper-left portion -->
+  <path d="
+    M 212,64
+    C 260,60 314,94 320,148
+    C 323,170 312,190 298,208
+    C 270,172 230,148 190,144
+    C 168,118 158,88 174,66
+    C 187,62 198,65 212,64 Z"
+    fill="rgba(255,255,255,0.10)"
+    filter="url(#blur-light)"/>
 
-  <!-- Particle dots scattered around canvas, white at 10–14% opacity -->
-  <circle cx="52"  cy="72"  r="2.5" fill="white" opacity="0.13"/>
-  <circle cx="342" cy="48"  r="2"   fill="white" opacity="0.10"/>
-  <circle cx="372" cy="170" r="2.5" fill="white" opacity="0.12"/>
-  <circle cx="358" cy="352" r="2"   fill="white" opacity="0.10"/>
-  <circle cx="60"  cy="308" r="2.5" fill="white" opacity="0.12"/>
-  <circle cx="30"  cy="186" r="2"   fill="white" opacity="0.10"/>
-  <circle cx="170" cy="34"  r="2"   fill="white" opacity="0.10"/>
-  <circle cx="264" cy="376" r="2.5" fill="white" opacity="0.10"/>
-  <circle cx="355" cy="270" r="2"   fill="white" opacity="0.10"/>
+  <!-- Subtle inner ring on the dark circle -->
+  <circle cx="200" cy="200" r="193"
+          fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
+
+  <!-- Particle dots — white at 10–14% opacity -->
+  <circle cx="52"  cy="70"  r="2.5" fill="white" opacity="0.13"/>
+  <circle cx="344" cy="48"  r="2"   fill="white" opacity="0.10"/>
+  <circle cx="370" cy="172" r="2.5" fill="white" opacity="0.12"/>
+  <circle cx="356" cy="352" r="2"   fill="white" opacity="0.10"/>
+  <circle cx="58"  cy="312" r="2.5" fill="white" opacity="0.12"/>
+  <circle cx="30"  cy="188" r="2"   fill="white" opacity="0.10"/>
+  <circle cx="166" cy="34"  r="2"   fill="white" opacity="0.10"/>
+  <circle cx="262" cy="374" r="2.5" fill="white" opacity="0.10"/>
+  <circle cx="354" cy="272" r="2"   fill="white" opacity="0.10"/>
 </svg>

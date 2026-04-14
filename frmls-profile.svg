@@ -13,27 +13,27 @@
       @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap');
     ]]></style>
 
-    <!-- Background: deep near-black with a faint blue cast -->
+    <!-- Background: very dark, almost pure black with a cool tint -->
     <linearGradient id="bg" x1="0" y1="0" x2="500" y2="500" gradientUnits="userSpaceOnUse">
-      <stop offset="0%"   stop-color="#0c0c14"/>
-      <stop offset="100%" stop-color="#08080e"/>
+      <stop offset="0%"   stop-color="#07070f"/>
+      <stop offset="100%" stop-color="#030307"/>
     </linearGradient>
 
     <!-- Purple ambient glow — left side -->
     <radialGradient id="glow-l" cx="18%" cy="50%" r="60%" gradientUnits="objectBoundingBox">
-      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0.30"/>
+      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0.20"/>
       <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
     </radialGradient>
 
     <!-- Cyan ambient glow — right side -->
     <radialGradient id="glow-r" cx="82%" cy="50%" r="60%" gradientUnits="objectBoundingBox">
-      <stop offset="0%"   stop-color="#06b6d4" stop-opacity="0.24"/>
+      <stop offset="0%"   stop-color="#06b6d4" stop-opacity="0.16"/>
       <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
     </radialGradient>
 
     <!-- Centre haze (very subtle purple) -->
     <radialGradient id="glow-c" cx="50%" cy="50%" r="45%" gradientUnits="objectBoundingBox">
-      <stop offset="0%"   stop-color="#6d28d9" stop-opacity="0.08"/>
+      <stop offset="0%"   stop-color="#6d28d9" stop-opacity="0.05"/>
       <stop offset="100%" stop-color="#6d28d9" stop-opacity="0"/>
     </radialGradient>
 

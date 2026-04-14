@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" width="300" height="80">
+  <defs>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+    <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <!-- Soft atmospheric glow ellipses behind text -->
+  <ellipse cx="88" cy="40" rx="92" ry="34" fill="#7c3aed" opacity="0.12" filter="url(#glow)"/>
+  <ellipse cx="215" cy="40" rx="92" ry="34" fill="#06b6d4" opacity="0.12" filter="url(#glow)"/>
+  <!-- FRMLS wordmark: FRML white, S gradient -->
+  <text x="150" y="61" text-anchor="middle"
+        font-family="Impact,'Arial Black','Helvetica Neue',sans-serif"
+        font-size="58" style="letter-spacing:1px">
+    <tspan fill="#ffffff">FRML</tspan><tspan fill="url(#sg)">S</tspan>
+  </text>
+</svg>

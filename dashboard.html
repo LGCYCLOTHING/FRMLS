@@ -90,7 +90,8 @@ body::before {
 .sidebar-nav { display:none; position:fixed; left:0; top:50%; transform:translateY(-50%); width:180px; padding:20px 16px; z-index:50; flex-direction:column; gap:2px; max-height:90vh; overflow:visible; }
 @media (min-width:1140px) { .sidebar-nav { display:flex; } }
 .sb-step-list { display:flex; flex-direction:column; gap:2px; width:100%; }
-.sb-logo { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; letter-spacing:0.2em; color:var(--text-muted); text-transform:uppercase; margin-bottom:18px; padding-left:2px; }
+.sb-logo { font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; font-size:20px; font-weight:900; letter-spacing:-0.02em; color:#fff; margin-bottom:18px; padding-left:2px; line-height:1; }
+.sb-logo .logo-s { background:linear-gradient(90deg,#7c3aed,#06b6d4); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .sidebar-item { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:var(--radius-sm); cursor:pointer; transition:all 0.2s cubic-bezier(0.16,1,0.3,1); border:1px solid transparent; }
 .sidebar-item:hover { background:rgba(255,255,255,0.04); border-color:var(--border-subtle); }
 .sb-num  { font-family:'DM Mono',monospace; font-size:11px; color:#888888; min-width:18px; letter-spacing:0.08em; font-weight:500; }
@@ -117,6 +118,51 @@ body::before {
 .sb-toggle-chevron.open { transform:rotate(180deg); }
 .sb-step-list-expandable { display:none; flex-direction:column; gap:2px; margin-top:8px; width:100%; overflow:hidden; }
 .sb-step-list-expandable.open { display:flex; animation:screenIn 0.25s ease both; }
+
+/* ===== SIDEBAR TODO WIDGET ===== */
+.sb-todo-widget { width:100%; margin-top:16px; padding-top:16px; border-top:1px solid var(--border-subtle); }
+.sb-todo-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; }
+.sb-todo-input-row { display:flex; align-items:center; gap:5px; margin-bottom:8px; }
+.sb-todo-input {
+  flex:1; background:rgba(255,255,255,0.04); border:1px solid var(--border-subtle);
+  border-radius:6px; outline:none; padding:5px 8px;
+  font-size:11px; font-family:'Inter',sans-serif; color:var(--white);
+  transition:border-color 0.2s;
+}
+.sb-todo-input::placeholder { color:#444; }
+.sb-todo-input:focus { border-color:rgba(var(--accent-rgb),0.4); }
+.sb-todo-add-btn {
+  width:22px; height:22px; border-radius:5px; border:none; cursor:pointer;
+  background:var(--grad); color:var(--white); font-size:14px; line-height:1;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  transition:opacity 0.15s;
+}
+.sb-todo-add-btn:hover { opacity:0.8; }
+.sb-todo-list { display:flex; flex-direction:column; gap:3px; max-height:180px; overflow-y:auto; }
+.sb-todo-list::-webkit-scrollbar { width:3px; }
+.sb-todo-list::-webkit-scrollbar-thumb { background:#2a2a2a; border-radius:2px; }
+.sb-todo-item { display:flex; align-items:center; gap:6px; padding:4px 2px; border-radius:4px; transition:background 0.15s; }
+.sb-todo-item:hover { background:rgba(255,255,255,0.04); }
+.sb-todo-check {
+  width:14px; height:14px; min-width:14px; border-radius:3px;
+  border:1.5px solid rgba(255,255,255,0.3); background:transparent;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all 0.18s; flex-shrink:0;
+  position:relative; overflow:hidden;
+}
+.sb-todo-check.checked { background:var(--grad); border-color:transparent; }
+.sb-todo-check.checked::after { content:'✓'; position:absolute; color:white; font-size:8px; font-weight:700; line-height:1; }
+.sb-todo-text {
+  flex:1; font-size:11px; font-family:'Inter',sans-serif; color:#cccccc; line-height:1.4;
+  word-break:break-word; transition:all 0.18s; cursor:pointer;
+}
+.sb-todo-item.done .sb-todo-text { text-decoration:line-through; opacity:0.4; }
+.sb-todo-del {
+  background:none; border:none; color:#555; cursor:pointer; font-size:10px;
+  padding:1px 3px; flex-shrink:0; transition:color 0.15s; line-height:1; opacity:0;
+}
+.sb-todo-item:hover .sb-todo-del { opacity:1; }
+.sb-todo-del:hover { color:#ef4444; }
 
 /* ===== RIGHT SNAPSHOT PANEL ===== */
 .snapshot-panel { display:none; position:fixed; right:0; top:50%; transform:translateY(-50%); width:236px; padding:16px; z-index:50; }
@@ -1261,10 +1307,11 @@ body::before {
 }
 .mob-menu-close:hover { opacity:1; }
 .mob-menu-logo {
-  font-family:'DM Mono',monospace; font-size:13px; font-weight:500;
-  letter-spacing:0.22em; text-transform:uppercase; color:#999999;
-  padding:28px 28px 20px; display:block; border-bottom:1px solid var(--border-subtle);
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; font-size:24px; font-weight:900;
+  letter-spacing:-0.02em; color:#fff;
+  padding:28px 28px 20px; display:block; border-bottom:1px solid var(--border-subtle); line-height:1;
 }
+.mob-menu-logo .logo-s { background:linear-gradient(90deg,#7c3aed,#06b6d4); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .mob-menu-nav { padding:8px 0 40px; }
 .mob-menu-item {
   display:block; width:100%; text-align:left; background:none; border:none;
@@ -1373,18 +1420,25 @@ body::before {
 
 /* ---- Sidebar ---- */
 [data-theme="light"] .sidebar-nav { background: #eeede8; border-right: 1px solid #d8d6d0; }
-[data-theme="light"] .sb-logo { color: #888888; }
+[data-theme="light"] .sb-logo { color: #111111; }
 [data-theme="light"] .sidebar-item .sb-name { color: #333333; }
 [data-theme="light"] .sidebar-item .sb-num { color: #999999; }
 [data-theme="light"] .sidebar-item:hover { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.08); }
 [data-theme="light"] .sidebar-item.sb-done .sb-name { color: #aaaaaa; }
-[data-theme="light"] .sb-logo { color: #888888; }
+[data-theme="light"] .sb-logo { color: #111111; }
 [data-theme="light"] .sb-dash-label { color: #ffffff; }
 [data-theme="light"] .sb-toggle-label,
 [data-theme="light"] .sb-toggle-chevron { color: #aaaaaa; }
 [data-theme="light"] .sb-onboarding-toggle { border-top-color: #e0ddd8; }
 [data-theme="light"] .sb-action-btn { color: #555555; }
 [data-theme="light"] .sb-action-btn:hover { background: rgba(0,0,0,0.05); border-color: #e0ddd8; color: #111111; }
+[data-theme="light"] .sb-todo-widget { border-top-color: #e0ddd8; }
+[data-theme="light"] .sb-todo-title { color: #888888; }
+[data-theme="light"] .sb-todo-input { background: rgba(0,0,0,0.04); border-color: #e0ddd8; color: #111111; }
+[data-theme="light"] .sb-todo-input::placeholder { color: #bbb; }
+[data-theme="light"] .sb-todo-text { color: #444444; }
+[data-theme="light"] .sb-todo-check { border-color: rgba(0,0,0,0.25); }
+[data-theme="light"] .sb-todo-item:hover { background: rgba(0,0,0,0.04); }
 
 /* ---- Snapshot panel ---- */
 [data-theme="light"] .snapshot-card { background: #ffffff; border-color: #e0ddd8; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
@@ -1674,7 +1728,7 @@ body::before {
 
 <!-- ===== LEFT SIDEBAR ===== -->
 <nav class="sidebar-nav" id="sidebarNav">
-  <div class="sb-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="14" style="display:block;"></div>
+  <div class="sb-logo">FRML<span class="logo-s">S</span></div>
 
   <!-- Onboarding step list (screens 0–6) -->
   <div class="sb-step-list">
@@ -1716,6 +1770,16 @@ body::before {
         <div class="sidebar-item" onclick="goTo(6)"><span class="sb-num">06</span><span class="sb-name">Launch Checklist</span><span class="sb-check">✓</span></div>
       </div>
     </div>
+    <!-- Sidebar To-Do Widget -->
+    <div class="sb-todo-widget">
+      <div class="sb-todo-title">To-Do</div>
+      <div class="sb-todo-input-row">
+        <input class="sb-todo-input" id="sbTodoInput" type="text" placeholder="add a task…"
+          onkeydown="if(event.key==='Enter')sbAddTodo()" />
+        <button class="sb-todo-add-btn" onclick="sbAddTodo()" title="Add task">+</button>
+      </div>
+      <div class="sb-todo-list" id="sbTodoList"></div>
+    </div>
   </div>
 </nav>
 
@@ -1747,7 +1811,7 @@ body::before {
 
 <div class="mob-menu-overlay" id="mobMenuOverlay">
   <button class="mob-menu-close" onclick="closeHamburger()" aria-label="Close menu">✕</button>
-  <span class="mob-menu-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="16" style="display:block;"></span>
+  <span class="mob-menu-logo">FRML<span class="logo-s">S</span></span>
   <nav class="mob-menu-nav">
     <button class="mob-menu-item" onclick="goTo(7);closeHamburger()">Dashboard</button>
     <button class="mob-menu-item" onclick="goTo(1);closeHamburger()">Brand Identity</button>
@@ -5095,6 +5159,52 @@ function searchKeyNav(e) {
   }
 }
 
+/* ===== SIDEBAR TODO WIDGET ===== */
+const SB_TODOS_LS = 'frmls_sb_todos';
+let sbTodosData = [];
+
+function sbLoadTodos() {
+  try { sbTodosData = JSON.parse(localStorage.getItem(SB_TODOS_LS) || '[]'); } catch(e) { sbTodosData = []; }
+  sbRenderTodos();
+}
+
+function sbSaveTodos() {
+  localStorage.setItem(SB_TODOS_LS, JSON.stringify(sbTodosData));
+}
+
+function sbAddTodo() {
+  const input = document.getElementById('sbTodoInput');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  sbTodosData.push({ text, done: false, id: Date.now() });
+  input.value = '';
+  sbSaveTodos();
+  sbRenderTodos();
+}
+
+function sbToggleTodo(id) {
+  const item = sbTodosData.find(t => t.id === id);
+  if (item) { item.done = !item.done; sbSaveTodos(); sbRenderTodos(); }
+}
+
+function sbDeleteTodo(id) {
+  sbTodosData = sbTodosData.filter(t => t.id !== id);
+  sbSaveTodos();
+  sbRenderTodos();
+}
+
+function sbRenderTodos() {
+  const list = document.getElementById('sbTodoList');
+  if (!list) return;
+  list.innerHTML = sbTodosData.map(t => `
+    <div class="sb-todo-item${t.done ? ' done' : ''}" data-id="${t.id}">
+      <div class="sb-todo-check${t.done ? ' checked' : ''}" onclick="sbToggleTodo(${t.id})"></div>
+      <span class="sb-todo-text" onclick="sbToggleTodo(${t.id})">${escHtml(t.text)}</span>
+      <button class="sb-todo-del" onclick="sbDeleteTodo(${t.id})" title="Delete">✕</button>
+    </div>`).join('');
+}
+
 /* ===== INIT ===== */
 document.addEventListener('DOMContentLoaded', () => {
   /* 1. Theme + color mode (no DOM dependencies) */
@@ -5135,6 +5245,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* 9. Load all other persistent widget data */
   fnLoadNotes();
   fnLoadTodos();
+  sbLoadTodos();
   loadStoreUrl();
   loadSocials();
   loadLayoutState();

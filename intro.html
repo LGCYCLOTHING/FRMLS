@@ -71,11 +71,14 @@ a { text-decoration: none; color: inherit; }
 }
 
 .nav-logo {
-  font-size: 19px; font-weight: 900; letter-spacing: -0.035em;
-  flex-shrink: 0; white-space: nowrap;
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 26px; font-weight: 900; letter-spacing: -0.02em;
+  color: #fff; text-decoration: none;
+  flex-shrink: 0; white-space: nowrap; line-height: 1;
+  display: flex; align-items: center;
 }
 .nav-logo .g {
-  background: var(--grad-90);
+  background: linear-gradient(90deg,#7c3aed,#06b6d4);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
@@ -714,7 +717,7 @@ a { text-decoration: none; color: inherit; }
   .nav-links { display: none; }
   .nav-cta { display: none; }
   .burger { display: flex; }
-  .nav-logo { font-size: 17px; }
+  .nav-logo { font-family:'Inter',sans-serif; font-size: 22px; }
 
   .hero-text { padding-top: calc(var(--nav-h) + 36px); }
   .h1-plain { font-size: 36px; }
@@ -758,7 +761,7 @@ a { text-decoration: none; color: inherit; }
 
 <!-- ═══════════════════════════ NAV ═══════════════════════════ -->
 <header class="nav" id="nav">
-  <a class="nav-logo" href="intro.html"><img src="logo-wordmark.svg" alt="FRMLS" height="22" style="display:block;"></a>
+  <a class="nav-logo" href="intro.html">FRML<span class="g">S</span></a>
   <nav class="nav-links">
     <a class="nav-link" href="#features">Features</a>
     <a class="nav-link" href="#inside">What's Inside</a>

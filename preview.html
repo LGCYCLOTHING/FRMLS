@@ -3284,5 +3284,350 @@ html, body {
 })();
 </script>
 
+
+<!-- =====================================================
+     INSTAGRAM CAROUSEL SECTION — 5 slides 1080x1350
+     ===================================================== -->
+<style>
+/* ---- carousel wrapper ---- */
+#ig-carousel-section {
+  padding: 80px 0 100px;
+  background: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+#ig-carousel-section h2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  color: #ffffff;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+/* export button */
+#ig-export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255,255,255,0.18);
+  background: linear-gradient(135deg,rgba(124,58,237,0.18),rgba(6,182,212,0.12));
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+#ig-export-btn:hover {
+  background: linear-gradient(135deg,rgba(124,58,237,0.35),rgba(6,182,212,0.25));
+  border-color: rgba(255,255,255,0.32);
+}
+
+/* ---- slide scaler ---- */
+.ig-slide-outer {
+  width: 1080px;
+  height: 1350px;
+  overflow: hidden;
+  position: relative;
+}
+.ig-slide {
+  width: 1080px;
+  height: 1350px;
+  position: relative;
+  overflow: hidden;
+  background: #0a0a0a;
+  transform-origin: top left;
+}
+
+/* ---- shared slide internals ---- */
+.ig-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+}
+.ig-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+/* split layout (slide 1) */
+.ig-bg.split img {
+  width: 50%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+.ig-overlay {
+  position: absolute;
+  inset: 0;
+}
+/* gradient overlay variant (slide 5) */
+.ig-overlay.gradient {
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.40) 0%,
+    rgba(0,0,0,0.65) 100%
+  );
+}
+
+/* ---- text block ---- */
+.ig-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 35%;
+  padding: 0 64px 72px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 16px;
+  text-align: left;
+}
+.ig-headline {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 68px;
+  line-height: 1.08;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+}
+.ig-subtext {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.35;
+  color: rgba(255,255,255,0.72);
+  letter-spacing: 0.01em;
+}
+/* accent underline bar */
+.ig-accent-bar {
+  display: block;
+  width: 72px;
+  height: 5px;
+  border-radius: 3px;
+  margin-bottom: 8px;
+}
+
+/* ---- FRMLS logo watermark ---- */
+.ig-logo {
+  position: absolute;
+  bottom: 36px;
+  right: 52px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.50);
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* ---- slide nav dots ---- */
+.ig-nav {
+  display: flex;
+  gap: 10px;
+  margin-top: -16px;
+}
+.ig-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.22);
+  transition: background 0.2s;
+}
+.ig-dot.active { background: #ffffff; }
+</style>
+
+<!-- Export Button -->
+<section id="ig-carousel-section">
+  <h2>Instagram Carousel</h2>
+  <button id="ig-export-btn">&#8681; Export All 5 Slides as PNG</button>
+
+  <!-- SLIDE 1 — Split layout Porsche + GT3RS -->
+  <div class="ig-slide-outer" id="ig-outer-1">
+    <div class="ig-slide" id="ig-slide-1">
+      <div class="ig-bg split">
+        <img src="Porsche.jpg" alt="Beige Porsche" />
+        <img src="download (3).jpg" alt="Green GT3RS" />
+      </div>
+      <div class="ig-overlay" style="background:rgba(0,0,0,0.50);"></div>
+      <div class="ig-text">
+        <span class="ig-accent-bar" style="background:linear-gradient(90deg,#7c3aed,#06b6d4);"></span>
+        <div class="ig-headline">"the best brands don't explain themselves. you just feel it."</div>
+      </div>
+      <div class="ig-logo">FRMLS</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 — Lamborghini Huracán -->
+  <div class="ig-slide-outer" id="ig-outer-2">
+    <div class="ig-slide" id="ig-slide-2">
+      <div class="ig-bg">
+        <img src="Black Beast on the Track – Lamborghini Huracán in Full Speed Mode.jpg" alt="Lamborghini Huracán" />
+      </div>
+      <div class="ig-overlay" style="background:rgba(0,0,0,0.30);"></div>
+      <div class="ig-text">
+        <span class="ig-accent-bar" style="background:#06b6d4;"></span>
+        <div class="ig-headline">"same industry. completely different feeling. that's brand identity."</div>
+      </div>
+      <div class="ig-logo">FRMLS</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 — Premium Apple Products -->
+  <div class="ig-slide-outer" id="ig-outer-3">
+    <div class="ig-slide" id="ig-slide-3">
+      <div class="ig-bg">
+        <img src="Premium Apple Products.jpg" alt="Premium Apple Products" />
+      </div>
+      <div class="ig-overlay" style="background:rgba(0,0,0,0.55);"></div>
+      <div class="ig-text">
+        <span class="ig-accent-bar" style="background:#c9a96e;"></span>
+        <div class="ig-headline">"the product is never really the product. the feeling is."</div>
+      </div>
+      <div class="ig-logo">FRMLS</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 — Minimalist Interior -->
+  <div class="ig-slide-outer" id="ig-outer-4">
+    <div class="ig-slide" id="ig-slide-4">
+      <div class="ig-bg">
+        <img src="Minimalist Modern Interior Design Ideas_ Get Inspired.jpg" alt="Minimalist Interior" />
+      </div>
+      <div class="ig-overlay" style="background:rgba(0,0,0,0.60);"></div>
+      <div class="ig-text">
+        <span class="ig-accent-bar" style="background:#c4a882;"></span>
+        <div class="ig-headline">"intentional design is felt. not explained."</div>
+      </div>
+      <div class="ig-logo">FRMLS</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 — Brown Porsche with coffee -->
+  <div class="ig-slide-outer" id="ig-outer-5">
+    <div class="ig-slide" id="ig-slide-5">
+      <div class="ig-bg">
+        <img src="download (4).jpg" alt="Porsche with coffee" />
+      </div>
+      <div class="ig-overlay gradient"></div>
+      <div class="ig-text">
+        <span class="ig-accent-bar" style="background:#d4a853;"></span>
+        <div class="ig-headline">"you already know what your brand should feel like."</div>
+        <div class="ig-subtext">frmls.com — build it.</div>
+      </div>
+      <div class="ig-logo">FRMLS</div>
+    </div>
+  </div>
+
+  <!-- nav dots (visual only) -->
+  <div class="ig-nav">
+    <div class="ig-dot active"></div>
+    <div class="ig-dot"></div>
+    <div class="ig-dot"></div>
+    <div class="ig-dot"></div>
+    <div class="ig-dot"></div>
+  </div>
+</section>
+
+<script>
+/* ---- scale IG slides to viewport width ---- */
+(function(){
+  function scaleIGSlides(){
+    var vw = Math.min(window.innerWidth, 1080);
+    var scale = vw / 1080;
+    for(var i=1;i<=5;i++){
+      var outer = document.getElementById('ig-outer-'+i);
+      var slide = document.getElementById('ig-slide-'+i);
+      if(!outer||!slide) continue;
+      if(scale < 1){
+        slide.style.transform = 'scale('+scale+')';
+        outer.style.width  = vw + 'px';
+        outer.style.height = Math.round(1350*scale) + 'px';
+      } else {
+        slide.style.transform = '';
+        outer.style.width  = '1080px';
+        outer.style.height = '1350px';
+      }
+    }
+  }
+  scaleIGSlides();
+  window.addEventListener('resize', scaleIGSlides);
+})();
+
+/* ---- export: html2canvas each slide at 1080x1350 ---- */
+document.getElementById('ig-export-btn').addEventListener('click', async function(){
+  var btn = this;
+  btn.textContent = 'Exporting…';
+  btn.disabled = true;
+  var names = [
+    'slide-1-brands',
+    'slide-2-identity',
+    'slide-3-feeling',
+    'slide-4-design',
+    'slide-5-brand'
+  ];
+  for(var i=1;i<=5;i++){
+    var slide = document.getElementById('ig-slide-'+i);
+    /* temporarily reset transform for capture */
+    var prev = slide.style.transform;
+    slide.style.transform = '';
+    var outer = document.getElementById('ig-outer-'+i);
+    outer.style.width  = '1080px';
+    outer.style.height = '1350px';
+    try {
+      var canvas = await html2canvas(slide, {
+        width: 1080,
+        height: 1350,
+        scale: 1,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#0a0a0a'
+      });
+      var link = document.createElement('a');
+      link.download = 'frmls-ig-' + names[i-1] + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch(e){ console.error('Export failed slide '+i, e); }
+    /* restore transform */
+    slide.style.transform = prev;
+    /* small delay between downloads */
+    await new Promise(function(r){ setTimeout(r, 400); });
+  }
+  /* re-scale after export */
+  (function(){
+    var vw=Math.min(window.innerWidth,1080);
+    var scale=vw/1080;
+    for(var j=1;j<=5;j++){
+      var o=document.getElementById('ig-outer-'+j);
+      var s=document.getElementById('ig-slide-'+j);
+      if(!o||!s)continue;
+      if(scale<1){
+        s.style.transform='scale('+scale+')';
+        o.style.width=vw+'px';
+        o.style.height=Math.round(1350*scale)+'px';
+      } else {
+        s.style.transform='';
+        o.style.width='1080px';
+        o.style.height='1350px';
+      }
+    }
+  })();
+  btn.textContent = '✓ Exported!';
+  btn.disabled = false;
+  setTimeout(function(){ btn.innerHTML = '&#8681; Export All 5 Slides as PNG'; }, 2500);
+});
+</script>
+
 </body>
 </html>

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 100" width="500" height="100">
+  <!--
+    FRMLS logo-wordmark.svg — 500×100px transparent background
+    Space Grotesk 700 loads via @import when SVG is opened directly or inline.
+    When used as <img>, the font falls back gracefully to system-ui/Inter.
+    For pixel-perfect font rendering, use this SVG inline or as <object>.
+  -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;display=swap');
+  </style>
+  <defs>
+    <!-- Mini-icon: dark circle bg -->
+    <radialGradient id="w-bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#1a0533"/>
+      <stop offset="58%"  stop-color="#0e0618"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </radialGradient>
+    <!-- Mini-icon: frame gradient (purple → cyan, clockwise diagonal) -->
+    <linearGradient id="w-fg" x1="78" y1="78" x2="322" y2="322" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <!-- Mini-icon: glow radials -->
+    <radialGradient id="w-gp" cx="34%" cy="40%" r="55%">
+      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="w-gc" cx="70%" cy="65%" r="55%">
+      <stop offset="0%"   stop-color="#06b6d4" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="w-gb" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="30"/>
+    </filter>
+    <clipPath id="w-cc">
+      <circle cx="200" cy="200" r="200"/>
+    </clipPath>
+    <!-- S letter horizontal gradient -->
+    <linearGradient id="w-sg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ── Mini icon: 64×64px at x=2, y=18 (vertically centered in 100px) ── -->
+  <svg x="2" y="18" width="64" height="64" viewBox="0 0 400 400">
+    <circle cx="200" cy="200" r="200" fill="url(#w-bg)"/>
+    <g clip-path="url(#w-cc)">
+      <circle cx="200" cy="200" r="200" fill="url(#w-gp)"/>
+      <circle cx="200" cy="200" r="200" fill="url(#w-gc)"/>
+    </g>
+    <!-- Same open-frame path as logo-icon.svg -->
+    <path d="M 307,78 L 93,78 Q 78,78 78,93 L 78,307 Q 78,322 93,322 L 307,322 Q 322,322 322,307 L 322,93"
+          stroke="url(#w-fg)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </svg>
+
+  <!-- ── FRMLS wordmark: Space Grotesk 700, FRML white · S purple→cyan ── -->
+  <!-- Baseline y=70 centers the 56px cap-height text in the 100px canvas -->
+  <text x="78" y="70"
+        font-family="'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif"
+        font-size="56"
+        font-weight="700"
+        style="letter-spacing:-0.01em">
+    <tspan fill="#ffffff">FRML</tspan><tspan fill="url(#w-sg)">S</tspan>
+  </text>
+</svg>

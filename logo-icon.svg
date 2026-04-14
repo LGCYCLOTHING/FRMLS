@@ -2,56 +2,67 @@
   <defs>
     <radialGradient id="bg" cx="50%" cy="50%" r="50%">
       <stop offset="0%"   stop-color="#1a0533"/>
-      <stop offset="65%"  stop-color="#0d0820"/>
+      <stop offset="58%"  stop-color="#0e0618"/>
       <stop offset="100%" stop-color="#0a0a0a"/>
     </radialGradient>
-    <radialGradient id="gp" cx="50%" cy="35%" r="60%">
-      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0.38"/>
-      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="gc" cx="50%" cy="72%" r="60%">
-      <stop offset="0%"   stop-color="#06b6d4" stop-opacity="0.30"/>
-      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="fg" x1="0%" y1="0%" x2="0%" y2="100%">
+    <!-- Frame stroke gradient: purple top-left → cyan bottom-right (clockwise feel) -->
+    <linearGradient id="fg" x1="78" y1="78" x2="322" y2="322" gradientUnits="userSpaceOnUse">
       <stop offset="0%"   stop-color="#7c3aed"/>
       <stop offset="100%" stop-color="#06b6d4"/>
     </linearGradient>
-    <filter id="blur-soft" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="22"/>
+    <!-- Glow radials -->
+    <radialGradient id="gp" cx="34%" cy="40%" r="55%">
+      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gc" cx="70%" cy="65%" r="55%">
+      <stop offset="0%"   stop-color="#06b6d4" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="gb" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="30"/>
     </filter>
-    <clipPath id="circ">
+    <clipPath id="cc">
       <circle cx="200" cy="200" r="200"/>
     </clipPath>
   </defs>
 
-  <!-- Background circle -->
+  <!-- Background dark circle -->
   <circle cx="200" cy="200" r="200" fill="url(#bg)"/>
 
-  <!-- Ambient glow layers clipped to circle -->
-  <g clip-path="url(#circ)">
-    <ellipse cx="200" cy="148" rx="148" ry="120" fill="url(#gp)" filter="url(#blur-soft)"/>
-    <ellipse cx="200" cy="282" rx="148" ry="120" fill="url(#gc)" filter="url(#blur-soft)"/>
+  <!-- Soft ambient glows clipped to circle -->
+  <g clip-path="url(#cc)">
+    <circle cx="200" cy="200" r="200" fill="url(#gp)"/>
+    <circle cx="200" cy="200" r="200" fill="url(#gc)"/>
   </g>
 
-  <!-- Letter F centered — Impact 230px, baseline at y=282 gives cap-height center ~200 -->
-  <text x="200" y="282" text-anchor="middle"
-        font-family="Impact,'Arial Black',sans-serif"
-        font-size="230" font-weight="900"
-        fill="url(#fg)">F</text>
+  <!-- Open square frame — top-right corner intentionally broken/open.
+       Stroke travels: top-near-right → left across top → top-left corner →
+       down left → bottom-left corner → right across bottom →
+       bottom-right corner → up right side — stops before top-right corner.
+       Thick 26px rounded stroke, gradient purple→cyan clockwise. -->
+  <path d="M 307,78
+           L 93,78
+           Q 78,78 78,93
+           L 78,307
+           Q 78,322 93,322
+           L 307,322
+           Q 322,322 322,307
+           L 322,93"
+        stroke="url(#fg)"
+        stroke-width="26"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        fill="none"/>
 
-  <!-- Particle dots scattered around canvas -->
-  <circle cx="48"  cy="68"  r="2.5" fill="white" opacity="0.12"/>
-  <circle cx="330" cy="52"  r="2"   fill="white" opacity="0.10"/>
-  <circle cx="375" cy="168" r="3"   fill="white" opacity="0.13"/>
-  <circle cx="362" cy="340" r="2"   fill="white" opacity="0.11"/>
-  <circle cx="55"  cy="295" r="2.5" fill="white" opacity="0.10"/>
-  <circle cx="28"  cy="178" r="2"   fill="white" opacity="0.12"/>
-  <circle cx="142" cy="30"  r="2"   fill="white" opacity="0.10"/>
-  <circle cx="268" cy="22"  r="2.5" fill="white" opacity="0.13"/>
-  <circle cx="388" cy="95"  r="2"   fill="white" opacity="0.10"/>
-  <circle cx="82"  cy="358" r="3"   fill="white" opacity="0.11"/>
-  <circle cx="318" cy="372" r="2"   fill="white" opacity="0.10"/>
-  <circle cx="195" cy="384" r="2.5" fill="white" opacity="0.12"/>
-  <circle cx="125" cy="362" r="2"   fill="white" opacity="0.10"/>
+  <!-- Particle dots — white at 10% opacity -->
+  <circle cx="52"  cy="70"  r="2.5" fill="white" opacity="0.10"/>
+  <circle cx="342" cy="46"  r="2"   fill="white" opacity="0.10"/>
+  <circle cx="374" cy="174" r="2.5" fill="white" opacity="0.10"/>
+  <circle cx="360" cy="350" r="2"   fill="white" opacity="0.10"/>
+  <circle cx="58"  cy="308" r="2.5" fill="white" opacity="0.10"/>
+  <circle cx="30"  cy="186" r="2"   fill="white" opacity="0.10"/>
+  <circle cx="172" cy="32"  r="2"   fill="white" opacity="0.10"/>
+  <circle cx="266" cy="376" r="2.5" fill="white" opacity="0.10"/>
+  <circle cx="108" cy="374" r="2"   fill="white" opacity="0.10"/>
 </svg>

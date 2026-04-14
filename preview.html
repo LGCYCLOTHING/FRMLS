@@ -1482,105 +1482,133 @@ html, body {
   height: 500px;
   overflow: hidden;
   position: relative;
-  background: #07040f;
+  /* Rich deep directional gradient — not flat */
+  background: linear-gradient(108deg, #1a0533 0%, #020818 46%, #011818 100%);
   margin: 0 auto;
   display: flex;
   align-items: center;
 }
+/* Large vivid purple orb — left content area */
 .wb-orb-left {
-  position: absolute; left: -80px; top: 50%; transform: translateY(-50%);
-  width: 640px; height: 640px; border-radius: 50%; pointer-events: none;
-  background: radial-gradient(circle, rgba(45,10,78,0.25) 0%, transparent 70%);
+  position: absolute; left: -60px; top: 50%; transform: translateY(-50%);
+  width: 700px; height: 700px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle,
+    rgba(124,58,237,0.55) 0%,
+    rgba(76,29,149,0.28) 38%,
+    transparent 68%);
 }
+/* Large vivid cyan orb — right content area */
 .wb-orb-right {
-  position: absolute; right: -80px; top: 50%; transform: translateY(-50%);
-  width: 640px; height: 640px; border-radius: 50%; pointer-events: none;
-  background: radial-gradient(circle, rgba(1,26,26,0.20) 0%, transparent 70%);
+  position: absolute; right: -60px; top: 50%; transform: translateY(-50%);
+  width: 700px; height: 700px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle,
+    rgba(6,182,212,0.45) 0%,
+    rgba(8,72,84,0.22) 38%,
+    transparent 68%);
 }
 .wb-noise {
-  position: absolute; inset: 0; pointer-events: none; z-index: 2; opacity: 0.02;
+  position: absolute; inset: 0; pointer-events: none; z-index: 2; opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='sn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23sn)'/%3E%3C/svg%3E");
   background-size: 180px 180px;
 }
+/* Subtle vertical gradient divider between left and right */
 .wb-center-divider {
   position: absolute; left: 45%; top: 0; height: 100%; width: 1px;
   background: linear-gradient(180deg, transparent 0%, rgba(124,58,237,0.30) 50%, transparent 100%);
   z-index: 5; pointer-events: none;
 }
+/* Left column — logo + tagline + divline + url */
 .wb-left {
   width: 45%; display: flex; flex-direction: column; align-items: center;
-  justify-content: center; gap: 18px; position: relative; z-index: 5; padding: 0 70px;
+  justify-content: center; gap: 22px; position: relative; z-index: 5; padding: 0 72px;
 }
-.wb-logo-img { width: 210px; height: auto; display: block; }
+.wb-logo-img { width: 260px; height: auto; display: block; }
 .wb-tagline {
-  font-family: 'DM Mono', monospace; font-size: 12px; color: #888888;
-  letter-spacing: 0.15em; text-align: center; text-transform: lowercase;
+  font-family: 'DM Mono', monospace; font-size: 16px; color: #aaaaaa;
+  letter-spacing: 0.12em; text-align: center; text-transform: lowercase;
 }
 .wb-divline {
-  width: 120px; height: 1px;
+  width: 140px; height: 2px;
   background: linear-gradient(90deg, #7c3aed, #06b6d4);
-  border: none; margin: 0;
+  border: none; margin: 0; border-radius: 2px;
 }
 .wb-url {
-  font-family: 'DM Mono', monospace; font-size: 10px; color: #555555; letter-spacing: 0.12em;
+  font-family: 'DM Mono', monospace; font-size: 13px; color: #555555; letter-spacing: 0.14em;
 }
+/* Right column — browser mockup */
 .wb-right {
   width: 55%; display: flex; align-items: center; justify-content: center;
-  position: relative; z-index: 5; padding: 0 40px 0 56px;
+  position: relative; z-index: 5; padding: 0 36px 0 52px;
 }
+/* Vivid purple glow halo behind the browser */
 .wb-browser-glow {
-  position: absolute; width: 540px; height: 320px;
-  background: radial-gradient(ellipse, rgba(124,58,237,0.13) 0%, transparent 70%);
+  position: absolute; width: 580px; height: 380px;
+  background: radial-gradient(ellipse,
+    rgba(124,58,237,0.40) 0%,
+    rgba(124,58,237,0.12) 45%,
+    transparent 70%);
   pointer-events: none; z-index: 1;
+  border-radius: 50%;
 }
+/* Browser mockup — dramatic 9° clockwise tilt */
 .wb-browser {
-  width: 620px; background: #111111; border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.08); overflow: hidden;
-  transform: rotate(3deg);
-  box-shadow: 0 24px 64px rgba(0,0,0,0.65), 0 0 48px rgba(124,58,237,0.10);
+  width: 640px; background: #101018; border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.10); overflow: hidden;
+  transform: rotate(9deg);
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.80),
+    0 0 60px rgba(124,58,237,0.22),
+    0 0 120px rgba(124,58,237,0.08);
   position: relative; z-index: 5; flex-shrink: 0;
 }
+/* Chrome bar */
 .wb-chrome {
-  background: #1c1c1c; height: 34px; display: flex; align-items: center;
-  padding: 0 12px; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: #1e1e28; height: 38px; display: flex; align-items: center;
+  padding: 0 14px; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
 }
-.wb-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.wb-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
 .wb-url-bar {
-  flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 4px; height: 20px; display: flex; align-items: center;
-  justify-content: center; font-family: 'DM Mono', monospace; font-size: 10px;
-  color: rgba(255,255,255,0.32); letter-spacing: 0.04em;
+  flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 5px; height: 22px; display: flex; align-items: center;
+  justify-content: center; font-family: 'DM Mono', monospace; font-size: 11px;
+  color: rgba(255,255,255,0.38); letter-spacing: 0.04em;
 }
-.wb-content { background: #0d0d14; padding: 14px; }
+/* Browser inner content */
+.wb-content { background: #0c0c18; padding: 16px; }
 .wb-content-header {
-  display: flex; align-items: center; margin-bottom: 12px; padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex; align-items: center; margin-bottom: 14px; padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
 }
-.wb-content-logo { width: 58px; height: auto; display: block; }
-.wb-box-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+.wb-content-logo { width: 64px; height: auto; display: block; }
+/* 3×2 grid of dashboard cards */
+.wb-box-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
 .wb-box {
-  border-radius: 8px; padding: 10px 10px 10px; min-height: 76px;
+  border-radius: 10px; padding: 12px 12px 12px; min-height: 88px;
   display: flex; flex-direction: column; justify-content: flex-end;
-  position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.06);
-  background: #111520;
+  position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);
+  background: #131325;
 }
 .wb-box::before {
-  content: ''; position: absolute; inset: 0; border-radius: 8px; opacity: 0.22;
+  content: ''; position: absolute; inset: 0; border-radius: 10px;
+  /* Richer gradient overlay — more visible */
+  opacity: 0.48;
 }
 .wb-box-title {
-  font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600;
-  color: rgba(255,255,255,0.85); position: relative; z-index: 1;
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700;
+  color: #ffffff; position: relative; z-index: 1; letter-spacing: -0.01em;
 }
 .wb-box-purple::before  { background: linear-gradient(135deg,#7c3aed,#9d5cf5); }
-.wb-box-cyan::before    { background: linear-gradient(135deg,#06b6d4,#22d3ee); }
-.wb-box-blue::before    { background: linear-gradient(135deg,#3b82f6,#60a5fa); }
-.wb-box-orange::before  { background: linear-gradient(135deg,#f97316,#a855f7); }
-.wb-box-green::before   { background: linear-gradient(135deg,#22c55e,#06b6d4); }
-.wb-box-violet::before  { background: linear-gradient(135deg,#8b5cf6,#06b6d4); }
+.wb-box-cyan::before    { background: linear-gradient(135deg,#0891b2,#22d3ee); }
+.wb-box-blue::before    { background: linear-gradient(135deg,#2563eb,#60a5fa); }
+.wb-box-orange::before  { background: linear-gradient(135deg,#ea580c,#f97316); }
+.wb-box-green::before   { background: linear-gradient(135deg,#16a34a,#22c55e); }
+.wb-box-violet::before  { background: linear-gradient(135deg,#7c3aed,#a78bfa); }
+/* Bottom-right label */
 .wb-bottom-text {
-  position: absolute; bottom: 20px; right: 24px;
-  font-family: 'DM Mono', monospace; font-size: 10px; color: #444444;
-  letter-spacing: 0.12em; z-index: 10; pointer-events: none;
+  position: absolute; bottom: 22px; right: 28px;
+  font-family: 'DM Mono', monospace; font-size: 11px; color: #444444;
+  letter-spacing: 0.14em; z-index: 10; pointer-events: none; text-transform: lowercase;
 }
 </style>
 </head>
@@ -1599,7 +1627,7 @@ html, body {
   <div class="main">
   <div class="hero">
 
-    <div class="hero-brand"><img src="logo.svg" alt="FRMLS" style="height:72px;width:auto;display:block;margin:0 auto;"></div>
+    <div class="hero-brand"><img src="logo-wordmark.svg" alt="FRMLS" style="height:72px;width:auto;display:block;margin:0 auto;"></div>
     <div class="hero-sub">your store. built right.</div>
     <div class="hero-desc">Brand identity, custom prompts, designer tools, and a launch system — all in one place.</div>
 
@@ -1704,7 +1732,7 @@ html, body {
       <div class="s1-tip mono-muted">tip 01</div>
     </div>
 
-    <div class="slide-logo"><img src="logo.svg" alt="FRMLS" height="18" style="display:block;"></div>
+    <div class="slide-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="18" style="display:block;"></div>
   </div>
 </div>
 
@@ -1723,7 +1751,7 @@ html, body {
       <div class="s2-sub">that step is brand identity.</div>
     </div>
 
-    <div class="slide-logo"><img src="logo.svg" alt="FRMLS" height="18" style="display:block;"></div>
+    <div class="slide-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="18" style="display:block;"></div>
   </div>
 </div>
 
@@ -1756,7 +1784,7 @@ html, body {
       </div>
     </div>
 
-    <div class="slide-logo"><img src="logo.svg" alt="FRMLS" height="18" style="display:block;"></div>
+    <div class="slide-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="18" style="display:block;"></div>
   </div>
 </div>
 
@@ -1779,7 +1807,7 @@ html, body {
       <div class="s4-sub">skip this and your store looks like everyone else.</div>
     </div>
 
-    <div class="slide-logo"><img src="logo.svg" alt="FRMLS" height="18" style="display:block;"></div>
+    <div class="slide-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="18" style="display:block;"></div>
   </div>
 </div>
 
@@ -1800,7 +1828,7 @@ html, body {
       <div class="s5-cta">or build your whole store at <span class="s5-url">frmls.com</span></div>
     </div>
 
-    <div class="slide-logo"><img src="logo.svg" alt="FRMLS" height="18" style="display:block;"></div>
+    <div class="slide-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="18" style="display:block;"></div>
   </div>
 </div>
 
@@ -1819,7 +1847,7 @@ html, body {
       <div class="btb-cta-hl btb-grad" style="font-size:68px;margin-bottom:22px;line-height:1.08;">how FRMLS builds<br>your brand identity.</div>
       <div style="font-size:20px;color:rgba(255,255,255,0.40);font-weight:400;line-height:1.6;">a 5 minute flow that personalizes everything.</div>
     </div>
-    <div class="btb-cta-logo"><img src="logo.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
+    <div class="btb-cta-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
   </div>
 </div>
 
@@ -1863,7 +1891,7 @@ html, body {
       </div>
       <div class="btb-muted">this shapes every prompt you get.</div>
     </div>
-    <div class="btb-cta-logo"><img src="logo.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
+    <div class="btb-cta-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
   </div>
 </div>
 
@@ -1899,7 +1927,7 @@ html, body {
       </div>
       <div class="btb-muted">this sets the tone for your copy and design.</div>
     </div>
-    <div class="btb-cta-logo"><img src="logo.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
+    <div class="btb-cta-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
   </div>
 </div>
 
@@ -1969,7 +1997,7 @@ html, body {
       </div>
       <div class="btb-muted">your brand kit generates from these choices.</div>
     </div>
-    <div class="btb-cta-logo"><img src="logo.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
+    <div class="btb-cta-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
   </div>
 </div>
 
@@ -2020,7 +2048,7 @@ html, body {
       </div>
       <div class="btb-muted">everything builds from this.</div>
     </div>
-    <div class="btb-cta-logo"><img src="logo.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
+    <div class="btb-cta-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
   </div>
 </div>
 
@@ -2038,7 +2066,7 @@ html, body {
       <div class="btb-cta-sub">go through the flow at frmls.com</div>
       <div class="btb-cta-muted">every prompt. pre-filled with your brand info.</div>
     </div>
-    <div class="btb-cta-logo"><img src="logo.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
+    <div class="btb-cta-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
   </div>
 </div>
 
@@ -2279,7 +2307,7 @@ html, body {
   <div class="tr-scene" id="tr-s1">
     <canvas id="tr-bh1" class="tr-bh-canvas"></canvas>
     <div class="tr-s1-content">
-      <div id="s1-logo" class="tr-logo-large"><img src="logo.svg" alt="FRMLS" style="height:clamp(44px,8vw,80px);width:auto;display:block;"></div>
+      <div id="s1-logo" class="tr-logo-large"><img src="logo-wordmark.svg" alt="FRMLS" style="height:clamp(44px,8vw,80px);width:auto;display:block;"></div>
       <div id="s1-tag" class="tr-tagline-small">store builder system</div>
     </div>
   </div>
@@ -2428,7 +2456,7 @@ html, body {
     <canvas id="tr-bh8" class="tr-bh-canvas tr-bh-bg"></canvas>
     <canvas id="tr-particles" class="tr-particles-canvas" style="position:absolute;inset:0;z-index:9;pointer-events:none;"></canvas>
     <div class="tr-s1-content" style="position:relative;z-index:10;">
-      <div id="s8-logo" class="tr-logo-large"><img src="logo.svg" alt="FRMLS" style="height:clamp(44px,8vw,80px);width:auto;display:block;"></div>
+      <div id="s8-logo" class="tr-logo-large"><img src="logo-wordmark.svg" alt="FRMLS" style="height:clamp(44px,8vw,80px);width:auto;display:block;"></div>
       <div id="s8-sub" class="tr-tagline-small">your store. built right.</div>
       <div id="s8-url" class="tr-cta-url">frmls.com</div>
       <div id="s8-price" class="tr-cta-price">$37 one time</div>
@@ -2807,43 +2835,44 @@ html, body {
 
 <!-- ======================================================================= -->
 <!-- ===== WHOP DASHBOARD BANNER =========================================== -->
-<!-- CAPTURE THIS AT 1500×500px USING CHROME DEV TOOLS                    -->
-<!-- Set viewport to 1500×500 DPR 1, then capture full size screenshot     -->
+<!-- CAPTURE AT 1500×500px USING CHROME DEV TOOLS                          -->
+<!-- Set device viewport to 1500×500, DPR 1, then capture full-size        -->
+<!-- screenshot of #whop-banner                                             -->
 <!-- ======================================================================= -->
 <section class="whop-banner-section">
   <div class="whop-banner-wrap" id="whop-banner" data-capture="whop-banner">
 
-    <!-- Background orbs -->
+    <!-- Background: vivid purple orb left, vivid cyan orb right, noise -->
     <div class="wb-orb-left"></div>
     <div class="wb-orb-right"></div>
     <div class="wb-noise"></div>
 
-    <!-- Center vertical divider -->
+    <!-- Subtle vertical gradient divider between sections -->
     <div class="wb-center-divider"></div>
 
-    <!-- Left: logo + tagline + line + url -->
+    <!-- ── LEFT: logo · tagline · gradient line · url ── -->
     <div class="wb-left">
-      <img src="logo.svg" alt="FRMLS" class="wb-logo-img">
+      <img src="logo-wordmark.svg" alt="FRMLS" class="wb-logo-img">
       <div class="wb-tagline">your store. built right.</div>
       <hr class="wb-divline">
       <div class="wb-url">frmls.com</div>
     </div>
 
-    <!-- Right: browser mockup -->
+    <!-- ── RIGHT: perspective-tilted browser window mockup ── -->
     <div class="wb-right">
       <div class="wb-browser-glow"></div>
       <div class="wb-browser">
-        <!-- Chrome bar -->
+        <!-- Chrome title bar -->
         <div class="wb-chrome">
           <span class="wb-dot" style="background:#ff5f57"></span>
           <span class="wb-dot" style="background:#febc2e"></span>
           <span class="wb-dot" style="background:#28c840"></span>
           <div class="wb-url-bar">frmls.com</div>
         </div>
-        <!-- Browser content -->
+        <!-- Dashboard interior -->
         <div class="wb-content">
           <div class="wb-content-header">
-            <img src="logo.svg" alt="FRMLS" class="wb-content-logo">
+            <img src="logo-wordmark.svg" alt="FRMLS" class="wb-content-logo">
           </div>
           <div class="wb-box-grid">
             <div class="wb-box wb-box-purple">
@@ -2869,7 +2898,7 @@ html, body {
       </div>
     </div>
 
-    <!-- Bottom right corner label -->
+    <!-- Bottom-right label -->
     <div class="wb-bottom-text">store builder system</div>
 
   </div>

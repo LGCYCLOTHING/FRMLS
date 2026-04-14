@@ -1,89 +1,108 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 100" width="500" height="100">
   <!--
     FRMLS logo-wordmark.svg — 500×100px transparent background
-    Space Grotesk 700 via @import — max weight available in that family.
-    Falls back to Inter 900 / system-ui Black when used as <img>.
-    Full word "FRMLS" gets the purple→cyan left-to-right gradient.
+    Dot-wreath icon left + "FRMLS" full-word purple→cyan gradient right.
+    Space Grotesk 700 via @import; falls back to system-ui 900 as img.
   -->
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;display=swap');
   </style>
   <defs>
-    <!-- Mini icon: bg circle -->
+    <!-- Icon background -->
     <radialGradient id="w-bg" cx="50%" cy="50%" r="50%">
-      <stop offset="0%"   stop-color="#160330"/>
-      <stop offset="55%"  stop-color="#0a0614"/>
+      <stop offset="0%"   stop-color="#120220"/>
+      <stop offset="60%"  stop-color="#0c0c0c"/>
       <stop offset="100%" stop-color="#0a0a0a"/>
     </radialGradient>
-    <!-- Mini icon: shape fill -->
-    <linearGradient id="w-fg" x1="0%" y1="0%" x2="100%" y2="100%">
+    <!-- Dot gradient — userSpaceOnUse relative to the nested SVG's 400×400 viewBox -->
+    <linearGradient id="w-g" x1="0" y1="0" x2="400" y2="400" gradientUnits="userSpaceOnUse">
       <stop offset="0%"   stop-color="#7c3aed"/>
       <stop offset="100%" stop-color="#06b6d4"/>
     </linearGradient>
-    <!-- Mini icon: glow layer -->
-    <linearGradient id="w-fg2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#9d5cf5"/>
-      <stop offset="100%" stop-color="#22d3ee"/>
-    </linearGradient>
-    <!-- Mini icon: ambient glows -->
-    <radialGradient id="w-gp" cx="35%" cy="38%" r="46%">
-      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0.55"/>
-      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    <!-- Atmosphere glow -->
+    <radialGradient id="w-atm" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#6d28d9" stop-opacity="0.18"/>
+      <stop offset="55%"  stop-color="#0891b2" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="transparent" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="w-gc" cx="68%" cy="65%" r="40%">
-      <stop offset="0%"   stop-color="#06b6d4" stop-opacity="0.48"/>
-      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
-    </radialGradient>
-    <filter id="w-blur-h" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="28"/>
-    </filter>
     <clipPath id="w-cc">
-      <circle cx="200" cy="200" r="200"/>
+      <circle cx="200" cy="200" r="198"/>
     </clipPath>
-    <!--
-      Full-word gradient: purple (F end) → cyan (S end).
-      gradientUnits="objectBoundingBox" (default) maps 0%→leftmost
-      edge of the text element and 100%→rightmost edge, so the
-      entire "FRMLS" word gets the gradient naturally.
-    -->
+    <!-- Full-word gradient: purple (F) → cyan (S), objectBoundingBox so it
+         spans the exact left-to-right extent of the whole "FRMLS" text -->
     <linearGradient id="word-grad" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%"   stop-color="#7c3aed"/>
       <stop offset="100%" stop-color="#06b6d4"/>
     </linearGradient>
   </defs>
 
-  <!-- ── Mini icon: 64×64 at x=2, y=18 (vertically centered in 100px) ── -->
-  <svg x="2" y="18" width="64" height="64" viewBox="0 0 400 400">
+  <!-- ── Mini dot-wreath icon: 72×72 at x=2, y=14 ── -->
+  <svg x="2" y="14" width="72" height="72" viewBox="0 0 400 400">
     <circle cx="200" cy="200" r="200" fill="url(#w-bg)"/>
+    <circle cx="200" cy="200" r="200" fill="url(#w-atm)"/>
     <g clip-path="url(#w-cc)">
-      <circle cx="200" cy="200" r="200" fill="url(#w-gp)"/>
-      <circle cx="200" cy="200" r="200" fill="url(#w-gc)"/>
+      <!-- Primary ring R=130 — large circles -->
+      <circle cx="200" cy="70"  r="20" fill="url(#w-g)"/>
+      <circle cx="292" cy="108" r="18" fill="url(#w-g)"/>
+      <circle cx="330" cy="200" r="21" fill="url(#w-g)"/>
+      <circle cx="292" cy="292" r="19" fill="url(#w-g)"/>
+      <circle cx="200" cy="330" r="20" fill="url(#w-g)"/>
+      <circle cx="108" cy="292" r="18" fill="url(#w-g)"/>
+      <circle cx="70"  cy="200" r="21" fill="url(#w-g)"/>
+      <circle cx="108" cy="108" r="19" fill="url(#w-g)"/>
+      <!-- Secondary ring R=128 — medium circles -->
+      <circle cx="248" cy="78"  r="13" fill="url(#w-g)"/>
+      <circle cx="322" cy="148" r="12" fill="url(#w-g)"/>
+      <circle cx="322" cy="252" r="12" fill="url(#w-g)"/>
+      <circle cx="252" cy="322" r="13" fill="url(#w-g)"/>
+      <circle cx="148" cy="322" r="12" fill="url(#w-g)"/>
+      <circle cx="78"  cy="252" r="11" fill="url(#w-g)"/>
+      <circle cx="78"  cy="148" r="12" fill="url(#w-g)"/>
+      <circle cx="148" cy="78"  r="13" fill="url(#w-g)"/>
+      <!-- Outer ring R=155 — small dots -->
+      <circle cx="200" cy="45"  r="7"  fill="url(#w-g)"/>
+      <circle cx="258" cy="57"  r="6"  fill="url(#w-g)"/>
+      <circle cx="308" cy="92"  r="7"  fill="url(#w-g)"/>
+      <circle cx="343" cy="143" r="6"  fill="url(#w-g)"/>
+      <circle cx="355" cy="200" r="7"  fill="url(#w-g)"/>
+      <circle cx="343" cy="257" r="6"  fill="url(#w-g)"/>
+      <circle cx="308" cy="308" r="7"  fill="url(#w-g)"/>
+      <circle cx="257" cy="343" r="6"  fill="url(#w-g)"/>
+      <circle cx="200" cy="355" r="7"  fill="url(#w-g)"/>
+      <circle cx="143" cy="343" r="6"  fill="url(#w-g)"/>
+      <circle cx="92"  cy="308" r="7"  fill="url(#w-g)"/>
+      <circle cx="57"  cy="257" r="6"  fill="url(#w-g)"/>
+      <circle cx="45"  cy="200" r="7"  fill="url(#w-g)"/>
+      <circle cx="57"  cy="143" r="6"  fill="url(#w-g)"/>
+      <circle cx="92"  cy="92"  r="7"  fill="url(#w-g)"/>
+      <circle cx="143" cy="57"  r="6"  fill="url(#w-g)"/>
+      <!-- Outermost ring R=168 — tiny accent dots -->
+      <circle cx="234" cy="38"  r="3.5" fill="url(#w-g)"/>
+      <circle cx="280" cy="52"  r="3"   fill="url(#w-g)"/>
+      <circle cx="324" cy="76"  r="3.5" fill="url(#w-g)"/>
+      <circle cx="358" cy="114" r="3"   fill="url(#w-g)"/>
+      <circle cx="370" cy="162" r="3.5" fill="url(#w-g)"/>
+      <circle cx="364" cy="234" r="3"   fill="url(#w-g)"/>
+      <circle cx="346" cy="278" r="3.5" fill="url(#w-g)"/>
+      <circle cx="318" cy="320" r="3"   fill="url(#w-g)"/>
+      <circle cx="280" cy="350" r="3.5" fill="url(#w-g)"/>
+      <circle cx="234" cy="364" r="3"   fill="url(#w-g)"/>
+      <circle cx="166" cy="364" r="3"   fill="url(#w-g)"/>
+      <circle cx="120" cy="350" r="3.5" fill="url(#w-g)"/>
+      <circle cx="82"  cy="320" r="3"   fill="url(#w-g)"/>
+      <circle cx="54"  cy="278" r="3.5" fill="url(#w-g)"/>
+      <circle cx="36"  cy="234" r="3"   fill="url(#w-g)"/>
+      <circle cx="36"  cy="166" r="3.5" fill="url(#w-g)"/>
+      <circle cx="54"  cy="120" r="3"   fill="url(#w-g)"/>
+      <circle cx="82"  cy="82"  r="3.5" fill="url(#w-g)"/>
+      <circle cx="120" cy="52"  r="3"   fill="url(#w-g)"/>
+      <circle cx="166" cy="38"  r="3"   fill="url(#w-g)"/>
     </g>
-    <!-- Blurred glow copy -->
-    <path d="M 212,64 C 260,60 314,94 320,148 C 327,196 300,224 294,272
-             C 288,312 265,336 224,342 C 186,348 148,328 120,294
-             C 90,258 84,212 92,166 C 100,120 132,80 174,66
-             C 187,62 198,65 212,64 Z"
-          fill="url(#w-fg2)" opacity="0.55"
-          filter="url(#w-blur-h)" clip-path="url(#w-cc)"/>
-    <!-- Primary organic shape -->
-    <path d="M 212,64 C 260,60 314,94 320,148 C 327,196 300,224 294,272
-             C 288,312 265,336 224,342 C 186,348 148,328 120,294
-             C 90,258 84,212 92,166 C 100,120 132,80 174,66
-             C 187,62 198,65 212,64 Z"
-          fill="url(#w-fg)"/>
-    <!-- Inner ring -->
-    <circle cx="200" cy="200" r="193" fill="none"
-            stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
   </svg>
 
-  <!--
-    ── FRMLS wordmark ──
-    Space Grotesk 700 (max weight). Full word gets purple→cyan gradient.
-    Baseline y=72 centers the ~56px cap-height text in the 100px canvas.
-    Text anchor at x=82 (icon 64px + gap 16px + margin 2px).
-  -->
-  <text x="82" y="72"
+  <!-- ── FRMLS wordmark: full-word purple→cyan gradient ── -->
+  <!-- 72px icon + 14px gap = x=88. Baseline y=72 centers in 100px canvas. -->
+  <text x="88" y="72"
         font-family="'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif"
         font-size="58"
         font-weight="700"

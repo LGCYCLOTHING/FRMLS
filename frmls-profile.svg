@@ -1,0 +1,103 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 500 500"
+  width="500"
+  height="500"
+  shape-rendering="geometricPrecision"
+  text-rendering="optimizeLegibility"
+>
+  <defs>
+
+    <!-- Google Fonts: Space Grotesk 700 -->
+    <style><![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&display=swap');
+    ]]></style>
+
+    <!-- Background: deep near-black with a faint blue cast -->
+    <linearGradient id="bg" x1="0" y1="0" x2="500" y2="500" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#0c0c14"/>
+      <stop offset="100%" stop-color="#08080e"/>
+    </linearGradient>
+
+    <!-- Purple ambient glow — left side -->
+    <radialGradient id="glow-l" cx="18%" cy="50%" r="60%" gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Cyan ambient glow — right side -->
+    <radialGradient id="glow-r" cx="82%" cy="50%" r="60%" gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#06b6d4" stop-opacity="0.24"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Centre haze (very subtle purple) -->
+    <radialGradient id="glow-c" cx="50%" cy="50%" r="45%" gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#6d28d9" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#6d28d9" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Gradient that fills the "S" — spans JUST the S glyph bounding box -->
+    <linearGradient id="s-fill" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+
+    <!-- Soft glow bloom behind the text -->
+    <filter id="text-bloom" x="-20%" y="-40%" width="140%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+      <feColorMatrix in="blur" type="saturate" values="2" result="sat"/>
+      <feMerge>
+        <feMergeNode in="sat"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Crisp glow: tighter, for the S specifically -->
+    <filter id="s-bloom" x="-30%" y="-50%" width="160%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+      <feColorMatrix in="blur" type="saturate" values="3" result="sat"/>
+      <feMerge>
+        <feMergeNode in="sat"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+  </defs>
+
+  <!-- ── Background ── -->
+  <rect width="500" height="500" fill="url(#bg)"/>
+
+  <!-- ── Ambient glows ── -->
+  <rect width="500" height="500" fill="url(#glow-l)"/>
+  <rect width="500" height="500" fill="url(#glow-r)"/>
+  <rect width="500" height="500" fill="url(#glow-c)"/>
+
+  <!-- ── Text bloom layer (renders behind text, adds a glow halo) ── -->
+  <text
+    x="250" y="250"
+    text-anchor="middle"
+    dominant-baseline="central"
+    font-family="'Space Grotesk', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif"
+    font-size="130"
+    font-weight="700"
+    letter-spacing="-3"
+    fill="#ffffff"
+    opacity="0.18"
+    filter="url(#text-bloom)"
+    aria-hidden="true"
+  >FRMLS</text>
+
+  <!-- ── FRML — white, crisp ── -->
+  <text
+    x="250" y="250"
+    text-anchor="middle"
+    dominant-baseline="central"
+    font-family="'Space Grotesk', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif"
+    font-size="130"
+    font-weight="700"
+    letter-spacing="-3"
+    fill="#ffffff"
+  >FRML<tspan fill="url(#s-fill)" filter="url(#s-bloom)">S</tspan></text>
+
+</svg>

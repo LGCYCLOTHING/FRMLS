@@ -37,8 +37,8 @@
       <stop offset="100%" stop-color="#6d28d9" stop-opacity="0"/>
     </radialGradient>
 
-    <!-- Gradient that fills the "S" — spans JUST the S glyph bounding box -->
-    <linearGradient id="s-fill" x1="0%" y1="0%" x2="100%" y2="0%">
+    <!-- Gradient scoped to the S glyph's userSpace x-coordinates (~360–438px) -->
+    <linearGradient id="s-fill" x1="360" y1="0" x2="438" y2="0" gradientUnits="userSpaceOnUse">
       <stop offset="0%"   stop-color="#7c3aed"/>
       <stop offset="100%" stop-color="#06b6d4"/>
     </linearGradient>

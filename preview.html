@@ -2807,7 +2807,9 @@ html, body {
 <!-- ======================================================================= -->
 
 <style>
-/* ── Section scaffold ── */
+/* ─────────────────────────────────────────
+   SCAFFOLD
+───────────────────────────────────────── */
 .cj-section {
   background: #0a0a0a;
   padding: 48px 0 64px;
@@ -2816,15 +2818,10 @@ html, body {
   align-items: center;
   gap: 40px;
 }
-
-/* Outer wrapper: shrinks to fit viewport, preserves slide aspect ratio */
 .cj-slide-outer {
   overflow: hidden;
   flex-shrink: 0;
-  /* width/height set dynamically by JS on mobile */
 }
-
-/* Slide canvas — always 1080×1350 internally */
 .cj-slide {
   width: 1080px;
   height: 1350px;
@@ -2832,7 +2829,6 @@ html, body {
   overflow: hidden;
   background: #0a0a0a;
   transform-origin: top left;
-  /* transform: scale() applied by JS on mobile */
 }
 
 /* Ambient orbs */
@@ -2851,16 +2847,18 @@ html, body {
   pointer-events: none; z-index: 0;
 }
 
-/* FRMLS logo — bottom center, bold 800, S in gradient */
+/* ─────────────────────────────────────────
+   FRMLS LOGO — bottom center
+───────────────────────────────────────── */
 .cj-brand {
   position: absolute;
-  bottom: 52px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: 0.15em;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
   color: #ffffff;
   text-transform: uppercase;
   z-index: 10;
@@ -2873,20 +2871,20 @@ html, body {
   background-clip: text;
 }
 
-/* Gradient text utility — used sparingly */
+/* ─────────────────────────────────────────
+   SHARED UTILITIES
+───────────────────────────────────────── */
 .cj-grad {
   background: linear-gradient(90deg, #7c3aed, #06b6d4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
-/* Mono pill badge — gradient border only, transparent fill */
 .cj-badge {
   display: inline-block;
-  padding: 10px 24px;
+  padding: 10px 28px;
   font-family: 'DM Mono', monospace;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   color: rgba(255,255,255,0.55);
   background-image:
@@ -2899,17 +2897,20 @@ html, body {
   letter-spacing: 0.06em;
 }
 
-/* ── SLIDE 1 — Hook (fully centered) ── */
+/* ─────────────────────────────────────────
+   SLIDE 1 — HOOK
+───────────────────────────────────────── */
 .cj-s1-inner {
   position: absolute; inset: 0; z-index: 5;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   text-align: center;
-  padding: 0 80px;
+  padding: 80px 80px 100px;
+  gap: 52px;
 }
 .cj-s1-headline {
   font-family: 'Inter', sans-serif;
-  font-size: 44px;
+  font-size: 52px;
   font-weight: 800;
   line-height: 1.2;
   color: #ffffff;
@@ -2917,24 +2918,111 @@ html, body {
   max-width: 85%;
 }
 .cj-s1-sub {
-  margin-top: 28px;
   font-family: 'Inter', sans-serif;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 400;
   color: #888888;
   letter-spacing: 0.01em;
 }
 
-/* ── SLIDES 2 & 3 — Top-aligned ── */
+/* Browser mockup */
+.cj-browser-wrap {
+  position: relative;
+  width: 80%;
+}
+.cj-browser-glow {
+  position: absolute;
+  inset: -50px;
+  background: radial-gradient(ellipse at center, rgba(124,58,237,0.18) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 50%;
+}
+.cj-browser {
+  position: relative;
+  z-index: 1;
+  background: #111111;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.09);
+}
+.cj-browser-bar {
+  background: #1c1c1c;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.cj-dot {
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.cj-url-bar {
+  flex: 1;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.05);
+  border-radius: 5px;
+  padding: 5px 0;
+  max-width: 180px;
+  margin: 0 auto;
+}
+.cj-browser-body {
+  padding: 18px 20px 20px;
+}
+.cj-db-hdr {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.cj-db-hdr-s {
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.cj-db-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.cj-db-box {
+  background: rgba(255,255,255,0.03);
+  border-radius: 7px;
+  padding: 13px 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.65);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.cj-db-box-purple { border-left: 2px solid #7c3aed; }
+.cj-db-box-cyan   { border-left: 2px solid #06b6d4; }
+.cj-db-box-blue   { border-left: 2px solid #3b82f6; }
+.cj-db-box-orange { border-left: 2px solid #f97316; }
+.cj-db-box-green  { border-left: 2px solid #22c55e; }
+.cj-db-box-violet { border-left: 2px solid #a855f7; }
+
+/* ─────────────────────────────────────────
+   SLIDES 2 & 3 — TOP-ALIGNED
+───────────────────────────────────────── */
 .cj-top-inner {
   position: absolute; inset: 0; z-index: 5;
   display: flex; flex-direction: column;
   align-items: center; text-align: center;
-  padding: 80px 80px 120px;
+  padding: 80px 80px 100px;
 }
 .cj-top-headline {
   font-family: 'Inter', sans-serif;
-  font-size: 44px;
+  font-size: 52px;
   font-weight: 800;
   line-height: 1.2;
   color: #ffffff;
@@ -2945,31 +3033,137 @@ html, body {
 .cj-top-sub {
   margin-top: 20px;
   font-family: 'Inter', sans-serif;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 400;
   color: #aaaaaa;
   line-height: 1.7;
   max-width: 85%;
 }
 
-/* ── SLIDE 4 — CTA (fully centered) ── */
+/* Stat card — Slide 2 */
+.cj-stat-card {
+  width: 60%;
+  margin-top: 52px;
+  background: #111111;
+  border-radius: 16px;
+  padding: 56px 48px 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-image:
+    linear-gradient(#111111, #111111),
+    linear-gradient(135deg, #7c3aed, #06b6d4);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+}
+.cj-stat-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 120px;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.cj-stat-unit {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: 10px;
+  letter-spacing: 0.03em;
+}
+.cj-stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: #555555;
+  margin-top: 8px;
+}
+
+/* Before/After cards — Slide 3 */
+.cj-ba-wrap {
+  width: 85%;
+  margin-top: 52px;
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+}
+.cj-ba-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.cj-ba-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.cj-ba-label-bad  { color: #444444; }
+.cj-ba-card {
+  flex: 1;
+  background: #111111;
+  border-radius: 12px;
+  padding: 28px 22px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  text-align: left;
+}
+.cj-ba-card-bad {
+  border: 1px solid rgba(255,255,255,0.04);
+  border-left: 3px solid rgba(239,68,68,0.45);
+  color: #555555;
+}
+.cj-ba-card-good {
+  background-image:
+    linear-gradient(#111111, #111111),
+    linear-gradient(135deg, #7c3aed, #06b6d4);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+  color: #eeeeee;
+}
+
+/* ─────────────────────────────────────────
+   SLIDE 4 — CTA
+───────────────────────────────────────── */
 .cj-s4-inner {
   position: absolute; inset: 0; z-index: 5;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   text-align: center;
-  padding: 0 80px;
+  padding: 80px 80px 100px;
+  gap: 0;
+}
+.cj-s4-wordmark {
+  font-family: 'Inter', sans-serif;
+  font-size: 96px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 56px;
 }
 .cj-s4-headline {
   font-family: 'Inter', sans-serif;
-  font-size: 44px;
+  font-size: 52px;
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.025em;
   max-width: 85%;
 }
 .cj-s4-build {
-  margin-top: 24px;
+  margin-top: 28px;
   font-family: 'Inter', sans-serif;
   font-size: 20px;
   font-weight: 400;
@@ -2985,78 +3179,132 @@ html, body {
   margin-top: 4px;
 }
 .cj-s4-price {
-  margin-top: 16px;
+  margin-top: 18px;
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 400;
   color: #555555;
   letter-spacing: 0.01em;
 }
-.cj-s4 .cj-brand { font-size: 18px; }
 </style>
 
 <section class="cj-section">
 
-  <!-- ════════════════════
+  <!-- ════════════════════════════════════
        SLIDE 1 — Hook
-  ════════════════════ -->
+  ════════════════════════════════════ -->
   <div class="cj-slide-outer">
     <div class="cj-slide" id="cj-slide-1">
       <div class="cj-orb-purple"></div>
       <div class="cj-orb-cyan"></div>
+
       <div class="cj-s1-inner">
         <h1 class="cj-s1-headline">your store is <span class="cj-grad">losing</span> customers.</h1>
+
+        <!-- Browser mockup -->
+        <div class="cj-browser-wrap">
+          <div class="cj-browser-glow"></div>
+          <div class="cj-browser">
+            <div class="cj-browser-bar">
+              <span class="cj-dot" style="background:#ff5f57"></span>
+              <span class="cj-dot" style="background:#febc2e"></span>
+              <span class="cj-dot" style="background:#28c840"></span>
+              <div class="cj-url-bar">frmls.com</div>
+            </div>
+            <div class="cj-browser-body">
+              <div class="cj-db-hdr">FRML<span class="cj-db-hdr-s">S</span></div>
+              <div class="cj-db-grid">
+                <div class="cj-db-box cj-db-box-purple">Brand Kit</div>
+                <div class="cj-db-box cj-db-box-cyan">Prompt Pack</div>
+                <div class="cj-db-box cj-db-box-blue">Designer Prompts</div>
+                <div class="cj-db-box cj-db-box-orange">Store Inspiration</div>
+                <div class="cj-db-box cj-db-box-green">Launch Checklist</div>
+                <div class="cj-db-box cj-db-box-violet">Store Roadmap</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <p class="cj-s1-sub">here's why →</p>
       </div>
+
       <span class="cj-brand">FRML<span class="cj-brand-s">S</span></span>
     </div>
   </div>
 
-  <!-- ════════════════════
-       SLIDE 2 — Problem
-  ════════════════════ -->
+  <!-- ════════════════════════════════════
+       SLIDE 2 — The Problem
+  ════════════════════════════════════ -->
   <div class="cj-slide-outer">
     <div class="cj-slide" id="cj-slide-2">
       <div class="cj-orb-purple"></div>
       <div class="cj-orb-cyan"></div>
+
       <div class="cj-top-inner">
         <span class="cj-badge">the problem</span>
         <h2 class="cj-top-headline">first impressions take 3 seconds.</h2>
+
+        <!-- Stat card -->
+        <div class="cj-stat-card">
+          <div class="cj-stat-num">3</div>
+          <div class="cj-stat-unit">seconds</div>
+          <div class="cj-stat-label">to make a first impression</div>
+        </div>
+
         <p class="cj-top-sub">if it doesn't feel like a brand immediately — they're gone.</p>
       </div>
+
       <span class="cj-brand">FRML<span class="cj-brand-s">S</span></span>
     </div>
   </div>
 
-  <!-- ════════════════════
-       SLIDE 3 — Reason
-  ════════════════════ -->
+  <!-- ════════════════════════════════════
+       SLIDE 3 — The Reason
+  ════════════════════════════════════ -->
   <div class="cj-slide-outer">
     <div class="cj-slide" id="cj-slide-3">
       <div class="cj-orb-purple"></div>
       <div class="cj-orb-cyan"></div>
+
       <div class="cj-top-inner">
         <span class="cj-badge">the reason</span>
         <h2 class="cj-top-headline">most stores feel like templates.</h2>
+
+        <!-- Before / After cards -->
+        <div class="cj-ba-wrap">
+          <div class="cj-ba-col">
+            <div class="cj-ba-label cj-ba-label-bad">most stores</div>
+            <div class="cj-ba-card cj-ba-card-bad">welcome to our store. shop our latest collection.</div>
+          </div>
+          <div class="cj-ba-col">
+            <div class="cj-ba-label"><span class="cj-grad">yours</span></div>
+            <div class="cj-ba-card cj-ba-card-good">built for the ones who move quiet.</div>
+          </div>
+        </div>
+
         <p class="cj-top-sub">no brand identity. no direction. just a theme with products dropped in.</p>
       </div>
+
       <span class="cj-brand">FRML<span class="cj-brand-s">S</span></span>
     </div>
   </div>
 
-  <!-- ════════════════════
+  <!-- ════════════════════════════════════
        SLIDE 4 — CTA
-  ════════════════════ -->
+  ════════════════════════════════════ -->
   <div class="cj-slide-outer">
     <div class="cj-slide cj-s4" id="cj-slide-4">
       <div class="cj-orb-purple"></div>
       <div class="cj-orb-cyan"></div>
+
       <div class="cj-s4-inner">
+        <div class="cj-s4-wordmark">FRMLS</div>
         <p class="cj-s4-headline cj-grad">your store should feel like something.</p>
         <p class="cj-s4-build">build it right at</p>
         <p class="cj-s4-site cj-grad">frmls.com</p>
         <p class="cj-s4-price">$37 one time</p>
       </div>
+
       <span class="cj-brand">FRML<span class="cj-brand-s">S</span></span>
     </div>
   </div>

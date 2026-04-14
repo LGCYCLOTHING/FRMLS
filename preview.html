@@ -3353,21 +3353,21 @@ html, body {
   position: absolute;
   background-size: cover;
   background-position: center;
-  filter: blur(52px) brightness(0.32) saturate(1.4);
+  filter: blur(68px) brightness(0.85) saturate(1.15);
   z-index: 0;
 }
 /* full-slide ambient */
 .ig-ambient {
-  top: -50px; left: -50px; right: -50px; bottom: -50px;
+  top: -60px; left: -60px; right: -60px; bottom: -60px;
 }
 /* split halves */
 .ig-ambient-l {
-  top: -50px; left: -50px; bottom: -50px;
-  width: calc(50% + 50px);
+  top: -60px; left: -60px; bottom: -60px;
+  width: calc(50% + 60px);
 }
 .ig-ambient-r {
-  top: -50px; right: -50px; bottom: -50px;
-  width: calc(50% + 50px);
+  top: -60px; right: -60px; bottom: -60px;
+  width: calc(50% + 60px);
 }
 
 /* ---- shared slide internals ---- */
@@ -3398,11 +3398,15 @@ html, body {
   inset: 0;
   z-index: 2;
 }
+/* text-zone only gradient (default for image slides) */
+.ig-overlay.grad-text {
+  background: linear-gradient(to bottom, transparent 38%, rgba(0,0,0,0.68) 100%);
+}
 /* gradient overlay variant (slide 5) */
 .ig-overlay.gradient {
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.40) 0%,
+    transparent 35%,
     rgba(0,0,0,0.65) 100%
   );
 }
@@ -3503,7 +3507,7 @@ html, body {
         <img src="Porsche.jpg" alt="Beige Porsche" />
         <img src="download (3).jpg" alt="Green GT3RS" />
       </div>
-      <div class="ig-overlay" style="background:rgba(0,0,0,0.50);"></div>
+      <div class="ig-overlay grad-text"></div>
       <div class="ig-text">
         <span class="ig-accent-bar" style="background:linear-gradient(90deg,#7c3aed,#06b6d4);"></span>
         <div class="ig-headline">"the best brands don't explain themselves. you just feel it."</div>
@@ -3519,7 +3523,7 @@ html, body {
       <div class="ig-bg">
         <img src="Black Beast on the Track – Lamborghini Huracán in Full Speed Mode.jpg" alt="Lamborghini Huracán" />
       </div>
-      <div class="ig-overlay" style="background:rgba(0,0,0,0.30);"></div>
+      <div class="ig-overlay grad-text"></div>
       <div class="ig-text">
         <span class="ig-accent-bar" style="background:#06b6d4;"></span>
         <div class="ig-headline">"same industry. completely different feeling. that's brand identity."</div>
@@ -3535,7 +3539,7 @@ html, body {
       <div class="ig-bg">
         <img src="Premium Apple Products.jpg" alt="Premium Apple Products" />
       </div>
-      <div class="ig-overlay" style="background:rgba(0,0,0,0.55);"></div>
+      <div class="ig-overlay grad-text"></div>
       <div class="ig-text">
         <span class="ig-accent-bar" style="background:#c9a96e;"></span>
         <div class="ig-headline">"the product is never really the product. the feeling is."</div>
@@ -3551,7 +3555,7 @@ html, body {
       <div class="ig-bg">
         <img src="Minimalist Modern Interior Design Ideas_ Get Inspired.jpg" alt="Minimalist Interior" />
       </div>
-      <div class="ig-overlay" style="background:rgba(0,0,0,0.60);"></div>
+      <div class="ig-overlay grad-text"></div>
       <div class="ig-text">
         <span class="ig-accent-bar" style="background:#c4a882;"></span>
         <div class="ig-headline">"intentional design is felt. not explained."</div>
@@ -3761,10 +3765,10 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
 /* ---- BV ambient blurred backdrop ---- */
 .bv-ambient {
   position: absolute;
-  top: -50px; left: -50px; right: -50px; bottom: -50px;
+  top: -60px; left: -60px; right: -60px; bottom: -60px;
   background-size: cover;
   background-position: center;
-  filter: blur(52px) brightness(0.32) saturate(1.4);
+  filter: blur(68px) brightness(0.85) saturate(1.15);
   z-index: 0;
 }
 
@@ -3896,7 +3900,7 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
       <div style="position:absolute;top:60px;left:64px;z-index:10;font-family:'Inter',sans-serif;font-weight:900;font-size:34px;letter-spacing:0.04em;color:#ffffff;text-transform:uppercase;">FRML<span style="background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">S</span></div>
       <!-- center main content — vertically centered -->
       <div style="position:absolute;top:50%;left:64px;right:64px;transform:translateY(-55%);z-index:10;display:flex;flex-direction:column;gap:30px;">
-        <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:78px;line-height:1.06;color:#ffffff;letter-spacing:-0.025em;word-wrap:break-word;">a store sells products.<br>a brand sells<br>a feeling.</div>
+        <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:78px;line-height:1.06;color:#ffffff;letter-spacing:-0.025em;word-wrap:break-word;">a store sells products.<br>a brand sells<br>a <span style="background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">feeling</span>.</div>
         <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:32px;letter-spacing:-0.01em;background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">FRMLS builds the feeling.</div>
       </div>
       <!-- logo watermark -->
@@ -3911,10 +3915,10 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
       <div class="bv-bg">
         <img src="noir-studio.jpg" alt="Noir Studio">
       </div>
-      <div class="bv-overlay solid-35"></div>
+      <div class="bv-overlay grad-45"></div>
       <div class="bv-tag">minimal. dark. editorial.</div>
       <div class="bv-text">
-        <div class="bv-headline">your brand has a voice.</div>
+        <div class="bv-headline">your brand has a <span style="background:linear-gradient(90deg,#e8edf2,#9aa5b4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">voice</span>.</div>
         <div class="bv-subtext">Noir Studio — built with FRMLS</div>
       </div>
       <div class="bv-logo">FRML<span class="logo-s">S</span></div>
@@ -3930,7 +3934,7 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
       </div>
       <div class="bv-overlay grad-50"></div>
       <div class="bv-text">
-        <div class="bv-headline">warm. intentional. effortless.</div>
+        <div class="bv-headline"><span style="background:linear-gradient(90deg,#e8a030,#d4a853);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">warm</span>. intentional. <span style="background:linear-gradient(90deg,#f5c09a,#f0e4cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">effortless</span>.</div>
         <div class="bv-subtext">Soleil — built with FRMLS</div>
       </div>
       <div class="bv-logo">FRML<span class="logo-s">S</span></div>
@@ -3946,7 +3950,7 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
       </div>
       <div class="bv-overlay grad-text"></div>
       <div class="bv-text">
-        <div class="bv-headline">clean design. clear identity.</div>
+        <div class="bv-headline"><span style="background:linear-gradient(90deg,#f5f5f0,#84a98c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">clean</span> design. clear identity.</div>
         <div class="bv-subtext">Pura — built with FRMLS</div>
       </div>
       <div class="bv-logo">FRML<span class="logo-s">S</span></div>
@@ -3962,7 +3966,7 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
       </div>
       <div class="bv-overlay grad-45"></div>
       <div class="bv-text">
-        <div class="bv-headline">grounded. organic. yours.</div>
+        <div class="bv-headline"><span style="background:linear-gradient(90deg,#8B5E3C,#c4a882);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">grounded</span>. organic. yours.</div>
         <div class="bv-subtext">Terra — built with FRMLS</div>
       </div>
       <div class="bv-logo">FRML<span class="logo-s">S</span></div>
@@ -3980,7 +3984,7 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
       <!-- center content -->
       <div style="position:absolute;top:50%;left:64px;right:64px;transform:translateY(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center;">
         <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:80px;letter-spacing:0.04em;color:#ffffff;text-transform:uppercase;line-height:1;">FRML<span style="background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">S</span></div>
-        <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:52px;line-height:1.1;color:#ffffff;letter-spacing:-0.02em;word-wrap:break-word;">build a store that feels<br>like something.</div>
+        <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:52px;line-height:1.1;color:#ffffff;letter-spacing:-0.02em;word-wrap:break-word;">build a store that<br><span style="background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">feels like something.</span></div>
         <div style="font-family:'Inter',sans-serif;font-weight:400;font-size:20px;color:rgba(255,255,255,0.40);letter-spacing:0.08em;text-transform:uppercase;">brand kit · prompt pack · launch checklist</div>
       </div>
       <div class="bv-logo">FRML<span class="logo-s">S</span></div>

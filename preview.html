@@ -2803,7 +2803,7 @@ html, body {
 
 <!-- ======================================================================= -->
 <!-- ===== CUSTOMER JOURNEY CAROUSEL — 4 slides, 1080×1350px (4:5 Instagram) ===== -->
-<!-- ===== Scales to fit viewport on mobile for direct iPhone screenshots   ===== -->
+<!-- ===== Scales to viewport on mobile · heavy weights for screenshot quality ===== -->
 <!-- ======================================================================= -->
 
 <style>
@@ -2818,10 +2818,7 @@ html, body {
   align-items: center;
   gap: 40px;
 }
-.cj-slide-outer {
-  overflow: hidden;
-  flex-shrink: 0;
-}
+.cj-slide-outer { overflow: hidden; flex-shrink: 0; }
 .cj-slide {
   width: 1080px;
   height: 1350px;
@@ -2831,19 +2828,26 @@ html, body {
   transform-origin: top left;
 }
 
+/* Subtle dot-grid texture on every slide */
+.cj-slide::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none; z-index: 1;
+}
+
 /* Ambient orbs */
 .cj-orb-purple {
-  position: absolute;
-  top: -240px; left: -220px;
+  position: absolute; top: -240px; left: -220px;
   width: 740px; height: 740px;
-  background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 65%);
   pointer-events: none; z-index: 0;
 }
 .cj-orb-cyan {
-  position: absolute;
-  bottom: -240px; right: -220px;
+  position: absolute; bottom: -240px; right: -220px;
   width: 640px; height: 640px;
-  background: radial-gradient(circle, rgba(6,182,212,0.10) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 65%);
   pointer-events: none; z-index: 0;
 }
 
@@ -2852,23 +2856,16 @@ html, body {
 ───────────────────────────────────────── */
 .cj-brand {
   position: absolute;
-  bottom: 24px;
-  left: 50%;
+  bottom: 24px; left: 50%;
   transform: translateX(-50%);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 26px;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  color: #ffffff;
-  text-transform: uppercase;
-  z-index: 10;
-  white-space: nowrap;
+  font-size: 26px; font-weight: 900;
+  letter-spacing: 0.04em; color: #ffffff;
+  text-transform: uppercase; z-index: 10; white-space: nowrap;
 }
 .cj-brand-s {
   background: linear-gradient(90deg, #7c3aed, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
 /* ─────────────────────────────────────────
@@ -2876,25 +2873,26 @@ html, body {
 ───────────────────────────────────────── */
 .cj-grad {
   background: linear-gradient(90deg, #7c3aed, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .cj-badge {
-  display: inline-block;
-  padding: 10px 28px;
-  font-family: 'DM Mono', monospace;
-  font-size: 14px;
-  font-weight: 400;
-  color: rgba(255,255,255,0.55);
-  background-image:
-    linear-gradient(#0a0a0a, #0a0a0a),
-    linear-gradient(90deg, #7c3aed, #06b6d4);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  border: 1px solid transparent;
-  border-radius: 100px;
-  letter-spacing: 0.06em;
+  display: inline-block; padding: 11px 30px;
+  font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500;
+  color: rgba(255,255,255,0.65);
+  background-image: linear-gradient(#0a0a0a, #0a0a0a), linear-gradient(90deg, #7c3aed, #06b6d4);
+  background-origin: border-box; background-clip: padding-box, border-box;
+  border: 2px solid transparent; border-radius: 100px; letter-spacing: 0.06em;
+}
+
+/* Gradient-bordered image frame — 2px so it survives compression */
+.cj-img-frame {
+  border-radius: 12px; padding: 2px;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  flex-shrink: 0;
+}
+.cj-img-frame img {
+  display: block; width: 100%; border-radius: 10px;
+  object-fit: cover; background: #111;
 }
 
 /* ─────────────────────────────────────────
@@ -2904,112 +2902,80 @@ html, body {
   position: absolute; inset: 0; z-index: 5;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  text-align: center;
-  padding: 80px 80px 100px;
-  gap: 52px;
+  text-align: center; padding: 72px 72px 96px; gap: 40px;
 }
 .cj-s1-headline {
-  font-family: 'Inter', sans-serif;
-  font-size: 52px;
-  font-weight: 800;
-  line-height: 1.2;
-  color: #ffffff;
-  letter-spacing: -0.025em;
-  max-width: 85%;
+  font-family: 'Inter', sans-serif; font-size: 54px; font-weight: 900;
+  line-height: 1.15; color: #ffffff; letter-spacing: -0.03em; max-width: 85%;
 }
 .cj-s1-sub {
-  font-family: 'Inter', sans-serif;
-  font-size: 20px;
-  font-weight: 400;
-  color: #888888;
-  letter-spacing: 0.01em;
+  font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 600;
+  color: #999999; letter-spacing: 0.01em;
+}
+
+/* Metric chips row — floating bad stats */
+.cj-metrics {
+  display: flex; gap: 20px; width: 80%;
+}
+.cj-metric-chip {
+  flex: 1; background: #111111;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 20px 18px;
+  text-align: center;
+}
+.cj-metric-chip-val {
+  font-family: 'Inter', sans-serif; font-size: 36px; font-weight: 900;
+  color: #ef4444; line-height: 1; letter-spacing: -0.02em;
+}
+.cj-metric-chip-label {
+  font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500;
+  color: #555555; margin-top: 6px; letter-spacing: 0.04em;
 }
 
 /* Browser mockup */
-.cj-browser-wrap {
-  position: relative;
-  width: 80%;
-}
+.cj-browser-wrap { position: relative; width: 80%; }
 .cj-browser-glow {
-  position: absolute;
-  inset: -50px;
-  background: radial-gradient(ellipse at center, rgba(124,58,237,0.18) 0%, transparent 65%);
-  pointer-events: none;
-  z-index: 0;
-  border-radius: 50%;
+  position: absolute; inset: -50px;
+  background: radial-gradient(ellipse at center, rgba(124,58,237,0.2) 0%, transparent 65%);
+  pointer-events: none; z-index: 0; border-radius: 50%;
 }
 .cj-browser {
-  position: relative;
-  z-index: 1;
-  background: #111111;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.09);
+  position: relative; z-index: 1; background: #111111;
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 .cj-browser-bar {
-  background: #1c1c1c;
-  padding: 14px 18px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: #1c1c1c; padding: 14px 18px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
 }
-.cj-dot {
-  width: 11px; height: 11px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
+.cj-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
 .cj-url-bar {
-  flex: 1;
-  text-align: center;
-  font-family: 'DM Mono', monospace;
-  font-size: 12px;
-  color: rgba(255,255,255,0.3);
-  background: rgba(255,255,255,0.05);
-  border-radius: 5px;
-  padding: 5px 0;
-  max-width: 180px;
-  margin: 0 auto;
+  flex: 1; text-align: center; font-family: 'DM Mono', monospace; font-size: 13px;
+  color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.06);
+  border-radius: 5px; padding: 5px 0; max-width: 200px; margin: 0 auto;
 }
-.cj-browser-body {
-  padding: 18px 20px 20px;
-}
+.cj-browser-body { padding: 20px 22px 22px; }
 .cj-db-hdr {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #fff;
-  text-transform: uppercase;
-  margin-bottom: 14px;
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 900;
+  letter-spacing: 0.12em; color: #fff; text-transform: uppercase; margin-bottom: 16px;
 }
 .cj-db-hdr-s {
   background: linear-gradient(90deg, #7c3aed, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-.cj-db-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
+.cj-db-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
 .cj-db-box {
-  background: rgba(255,255,255,0.03);
-  border-radius: 7px;
-  padding: 13px 10px;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.65);
-  border: 1px solid rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.04); border-radius: 8px; padding: 14px 10px;
+  font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+  color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.06);
 }
-.cj-db-box-purple { border-left: 2px solid #7c3aed; }
-.cj-db-box-cyan   { border-left: 2px solid #06b6d4; }
-.cj-db-box-blue   { border-left: 2px solid #3b82f6; }
-.cj-db-box-orange { border-left: 2px solid #f97316; }
-.cj-db-box-green  { border-left: 2px solid #22c55e; }
-.cj-db-box-violet { border-left: 2px solid #a855f7; }
+.cj-db-box-purple { border-left: 3px solid #7c3aed; }
+.cj-db-box-cyan   { border-left: 3px solid #06b6d4; }
+.cj-db-box-blue   { border-left: 3px solid #3b82f6; }
+.cj-db-box-orange { border-left: 3px solid #f97316; }
+.cj-db-box-green  { border-left: 3px solid #22c55e; }
+.cj-db-box-violet { border-left: 3px solid #a855f7; }
 
 /* ─────────────────────────────────────────
    SLIDES 2 & 3 — TOP-ALIGNED
@@ -3018,117 +2984,76 @@ html, body {
   position: absolute; inset: 0; z-index: 5;
   display: flex; flex-direction: column;
   align-items: center; text-align: center;
-  padding: 80px 80px 100px;
+  padding: 72px 72px 96px;
 }
 .cj-top-headline {
-  font-family: 'Inter', sans-serif;
-  font-size: 52px;
-  font-weight: 800;
-  line-height: 1.2;
-  color: #ffffff;
-  letter-spacing: -0.025em;
-  margin-top: 20px;
-  max-width: 85%;
+  font-family: 'Inter', sans-serif; font-size: 54px; font-weight: 900;
+  line-height: 1.15; color: #ffffff; letter-spacing: -0.03em;
+  margin-top: 20px; max-width: 85%;
 }
 .cj-top-sub {
-  margin-top: 20px;
-  font-family: 'Inter', sans-serif;
-  font-size: 20px;
-  font-weight: 400;
-  color: #aaaaaa;
-  line-height: 1.7;
-  max-width: 85%;
+  margin-top: 28px; font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 600;
+  color: #aaaaaa; line-height: 1.65; max-width: 85%;
 }
 
 /* Stat card — Slide 2 */
 .cj-stat-card {
-  width: 60%;
-  margin-top: 52px;
-  background: #111111;
-  border-radius: 16px;
-  padding: 56px 48px 52px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  background-image:
-    linear-gradient(#111111, #111111),
-    linear-gradient(135deg, #7c3aed, #06b6d4);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  border: 1px solid transparent;
+  width: 62%; margin-top: 44px; background: #111111; border-radius: 18px;
+  padding: 52px 48px 48px; display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  background-image: linear-gradient(#111111, #111111), linear-gradient(135deg, #7c3aed, #06b6d4);
+  background-origin: border-box; background-clip: padding-box, border-box;
+  border: 2px solid transparent;
 }
 .cj-stat-num {
-  font-family: 'Inter', sans-serif;
-  font-size: 120px;
-  font-weight: 900;
-  line-height: 1;
+  font-family: 'Inter', sans-serif; font-size: 130px; font-weight: 900; line-height: 1;
   background: linear-gradient(135deg, #7c3aed, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .cj-stat-unit {
-  font-family: 'Inter', sans-serif;
-  font-size: 24px;
-  font-weight: 600;
-  color: #ffffff;
-  margin-top: 10px;
-  letter-spacing: 0.03em;
+  font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 700;
+  color: #ffffff; margin-top: 12px; letter-spacing: 0.04em;
 }
 .cj-stat-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 15px;
-  font-weight: 400;
-  color: #555555;
-  margin-top: 8px;
+  font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500;
+  color: #666666; margin-top: 8px;
+}
+
+/* Store preview row below stat card — Slide 2 */
+.cj-store-row {
+  width: 85%; margin-top: 40px; display: flex; gap: 14px;
+}
+.cj-store-row .cj-img-frame { flex: 1; }
+.cj-store-row .cj-img-frame img { height: 160px; filter: saturate(0.5) brightness(0.7); }
+.cj-store-caption {
+  margin-top: 12px; font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500;
+  color: #444444; letter-spacing: 0.05em;
 }
 
 /* Before/After cards — Slide 3 */
-.cj-ba-wrap {
-  width: 85%;
-  margin-top: 52px;
-  display: flex;
-  gap: 16px;
-  align-items: stretch;
-}
-.cj-ba-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
+.cj-ba-wrap { width: 85%; margin-top: 44px; display: flex; gap: 16px; align-items: stretch; }
+.cj-ba-col { flex: 1; display: flex; flex-direction: column; }
 .cj-ba-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  margin-bottom: 10px;
-  text-align: center;
+  font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500;
+  letter-spacing: 0.08em; margin-bottom: 10px; text-align: center;
 }
-.cj-ba-label-bad  { color: #444444; }
+.cj-ba-label-bad { color: #444444; }
 .cj-ba-card {
-  flex: 1;
-  background: #111111;
-  border-radius: 12px;
-  padding: 28px 22px;
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  line-height: 1.65;
-  text-align: left;
+  flex: 1; background: #111111; border-radius: 12px; overflow: hidden;
+  font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 600;
+  line-height: 1.6; text-align: left;
 }
+.cj-ba-card-img { width: 100%; height: 170px; object-fit: cover; display: block; }
+.cj-ba-card-text { padding: 22px 20px; }
 .cj-ba-card-bad {
   border: 1px solid rgba(255,255,255,0.04);
-  border-left: 3px solid rgba(239,68,68,0.45);
-  color: #555555;
+  border-left: 3px solid rgba(239,68,68,0.5);
+  color: #606060;
 }
 .cj-ba-card-good {
-  background-image:
-    linear-gradient(#111111, #111111),
-    linear-gradient(135deg, #7c3aed, #06b6d4);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  border: 1px solid transparent;
-  color: #eeeeee;
+  background-image: linear-gradient(#111111, #111111), linear-gradient(135deg, #7c3aed, #06b6d4);
+  background-origin: border-box; background-clip: padding-box, border-box;
+  border: 2px solid transparent; color: #eeeeee;
 }
 
 /* ─────────────────────────────────────────
@@ -3138,53 +3063,34 @@ html, body {
   position: absolute; inset: 0; z-index: 5;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  text-align: center;
-  padding: 80px 80px 100px;
-  gap: 0;
+  text-align: center; padding: 72px 72px 96px;
 }
 .cj-s4-wordmark {
-  font-family: 'Inter', sans-serif;
-  font-size: 96px;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.03em;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 108px; font-weight: 900; line-height: 1; letter-spacing: -0.03em;
   background: linear-gradient(90deg, #7c3aed, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 56px;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 36px;
 }
+.cj-s4-feat-img {
+  width: 76%; margin-bottom: 40px;
+}
+.cj-s4-feat-img .cj-img-frame img { height: 240px; }
 .cj-s4-headline {
-  font-family: 'Inter', sans-serif;
-  font-size: 52px;
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
-  max-width: 85%;
+  font-family: 'Inter', sans-serif; font-size: 44px; font-weight: 900;
+  line-height: 1.15; letter-spacing: -0.025em; max-width: 85%;
 }
 .cj-s4-build {
-  margin-top: 28px;
-  font-family: 'Inter', sans-serif;
-  font-size: 20px;
-  font-weight: 400;
-  color: #ffffff;
-  line-height: 1.5;
+  margin-top: 24px; font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 600;
+  color: #cccccc; line-height: 1.5;
 }
 .cj-s4-site {
-  font-family: 'Inter', sans-serif;
-  font-size: 32px;
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-  margin-top: 4px;
+  font-family: 'Inter', sans-serif; font-size: 36px; font-weight: 800;
+  line-height: 1.3; letter-spacing: -0.02em; margin-top: 4px;
 }
 .cj-s4-price {
-  margin-top: 18px;
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  color: #555555;
-  letter-spacing: 0.01em;
+  margin-top: 18px; font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 600;
+  color: #555555; letter-spacing: 0.01em;
 }
 </style>
 
@@ -3200,6 +3106,22 @@ html, body {
 
       <div class="cj-s1-inner">
         <h1 class="cj-s1-headline">your store is <span class="cj-grad">losing</span> customers.</h1>
+
+        <!-- Bad metric chips -->
+        <div class="cj-metrics">
+          <div class="cj-metric-chip">
+            <div class="cj-metric-chip-val">78%</div>
+            <div class="cj-metric-chip-label">bounce rate</div>
+          </div>
+          <div class="cj-metric-chip">
+            <div class="cj-metric-chip-val">0:07</div>
+            <div class="cj-metric-chip-label">avg. session</div>
+          </div>
+          <div class="cj-metric-chip">
+            <div class="cj-metric-chip-val">1.2%</div>
+            <div class="cj-metric-chip-label">conversion</div>
+          </div>
+        </div>
 
         <!-- Browser mockup -->
         <div class="cj-browser-wrap">
@@ -3248,8 +3170,22 @@ html, body {
         <div class="cj-stat-card">
           <div class="cj-stat-num">3</div>
           <div class="cj-stat-unit">seconds</div>
-          <div class="cj-stat-label">to make a first impression</div>
+          <div class="cj-stat-label">to make or break a first impression</div>
         </div>
+
+        <!-- Row of 3 generic-looking store images -->
+        <div class="cj-store-row">
+          <div class="cj-img-frame">
+            <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=300&q=80&auto=format&fit=crop" alt="store" />
+          </div>
+          <div class="cj-img-frame">
+            <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=300&q=80&auto=format&fit=crop" alt="store" />
+          </div>
+          <div class="cj-img-frame">
+            <img src="https://images.unsplash.com/photo-1555421689-d68471e189f2?w=300&q=80&auto=format&fit=crop" alt="store" />
+          </div>
+        </div>
+        <p class="cj-store-caption">every store looks the same</p>
 
         <p class="cj-top-sub">if it doesn't feel like a brand immediately — they're gone.</p>
       </div>
@@ -3270,15 +3206,21 @@ html, body {
         <span class="cj-badge">the reason</span>
         <h2 class="cj-top-headline">most stores feel like templates.</h2>
 
-        <!-- Before / After cards -->
+        <!-- Before / After cards with images -->
         <div class="cj-ba-wrap">
           <div class="cj-ba-col">
             <div class="cj-ba-label cj-ba-label-bad">most stores</div>
-            <div class="cj-ba-card cj-ba-card-bad">welcome to our store. shop our latest collection.</div>
+            <div class="cj-ba-card cj-ba-card-bad">
+              <img class="cj-ba-card-img" src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=400&q=80&auto=format&fit=crop" alt="" style="filter:saturate(0.3) brightness(0.6)" />
+              <div class="cj-ba-card-text">welcome to our store. shop our latest collection.</div>
+            </div>
           </div>
           <div class="cj-ba-col">
             <div class="cj-ba-label"><span class="cj-grad">yours</span></div>
-            <div class="cj-ba-card cj-ba-card-good">built for the ones who move quiet.</div>
+            <div class="cj-ba-card cj-ba-card-good">
+              <img class="cj-ba-card-img" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80&auto=format&fit=crop" alt="" />
+              <div class="cj-ba-card-text">built for the ones who move quiet.</div>
+            </div>
           </div>
         </div>
 
@@ -3299,6 +3241,14 @@ html, body {
 
       <div class="cj-s4-inner">
         <div class="cj-s4-wordmark">FRMLS</div>
+
+        <!-- Featured image — store on laptop with gradient border -->
+        <div class="cj-s4-feat-img">
+          <div class="cj-img-frame">
+            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&auto=format&fit=crop" alt="store" />
+          </div>
+        </div>
+
         <p class="cj-s4-headline cj-grad">your store should feel like something.</p>
         <p class="cj-s4-build">build it right at</p>
         <p class="cj-s4-site cj-grad">frmls.com</p>

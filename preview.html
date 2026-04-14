@@ -93,11 +93,15 @@ html, body {
 }
 
 .hero-brand {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 100px; font-weight: 900; letter-spacing: -0.04em; line-height: 1.05;
-  background: var(--grad-text);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  color: #fff;
   margin-bottom: 12px;
   text-align: center;
+}
+.hero-brand .logo-s {
+  background: linear-gradient(90deg,#7c3aed,#06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
 .hero-sub {
@@ -244,20 +248,20 @@ html, body {
 }
 
 .slide-logo {
-  font-family: 'Inter', sans-serif;
-  font-size: 15px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px;
   font-weight: 900;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  background: var(--grad-text);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  letter-spacing: -0.02em;
+  color: #fff;
   position: absolute;
   bottom: 52px;
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
+}
+.slide-logo .logo-s {
+  background: linear-gradient(90deg,#7c3aed,#06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
 .mono-muted {
@@ -973,20 +977,20 @@ html, body {
   text-align: center;
 }
 .btb-cta-logo {
-  font-family: 'Inter', sans-serif;
-  font-size: 20px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 22px;
   font-weight: 900;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  background: linear-gradient(135deg, #a855f7, #f59e0b);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  letter-spacing: -0.02em;
+  color: #fff;
   position: absolute;
   bottom: 48px;
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
+}
+.btb-cta-logo .logo-s {
+  background: linear-gradient(90deg,#7c3aed,#06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
 /* BTB gradient border for the CTA slide edge */
@@ -1057,15 +1061,17 @@ html, body {
 
 /* ── Scene 1 / 8 shared ── */
 .tr-logo-large {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: clamp(44px, 8vw, 80px);
   font-weight: 900;
   letter-spacing: -0.04em;
-  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #fff;
   opacity: 0;
   transform: translateY(12px);
+}
+.tr-logo-large .logo-s {
+  background: linear-gradient(90deg,#7c3aed,#06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
 .tr-tagline-small {
@@ -1547,7 +1553,15 @@ html, body {
   width: 45%; display: flex; flex-direction: column; align-items: center;
   justify-content: center; gap: 20px; position: relative; z-index: 6; padding: 0 72px;
 }
-.wb-logo-img { width: 270px; height: auto; display: block; }
+.wb-logo-img {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 52px; font-weight: 900; letter-spacing: -0.02em;
+  color: #fff; line-height: 1; display: block;
+}
+.wb-logo-img .logo-s {
+  background: linear-gradient(90deg,#7c3aed,#06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
 /* Tagline: large, white, immediately readable */
 .wb-tagline {
   font-family: 'DM Mono', monospace; font-size: 19px; font-weight: 500;
@@ -1609,7 +1623,15 @@ html, body {
   display: flex; align-items: center; margin-bottom: 12px; padding-bottom: 10px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-.wb-content-logo { width: 66px; height: auto; display: block; }
+.wb-content-logo {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px; font-weight: 900; letter-spacing: -0.02em;
+  color: #fff; line-height: 1; display: block;
+}
+.wb-content-logo .logo-s {
+  background: linear-gradient(90deg,#7c3aed,#06b6d4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
 /* 3×2 dashboard card grid */
 .wb-box-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .wb-box {
@@ -1664,7 +1686,7 @@ html, body {
   <div class="main">
   <div class="hero">
 
-    <div class="hero-brand"><img src="logo-wordmark.svg" alt="FRMLS" style="height:72px;width:auto;display:block;margin:0 auto;"></div>
+    <div class="hero-brand">FRML<span class="logo-s">S</span></div>
     <div class="hero-sub">your store. built right.</div>
     <div class="hero-desc">Brand identity, custom prompts, designer tools, and a launch system — all in one place.</div>
 
@@ -1769,7 +1791,7 @@ html, body {
       <div class="s1-tip mono-muted">tip 01</div>
     </div>
 
-    <div class="slide-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="18" style="display:block;"></div>
+    <div class="slide-logo">FRML<span class="logo-s">S</span></div>
   </div>
 </div>
 
@@ -1788,7 +1810,7 @@ html, body {
       <div class="s2-sub">that step is brand identity.</div>
     </div>
 
-    <div class="slide-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="18" style="display:block;"></div>
+    <div class="slide-logo">FRML<span class="logo-s">S</span></div>
   </div>
 </div>
 
@@ -1821,7 +1843,7 @@ html, body {
       </div>
     </div>
 
-    <div class="slide-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="18" style="display:block;"></div>
+    <div class="slide-logo">FRML<span class="logo-s">S</span></div>
   </div>
 </div>
 
@@ -1844,7 +1866,7 @@ html, body {
       <div class="s4-sub">skip this and your store looks like everyone else.</div>
     </div>
 
-    <div class="slide-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="18" style="display:block;"></div>
+    <div class="slide-logo">FRML<span class="logo-s">S</span></div>
   </div>
 </div>
 
@@ -1865,7 +1887,7 @@ html, body {
       <div class="s5-cta">or build your whole store at <span class="s5-url">frmls.com</span></div>
     </div>
 
-    <div class="slide-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="18" style="display:block;"></div>
+    <div class="slide-logo">FRML<span class="logo-s">S</span></div>
   </div>
 </div>
 
@@ -1884,7 +1906,7 @@ html, body {
       <div class="btb-cta-hl btb-grad" style="font-size:68px;margin-bottom:22px;line-height:1.08;">how FRMLS builds<br>your brand identity.</div>
       <div style="font-size:20px;color:rgba(255,255,255,0.40);font-weight:400;line-height:1.6;">a 5 minute flow that personalizes everything.</div>
     </div>
-    <div class="btb-cta-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
+    <div class="btb-cta-logo">FRML<span class="logo-s">S</span></div>
   </div>
 </div>
 
@@ -1928,7 +1950,7 @@ html, body {
       </div>
       <div class="btb-muted">this shapes every prompt you get.</div>
     </div>
-    <div class="btb-cta-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
+    <div class="btb-cta-logo">FRML<span class="logo-s">S</span></div>
   </div>
 </div>
 
@@ -1964,7 +1986,7 @@ html, body {
       </div>
       <div class="btb-muted">this sets the tone for your copy and design.</div>
     </div>
-    <div class="btb-cta-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
+    <div class="btb-cta-logo">FRML<span class="logo-s">S</span></div>
   </div>
 </div>
 
@@ -2034,7 +2056,7 @@ html, body {
       </div>
       <div class="btb-muted">your brand kit generates from these choices.</div>
     </div>
-    <div class="btb-cta-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
+    <div class="btb-cta-logo">FRML<span class="logo-s">S</span></div>
   </div>
 </div>
 
@@ -2085,7 +2107,7 @@ html, body {
       </div>
       <div class="btb-muted">everything builds from this.</div>
     </div>
-    <div class="btb-cta-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
+    <div class="btb-cta-logo">FRML<span class="logo-s">S</span></div>
   </div>
 </div>
 
@@ -2103,7 +2125,7 @@ html, body {
       <div class="btb-cta-sub">go through the flow at frmls.com</div>
       <div class="btb-cta-muted">every prompt. pre-filled with your brand info.</div>
     </div>
-    <div class="btb-cta-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="24" style="display:block;margin:0 auto;"></div>
+    <div class="btb-cta-logo">FRML<span class="logo-s">S</span></div>
   </div>
 </div>
 
@@ -2344,7 +2366,7 @@ html, body {
   <div class="tr-scene" id="tr-s1">
     <canvas id="tr-bh1" class="tr-bh-canvas"></canvas>
     <div class="tr-s1-content">
-      <div id="s1-logo" class="tr-logo-large"><img src="logo-wordmark.svg" alt="FRMLS" style="height:clamp(44px,8vw,80px);width:auto;display:block;"></div>
+      <div id="s1-logo" class="tr-logo-large">FRML<span class="logo-s">S</span></div>
       <div id="s1-tag" class="tr-tagline-small">store builder system</div>
     </div>
   </div>
@@ -2493,7 +2515,7 @@ html, body {
     <canvas id="tr-bh8" class="tr-bh-canvas tr-bh-bg"></canvas>
     <canvas id="tr-particles" class="tr-particles-canvas" style="position:absolute;inset:0;z-index:9;pointer-events:none;"></canvas>
     <div class="tr-s1-content" style="position:relative;z-index:10;">
-      <div id="s8-logo" class="tr-logo-large"><img src="logo-wordmark.svg" alt="FRMLS" style="height:clamp(44px,8vw,80px);width:auto;display:block;"></div>
+      <div id="s8-logo" class="tr-logo-large">FRML<span class="logo-s">S</span></div>
       <div id="s8-sub" class="tr-tagline-small">your store. built right.</div>
       <div id="s8-url" class="tr-cta-url">frmls.com</div>
       <div id="s8-price" class="tr-cta-price">$37 one time</div>
@@ -2911,7 +2933,7 @@ html, body {
 
     <!-- ── LEFT: logo · tagline · gradient line · url ── -->
     <div class="wb-left">
-      <img src="logo-wordmark.svg" alt="FRMLS" class="wb-logo-img">
+      <div class="wb-logo-img">FRML<span class="logo-s">S</span></div>
       <div class="wb-tagline">your store. built right.</div>
       <hr class="wb-divline">
       <div class="wb-url">frmls.com</div>
@@ -2931,7 +2953,7 @@ html, body {
         <!-- Dashboard interior -->
         <div class="wb-content">
           <div class="wb-content-header">
-            <img src="logo-wordmark.svg" alt="FRMLS" class="wb-content-logo">
+            <span class="wb-content-logo">FRML<span class="logo-s">S</span></span>
           </div>
           <div class="wb-box-grid">
             <div class="wb-box wb-box-purple">

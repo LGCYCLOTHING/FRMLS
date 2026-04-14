@@ -1,41 +1,46 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 100" width="500" height="100">
   <!--
     FRMLS logo-wordmark.svg — 500×100px transparent background
-    Space Grotesk 700 loads via @import when SVG is opened directly or inline.
-    When used as <img>, the font falls back gracefully to system-ui/Inter.
-    For pixel-perfect font rendering, use this SVG inline or as <object>.
+    Montserrat 900 (Black) via @import — loads when opened directly.
+    Falls back to system-ui Black / Inter 900 when used as <img>.
   -->
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&amp;display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&amp;display=swap');
   </style>
   <defs>
-    <!-- Mini-icon: dark circle bg -->
+    <!-- Mini icon: background circle gradient -->
     <radialGradient id="w-bg" cx="50%" cy="50%" r="50%">
-      <stop offset="0%"   stop-color="#1a0533"/>
-      <stop offset="58%"  stop-color="#0e0618"/>
+      <stop offset="0%"   stop-color="#1e053e"/>
+      <stop offset="55%"  stop-color="#0c0618"/>
       <stop offset="100%" stop-color="#0a0a0a"/>
     </radialGradient>
-    <!-- Mini-icon: frame gradient (purple → cyan, clockwise diagonal) -->
-    <linearGradient id="w-fg" x1="78" y1="78" x2="322" y2="322" gradientUnits="userSpaceOnUse">
+    <!-- Mini icon: chevron fill — purple left → cyan right -->
+    <linearGradient id="w-fg" x1="72" y1="200" x2="316" y2="200" gradientUnits="userSpaceOnUse">
       <stop offset="0%"   stop-color="#7c3aed"/>
       <stop offset="100%" stop-color="#06b6d4"/>
     </linearGradient>
-    <!-- Mini-icon: glow radials -->
-    <radialGradient id="w-gp" cx="34%" cy="40%" r="55%">
-      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0.42"/>
+    <!-- Mini icon: chevron top-edge sheen -->
+    <linearGradient id="w-hl" x1="72" y1="200" x2="316" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="rgba(255,255,255,0.22)"/>
+      <stop offset="60%"  stop-color="rgba(255,255,255,0.06)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.00)"/>
+    </linearGradient>
+    <!-- Mini icon: ambient glows -->
+    <radialGradient id="w-gp" cx="25%" cy="50%" r="48%">
+      <stop offset="0%"   stop-color="#7c3aed" stop-opacity="0.60"/>
       <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="w-gc" cx="70%" cy="65%" r="55%">
-      <stop offset="0%"   stop-color="#06b6d4" stop-opacity="0.35"/>
+    <radialGradient id="w-gc" cx="80%" cy="50%" r="38%">
+      <stop offset="0%"   stop-color="#06b6d4" stop-opacity="0.50"/>
       <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
     </radialGradient>
-    <filter id="w-gb" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="30"/>
+    <filter id="w-gblur" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="24"/>
     </filter>
     <clipPath id="w-cc">
       <circle cx="200" cy="200" r="200"/>
     </clipPath>
-    <!-- S letter horizontal gradient -->
+    <!-- "S" letter horizontal gradient: purple → cyan -->
     <linearGradient id="w-sg" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%"   stop-color="#7c3aed"/>
       <stop offset="100%" stop-color="#06b6d4"/>
@@ -49,18 +54,28 @@
       <circle cx="200" cy="200" r="200" fill="url(#w-gp)"/>
       <circle cx="200" cy="200" r="200" fill="url(#w-gc)"/>
     </g>
-    <!-- Same open-frame path as logo-icon.svg -->
-    <path d="M 307,78 L 93,78 Q 78,78 78,93 L 78,307 Q 78,322 93,322 L 307,322 Q 322,322 322,307 L 322,93"
-          stroke="url(#w-fg)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Blurred glow copy -->
+    <path d="M 316,200 L 72,100 L 72,150 L 264,200 L 72,250 L 72,300 Z"
+          fill="url(#w-fg)" opacity="0.50" filter="url(#w-gblur)"
+          clip-path="url(#w-cc)"/>
+    <!-- Chevron mark -->
+    <path d="M 316,200 L 72,100 L 72,150 L 264,200 L 72,250 L 72,300 Z"
+          fill="url(#w-fg)"/>
+    <!-- Sheen highlight -->
+    <path d="M 316,200 L 72,100 L 72,116 L 300,200 Z"
+          fill="url(#w-hl)"/>
+    <!-- Inner ring -->
+    <circle cx="200" cy="200" r="192" fill="none"
+            stroke="rgba(255,255,255,0.05)" stroke-width="1.5"/>
   </svg>
 
-  <!-- ── FRMLS wordmark: Space Grotesk 700, FRML white · S purple→cyan ── -->
-  <!-- Baseline y=70 centers the 56px cap-height text in the 100px canvas -->
-  <text x="78" y="70"
-        font-family="'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif"
+  <!-- ── FRMLS wordmark — maximum weight, thick and confident ── -->
+  <!-- Montserrat 900 (Black). Baseline y=72 centers ~56px caps in 100px canvas. -->
+  <text x="82" y="72"
+        font-family="'Montserrat', 'Inter', system-ui, -apple-system, sans-serif"
         font-size="56"
-        font-weight="700"
-        style="letter-spacing:-0.01em">
+        font-weight="900"
+        style="letter-spacing:-0.02em">
     <tspan fill="#ffffff">FRML</tspan><tspan fill="url(#w-sg)">S</tspan>
   </text>
 </svg>

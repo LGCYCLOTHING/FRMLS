@@ -2802,68 +2802,78 @@ html, body {
 
 
 <!-- ======================================================================= -->
-<!-- ===== CUSTOMER JOURNEY CAROUSEL — 4 slides, 390×844px (iPhone portrait) ===== -->
+<!-- ===== CUSTOMER JOURNEY CAROUSEL — 4 slides, 1080×1350px (4:5 Instagram) ===== -->
+<!-- ===== Scales to fit viewport on mobile for direct iPhone screenshots   ===== -->
 <!-- ======================================================================= -->
 
 <style>
-/* ── Shared carousel scaffold ── */
+/* ── Section scaffold ── */
 .cj-section {
   background: #0a0a0a;
-  padding: 24px 0 32px;
+  padding: 48px 0 64px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 40px;
 }
 
+/* Outer wrapper: shrinks to fit viewport, preserves slide aspect ratio */
+.cj-slide-outer {
+  overflow: hidden;
+  flex-shrink: 0;
+  /* width/height set dynamically by JS on mobile */
+}
+
+/* Slide canvas — always 1080×1350 internally */
 .cj-slide {
-  width: 390px;
-  height: 844px;
+  width: 1080px;
+  height: 1350px;
   position: relative;
   overflow: hidden;
   background: #0a0a0a;
-  flex-shrink: 0;
+  transform-origin: top left;
+  /* transform: scale() applied by JS on mobile */
 }
 
-/* Ambient orbs — one moment of color per slide */
+/* Ambient orbs */
 .cj-orb-purple {
   position: absolute;
-  top: -110px;
-  left: -100px;
-  width: 370px;
-  height: 370px;
+  top: -240px; left: -220px;
+  width: 740px; height: 740px;
   background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 65%);
-  pointer-events: none;
-  z-index: 0;
+  pointer-events: none; z-index: 0;
 }
 .cj-orb-cyan {
   position: absolute;
-  bottom: -110px;
-  right: -100px;
-  width: 320px;
-  height: 320px;
+  bottom: -240px; right: -220px;
+  width: 640px; height: 640px;
   background: radial-gradient(circle, rgba(6,182,212,0.10) 0%, transparent 65%);
-  pointer-events: none;
-  z-index: 0;
+  pointer-events: none; z-index: 0;
 }
 
-/* FRMLS watermark — bottom center, every slide */
+/* FRMLS logo — bottom center, bold 800, S in gradient */
 .cj-brand {
   position: absolute;
-  bottom: 22px;
+  bottom: 52px;
   left: 50%;
   transform: translateX(-50%);
   font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 800;
   letter-spacing: 0.15em;
   color: #ffffff;
   text-transform: uppercase;
   z-index: 10;
   white-space: nowrap;
 }
+.cj-brand-s {
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-/* Gradient text — used sparingly */
+/* Gradient text utility — used sparingly */
 .cj-grad {
   background: linear-gradient(90deg, #7c3aed, #06b6d4);
   -webkit-background-clip: text;
@@ -2871,12 +2881,12 @@ html, body {
   background-clip: text;
 }
 
-/* Mono pill badge — gradient border only, no fill */
+/* Mono pill badge — gradient border only, transparent fill */
 .cj-badge {
   display: inline-block;
-  padding: 5px 12px;
+  padding: 10px 24px;
   font-family: 'DM Mono', monospace;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 400;
   color: rgba(255,255,255,0.55);
   background-image:
@@ -2889,187 +2899,192 @@ html, body {
   letter-spacing: 0.06em;
 }
 
-/* ── SLIDE 1 — Hook (everything centered) ── */
+/* ── SLIDE 1 — Hook (fully centered) ── */
 .cj-s1-inner {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  position: absolute; inset: 0; z-index: 5;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
   text-align: center;
-  padding: 0 32px;
+  padding: 0 80px;
 }
 .cj-s1-headline {
   font-family: 'Inter', sans-serif;
-  font-size: 28px;
+  font-size: 44px;
   font-weight: 800;
   line-height: 1.2;
   color: #ffffff;
   letter-spacing: -0.025em;
+  max-width: 85%;
 }
 .cj-s1-sub {
-  margin-top: 14px;
+  margin-top: 28px;
   font-family: 'Inter', sans-serif;
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 400;
   color: #888888;
   letter-spacing: 0.01em;
 }
 
-/* ── SLIDES 2 & 3 — Top-aligned (badge + headline + subtext) ── */
+/* ── SLIDES 2 & 3 — Top-aligned ── */
 .cj-top-inner {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 36px 32px 56px;
+  position: absolute; inset: 0; z-index: 5;
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  padding: 80px 80px 120px;
 }
 .cj-top-headline {
   font-family: 'Inter', sans-serif;
-  font-size: 24px;
+  font-size: 44px;
   font-weight: 800;
   line-height: 1.2;
   color: #ffffff;
   letter-spacing: -0.025em;
-  margin-top: 12px;
+  margin-top: 20px;
+  max-width: 85%;
 }
 .cj-top-sub {
-  margin-top: 12px;
+  margin-top: 20px;
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 400;
   color: #aaaaaa;
   line-height: 1.7;
+  max-width: 85%;
 }
 
-/* ── SLIDE 4 — CTA (everything centered) ── */
+/* ── SLIDE 4 — CTA (fully centered) ── */
 .cj-s4-inner {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  position: absolute; inset: 0; z-index: 5;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
   text-align: center;
-  padding: 0 32px;
+  padding: 0 80px;
 }
 .cj-s4-headline {
   font-family: 'Inter', sans-serif;
-  font-size: 26px;
+  font-size: 44px;
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.025em;
+  max-width: 85%;
 }
 .cj-s4-build {
-  margin-top: 12px;
+  margin-top: 24px;
   font-family: 'Inter', sans-serif;
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 400;
   color: #ffffff;
   line-height: 1.5;
 }
 .cj-s4-site {
   font-family: 'Inter', sans-serif;
-  font-size: 18px;
+  font-size: 32px;
   font-weight: 700;
   line-height: 1.3;
   letter-spacing: -0.01em;
+  margin-top: 4px;
 }
 .cj-s4-price {
-  margin-top: 10px;
+  margin-top: 16px;
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 16px;
   font-weight: 400;
   color: #555555;
   letter-spacing: 0.01em;
 }
-.cj-s4 .cj-brand {
-  font-size: 12px;
-}
+.cj-s4 .cj-brand { font-size: 18px; }
 </style>
 
 <section class="cj-section">
 
-  <!-- ════════════════════════════════════════════════
+  <!-- ════════════════════
        SLIDE 1 — Hook
-  ════════════════════════════════════════════════ -->
-  <div class="cj-slide" id="cj-slide-1">
-    <div class="cj-orb-purple"></div>
-    <div class="cj-orb-cyan"></div>
-
-    <div class="cj-s1-inner">
-      <h1 class="cj-s1-headline">
-        your store is <span class="cj-grad">losing</span> customers<br>
-        before they read a single word.
-      </h1>
-      <p class="cj-s1-sub">here's why →</p>
+  ════════════════════ -->
+  <div class="cj-slide-outer">
+    <div class="cj-slide" id="cj-slide-1">
+      <div class="cj-orb-purple"></div>
+      <div class="cj-orb-cyan"></div>
+      <div class="cj-s1-inner">
+        <h1 class="cj-s1-headline">your store is <span class="cj-grad">losing</span> customers.</h1>
+        <p class="cj-s1-sub">here's why →</p>
+      </div>
+      <span class="cj-brand">FRML<span class="cj-brand-s">S</span></span>
     </div>
-
-    <span class="cj-brand">FRMLS</span>
   </div>
 
-  <!-- ════════════════════════════════════════════════
-       SLIDE 2 — The Problem
-  ════════════════════════════════════════════════ -->
-  <div class="cj-slide" id="cj-slide-2">
-    <div class="cj-orb-purple"></div>
-    <div class="cj-orb-cyan"></div>
-
-    <div class="cj-top-inner">
-      <span class="cj-badge">the problem</span>
-      <h2 class="cj-top-headline">first impressions take 3 seconds.</h2>
-      <p class="cj-top-sub">
-        if your homepage doesn't immediately feel like a brand —<br>
-        they're gone. back to scrolling.
-      </p>
+  <!-- ════════════════════
+       SLIDE 2 — Problem
+  ════════════════════ -->
+  <div class="cj-slide-outer">
+    <div class="cj-slide" id="cj-slide-2">
+      <div class="cj-orb-purple"></div>
+      <div class="cj-orb-cyan"></div>
+      <div class="cj-top-inner">
+        <span class="cj-badge">the problem</span>
+        <h2 class="cj-top-headline">first impressions take 3 seconds.</h2>
+        <p class="cj-top-sub">if it doesn't feel like a brand immediately — they're gone.</p>
+      </div>
+      <span class="cj-brand">FRML<span class="cj-brand-s">S</span></span>
     </div>
-
-    <span class="cj-brand">FRMLS</span>
   </div>
 
-  <!-- ════════════════════════════════════════════════
-       SLIDE 3 — The Reason
-  ════════════════════════════════════════════════ -->
-  <div class="cj-slide" id="cj-slide-3">
-    <div class="cj-orb-purple"></div>
-    <div class="cj-orb-cyan"></div>
-
-    <div class="cj-top-inner">
-      <span class="cj-badge">the reason</span>
-      <h2 class="cj-top-headline">most stores feel like templates.</h2>
-      <p class="cj-top-sub">
-        no brand identity. no clear direction.<br>
-        just a theme with products dropped in. it shows.
-      </p>
+  <!-- ════════════════════
+       SLIDE 3 — Reason
+  ════════════════════ -->
+  <div class="cj-slide-outer">
+    <div class="cj-slide" id="cj-slide-3">
+      <div class="cj-orb-purple"></div>
+      <div class="cj-orb-cyan"></div>
+      <div class="cj-top-inner">
+        <span class="cj-badge">the reason</span>
+        <h2 class="cj-top-headline">most stores feel like templates.</h2>
+        <p class="cj-top-sub">no brand identity. no direction. just a theme with products dropped in.</p>
+      </div>
+      <span class="cj-brand">FRML<span class="cj-brand-s">S</span></span>
     </div>
-
-    <span class="cj-brand">FRMLS</span>
   </div>
 
-  <!-- ════════════════════════════════════════════════
+  <!-- ════════════════════
        SLIDE 4 — CTA
-  ════════════════════════════════════════════════ -->
-  <div class="cj-slide cj-s4" id="cj-slide-4">
-    <div class="cj-orb-purple"></div>
-    <div class="cj-orb-cyan"></div>
-
-    <div class="cj-s4-inner">
-      <p class="cj-s4-headline cj-grad">your store should feel like something.</p>
-      <p class="cj-s4-build">build it right at</p>
-      <p class="cj-s4-site cj-grad">frmls.com</p>
-      <p class="cj-s4-price">$37 one time — lifetime access</p>
+  ════════════════════ -->
+  <div class="cj-slide-outer">
+    <div class="cj-slide cj-s4" id="cj-slide-4">
+      <div class="cj-orb-purple"></div>
+      <div class="cj-orb-cyan"></div>
+      <div class="cj-s4-inner">
+        <p class="cj-s4-headline cj-grad">your store should feel like something.</p>
+        <p class="cj-s4-build">build it right at</p>
+        <p class="cj-s4-site cj-grad">frmls.com</p>
+        <p class="cj-s4-price">$37 one time</p>
+      </div>
+      <span class="cj-brand">FRML<span class="cj-brand-s">S</span></span>
     </div>
-
-    <span class="cj-brand">FRMLS</span>
   </div>
 
 </section>
+
+<script>
+(function () {
+  function scaleCJSlides() {
+    var vw = window.innerWidth;
+    var scale = vw < 1080 ? vw / 1080 : 1;
+    document.querySelectorAll('.cj-slide-outer').forEach(function (outer) {
+      var slide = outer.querySelector('.cj-slide');
+      if (scale < 1) {
+        slide.style.transform = 'scale(' + scale + ')';
+        outer.style.width  = vw + 'px';
+        outer.style.height = Math.round(1350 * scale) + 'px';
+      } else {
+        slide.style.transform = '';
+        outer.style.width  = '1080px';
+        outer.style.height = '1350px';
+      }
+    });
+  }
+  scaleCJSlides();
+  window.addEventListener('resize', scaleCJSlides);
+})();
+</script>
 
 </body>
 </html>

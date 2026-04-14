@@ -3429,14 +3429,25 @@ html, body {
   flex-shrink: 0;
 }
 
-/* ---- logo watermark (wordmark SVG) ---- */
+/* ---- logo watermark (text mark) ---- */
 .ig-logo {
   position: absolute;
   bottom: 32px;
   right: 44px;
   pointer-events: none;
   z-index: 20;
-  line-height: 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.50);
+  text-transform: uppercase;
+}
+.ig-logo .logo-s {
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* ---- slide nav dots ---- */
@@ -3471,7 +3482,7 @@ html, body {
         <span class="ig-accent-bar" style="background:linear-gradient(90deg,#7c3aed,#06b6d4);"></span>
         <div class="ig-headline">"the best brands don't explain themselves. you just feel it."</div>
       </div>
-      <div class="ig-logo"><img src="logo-wordmark.svg" width="130" height="26" style="display:block;mix-blend-mode:lighten;opacity:0.65;"></div>
+      <div class="ig-logo">FRML<span class="logo-s">S</span></div>
     </div>
   </div>
 
@@ -3486,7 +3497,7 @@ html, body {
         <span class="ig-accent-bar" style="background:#06b6d4;"></span>
         <div class="ig-headline">"same industry. completely different feeling. that's brand identity."</div>
       </div>
-      <div class="ig-logo"><img src="logo-wordmark.svg" width="130" height="26" style="display:block;mix-blend-mode:lighten;opacity:0.65;"></div>
+      <div class="ig-logo">FRML<span class="logo-s">S</span></div>
     </div>
   </div>
 
@@ -3501,7 +3512,7 @@ html, body {
         <span class="ig-accent-bar" style="background:#c9a96e;"></span>
         <div class="ig-headline">"the product is never really the product. the feeling is."</div>
       </div>
-      <div class="ig-logo"><img src="logo-wordmark.svg" width="130" height="26" style="display:block;mix-blend-mode:lighten;opacity:0.65;"></div>
+      <div class="ig-logo">FRML<span class="logo-s">S</span></div>
     </div>
   </div>
 
@@ -3516,7 +3527,7 @@ html, body {
         <span class="ig-accent-bar" style="background:#c4a882;"></span>
         <div class="ig-headline">"intentional design is felt. not explained."</div>
       </div>
-      <div class="ig-logo"><img src="logo-wordmark.svg" width="130" height="26" style="display:block;mix-blend-mode:lighten;opacity:0.65;"></div>
+      <div class="ig-logo">FRML<span class="logo-s">S</span></div>
     </div>
   </div>
 
@@ -3530,9 +3541,8 @@ html, body {
       <div class="ig-text">
         <span class="ig-accent-bar" style="background:#d4a853;"></span>
         <div class="ig-headline">"you already know what your brand should feel like."</div>
-        <div class="ig-subtext">frmls.com — build it.</div>
       </div>
-      <div class="ig-logo"><img src="logo-wordmark.svg" width="130" height="26" style="display:block;mix-blend-mode:lighten;opacity:0.65;"></div>
+      <div class="ig-logo">FRML<span class="logo-s">S</span></div>
     </div>
   </div>
 
@@ -3793,13 +3803,24 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
   white-space: nowrap;
 }
 
-/* ---- BV logo watermark (wordmark SVG) ---- */
+/* ---- BV logo watermark (text mark) ---- */
 .bv-logo {
   position: absolute;
   bottom: 32px; right: 44px;
   pointer-events: none;
   z-index: 20;
-  line-height: 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.50);
+  text-transform: uppercase;
+}
+.bv-logo .logo-s {
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* ---- BV nav dots ---- */
@@ -3829,19 +3850,15 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
       <div style="position:absolute;inset:0;background:radial-gradient(ellipse 72% 85% at 90% 52%, rgba(6,182,212,0.22) 0%, transparent 62%);pointer-events:none;z-index:1;"></div>
       <!-- subtle center haze -->
       <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 50%, rgba(90,40,180,0.07) 0%, transparent 70%);pointer-events:none;z-index:1;"></div>
-      <!-- top left logo wordmark (small) -->
-      <div style="position:absolute;top:60px;left:64px;z-index:10;">
-        <img src="logo-wordmark.svg" width="196" height="40" style="display:block;">
-      </div>
+      <!-- top left logo (small) -->
+      <div style="position:absolute;top:60px;left:64px;z-index:10;font-family:'Inter',sans-serif;font-weight:900;font-size:34px;letter-spacing:0.04em;color:#ffffff;text-transform:uppercase;">FRML<span style="background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">S</span></div>
       <!-- center main content — vertically centered -->
       <div style="position:absolute;top:50%;left:64px;right:64px;transform:translateY(-55%);z-index:10;display:flex;flex-direction:column;gap:30px;">
         <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:78px;line-height:1.06;color:#ffffff;letter-spacing:-0.025em;word-wrap:break-word;">a store sells products.<br>a brand sells<br>a feeling.</div>
         <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:32px;letter-spacing:-0.01em;background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">FRMLS builds the feeling.</div>
       </div>
-      <!-- bottom right frmls.com (gradient) -->
-      <div style="position:absolute;bottom:70px;right:48px;z-index:20;font-family:'Inter',sans-serif;font-size:18px;font-weight:500;letter-spacing:0.03em;background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">frmls.com</div>
-      <!-- FRMLS watermark -->
-      <div class="bv-logo"><img src="logo-wordmark.svg" width="130" height="26" style="display:block;mix-blend-mode:lighten;opacity:0.65;"></div>
+      <!-- logo watermark -->
+      <div class="bv-logo">FRML<span class="logo-s">S</span></div>
     </div>
   </div>
 
@@ -3857,7 +3874,7 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
         <div class="bv-headline">your brand has a voice.</div>
         <div class="bv-subtext">Noir Studio — built with FRMLS</div>
       </div>
-      <div class="bv-logo"><img src="logo-wordmark.svg" width="130" height="26" style="display:block;mix-blend-mode:lighten;opacity:0.65;"></div>
+      <div class="bv-logo">FRML<span class="logo-s">S</span></div>
     </div>
   </div>
 
@@ -3872,7 +3889,7 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
         <div class="bv-headline">warm. intentional. effortless.</div>
         <div class="bv-subtext">Soleil — built with FRMLS</div>
       </div>
-      <div class="bv-logo"><img src="logo-wordmark.svg" width="130" height="26" style="display:block;mix-blend-mode:lighten;opacity:0.65;"></div>
+      <div class="bv-logo">FRML<span class="logo-s">S</span></div>
     </div>
   </div>
 
@@ -3887,7 +3904,7 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
         <div class="bv-headline">clean design. clear identity.</div>
         <div class="bv-subtext">Pura — built with FRMLS</div>
       </div>
-      <div class="bv-logo"><img src="logo-wordmark.svg" width="130" height="26" style="display:block;mix-blend-mode:lighten;opacity:0.65;"></div>
+      <div class="bv-logo">FRML<span class="logo-s">S</span></div>
     </div>
   </div>
 
@@ -3902,7 +3919,7 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
         <div class="bv-headline">grounded. organic. yours.</div>
         <div class="bv-subtext">Terra — built with FRMLS</div>
       </div>
-      <div class="bv-logo"><img src="logo-wordmark.svg" width="130" height="26" style="display:block;mix-blend-mode:lighten;opacity:0.65;"></div>
+      <div class="bv-logo">FRML<span class="logo-s">S</span></div>
     </div>
   </div>
 
@@ -3916,12 +3933,11 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
       <div class="bv-tag" style="white-space:nowrap;">same tool. 4 different brands.</div>
       <!-- center content -->
       <div style="position:absolute;top:50%;left:64px;right:64px;transform:translateY(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center;">
-        <img src="logo-wordmark.svg" width="360" height="72" style="display:block;">
+        <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:80px;letter-spacing:0.04em;color:#ffffff;text-transform:uppercase;line-height:1;">FRML<span style="background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">S</span></div>
         <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:52px;line-height:1.1;color:#ffffff;letter-spacing:-0.02em;word-wrap:break-word;">build a store that feels<br>like something.</div>
-        <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:34px;letter-spacing:-0.01em;background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">frmls.com — $37 one time</div>
         <div style="font-family:'Inter',sans-serif;font-weight:400;font-size:20px;color:rgba(255,255,255,0.40);letter-spacing:0.08em;text-transform:uppercase;">brand kit · prompt pack · launch checklist</div>
       </div>
-      <div class="bv-logo"><img src="logo-wordmark.svg" width="130" height="26" style="display:block;mix-blend-mode:lighten;opacity:0.65;"></div>
+      <div class="bv-logo">FRML<span class="logo-s">S</span></div>
     </div>
   </div>
 

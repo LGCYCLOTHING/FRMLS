@@ -3285,6 +3285,9 @@ html, body {
 </script>
 
 
+<!-- JSZip for bundled export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
 <!-- =====================================================
      INSTAGRAM CAROUSEL SECTION — 5 slides 1080x1350
      ===================================================== -->
@@ -3354,7 +3357,7 @@ html, body {
 .ig-bg img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   display: block;
 }
@@ -3362,7 +3365,7 @@ html, body {
 .ig-bg.split img {
   width: 50%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
 }
 .ig-overlay {
@@ -3391,20 +3394,24 @@ html, body {
   justify-content: flex-end;
   gap: 16px;
   text-align: left;
+  overflow: hidden;
 }
 .ig-headline {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
-  font-size: 68px;
-  line-height: 1.08;
+  font-size: 62px;
+  line-height: 1.1;
   color: #ffffff;
   letter-spacing: -0.02em;
   text-transform: lowercase;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 .ig-subtext {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 32px;
+  font-size: 30px;
   line-height: 1.35;
   color: rgba(255,255,255,0.72);
   letter-spacing: 0.01em;
@@ -3416,21 +3423,32 @@ html, body {
   height: 5px;
   border-radius: 3px;
   margin-bottom: 8px;
+  flex-shrink: 0;
 }
 
 /* ---- FRMLS logo watermark ---- */
 .ig-logo {
   position: absolute;
   bottom: 36px;
-  right: 52px;
+  right: 48px;
   font-family: 'Inter', sans-serif;
   font-weight: 900;
-  font-size: 22px;
-  letter-spacing: 0.18em;
+  font-size: 20px;
+  /* tight tracking to match brand mark */
+  letter-spacing: 0.04em;
   color: rgba(255,255,255,0.50);
   text-transform: uppercase;
   pointer-events: none;
   z-index: 20;
+  display: flex;
+  align-items: baseline;
+}
+/* gradient S */
+.ig-logo-s {
+  background: linear-gradient(135deg, #06b6d4 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* ---- slide nav dots ---- */
@@ -3451,7 +3469,7 @@ html, body {
 <!-- Export Button -->
 <section id="ig-carousel-section">
   <h2>Instagram Carousel</h2>
-  <button id="ig-export-btn">&#8681; Export All 5 Slides as PNG</button>
+  <button id="ig-export-btn">&#8681; Export All 5 Slides as ZIP</button>
 
   <!-- SLIDE 1 — Split layout Porsche + GT3RS -->
   <div class="ig-slide-outer" id="ig-outer-1">
@@ -3465,7 +3483,7 @@ html, body {
         <span class="ig-accent-bar" style="background:linear-gradient(90deg,#7c3aed,#06b6d4);"></span>
         <div class="ig-headline">"the best brands don't explain themselves. you just feel it."</div>
       </div>
-      <div class="ig-logo">FRMLS</div>
+      <div class="ig-logo">FRML<span class="ig-logo-s">S</span></div>
     </div>
   </div>
 
@@ -3480,7 +3498,7 @@ html, body {
         <span class="ig-accent-bar" style="background:#06b6d4;"></span>
         <div class="ig-headline">"same industry. completely different feeling. that's brand identity."</div>
       </div>
-      <div class="ig-logo">FRMLS</div>
+      <div class="ig-logo">FRML<span class="ig-logo-s">S</span></div>
     </div>
   </div>
 
@@ -3495,7 +3513,7 @@ html, body {
         <span class="ig-accent-bar" style="background:#c9a96e;"></span>
         <div class="ig-headline">"the product is never really the product. the feeling is."</div>
       </div>
-      <div class="ig-logo">FRMLS</div>
+      <div class="ig-logo">FRML<span class="ig-logo-s">S</span></div>
     </div>
   </div>
 
@@ -3510,7 +3528,7 @@ html, body {
         <span class="ig-accent-bar" style="background:#c4a882;"></span>
         <div class="ig-headline">"intentional design is felt. not explained."</div>
       </div>
-      <div class="ig-logo">FRMLS</div>
+      <div class="ig-logo">FRML<span class="ig-logo-s">S</span></div>
     </div>
   </div>
 
@@ -3526,7 +3544,7 @@ html, body {
         <div class="ig-headline">"you already know what your brand should feel like."</div>
         <div class="ig-subtext">frmls.com — build it.</div>
       </div>
-      <div class="ig-logo">FRMLS</div>
+      <div class="ig-logo">FRML<span class="ig-logo-s">S</span></div>
     </div>
   </div>
 
@@ -3565,26 +3583,43 @@ html, body {
   window.addEventListener('resize', scaleIGSlides);
 })();
 
-/* ---- export: html2canvas each slide at 1080x1350 ---- */
+/* ---- export: capture all slides → single ZIP download ---- */
 document.getElementById('ig-export-btn').addEventListener('click', async function(){
   var btn = this;
-  btn.textContent = 'Exporting…';
+  btn.textContent = 'Rendering slides…';
   btn.disabled = true;
+
   var names = [
-    'slide-1-brands',
-    'slide-2-identity',
-    'slide-3-feeling',
-    'slide-4-design',
-    'slide-5-brand'
+    'frmls-ig-1-brands.png',
+    'frmls-ig-2-identity.png',
+    'frmls-ig-3-feeling.png',
+    'frmls-ig-4-design.png',
+    'frmls-ig-5-brand.png'
   ];
+
+  /* save current outer sizes so we can restore them */
+  var savedOuterW = [], savedOuterH = [], savedTransform = [];
   for(var i=1;i<=5;i++){
+    var o = document.getElementById('ig-outer-'+i);
+    var s = document.getElementById('ig-slide-'+i);
+    savedOuterW[i] = o.style.width;
+    savedOuterH[i] = o.style.height;
+    savedTransform[i] = s.style.transform;
+    /* expand to full 1080×1350 for capture */
+    s.style.transform = 'none';
+    o.style.width  = '1080px';
+    o.style.height = '1350px';
+  }
+
+  /* small paint settle */
+  await new Promise(function(r){ setTimeout(r, 120); });
+
+  var zip = new JSZip();
+  var folder = zip.folder('frmls-instagram-carousel');
+
+  for(var i=1;i<=5;i++){
+    btn.textContent = 'Capturing slide ' + i + ' of 5…';
     var slide = document.getElementById('ig-slide-'+i);
-    /* temporarily reset transform for capture */
-    var prev = slide.style.transform;
-    slide.style.transform = '';
-    var outer = document.getElementById('ig-outer-'+i);
-    outer.style.width  = '1080px';
-    outer.style.height = '1350px';
     try {
       var canvas = await html2canvas(slide, {
         width: 1080,
@@ -3592,40 +3627,44 @@ document.getElementById('ig-export-btn').addEventListener('click', async functio
         scale: 1,
         useCORS: true,
         allowTaint: true,
-        backgroundColor: '#0a0a0a'
+        backgroundColor: '#0a0a0a',
+        logging: false
       });
-      var link = document.createElement('a');
-      link.download = 'frmls-ig-' + names[i-1] + '.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    } catch(e){ console.error('Export failed slide '+i, e); }
-    /* restore transform */
-    slide.style.transform = prev;
-    /* small delay between downloads */
-    await new Promise(function(r){ setTimeout(r, 400); });
-  }
-  /* re-scale after export */
-  (function(){
-    var vw=Math.min(window.innerWidth,1080);
-    var scale=vw/1080;
-    for(var j=1;j<=5;j++){
-      var o=document.getElementById('ig-outer-'+j);
-      var s=document.getElementById('ig-slide-'+j);
-      if(!o||!s)continue;
-      if(scale<1){
-        s.style.transform='scale('+scale+')';
-        o.style.width=vw+'px';
-        o.style.height=Math.round(1350*scale)+'px';
-      } else {
-        s.style.transform='';
-        o.style.width='1080px';
-        o.style.height='1350px';
-      }
+      /* canvas.toDataURL gives "data:image/png;base64,XXXX" — strip prefix */
+      var dataURL = canvas.toDataURL('image/png');
+      var base64 = dataURL.split(',')[1];
+      folder.file(names[i-1], base64, { base64: true });
+    } catch(e){
+      console.error('Capture failed for slide '+i, e);
     }
-  })();
-  btn.textContent = '✓ Exported!';
-  btn.disabled = false;
-  setTimeout(function(){ btn.innerHTML = '&#8681; Export All 5 Slides as PNG'; }, 2500);
+    await new Promise(function(r){ setTimeout(r, 80); });
+  }
+
+  btn.textContent = 'Building ZIP…';
+
+  /* restore transforms */
+  for(var i=1;i<=5;i++){
+    var o = document.getElementById('ig-outer-'+i);
+    var s = document.getElementById('ig-slide-'+i);
+    s.style.transform = savedTransform[i];
+    o.style.width  = savedOuterW[i];
+    o.style.height = savedOuterH[i];
+  }
+
+  /* generate & trigger download */
+  zip.generateAsync({ type: 'blob' }).then(function(blob){
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'frmls-instagram-carousel.zip';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 3000);
+    btn.textContent = '✓ Downloaded!';
+    btn.disabled = false;
+    setTimeout(function(){ btn.innerHTML = '&#8681; Export All 5 Slides as ZIP'; }, 2500);
+  });
 });
 </script>
 

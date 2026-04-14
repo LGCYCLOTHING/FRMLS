@@ -73,10 +73,24 @@ body{
 .nav-right{display:flex;align-items:center;justify-content:flex-end;gap:12px;}
 
 .nav-logo{
-  font-family:'DM Mono',monospace;
-  font-size:15px;font-weight:500;
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:26px;font-weight:900;
   color:#fff;text-decoration:none;
-  letter-spacing:0.02em;
+  letter-spacing:-0.02em;
+  line-height:1;
+  display:flex;align-items:center;
+}
+.nav-logo .logo-s{
+  background:linear-gradient(90deg,#7c3aed,#06b6d4);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+@media(max-width:767px){
+  .nav-logo{
+    font-family:'Inter',sans-serif;
+    font-size:22px;font-weight:900;
+  }
 }
 .nav-pill{
   display:flex;align-items:center;gap:4px;
@@ -565,7 +579,7 @@ section{padding:100px 0;}
 <nav class="nav">
   <div class="nav-inner">
     <div class="nav-left">
-      <a href="/" class="nav-logo"><img src="logo-wordmark.svg" alt="FRMLS" height="18" style="display:block;"></a>
+      <a href="/" class="nav-logo">FRML<span class="logo-s">S</span></a>
     </div>
     <div class="nav-center">
       <div class="nav-pill">

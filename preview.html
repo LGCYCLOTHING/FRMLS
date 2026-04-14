@@ -2800,5 +2800,277 @@ html, body {
   </div>
 </section>
 
+
+<!-- ======================================================================= -->
+<!-- ===== CUSTOMER JOURNEY CAROUSEL — 4 slides, 1080×1350px each ========= -->
+<!-- ======================================================================= -->
+
+<style>
+/* ── Shared carousel scaffold ── */
+.cj-section {
+  background: #0a0a0a;
+  padding: 60px 0 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+
+.cj-slide {
+  width: 1080px;
+  height: 1350px;
+  position: relative;
+  overflow: hidden;
+  background: #0a0a0a;
+  flex-shrink: 0;
+}
+
+/* Ambient orbs — one moment of color per slide */
+.cj-orb-purple {
+  position: absolute;
+  top: -240px;
+  left: -220px;
+  width: 740px;
+  height: 740px;
+  background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+.cj-orb-cyan {
+  position: absolute;
+  bottom: -240px;
+  right: -220px;
+  width: 640px;
+  height: 640px;
+  background: radial-gradient(circle, rgba(6,182,212,0.10) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* FRMLS watermark — bottom center, every slide */
+.cj-brand {
+  position: absolute;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #ffffff;
+  text-transform: uppercase;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+/* Gradient text — used sparingly */
+.cj-grad {
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Mono pill badge — gradient border only, no fill */
+.cj-badge {
+  display: inline-block;
+  padding: 9px 22px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.55);
+  background-image:
+    linear-gradient(#0a0a0a, #0a0a0a),
+    linear-gradient(90deg, #7c3aed, #06b6d4);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  letter-spacing: 0.06em;
+}
+
+/* ── SLIDE 1 — Hook (everything centered) ── */
+.cj-s1-inner {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 108px;
+}
+.cj-s1-headline {
+  font-family: 'Inter', sans-serif;
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+}
+.cj-s1-sub {
+  margin-top: 28px;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #888888;
+  letter-spacing: 0.01em;
+}
+
+/* ── SLIDES 2 & 3 — Top-aligned (badge + headline + subtext) ── */
+.cj-top-inner {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 80px 108px 120px;
+}
+.cj-top-headline {
+  font-family: 'Inter', sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+  margin-top: 24px;
+}
+.cj-top-sub {
+  margin-top: 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #aaaaaa;
+  line-height: 1.7;
+  max-width: 800px;
+}
+
+/* ── SLIDE 4 — CTA (everything centered) ── */
+.cj-s4-inner {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 108px;
+}
+.cj-s4-headline {
+  font-family: 'Inter', sans-serif;
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+.cj-s4-build {
+  margin-top: 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 1.5;
+}
+.cj-s4-site {
+  font-family: 'Inter', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.cj-s4-price {
+  margin-top: 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #555555;
+  letter-spacing: 0.01em;
+}
+.cj-s4 .cj-brand {
+  font-size: 18px;
+}
+</style>
+
+<section class="cj-section">
+
+  <!-- ════════════════════════════════════════════════
+       SLIDE 1 — Hook
+  ════════════════════════════════════════════════ -->
+  <div class="cj-slide" id="cj-slide-1">
+    <div class="cj-orb-purple"></div>
+    <div class="cj-orb-cyan"></div>
+
+    <div class="cj-s1-inner">
+      <h1 class="cj-s1-headline">
+        your store is <span class="cj-grad">losing</span> customers<br>
+        before they read a single word.
+      </h1>
+      <p class="cj-s1-sub">here's why →</p>
+    </div>
+
+    <span class="cj-brand">FRMLS</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       SLIDE 2 — The Problem
+  ════════════════════════════════════════════════ -->
+  <div class="cj-slide" id="cj-slide-2">
+    <div class="cj-orb-purple"></div>
+    <div class="cj-orb-cyan"></div>
+
+    <div class="cj-top-inner">
+      <span class="cj-badge">the problem</span>
+      <h2 class="cj-top-headline">first impressions take 3 seconds.</h2>
+      <p class="cj-top-sub">
+        if your homepage doesn't immediately feel like a brand —<br>
+        they're gone. back to scrolling.
+      </p>
+    </div>
+
+    <span class="cj-brand">FRMLS</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       SLIDE 3 — The Reason
+  ════════════════════════════════════════════════ -->
+  <div class="cj-slide" id="cj-slide-3">
+    <div class="cj-orb-purple"></div>
+    <div class="cj-orb-cyan"></div>
+
+    <div class="cj-top-inner">
+      <span class="cj-badge">the reason</span>
+      <h2 class="cj-top-headline">most stores feel like templates.</h2>
+      <p class="cj-top-sub">
+        no brand identity. no clear direction.<br>
+        just a theme with products dropped in. it shows.
+      </p>
+    </div>
+
+    <span class="cj-brand">FRMLS</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════
+       SLIDE 4 — CTA
+  ════════════════════════════════════════════════ -->
+  <div class="cj-slide cj-s4" id="cj-slide-4">
+    <div class="cj-orb-purple"></div>
+    <div class="cj-orb-cyan"></div>
+
+    <div class="cj-s4-inner">
+      <p class="cj-s4-headline cj-grad">your store should feel like something.</p>
+      <p class="cj-s4-build">build it right at</p>
+      <p class="cj-s4-site cj-grad">frmls.com</p>
+      <p class="cj-s4-price">$37 one time — lifetime access</p>
+    </div>
+
+    <span class="cj-brand">FRMLS</span>
+  </div>
+
+</section>
+
 </body>
 </html>

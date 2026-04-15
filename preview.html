@@ -664,6 +664,281 @@ html, body {
 }
 .btn-delete:hover { background: rgba(239,68,68,0.20); }
 
+/* ───────────── CANVAS CONTROLS (sidebar) ───────────── */
+.ctrl-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  margin-bottom: 8px;
+}
+
+.ratio-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+.ratio-btn {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 7px;
+  border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.50);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.ratio-btn:hover { border-color: rgba(124,58,237,0.40); color: #9d5cf5; background: rgba(124,58,237,0.07); }
+.ratio-btn.active { border-color: rgba(124,58,237,0.58); background: rgba(124,58,237,0.14); color: #b57eff; }
+
+.dim-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.dim-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 8px;
+  padding: 0 10px;
+  height: 40px;
+  min-width: 0;
+}
+.dim-field:focus-within { border-color: rgba(124,58,237,0.45); }
+.dim-field label {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.30);
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+.dim-field input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: rgba(255,255,255,0.88);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  width: 0;
+  min-width: 0;
+  text-align: right;
+}
+.dim-sep { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.20); flex-shrink: 0; }
+.dim-unit { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.22); flex-shrink: 0; }
+.dim-apply {
+  height: 40px;
+  width: 40px;
+  border-radius: 8px;
+  border: 1px solid rgba(124,58,237,0.30);
+  background: rgba(124,58,237,0.08);
+  color: #9d5cf5;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.12s;
+  flex-shrink: 0;
+}
+.dim-apply:hover { background: rgba(124,58,237,0.20); border-color: rgba(124,58,237,0.55); }
+
+.fill-options {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.fill-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
+  border: 1.5px solid rgba(255,255,255,0.10);
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+  transition: border-color 0.12s, transform 0.12s;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.fill-btn:hover { border-color: rgba(124,58,237,0.50); transform: scale(1.10); }
+.fill-btn.active { border-color: #9d5cf5; border-width: 2px; }
+.fill-preview { width: 100%; height: 100%; border-radius: 5px; }
+.fill-transparent {
+  background-image:
+    linear-gradient(45deg, #3a3a3a 25%, transparent 25%),
+    linear-gradient(-45deg, #3a3a3a 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #3a3a3a 75%),
+    linear-gradient(-45deg, transparent 75%, #3a3a3a 75%);
+  background-size: 8px 8px;
+  background-position: 0 0, 0 4px, 4px -4px, -4px 0;
+  background-color: #1c1c1c;
+}
+.fill-custom-label {
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
+  border: 1.5px dashed rgba(255,255,255,0.16);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: rgba(255,255,255,0.30);
+  background: rgba(255,255,255,0.03);
+  position: relative;
+  transition: border-color 0.12s, color 0.12s;
+  flex-shrink: 0;
+}
+.fill-custom-label:hover { border-color: rgba(124,58,237,0.45); color: #9d5cf5; }
+.fill-custom-label input[type=color] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+}
+
+/* ───────────── TOOLBAR TOGGLES ───────────── */
+.toolbar-toggle {
+  height: 44px;
+  width: 44px;
+  border-radius: 9px;
+  border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.36);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  transition: all 0.12s;
+  flex-shrink: 0;
+}
+.toolbar-toggle:hover { border-color: rgba(124,58,237,0.40); color: #9d5cf5; background: rgba(124,58,237,0.07); }
+.toolbar-toggle.active { border-color: rgba(124,58,237,0.58); background: rgba(124,58,237,0.14); color: #b57eff; }
+
+/* ───────────── FLOATING VIEWPORT ZOOM ───────────── */
+.vp-zoom {
+  position: absolute;
+  bottom: 18px;
+  right: 20px;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(13,13,13,0.88);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 10px;
+  padding: 4px 5px;
+  backdrop-filter: blur(8px);
+  pointer-events: all;
+}
+.vp-zoom-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: none;
+  color: rgba(255,255,255,0.55);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.1s;
+  line-height: 1;
+}
+.vp-zoom-btn:hover { background: rgba(124,58,237,0.14); color: #b57eff; }
+.vp-zoom-pct {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.50);
+  min-width: 44px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  transition: color 0.1s;
+}
+.vp-zoom-pct:hover { color: #9d5cf5; }
+
+/* ───────────── GRID OVERLAY ───────────── */
+#grid-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  display: none;
+  background-image:
+    linear-gradient(rgba(124,58,237,0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124,58,237,0.18) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 100px 100px, 100px 100px, 25px 25px, 25px 25px;
+  background-position: -1px -1px;
+}
+#grid-overlay.active { display: block; }
+
+/* ───────────── RULER OVERLAYS ───────────── */
+#ruler-corner {
+  position: absolute;
+  top: 0; left: 0;
+  width: 20px; height: 20px;
+  background: #0d0d0d;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  z-index: 70;
+  display: none;
+}
+#ruler-h {
+  position: absolute;
+  top: 0; left: 20px; right: 0;
+  height: 20px;
+  background: #0d0d0d;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  z-index: 70;
+  display: none;
+  overflow: hidden;
+}
+#ruler-v {
+  position: absolute;
+  top: 20px; left: 0;
+  width: 20px;
+  bottom: 0;
+  background: #0d0d0d;
+  border-right: 1px solid rgba(255,255,255,0.07);
+  z-index: 70;
+  display: none;
+  overflow: hidden;
+}
+#ruler-corner.active, #ruler-h.active, #ruler-v.active { display: block; }
+#ruler-h canvas, #ruler-v canvas { display: block; }
+
 /* ───────────── CANVAS CONTENT: GRID STORY ───────────── */
 #grid-card {
   width: 1080px;
@@ -833,6 +1108,61 @@ html, body {
 
     <div class="sb-scroll">
 
+      <!-- CANVAS CONTROLS -->
+      <div class="sb-section" id="sb-canvas-ctrl">
+        <div class="sb-section-header">
+          <span class="sb-section-title">Canvas</span>
+        </div>
+
+        <div class="ctrl-label">Aspect Ratio</div>
+        <div class="ratio-presets">
+          <button class="ratio-btn active" data-ratio="original" onclick="setRatio('original')">Original</button>
+          <button class="ratio-btn" data-ratio="1:1" onclick="setRatio('1:1')">1:1</button>
+          <button class="ratio-btn" data-ratio="4:5" onclick="setRatio('4:5')">4:5</button>
+          <button class="ratio-btn" data-ratio="9:16" onclick="setRatio('9:16')">9:16</button>
+          <button class="ratio-btn" data-ratio="16:9" onclick="setRatio('16:9')">16:9</button>
+          <button class="ratio-btn" data-ratio="1.91:1" onclick="setRatio('1.91:1')">1.91:1</button>
+        </div>
+
+        <div class="ctrl-label">Dimensions</div>
+        <div class="dim-row">
+          <div class="dim-field">
+            <label>W</label>
+            <input type="number" id="frame-w" min="100" max="6000" placeholder="—" onkeydown="if(event.key==='Enter')applyCustomDims()" />
+          </div>
+          <span class="dim-sep">×</span>
+          <div class="dim-field">
+            <label>H</label>
+            <input type="number" id="frame-h" min="100" max="6000" placeholder="—" onkeydown="if(event.key==='Enter')applyCustomDims()" />
+          </div>
+          <span class="dim-unit">px</span>
+          <button class="dim-apply" onclick="applyCustomDims()" title="Apply dimensions">↵</button>
+        </div>
+
+        <div class="ctrl-label">Empty Space Fill</div>
+        <div class="fill-options">
+          <button class="fill-btn" data-fill="transparent" onclick="setFill('transparent',this)" title="Transparent">
+            <div class="fill-preview fill-transparent"></div>
+          </button>
+          <button class="fill-btn active" data-fill="#0a0a0a" onclick="setFill('#0a0a0a',this)" title="Dark">
+            <div class="fill-preview" style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.12);border-radius:5px;"></div>
+          </button>
+          <button class="fill-btn" data-fill="#ffffff" onclick="setFill('#ffffff',this)" title="White">
+            <div class="fill-preview" style="background:#ffffff;border-radius:5px;"></div>
+          </button>
+          <button class="fill-btn" data-fill="grad-purple-cyan" onclick="setFill('grad-purple-cyan',this)" title="Purple → Cyan">
+            <div class="fill-preview" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);border-radius:5px;"></div>
+          </button>
+          <button class="fill-btn" data-fill="grad-dark" onclick="setFill('grad-dark',this)" title="Dark Gradient">
+            <div class="fill-preview" style="background:linear-gradient(135deg,#0a0a0a,#1a0a2e);border-radius:5px;"></div>
+          </button>
+          <label class="fill-custom-label" title="Custom color">
+            +
+            <input type="color" id="fill-color-picker" value="#0a0a0a" onchange="setFillCustom(this.value)" />
+          </label>
+        </div>
+      </div>
+
       <!-- MY ASSETS -->
       <div class="sb-section" id="sb-assets">
         <div class="sb-section-header">
@@ -910,15 +1240,34 @@ html, body {
         <button class="zoom-fit" onclick="fitZoom()" title="Fit to screen">fit</button>
       </div>
 
+      <button class="toolbar-toggle" id="btn-grid" onclick="toggleGrid()" title="Toggle grid">⊞</button>
+      <button class="toolbar-toggle" id="btn-ruler" onclick="toggleRuler()" title="Toggle rulers">⊢</button>
+
       <button class="btn-export-png" id="btn-export-png" onclick="exportCurrent()" disabled>Export PNG</button>
     </div>
 
     <div class="canvas-viewport" id="canvas-viewport">
+      <!-- Ruler overlays -->
+      <div id="ruler-corner"></div>
+      <div id="ruler-h"><canvas id="ruler-h-cvs"></canvas></div>
+      <div id="ruler-v"><canvas id="ruler-v-cvs"></canvas></div>
+
       <div class="empty-state" id="empty-state">
         <div class="empty-icon">▣</div>
         <div class="empty-text">select an asset to preview</div>
       </div>
-      <div id="canvas-stage"></div>
+
+      <div id="canvas-stage">
+        <div id="canvas-content" style="position:absolute;top:50%;left:50%;transform-origin:center center;"></div>
+        <div id="grid-overlay"></div>
+      </div>
+
+      <!-- Floating zoom controls -->
+      <div class="vp-zoom" id="vp-zoom">
+        <button class="vp-zoom-btn" onclick="adjustZoom(-0.1)" title="Zoom out">−</button>
+        <button class="vp-zoom-pct" onclick="fitZoom()" id="vp-zoom-display" title="Click to fit">—</button>
+        <button class="vp-zoom-btn" onclick="adjustZoom(0.1)" title="Zoom in">+</button>
+      </div>
     </div>
   </main>
 
@@ -1223,46 +1572,243 @@ html, body {
 // ─────────────────────────────────────────────────────
 
 const BUILT_IN = [
-  {
-    key: 'grid',
-    name: 'Grid Story',
-    w: 1080, h: 1350,
-    thumb: 'linear-gradient(135deg,#0d0120 0%,#001318 50%,#130900 100%)',
-    deletable: false
-  },
-  {
-    key: 'pfp',
-    name: 'Profile Picture',
-    w: 500, h: 500,
-    thumb: 'linear-gradient(135deg,#07070f 0%,#7c3aed22 50%,#06b6d422 100%)',
-    deletable: false
-  }
+  { key:'grid', name:'Grid Story',      w:1080, h:1350, thumb:'linear-gradient(135deg,#0d0120 0%,#001318 50%,#130900 100%)', deletable:false },
+  { key:'pfp',  name:'Profile Picture', w:500,  h:500,  thumb:'linear-gradient(135deg,#07070f 0%,#7c3aed22 50%,#06b6d422 100%)', deletable:false }
 ];
 
-let userCanvases = [];
-let activeKey = null;
-let zoom = 1;
-let uploadedImages = [];
-let pendingDeleteKey = null;
+let userCanvases    = [];
+let activeKey       = null;
+let zoom            = 1;
+let uploadedImages  = [];
+let pendingDeleteKey= null;
 
-const pool      = document.getElementById('canvas-pool');
-const stage     = document.getElementById('canvas-stage');
-const viewport  = document.getElementById('canvas-viewport');
-const assetList = document.getElementById('asset-list');
-const emptyState= document.getElementById('empty-state');
-const imageGrid = document.getElementById('image-grid');
-const zoomDisplay     = document.getElementById('zoom-display');
-const toolbarName     = document.getElementById('toolbar-name');
-const toolbarDims     = document.getElementById('toolbar-dims');
-const btnExportPng    = document.getElementById('btn-export-png');
+// ── Frame / canvas-sizing state ──
+let frameW    = 0;       // 0 = native canvas width
+let frameH    = 0;       // 0 = native canvas height
+let frameFill = '#0a0a0a';
+let showGrid  = false;
+let showRuler = false;
+
+const RATIO_MAP = {
+  '1:1':    [1, 1],
+  '4:5':    [4, 5],
+  '9:16':   [9, 16],
+  '16:9':   [16, 9],
+  '1.91:1': [1.91, 1],
+};
+
+const pool          = document.getElementById('canvas-pool');
+const stage         = document.getElementById('canvas-stage');
+const canvasContent = document.getElementById('canvas-content');
+const gridOverlay   = document.getElementById('grid-overlay');
+const viewport      = document.getElementById('canvas-viewport');
+const assetList     = document.getElementById('asset-list');
+const emptyState    = document.getElementById('empty-state');
+const imageGrid     = document.getElementById('image-grid');
+const zoomDisplay   = document.getElementById('zoom-display');
+const vpZoomDisplay = document.getElementById('vp-zoom-display');
+const toolbarName   = document.getElementById('toolbar-name');
+const toolbarDims   = document.getElementById('toolbar-dims');
+const btnExportPng  = document.getElementById('btn-export-png');
 
 function allCanvases() { return [...BUILT_IN, ...userCanvases]; }
 function getMeta(key)  { return allCanvases().find(c => c.key === key); }
 
+// ── Frame background value ──
+function getFrameBg() {
+  if (frameFill === 'transparent') return 'transparent';
+  if (frameFill === 'grad-purple-cyan') return 'linear-gradient(135deg,#7c3aed,#06b6d4)';
+  if (frameFill === 'grad-dark') return 'linear-gradient(135deg,#0a0a0a,#1a0a2e)';
+  return frameFill;
+}
+
+// ── Apply frame (sizing + fill) ──
+function applyFrame() {
+  if (!activeKey) return;
+  const meta = getMeta(activeKey);
+  if (!meta) return;
+
+  const origW = meta.w, origH = meta.h;
+  const fW = frameW || origW;
+  const fH = frameH || origH;
+
+  // Stage = frame dimensions
+  stage.style.width  = fW + 'px';
+  stage.style.height = fH + 'px';
+  stage.style.background = getFrameBg();
+
+  // Scale content to contain within frame
+  const contentScale = Math.min(fW / origW, fH / origH);
+  canvasContent.style.width  = origW + 'px';
+  canvasContent.style.height = origH + 'px';
+  canvasContent.style.transform = 'translate(-50%,-50%) scale(' + contentScale + ')';
+
+  // Grid overlay matches frame (native pixels of the frame space)
+  gridOverlay.style.width  = fW + 'px';
+  gridOverlay.style.height = fH + 'px';
+
+  // Toolbar dims show frame size
+  toolbarDims.textContent = fW + ' × ' + fH + ' px';
+}
+
+// ── Ratio presets ──
+function setRatio(ratioKey) {
+  if (!activeKey) return;
+  const meta = getMeta(activeKey);
+  if (!meta) return;
+
+  if (ratioKey === 'original') {
+    frameW = meta.w;
+    frameH = meta.h;
+  } else {
+    const [rw, rh] = RATIO_MAP[ratioKey];
+    frameW = meta.w;
+    frameH = Math.round(meta.w * rh / rw);
+  }
+
+  document.getElementById('frame-w').value = frameW;
+  document.getElementById('frame-h').value = frameH;
+
+  document.querySelectorAll('.ratio-btn').forEach(function(b) { b.classList.remove('active'); });
+  const btn = document.querySelector('.ratio-btn[data-ratio="' + ratioKey + '"]');
+  if (btn) btn.classList.add('active');
+
+  applyFrame();
+  fitZoom(frameW, frameH);
+}
+
+// ── Custom dimension apply ──
+function applyCustomDims() {
+  const w = parseInt(document.getElementById('frame-w').value);
+  const h = parseInt(document.getElementById('frame-h').value);
+  if (!w || !h || w < 50 || h < 50 || w > 8000 || h > 8000) return;
+  frameW = w;
+  frameH = h;
+  // Deselect ratio presets
+  document.querySelectorAll('.ratio-btn').forEach(function(b) { b.classList.remove('active'); });
+  applyFrame();
+  fitZoom(frameW, frameH);
+}
+
+// ── Fill ──
+function setFill(fill, btnEl) {
+  frameFill = fill;
+  document.querySelectorAll('.fill-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (btnEl) btnEl.classList.add('active');
+  applyFrame();
+}
+function setFillCustom(hex) {
+  frameFill = hex;
+  document.querySelectorAll('.fill-btn').forEach(function(b) { b.classList.remove('active'); });
+  applyFrame();
+}
+
+// ── Grid toggle ──
+function toggleGrid() {
+  showGrid = !showGrid;
+  gridOverlay.classList.toggle('active', showGrid);
+  document.getElementById('btn-grid').classList.toggle('active', showGrid);
+}
+
+// ── Ruler toggle ──
+function toggleRuler() {
+  showRuler = !showRuler;
+  ['ruler-corner','ruler-h','ruler-v'].forEach(function(id) {
+    document.getElementById(id).classList.toggle('active', showRuler);
+  });
+  document.getElementById('btn-ruler').classList.toggle('active', showRuler);
+  if (showRuler) drawRulers();
+}
+
+// ── Draw rulers ──
+function drawRulers() {
+  if (!showRuler || !activeKey) return;
+
+  const fW = frameW || 1080;
+  const fH = frameH || 1080;
+  const vpRect = viewport.getBoundingClientRect();
+  const vpW = vpRect.width;
+  const vpH = vpRect.height;
+
+  // Origin of stage (top-left corner) in viewport pixel space
+  const originX = vpW / 2 - (fW * zoom) / 2;
+  const originY = vpH / 2 - (fH * zoom) / 2;
+
+  // Horizontal ruler
+  const hCvs = document.getElementById('ruler-h-cvs');
+  const hEl  = document.getElementById('ruler-h');
+  const hW = hEl.clientWidth;
+  hCvs.width  = hW;
+  hCvs.height = 20;
+  const hCtx = hCvs.getContext('2d');
+  hCtx.clearRect(0, 0, hW, 20);
+  hCtx.fillStyle = 'rgba(255,255,255,0.22)';
+  hCtx.font = '600 8px Inter, system-ui, sans-serif';
+  hCtx.textBaseline = 'top';
+
+  const tickInterval = pickTickInterval(zoom);
+  const tickPx = tickInterval * zoom;
+
+  // First tick at or after x=0 of ruler canvas (ruler starts at 20px = ruler-corner width)
+  const rulerStartX = -20; // ruler canvas left edge is at viewport x=20
+  const firstTick = Math.ceil((rulerStartX - originX) / tickPx) * tickPx + originX;
+
+  for (let vx = firstTick; vx < hW + 20; vx += tickPx) {
+    const rx = vx - 20; // position within ruler canvas
+    if (rx < 0 || rx > hW) continue;
+    const label = Math.round((vx - originX) / zoom);
+    if (label < 0 || label > fW + 1) continue;
+    hCtx.fillStyle = 'rgba(255,255,255,0.18)';
+    hCtx.fillRect(rx, 13, 1, 7);
+    if (label % (tickInterval * 2) === 0 || tickInterval >= 100) {
+      hCtx.fillStyle = 'rgba(255,255,255,0.30)';
+      hCtx.fillText(label, rx + 2, 2);
+    }
+  }
+
+  // Vertical ruler
+  const vCvs = document.getElementById('ruler-v-cvs');
+  const vEl  = document.getElementById('ruler-v');
+  const vH = vEl.clientHeight;
+  vCvs.width  = 20;
+  vCvs.height = vH;
+  const vCtx = vCvs.getContext('2d');
+  vCtx.clearRect(0, 0, 20, vH);
+  vCtx.fillStyle = 'rgba(255,255,255,0.22)';
+  vCtx.font = '600 8px Inter, system-ui, sans-serif';
+
+  const rulerStartY = -20;
+  const firstTickY = Math.ceil((rulerStartY - originY) / tickPx) * tickPx + originY;
+
+  for (let vy = firstTickY; vy < vH + 20; vy += tickPx) {
+    const ry = vy - 20;
+    if (ry < 0 || ry > vH) continue;
+    const label = Math.round((vy - originY) / zoom);
+    if (label < 0 || label > fH + 1) continue;
+    vCtx.fillStyle = 'rgba(255,255,255,0.18)';
+    vCtx.fillRect(13, ry, 7, 1);
+    if (label % (tickInterval * 2) === 0 || tickInterval >= 100) {
+      vCtx.save();
+      vCtx.fillStyle = 'rgba(255,255,255,0.30)';
+      vCtx.translate(10, ry - 2);
+      vCtx.rotate(-Math.PI / 2);
+      vCtx.fillText(label, 0, 0);
+      vCtx.restore();
+    }
+  }
+}
+
+function pickTickInterval(z) {
+  if (z >= 2)   return 25;
+  if (z >= 0.5) return 100;
+  if (z >= 0.2) return 200;
+  return 500;
+}
+
 // ── Select canvas ──
 function selectCanvas(key) {
-  // Return current to pool
-  const prev = stage.firstElementChild;
+  // Return current canvas element to pool
+  const prev = canvasContent.firstElementChild;
   if (prev) pool.appendChild(prev);
 
   const el = document.getElementById('cvs-' + key);
@@ -1272,38 +1818,47 @@ function selectCanvas(key) {
   const w = meta ? meta.w : (parseInt(el.dataset.w) || 1080);
   const h = meta ? meta.h : (parseInt(el.dataset.h) || 1080);
 
-  stage.style.width  = w + 'px';
-  stage.style.height = h + 'px';
-  stage.appendChild(el);
+  canvasContent.appendChild(el);
+
   stage.style.display = 'block';
   emptyState.style.display = 'none';
 
   activeKey = key;
   toolbarName.textContent = meta ? meta.name : key;
-  toolbarDims.textContent = w + ' × ' + h + ' px';
   btnExportPng.disabled = false;
 
-  fitZoom(w, h);
+  // Reset frame to canvas native dims when switching canvases
+  frameW = w;
+  frameH = h;
+  document.getElementById('frame-w').value = w;
+  document.getElementById('frame-h').value = h;
+  // Reset ratio buttons to "Original"
+  document.querySelectorAll('.ratio-btn').forEach(function(b) { b.classList.remove('active'); });
+  const origBtn = document.querySelector('.ratio-btn[data-ratio="original"]');
+  if (origBtn) origBtn.classList.add('active');
+
+  applyFrame();
+  fitZoom(frameW, frameH);
   renderAssetList();
 }
 
 // ── Zoom ──
 function fitZoom(w, h) {
-  if (!w) {
-    const el = stage.firstElementChild;
-    if (!el) return;
-    w = parseInt(el.dataset.w) || parseInt(stage.style.width) || 1080;
-    h = parseInt(el.dataset.h) || parseInt(stage.style.height) || 1080;
-  }
-  const vw = viewport.clientWidth  - 64;
-  const vh = viewport.clientHeight - 64;
-  zoom = Math.min(vw / w, vh / h, 1);
+  const fw = w || frameW || 1080;
+  const fh = h || frameH || 1080;
+  const rulerOffset = showRuler ? 20 : 0;
+  const vw = viewport.clientWidth  - 64 - rulerOffset;
+  const vh = viewport.clientHeight - 64 - rulerOffset;
+  zoom = Math.min(vw / fw, vh / fh, 1);
   applyZoom();
 }
 
 function applyZoom() {
   stage.style.transform = 'translate(-50%,-50%) scale(' + zoom + ')';
-  zoomDisplay.textContent = Math.round(zoom * 100) + '%';
+  const pct = Math.round(zoom * 100) + '%';
+  zoomDisplay.textContent = pct;
+  if (vpZoomDisplay) vpZoomDisplay.textContent = pct;
+  if (showRuler) drawRulers();
 }
 
 function adjustZoom(delta) {
@@ -1333,14 +1888,12 @@ function renderAssetList() {
         (meta.deletable ? '<button class="asset-btn del" title="Delete" data-key="' + meta.key + '">×</button>' : '') +
       '</div>';
 
-    // Click on item → select canvas
     item.addEventListener('click', function(e) {
       if (e.target.closest('.asset-btn') || e.target.closest('.asset-name')) return;
       selectCanvas(meta.key);
       closeMobileSidebar();
     });
 
-    // Name editing
     const nameEl = item.querySelector('.asset-name');
     nameEl.addEventListener('blur', function() {
       const trimmed = this.textContent.trim();
@@ -1357,14 +1910,12 @@ function renderAssetList() {
     });
     nameEl.addEventListener('click', function(e) { e.stopPropagation(); });
 
-    // Export btn
     const dlBtn = item.querySelector('.asset-btn.dl');
     if (dlBtn) dlBtn.addEventListener('click', function(e) {
       e.stopPropagation();
       exportCanvas(this.dataset.key, this);
     });
 
-    // Delete btn
     const delBtn = item.querySelector('.asset-btn.del');
     if (delBtn) delBtn.addEventListener('click', function(e) {
       e.stopPropagation();
@@ -1392,17 +1943,19 @@ function esc(str) {
 function exportCanvas(key, btnEl) {
   const meta = getMeta(key);
   if (!meta) return;
-
-  // If canvas isn't active, temporarily select it (moves to stage)
-  const wasActive = activeKey;
   if (key !== activeKey) selectCanvas(key);
 
   const el = document.getElementById('cvs-' + key);
   if (!el) return;
 
-  // Remove studio transform for capture
+  // Temporarily move canvas element to pool at 1:1 for accurate html2canvas capture
   const prevTransform = stage.style.transform;
   stage.style.transform = 'translate(-50%,-50%) scale(1)';
+  // Also reset content scale to 1 for export
+  const prevContentTf = canvasContent.style.transform;
+  canvasContent.style.transform = 'translate(-50%,-50%) scale(1)';
+  canvasContent.style.width  = meta.w + 'px';
+  canvasContent.style.height = meta.h + 'px';
 
   if (btnEl) { btnEl.textContent = '…'; btnEl.disabled = true; }
   const mainBtn = document.getElementById('btn-export-png');
@@ -1417,6 +1970,8 @@ function exportCanvas(key, btnEl) {
     logging: false
   }).then(function(canvas) {
     stage.style.transform = prevTransform;
+    canvasContent.style.transform = prevContentTf;
+    applyFrame();
     canvas.toBlob(function(blob) {
       const fname = 'frmls-' + meta.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + '.png';
       const a = document.createElement('a');
@@ -1431,6 +1986,8 @@ function exportCanvas(key, btnEl) {
     }, 'image/png');
   }).catch(function() {
     stage.style.transform = prevTransform;
+    canvasContent.style.transform = prevContentTf;
+    applyFrame();
     if (btnEl) { btnEl.textContent = '↓'; btnEl.disabled = false; }
     if (mainBtn) { mainBtn.textContent = 'Export PNG'; mainBtn.disabled = false; }
     alert('Export failed. Open in Chrome for best results.');
@@ -1452,13 +2009,18 @@ async function exportAll() {
 
   const zip = new JSZip();
   const prevActive = activeKey;
+  const prevFW = frameW, prevFH = frameH;
 
   for (const meta of all) {
     try {
       await new Promise(function(resolve) {
         selectCanvas(meta.key);
         const el = document.getElementById('cvs-' + meta.key);
+        // Reset transforms for clean capture
         stage.style.transform = 'translate(-50%,-50%) scale(1)';
+        canvasContent.style.transform = 'translate(-50%,-50%) scale(1)';
+        canvasContent.style.width  = meta.w + 'px';
+        canvasContent.style.height = meta.h + 'px';
 
         html2canvas(el, {
           width: meta.w, height: meta.h,
@@ -1472,12 +2034,12 @@ async function exportAll() {
           }, 'image/png');
         }).catch(function() { resolve(); });
       });
-    } catch(e) { /* skip failed */ }
+    } catch(e) { /* skip */ }
   }
 
   if (prevActive) selectCanvas(prevActive);
 
-  zip.generateAsync({ type: 'blob' }).then(function(content) {
+  zip.generateAsync({ type:'blob' }).then(function(content) {
     saveAs(content, 'frmls-studio.zip');
     btn.textContent = 'Export All as ZIP';
     btn.disabled = false;
@@ -1494,9 +2056,8 @@ function openNewModal() {
   document.getElementById('custom-h').value = '';
   document.getElementById('modal-new').classList.add('open');
 }
-function closeNewModal() {
-  document.getElementById('modal-new').classList.remove('open');
-}
+function closeNewModal() { document.getElementById('modal-new').classList.remove('open'); }
+
 function selectPreset(btn, name, w, h) {
   document.querySelectorAll('.preset-btn').forEach(function(b) { b.classList.remove('selected'); });
   btn.classList.add('selected');
@@ -1504,6 +2065,7 @@ function selectPreset(btn, name, w, h) {
   if (w) document.getElementById('custom-w').value = w;
   if (h) document.getElementById('custom-h').value = h;
 }
+
 function createCanvas() {
   const w = parseInt(document.getElementById('custom-w').value);
   const h = parseInt(document.getElementById('custom-h').value);
@@ -1512,13 +2074,11 @@ function createCanvas() {
     return;
   }
   const name = (selectedPresetData && selectedPresetData.name !== 'Custom')
-    ? selectedPresetData.name
-    : 'Canvas ' + w + '×' + h;
+    ? selectedPresetData.name : 'Canvas ' + w + '×' + h;
   const key = 'user-' + Date.now();
-  const meta = { key, name, w, h, thumb: 'linear-gradient(135deg,#7c3aed33,#06b6d433)', deletable: true };
+  const meta = { key, name, w, h, thumb:'linear-gradient(135deg,#7c3aed33,#06b6d433)', deletable:true };
   userCanvases.push(meta);
 
-  // Create blank canvas element
   const el = document.createElement('div');
   el.id = 'cvs-' + key;
   el.dataset.w = w;
@@ -1527,8 +2087,8 @@ function createCanvas() {
   el.innerHTML =
     '<div style="position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 22% 22%,rgba(124,58,237,0.09) 0%,transparent 60%),radial-gradient(ellipse 55% 50% at 78% 78%,rgba(6,182,212,0.07) 0%,transparent 55%);pointer-events:none;"></div>' +
     '<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">' +
-      '<div style="font-family:\'Inter\',sans-serif;font-size:' + Math.max(12, Math.min(20, w/60)) + 'px;font-weight:600;color:rgba(255,255,255,0.14);letter-spacing:0.1em;">blank canvas</div>' +
-      '<div style="font-family:\'Inter\',sans-serif;font-size:' + Math.max(9, Math.min(14, w/80)) + 'px;font-weight:600;color:rgba(255,255,255,0.08);letter-spacing:0.06em;">' + w + ' × ' + h + ' px</div>' +
+      '<div style="font-family:\'Inter\',sans-serif;font-size:' + Math.max(12,Math.min(20,w/60)) + 'px;font-weight:600;color:rgba(255,255,255,0.14);letter-spacing:0.1em;">blank canvas</div>' +
+      '<div style="font-family:\'Inter\',sans-serif;font-size:' + Math.max(9,Math.min(14,w/80)) + 'px;font-weight:600;color:rgba(255,255,255,0.08);letter-spacing:0.06em;">' + w + ' × ' + h + ' px</div>' +
     '</div>';
   pool.appendChild(el);
 
@@ -1551,8 +2111,6 @@ function closeDeleteModal() {
 function doDelete() {
   const key = pendingDeleteKey;
   if (!key) return;
-
-  // Deselect if active
   if (key === activeKey) {
     const el = document.getElementById('cvs-' + key);
     if (el) pool.appendChild(el);
@@ -1562,22 +2120,23 @@ function doDelete() {
     toolbarName.textContent = 'Select a canvas to start';
     toolbarDims.textContent = '';
     zoomDisplay.textContent = '—';
+    if (vpZoomDisplay) vpZoomDisplay.textContent = '—';
     btnExportPng.disabled = true;
+    frameW = 0; frameH = 0;
+    document.getElementById('frame-w').value = '';
+    document.getElementById('frame-h').value = '';
   }
-
   userCanvases = userCanvases.filter(function(c) { return c.key !== key; });
   const el = document.getElementById('cvs-' + key);
   if (el) el.remove();
-
   closeDeleteModal();
   renderAssetList();
 }
 
 // ── Images ──
 function initDropZone() {
-  const dz   = document.getElementById('drop-zone');
-  const inp  = document.getElementById('image-input');
-
+  const dz  = document.getElementById('drop-zone');
+  const inp = document.getElementById('image-input');
   dz.addEventListener('click', function() { inp.click(); });
   inp.addEventListener('change', function() {
     Array.from(this.files).forEach(handleImg);
@@ -1592,12 +2151,9 @@ function initDropZone() {
   });
 }
 function handleImg(file) {
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    uploadedImages.push({ src: e.target.result, name: file.name });
-    renderImageGrid();
-  };
-  reader.readAsDataURL(file);
+  var r = new FileReader();
+  r.onload = function(e) { uploadedImages.push({ src:e.target.result, name:file.name }); renderImageGrid(); };
+  r.readAsDataURL(file);
 }
 function renderImageGrid() {
   imageGrid.innerHTML = '';
@@ -1628,28 +2184,20 @@ let activeMobileTab = null;
 function openMobileTab(tab) {
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('mobile-overlay');
-
   if (activeMobileTab === tab && sidebar.classList.contains('mobile-open')) {
-    closeMobileSidebar();
-    return;
+    closeMobileSidebar(); return;
   }
-
-  // Update tab active states
   document.querySelectorAll('.mtab').forEach(function(b) { b.classList.remove('active'); });
   const activeBtn = document.getElementById('mtab-' + tab);
   if (activeBtn) activeBtn.classList.add('active');
-
-  // Show sidebar
   sidebar.classList.add('mobile-open');
   overlay.classList.add('active');
   activeMobileTab = tab;
-
-  // Scroll to relevant section
-  const sectionMap = { assets: 'sb-assets', images: 'sb-images', brand: 'sb-brand' };
+  const sectionMap = { assets:'sb-assets', images:'sb-images', brand:'sb-brand', canvas:'sb-canvas-ctrl' };
   const sectionId = sectionMap[tab];
   if (sectionId) {
     const section = document.getElementById(sectionId);
-    if (section) setTimeout(function() { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+    if (section) setTimeout(function() { section.scrollIntoView({ behavior:'smooth', block:'start' }); }, 50);
   }
 }
 
@@ -1668,22 +2216,21 @@ document.addEventListener('keydown', function(e) {
   if (e.key === '=' || e.key === '+') { e.preventDefault(); adjustZoom(0.1); }
   if (e.key === '-') { e.preventDefault(); adjustZoom(-0.1); }
   if (e.key === '0') { e.preventDefault(); fitZoom(); }
+  if (e.key === 'g') { e.preventDefault(); toggleGrid(); }
+  if (e.key === 'r') { e.preventDefault(); toggleRuler(); }
   if (e.key === 'Escape') { closeNewModal(); closeDeleteModal(); closeMobileSidebar(); }
 });
 
 // ── Window resize → refit ──
 window.addEventListener('resize', function() {
-  if (activeKey) {
-    const meta = getMeta(activeKey);
-    if (meta) fitZoom(meta.w, meta.h);
-  }
+  if (activeKey) fitZoom(frameW, frameH);
+  if (showRuler) drawRulers();
 });
 
 // ── Init ──
 document.addEventListener('DOMContentLoaded', function() {
   renderAssetList();
   initDropZone();
-  // Load Grid Story by default
   selectCanvas('grid');
 });
 </script>

@@ -1641,115 +1641,266 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 }
 
 /* ─────────────────────────────────────────
-   TIP POST — BRAND VOICE CAROUSEL SLIDES
+   TIP POST — BRAND VOICE CAROUSEL (v2)
+   Editorial · Luxury · Handcrafted
 ───────────────────────────────────────── */
+
+/* ── Background & atmosphere ── */
 .tip-bg {
   position: absolute; inset: 0;
-  background: #f5f0e8;
+  background: #f2ece0;
 }
 .tip-glow {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 920px; height: 920px;
+  width: 1020px; height: 1020px;
   background: radial-gradient(ellipse at center,
-    rgba(255,252,242,0.85) 0%,
-    rgba(250,244,230,0.50) 35%,
-    transparent 65%);
+    rgba(255,254,248,0.92) 0%,
+    rgba(248,242,228,0.60) 36%,
+    transparent 64%);
+  pointer-events: none;
+}
+.tip-vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 50%,
+    transparent 40%,
+    rgba(85,55,18,0.055) 66%,
+    rgba(65,40,12,0.13) 100%);
   pointer-events: none;
 }
 .tip-noise {
   position: absolute; inset: 0;
-  opacity: 0.03;
+  opacity: 0.04;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
 }
+/* Large faint watermark word */
+.tip-wm {
+  position: absolute;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 900; letter-spacing: -0.06em;
+  font-size: 290px; line-height: 1;
+  color: #1a1208; opacity: 0.028;
+  pointer-events: none; user-select: none;
+  white-space: nowrap;
+}
+
+/* ── Chrome UI ── */
 .tip-num {
-  position: absolute; top: 52px; right: 64px;
+  position: absolute; top: 54px; right: 68px;
   font-family: 'DM Mono', monospace;
-  font-size: 14px; font-weight: 400;
-  color: #aaa49a; letter-spacing: 0.08em;
+  font-size: 15px; font-weight: 500;
+  letter-spacing: 0.06em;
+  background: linear-gradient(90deg, #c4622d, #d4a853);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .tip-frmls {
-  position: absolute; bottom: 52px; right: 64px;
+  position: absolute; bottom: 54px; right: 68px;
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 13px; font-weight: 700;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  color: #888880;
+  font-size: 15px; font-weight: 800;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: #c4622d;
 }
+
+/* ── Content layout ── */
 .tip-content {
   position: absolute;
-  left: 64px; right: 64px;
+  left: 72px; right: 72px;
   top: 0; bottom: 0;
   display: flex; flex-direction: column;
   justify-content: center;
-  padding: 90px 0;
+  padding: 100px 0;
 }
+
+/* ── Typography ── */
 .tip-h {
   font-family: 'Inter', system-ui, sans-serif;
-  font-weight: 800; color: #1a1a1a;
-  line-height: 1.06; letter-spacing: -0.03em;
-  text-shadow: 0 2px 24px rgba(160,120,60,0.10);
+  font-weight: 900; color: #1a1208;
+  line-height: 1.03; letter-spacing: -0.04em;
   margin: 0;
 }
 .tip-line {
-  width: 80px; height: 4px;
+  width: 120px; height: 2px;
   background: linear-gradient(90deg, #c4622d, #d4a853);
-  border-radius: 2px;
-  margin-top: 28px; margin-bottom: 40px;
+  border-radius: 1px;
+  margin-top: 30px; margin-bottom: 44px;
   flex-shrink: 0;
 }
 .tip-body {
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 34px; font-weight: 400;
-  color: #4a4540; line-height: 1.62;
-  text-shadow: 0 1px 8px rgba(160,120,60,0.06);
+  color: #4a3a28; line-height: 1.68;
   margin: 0;
 }
-.tip-bold { font-weight: 700; color: #1a1a1a; }
+.tip-bold { font-weight: 700; color: #1a1208; }
+.tip-sage { color: #7d8c6e; }
 .tip-g {
   background: linear-gradient(90deg, #c4622d, #d4a853);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-/* Slide 7 CTA — dark variant */
-.tip-bg-dark { position: absolute; inset: 0; background: #1a1a1a; }
+/* Cormorant Garamond italic — the editorial accent */
+.tip-script {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.15em;
+  line-height: 1;
+  background: linear-gradient(90deg, #c4622d, #d4a853);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0em;
+}
+
+/* ── Slide 6: Split layout with mockup ── */
+.tip6-split {
+  position: absolute; inset: 0;
+  display: flex; align-items: center;
+  padding: 92px 72px;
+  gap: 32px;
+}
+.tip6-left {
+  flex: 0 0 462px;
+  display: flex; flex-direction: column;
+}
+.tip6-right {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.tip6-mockup-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 460px; height: 460px;
+  background: radial-gradient(ellipse at center,
+    rgba(196,98,45,0.18) 0%,
+    rgba(212,168,83,0.09) 42%,
+    transparent 72%);
+  pointer-events: none;
+}
+.tip6-mockup {
+  width: 368px;
+  border-radius: 12px;
+  overflow: hidden;
+  transform: rotate(3.5deg);
+  box-shadow: 0 28px 80px rgba(70,40,12,0.35), 0 6px 20px rgba(70,40,12,0.20);
+  position: relative; z-index: 2;
+  flex-shrink: 0;
+}
+.tip6-browser-bar {
+  background: #181818;
+  height: 40px;
+  display: flex; align-items: center;
+  padding: 0 13px; gap: 10px;
+  flex-shrink: 0;
+}
+.tip6-dots { display: flex; gap: 6px; align-items: center; }
+.tip6-dot { width: 11px; height: 11px; border-radius: 50%; }
+.tip6-dot.d-r { background: #ff5f57; }
+.tip6-dot.d-y { background: #febc2e; }
+.tip6-dot.d-g { background: #28c840; }
+.tip6-url-bar {
+  flex: 1;
+  background: rgba(255,255,255,0.07);
+  border-radius: 5px; padding: 5px 10px;
+  font-size: 11px; font-family: 'DM Mono', monospace;
+  color: rgba(255,255,255,0.30); text-align: center;
+  letter-spacing: 0.02em;
+}
+.tip6-browser-body {
+  background: #111111;
+  padding: 16px 14px 18px;
+}
+.tip6-dash-hdr {
+  display: flex; align-items: center;
+  margin-bottom: 14px; padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.tip6-dash-logo {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 20px; font-weight: 900;
+  letter-spacing: -0.04em; line-height: 1;
+  color: #fff;
+}
+.tip6-dash-logo-s {
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.tip6-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.tip6-card {
+  background: #1a1a1a;
+  border-radius: 8px;
+  padding: 14px 11px 11px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px; font-weight: 600;
+  color: rgba(255,255,255,0.68);
+  border-top: 3px solid;
+  min-height: 68px;
+  display: flex; align-items: flex-end;
+  line-height: 1.2;
+}
+.tip6-card.c1 { border-top-color: #7c3aed; }
+.tip6-card.c2 { border-top-color: #06b6d4; }
+.tip6-card.c3 { border-top-color: #d4a853; }
+.tip6-card.c4 { border-top-color: #c4622d; }
+.tip6-card.c5 { border-top-color: #7d8c6e; }
+.tip6-card.c6 { border-top-color: rgba(255,255,255,0.20); }
+
+/* ── Slide 7 CTA — dark variant ── */
+.tip-bg-dark { position: absolute; inset: 0; background: #121212; }
 .tip-glow-dark {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 700px; height: 700px;
+  width: 780px; height: 780px;
   background: radial-gradient(ellipse at center,
-    rgba(196,98,45,0.12) 0%,
-    rgba(212,168,83,0.06) 40%,
-    transparent 70%);
+    rgba(212,168,83,0.18) 0%,
+    rgba(196,98,45,0.10) 38%,
+    transparent 68%);
   pointer-events: none;
 }
 .tip-cta-content {
   position: absolute; inset: 0;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  gap: 32px;
-  padding: 80px 64px;
+  gap: 30px; padding: 80px 64px;
 }
 .tip-cta-logo {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 96px; font-weight: 900;
-  color: #ffffff; letter-spacing: -0.04em;
+  font-size: 112px; font-weight: 900;
+  letter-spacing: -0.05em;
   line-height: 1; text-align: center;
+}
+.tip-cta-logo-main { color: #ffffff; }
+.tip-cta-logo-s {
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .tip-cta-tagline {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 42px; font-weight: 700;
-  color: #ffffff; letter-spacing: -0.02em;
-  line-height: 1.2; text-align: center;
-  text-shadow: 0 2px 24px rgba(196,98,45,0.25);
+  font-size: 40px; font-weight: 700;
+  color: #ffffff; letter-spacing: -0.025em;
+  line-height: 1.18; text-align: center;
+  text-shadow: 0 2px 32px rgba(212,168,83,0.20);
 }
 .tip-cta-price {
   font-family: 'Inter', system-ui, sans-serif;
-  font-size: 32px; font-weight: 700;
-  letter-spacing: -0.01em; text-align: center;
+  font-size: 40px; font-weight: 800;
+  letter-spacing: -0.025em; text-align: center;
   background: linear-gradient(90deg, #c4622d, #d4a853);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1758,9 +1909,10 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 .tip-cta-sub {
   font-family: 'DM Mono', monospace;
   font-size: 16px; font-weight: 400;
-  color: #888880; letter-spacing: 0.06em;
-  text-align: center;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.08em; text-align: center;
 }
+
 /* Sidebar carousel section */
 .carousel-export-btn {
   width: 100%; height: 44px;
@@ -1786,17 +1938,17 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 .carousel-slide-thumb {
   width: 40px; height: 50px;
   border-radius: 5px;
-  background: linear-gradient(150deg, #f5f0e8 0%, #e8d5bc 100%);
+  background: linear-gradient(150deg, #f2ece0 0%, #e4d4b0 100%);
   border: 1px solid rgba(196,98,45,0.22);
   cursor: pointer; transition: all 0.12s;
   font-size: 9px; font-weight: 500;
-  color: #aaa49a; font-family: 'DM Mono', monospace;
+  color: #c4622d; font-family: 'DM Mono', monospace;
   display: flex; align-items: center; justify-content: center;
 }
-.carousel-slide-thumb:hover { border-color: rgba(196,98,45,0.60); transform: scale(1.08); }
+.carousel-slide-thumb:hover { border-color: rgba(196,98,45,0.65); transform: scale(1.08); }
 .carousel-slide-thumb.tip-cta-thumb {
-  background: linear-gradient(150deg, #1a1a1a 0%, #2d2d2d 100%);
-  color: rgba(255,255,255,0.35);
+  background: linear-gradient(150deg, #121212 0%, #252525 100%);
+  color: rgba(255,255,255,0.30);
 }
 /* ───────────── VIDEO SECTION ───────────── */
 .vid-drop-zone {
@@ -2669,23 +2821,38 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 
   <!-- ════════════════════════════════════════════
        TIP POST — BRAND VOICE PROBLEM  (7 slides)
+       v2 — Editorial · Luxury · Handcrafted
   ════════════════════════════════════════════ -->
 
   <!-- SLIDE 1 — HOOK -->
   <div id="cvs-tip1" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="tip-bg"></div>
     <div class="tip-glow"></div>
+    <div class="tip-vignette"></div>
     <div class="tip-noise"></div>
+    <!-- watermark -->
+    <div class="tip-wm" style="bottom:-30px;left:50%;transform:translateX(-50%);">BRAND</div>
+    <!-- gradient border -->
+    <svg style="position:absolute;inset:0;width:1080px;height:1350px;pointer-events:none;z-index:10;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tbg-1" x1="0" y1="0" x2="1080" y2="1350" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#c4622d"/>
+          <stop offset="55%" stop-color="#d4a853"/>
+          <stop offset="100%" stop-color="#c4622d"/>
+        </linearGradient>
+      </defs>
+      <rect x="9" y="9" width="1062" height="1332" rx="14" ry="14" fill="none" stroke="url(#tbg-1)" stroke-width="6" opacity="0.72"/>
+    </svg>
     <span class="tip-num">01 / 07</span>
     <span class="tip-frmls">FRMLS</span>
     <div class="tip-content">
-      <div class="tip-h" style="font-size:80px;">
+      <div class="tip-h" style="font-size:82px;">
         you know exactly<br>
         what your brand<br>
-        should <span class="tip-g">feel like.</span>
+        should <span class="tip-script">feel like.</span>
       </div>
       <div class="tip-line"></div>
-      <div class="tip-body" style="font-size:40px;color:#4a4540;font-weight:400;">
+      <div class="tip-body" style="font-size:40px;">
         so why does your store<br>
         feel like everyone else's?
       </div>
@@ -2696,21 +2863,33 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   <div id="cvs-tip2" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="tip-bg"></div>
     <div class="tip-glow"></div>
+    <div class="tip-vignette"></div>
     <div class="tip-noise"></div>
+    <div class="tip-wm" style="bottom:-20px;right:-60px;">VISION</div>
+    <svg style="position:absolute;inset:0;width:1080px;height:1350px;pointer-events:none;z-index:10;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tbg-2" x1="1080" y1="0" x2="0" y2="1350" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#d4a853"/>
+          <stop offset="55%" stop-color="#c4622d"/>
+          <stop offset="100%" stop-color="#d4a853"/>
+        </linearGradient>
+      </defs>
+      <rect x="9" y="9" width="1062" height="1332" rx="14" ry="14" fill="none" stroke="url(#tbg-2)" stroke-width="6" opacity="0.72"/>
+    </svg>
     <span class="tip-num">02 / 07</span>
     <span class="tip-frmls">FRMLS</span>
     <div class="tip-content">
-      <div class="tip-h" style="font-size:66px;">
+      <div class="tip-h" style="font-size:68px;">
         the vision is clear<br>
         in your head.
       </div>
       <div class="tip-line"></div>
-      <div class="tip-body" style="font-size:34px;">
-        you know the vibe.<br>
-        you know the energy.<br>
-        you know who your brand is for.<br>
+      <div class="tip-body" style="font-size:35px;">
+        <span class="tip-sage">you know the vibe.</span><br>
+        <span class="tip-sage">you know the energy.</span><br>
+        <span class="tip-sage">you know who your brand is for.</span><br>
         but the second you open Shopify —<br>
-        <span class="tip-bold" style="font-size:38px;">you freeze.</span>
+        <span class="tip-bold" style="font-size:40px;display:block;margin-top:10px;">you freeze.</span>
       </div>
     </div>
   </div>
@@ -2719,11 +2898,23 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   <div id="cvs-tip3" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="tip-bg"></div>
     <div class="tip-glow"></div>
+    <div class="tip-vignette"></div>
     <div class="tip-noise"></div>
+    <div class="tip-wm" style="bottom:-25px;left:-40px;">TEMPLATE</div>
+    <svg style="position:absolute;inset:0;width:1080px;height:1350px;pointer-events:none;z-index:10;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tbg-3" x1="0" y1="1350" x2="1080" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#c4622d"/>
+          <stop offset="55%" stop-color="#d4a853"/>
+          <stop offset="100%" stop-color="#c4622d"/>
+        </linearGradient>
+      </defs>
+      <rect x="9" y="9" width="1062" height="1332" rx="14" ry="14" fill="none" stroke="url(#tbg-3)" stroke-width="6" opacity="0.72"/>
+    </svg>
     <span class="tip-num">03 / 07</span>
     <span class="tip-frmls">FRMLS</span>
     <div class="tip-content">
-      <div class="tip-h" style="font-size:66px;">
+      <div class="tip-h" style="font-size:68px;">
         so you do what<br>
         everyone does.
       </div>
@@ -2734,7 +2925,7 @@ body.eyedropper-mode * { cursor: crosshair !important; }
         you choose fonts that look clean enough.<br>
         and you launch a store<br>
         that technically works.<br>
-        <span class="tip-bold tip-g" style="font-size:37px;display:block;margin-top:14px;">but doesn't feel like anything.</span>
+        <span style="display:block;margin-top:16px;font-weight:700;"><span class="tip-script" style="font-size:40px;">but doesn't feel like anything.</span></span>
       </div>
     </div>
   </div>
@@ -2743,11 +2934,23 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   <div id="cvs-tip4" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="tip-bg"></div>
     <div class="tip-glow"></div>
+    <div class="tip-vignette"></div>
     <div class="tip-noise"></div>
+    <div class="tip-wm" style="bottom:-20px;left:50%;transform:translateX(-50%);">IDENTITY</div>
+    <svg style="position:absolute;inset:0;width:1080px;height:1350px;pointer-events:none;z-index:10;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tbg-4" x1="0" y1="0" x2="1080" y2="1350" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#d4a853"/>
+          <stop offset="50%" stop-color="#c4622d"/>
+          <stop offset="100%" stop-color="#d4a853"/>
+        </linearGradient>
+      </defs>
+      <rect x="9" y="9" width="1062" height="1332" rx="14" ry="14" fill="none" stroke="url(#tbg-4)" stroke-width="6" opacity="0.72"/>
+    </svg>
     <span class="tip-num">04 / 07</span>
     <span class="tip-frmls">FRMLS</span>
     <div class="tip-content">
-      <div class="tip-h" style="font-size:76px;">
+      <div class="tip-h" style="font-size:80px;">
         and people<br>
         can tell.
       </div>
@@ -2759,7 +2962,7 @@ body.eyedropper-mode * { cursor: crosshair !important; }
         nothing feels different.<br>
         they leave.<br>
         <span class="tip-bold" style="display:block;margin-top:14px;">not because your product is bad.</span>
-        because your brand has <span class="tip-bold tip-g">no identity.</span>
+        because your brand has <span class="tip-bold"><span class="tip-script" style="font-size:1.05em;">no identity.</span></span>
       </div>
     </div>
   </div>
@@ -2768,48 +2971,103 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   <div id="cvs-tip5" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="tip-bg"></div>
     <div class="tip-glow"></div>
+    <div class="tip-vignette"></div>
     <div class="tip-noise"></div>
+    <div class="tip-wm" style="bottom:-20px;right:-30px;">LANGUAGE</div>
+    <svg style="position:absolute;inset:0;width:1080px;height:1350px;pointer-events:none;z-index:10;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tbg-5" x1="1080" y1="0" x2="0" y2="1350" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#c4622d"/>
+          <stop offset="55%" stop-color="#d4a853"/>
+          <stop offset="100%" stop-color="#c4622d"/>
+        </linearGradient>
+      </defs>
+      <rect x="9" y="9" width="1062" height="1332" rx="14" ry="14" fill="none" stroke="url(#tbg-5)" stroke-width="6" opacity="0.72"/>
+    </svg>
     <span class="tip-num">05 / 07</span>
     <span class="tip-frmls">FRMLS</span>
     <div class="tip-content">
-      <div class="tip-h" style="font-size:66px;">
+      <div class="tip-h" style="font-size:68px;">
         this isn't a<br>
         design problem.
       </div>
       <div class="tip-line"></div>
       <div class="tip-body" style="font-size:33px;">
-        it's a <span class="tip-bold tip-g">language problem.</span><br>
-        you never had the right questions to ask.<br>
-        what does your brand sound like?<br>
-        what does it stand for?<br>
-        who exactly is it for?<br>
-        <span class="tip-bold" style="display:block;margin-top:14px;">nobody ever helped you<br>figure that out.</span>
+        it's a <span class="tip-script" style="font-size:1.08em;">language problem.</span><br>
+        <span class="tip-sage">you never had the right questions to ask.</span><br>
+        <span class="tip-sage">what does your brand sound like?</span><br>
+        <span class="tip-sage">what does it stand for?</span><br>
+        <span class="tip-sage">who exactly is it for?</span><br>
+        <span class="tip-bold" style="display:block;margin-top:14px;color:#1a1208;">nobody ever helped you<br>figure that out.</span>
       </div>
     </div>
   </div>
 
-  <!-- SLIDE 6 — SOLVE -->
+  <!-- SLIDE 6 — SOLVE (split layout + dashboard mockup) -->
   <div id="cvs-tip6" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="tip-bg"></div>
     <div class="tip-glow"></div>
+    <div class="tip-vignette"></div>
     <div class="tip-noise"></div>
+    <svg style="position:absolute;inset:0;width:1080px;height:1350px;pointer-events:none;z-index:10;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tbg-6" x1="0" y1="0" x2="1080" y2="1350" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#c4622d"/>
+          <stop offset="55%" stop-color="#d4a853"/>
+          <stop offset="100%" stop-color="#c4622d"/>
+        </linearGradient>
+      </defs>
+      <rect x="9" y="9" width="1062" height="1332" rx="14" ry="14" fill="none" stroke="url(#tbg-6)" stroke-width="6" opacity="0.72"/>
+    </svg>
     <span class="tip-num">06 / 07</span>
     <span class="tip-frmls">FRMLS</span>
-    <div class="tip-content">
-      <div class="tip-h" style="font-size:62px;">
-        that's exactly<br>
-        what FRMLS does.
+    <!-- Split: left text + right mockup -->
+    <div class="tip6-split">
+      <!-- LEFT: text -->
+      <div class="tip6-left">
+        <div class="tip-h" style="font-size:58px;">
+          that's exactly<br>
+          what FRMLS does.
+        </div>
+        <div class="tip-line"></div>
+        <div class="tip-body" style="font-size:28px;">
+          the Brand Kit walks you<br>
+          through your identity step by step.<br>
+          <span class="tip-sage" style="font-size:26px;">colors. fonts. tone of voice.</span><br>
+          the Prompt Pack gives you<br>
+          exact words to use with AI.<br>
+          <span class="tip-sage" style="font-size:26px;">no more generic outputs.</span><br>
+          <span class="tip-bold" style="display:block;margin-top:14px;font-size:28px;">a store that finally<br><span class="tip-script" style="font-size:1.12em;">feels like yours.</span></span>
+        </div>
       </div>
-      <div class="tip-line"></div>
-      <div class="tip-body" style="font-size:31px;">
-        the Brand Kit walks you through<br>
-        your identity step by step.<br>
-        colors. fonts. tone of voice.<br>
-        the Prompt Pack gives you exact words<br>
-        to use with AI to build your store.<br>
-        no more generic outputs.<br>
-        no more blank page paralysis.<br>
-        <span class="tip-bold" style="display:block;margin-top:14px;">just a store that finally <span class="tip-g">feels like yours.</span></span>
+      <!-- RIGHT: dashboard mockup -->
+      <div class="tip6-right">
+        <div class="tip6-mockup-glow"></div>
+        <div class="tip6-mockup">
+          <!-- browser chrome -->
+          <div class="tip6-browser-bar">
+            <div class="tip6-dots">
+              <div class="tip6-dot d-r"></div>
+              <div class="tip6-dot d-y"></div>
+              <div class="tip6-dot d-g"></div>
+            </div>
+            <div class="tip6-url-bar">frmls.com/dashboard</div>
+          </div>
+          <!-- dashboard body -->
+          <div class="tip6-browser-body">
+            <div class="tip6-dash-hdr">
+              <div class="tip6-dash-logo">FRML<span class="tip6-dash-logo-s">S</span></div>
+            </div>
+            <div class="tip6-cards-grid">
+              <div class="tip6-card c1">Brand Kit</div>
+              <div class="tip6-card c2">Prompt Pack</div>
+              <div class="tip6-card c3">Designer Prompts</div>
+              <div class="tip6-card c4">Store Inspiration</div>
+              <div class="tip6-card c5">Launch Checklist</div>
+              <div class="tip6-card c6">Resources</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -2819,9 +3077,22 @@ body.eyedropper-mode * { cursor: crosshair !important; }
     <div class="tip-bg-dark"></div>
     <div class="tip-glow-dark"></div>
     <div class="tip-noise" style="opacity:0.04;"></div>
-    <span class="tip-num" style="color:rgba(170,164,154,0.45);">07 / 07</span>
+    <!-- gradient border — slightly brighter on dark bg -->
+    <svg style="position:absolute;inset:0;width:1080px;height:1350px;pointer-events:none;z-index:10;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="tbg-7" x1="0" y1="0" x2="1080" y2="1350" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#c4622d"/>
+          <stop offset="50%" stop-color="#d4a853"/>
+          <stop offset="100%" stop-color="#c4622d"/>
+        </linearGradient>
+      </defs>
+      <rect x="9" y="9" width="1062" height="1332" rx="14" ry="14" fill="none" stroke="url(#tbg-7)" stroke-width="6" opacity="0.82"/>
+    </svg>
+    <span class="tip-num" style="-webkit-text-fill-color:initial;background:none;color:rgba(196,98,45,0.55);">07 / 07</span>
     <div class="tip-cta-content">
-      <div class="tip-cta-logo">FRMLS</div>
+      <div class="tip-cta-logo">
+        <span class="tip-cta-logo-main">FRML</span><span class="tip-cta-logo-s">S</span>
+      </div>
       <div class="tip-cta-tagline">
         build a store that<br>
         feels like something.

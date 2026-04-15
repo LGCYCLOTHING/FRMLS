@@ -1639,6 +1639,187 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   padding: 14px 0;
   letter-spacing: 0.04em;
 }
+
+/* ───────────── VIDEO SECTION ───────────── */
+.vid-drop-zone {
+  border: 1.5px dashed rgba(124,58,237,0.35);
+  border-radius: 10px; padding: 18px 12px; text-align: center;
+  cursor: pointer; transition: all 0.15s;
+  background: rgba(124,58,237,0.03); margin-bottom: 10px;
+}
+.vid-drop-zone:hover { border-color: rgba(124,58,237,0.60); background: rgba(124,58,237,0.07); }
+.vid-drop-zone.drag-active { border-color: rgba(6,182,212,0.70); background: rgba(6,182,212,0.06); }
+.vid-dz-text { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.55); margin-bottom: 4px; }
+.vid-dz-sub  { font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.22); letter-spacing: 0.04em; }
+
+.vid-player-wrap {
+  position: relative; border-radius: 8px; overflow: hidden;
+  background: #000; margin-bottom: 10px;
+}
+.vid-player-wrap video {
+  width: 100%; display: block; max-height: 160px; object-fit: contain; background: #000;
+}
+.vid-controls {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+}
+.vid-play-btn {
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.80);
+  font-size: 14px; cursor: pointer; display: flex; align-items: center;
+  justify-content: center; transition: all 0.12s; flex-shrink: 0;
+}
+.vid-play-btn:hover { background: rgba(124,58,237,0.20); border-color: rgba(124,58,237,0.40); }
+.vid-time-lbl {
+  font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.38);
+  letter-spacing: 0.02em; flex-shrink: 0;
+}
+.vid-vol-wrap { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+.vid-vol-icon { font-size: 12px; color: rgba(255,255,255,0.32); }
+.vid-vol-slider {
+  -webkit-appearance: none; width: 60px; height: 3px;
+  border-radius: 2px; background: rgba(255,255,255,0.15); outline: none; cursor: pointer;
+}
+.vid-vol-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 11px; height: 11px;
+  border-radius: 50%; background: #7c3aed; cursor: pointer;
+}
+
+.vid-timeline-wrap {
+  position: relative; height: 36px;
+  background: rgba(255,255,255,0.04); border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.07); margin-bottom: 6px; overflow: visible;
+}
+.vid-timeline-range {
+  position: absolute; top: 0; bottom: 0;
+  background: rgba(124,58,237,0.25); pointer-events: none;
+}
+.vid-trim-handle {
+  position: absolute; top: 4px; bottom: 4px; width: 8px;
+  border-radius: 4px; background: #7c3aed; cursor: ew-resize; z-index: 2;
+  transform: translateX(-50%);
+}
+.vid-trim-handle.trim-end { background: #06b6d4; }
+.vid-playhead {
+  position: absolute; top: 0; bottom: 0; width: 2px;
+  background: rgba(255,255,255,0.65); border-radius: 1px; pointer-events: none; z-index: 3;
+}
+.vid-trim-times {
+  display: flex; justify-content: space-between;
+  font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.30);
+  letter-spacing: 0.02em; margin-bottom: 10px;
+}
+.vid-overlay-add { display: flex; gap: 6px; margin-bottom: 8px; }
+.vid-overlay-input {
+  flex: 1; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 6px;
+  color: #fff; font-size: 12px; padding: 6px 8px;
+  font-family: inherit; outline: none;
+}
+.vid-overlay-input:focus { border-color: rgba(124,58,237,0.50); }
+.vid-overlay-add-btn {
+  padding: 0 12px; height: 32px; border-radius: 6px;
+  border: 1px solid rgba(124,58,237,0.30); background: rgba(124,58,237,0.10);
+  color: #9d5cf5; font-size: 12px; font-weight: 600;
+  cursor: pointer; white-space: nowrap; transition: all 0.12s;
+}
+.vid-overlay-add-btn:hover { background: rgba(124,58,237,0.22); }
+.vid-overlay-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+.vid-overlay-item {
+  display: flex; align-items: center; gap: 6px; padding: 6px 8px;
+  border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02); font-size: 11px; color: rgba(255,255,255,0.65);
+}
+.vid-overlay-label { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vid-overlay-del {
+  background: none; border: none; color: rgba(255,255,255,0.22);
+  font-size: 13px; cursor: pointer; padding: 0 2px; transition: color 0.12s; line-height: 1;
+}
+.vid-overlay-del:hover { color: #f87171; }
+.vid-export-btn {
+  width: 100%; height: 36px; border-radius: 8px;
+  border: 1px solid rgba(6,182,212,0.30); background: rgba(6,182,212,0.09);
+  color: #22d3ee; font-size: 12px; font-weight: 700;
+  letter-spacing: 0.03em; cursor: pointer; transition: all 0.15s;
+}
+.vid-export-btn:hover { background: rgba(6,182,212,0.20); border-color: rgba(6,182,212,0.55); }
+.vid-export-btn:disabled { opacity: 0.4; pointer-events: none; }
+
+/* ───────────── BRAND PANEL (enhanced) ───────────── */
+.brand-section-label {
+  font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.28);
+  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px;
+}
+.brand-add-row { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+.brand-color-pick {
+  -webkit-appearance: none; appearance: none;
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.12); background: none;
+  padding: 2px; cursor: pointer; flex-shrink: 0;
+}
+.brand-color-pick::-webkit-color-swatch-wrapper { padding: 0; border-radius: 6px; }
+.brand-color-pick::-webkit-color-swatch { border: none; border-radius: 6px; }
+.brand-add-swatch-btn {
+  flex: 1; height: 34px; border-radius: 8px;
+  border: 1px solid rgba(124,58,237,0.25); background: rgba(124,58,237,0.07);
+  color: rgba(157,92,245,0.85); font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all 0.12s;
+}
+.brand-add-swatch-btn:hover { background: rgba(124,58,237,0.18); }
+.brand-swatches-dyn {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; min-height: 36px;
+}
+.brand-swatch-dyn {
+  width: 34px; height: 34px; border-radius: 8px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.10);
+  position: relative; transition: transform 0.15s; flex-shrink: 0;
+}
+.brand-swatch-dyn:hover { transform: scale(1.10); }
+.brand-swatch-del {
+  position: absolute; top: -6px; right: -6px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #1a1a1a; border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.55); font-size: 9px;
+  display: none; align-items: center; justify-content: center;
+  cursor: pointer; line-height: 1;
+}
+.brand-swatch-dyn:hover .brand-swatch-del { display: flex; }
+.brand-logo-upload-row { margin-bottom: 8px; }
+.brand-logo-upload-btn {
+  width: 100%; height: 34px; border-radius: 8px;
+  border: 1px dashed rgba(255,255,255,0.14); background: rgba(255,255,255,0.02);
+  color: rgba(255,255,255,0.38); font-size: 11px; font-weight: 600;
+  cursor: pointer; transition: all 0.12s; letter-spacing: 0.03em; font-family: inherit;
+}
+.brand-logo-upload-btn:hover { border-color: rgba(124,58,237,0.35); color: rgba(157,92,245,0.75); background: rgba(124,58,237,0.05); }
+.brand-logos-grid { display: flex; flex-direction: column; gap: 4px; }
+.brand-logo-item {
+  display: flex; align-items: center; gap: 8px; padding: 7px 10px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02); cursor: grab;
+  transition: all 0.12s; user-select: none;
+}
+.brand-logo-item:hover { border-color: rgba(124,58,237,0.25); background: rgba(124,58,237,0.05); }
+.brand-logo-item img {
+  width: 32px; height: 32px; border-radius: 5px; object-fit: contain;
+  background: rgba(255,255,255,0.04); flex-shrink: 0;
+}
+.brand-logo-item-name {
+  flex: 1; font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.55);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.brand-logo-place-btn {
+  background: none; border: none; color: rgba(255,255,255,0.28);
+  font-size: 13px; cursor: pointer; padding: 2px 4px;
+  transition: color 0.12s; flex-shrink: 0;
+}
+.brand-logo-place-btn:hover { color: #9d5cf5; }
+.brand-logo-del-btn {
+  background: none; border: none; color: rgba(255,255,255,0.18);
+  font-size: 12px; cursor: pointer; padding: 2px 4px;
+  transition: color 0.12s; flex-shrink: 0;
+}
+.brand-logo-del-btn:hover { color: #f87171; }
 </style>
 </head>
 <body>
@@ -1922,6 +2103,52 @@ body.eyedropper-mode * { cursor: crosshair !important; }
         </div>
       </div>
 
+      <!-- VIDEO -->
+      <div class="sb-section" id="sb-video">
+        <div class="sb-section-header">
+          <span class="sb-section-title">Video</span>
+        </div>
+        <div class="vid-drop-zone" id="vid-drop-zone" onclick="document.getElementById('vid-file-input').click()">
+          <div class="vid-dz-text">Drop video or click to upload</div>
+          <div class="vid-dz-sub">mp4 · mov · webm</div>
+        </div>
+        <input type="file" id="vid-file-input" accept="video/mp4,video/quicktime,video/webm" style="display:none" />
+        <!-- Loaded state -->
+        <div id="vid-loaded" style="display:none;">
+          <div class="vid-player-wrap">
+            <video id="vid-el" playsinline></video>
+          </div>
+          <div class="vid-controls">
+            <button class="vid-play-btn" id="vid-play-btn" onclick="toggleVidPlay()">&#9654;</button>
+            <span class="vid-time-lbl" id="vid-time-lbl">0:00 / 0:00</span>
+            <div class="vid-vol-wrap">
+              <span class="vid-vol-icon">&#128266;</span>
+              <input type="range" class="vid-vol-slider" id="vid-vol" min="0" max="1" step="0.05" value="1" oninput="setVidVolume(this.value)" />
+            </div>
+          </div>
+          <!-- Trim timeline -->
+          <div class="vid-timeline-wrap" id="vid-timeline">
+            <div class="vid-timeline-range" id="vid-tl-range"></div>
+            <div class="vid-trim-handle" id="vid-trim-start" title="Trim start"></div>
+            <div class="vid-trim-handle trim-end" id="vid-trim-end" title="Trim end"></div>
+            <div class="vid-playhead" id="vid-playhead"></div>
+          </div>
+          <div class="vid-trim-times">
+            <span id="vid-trim-start-lbl">Start: 0:00</span>
+            <span id="vid-trim-end-lbl">End: 0:00</span>
+          </div>
+          <!-- Text overlays -->
+          <div class="brand-section-label" style="margin-top:4px;">Text Overlays</div>
+          <div class="vid-overlay-add">
+            <input type="text" class="vid-overlay-input" id="vid-overlay-text" placeholder="Overlay text…" />
+            <button class="vid-overlay-add-btn" onclick="addVideoOverlay()">Add</button>
+          </div>
+          <div class="vid-overlay-list" id="vid-overlay-list"></div>
+          <!-- Export -->
+          <button class="vid-export-btn" id="vid-export-btn" onclick="exportVideo()">Export Video</button>
+        </div>
+      </div>
+
       <!-- LAYERS -->
       <div class="sb-section" id="sb-layers">
         <div class="sb-section-header">
@@ -1937,30 +2164,20 @@ body.eyedropper-mode * { cursor: crosshair !important; }
         <div class="sb-section-header">
           <span class="sb-section-title">Brand</span>
         </div>
-        <div class="brand-swatches">
-          <div class="brand-swatch" style="background:#7c3aed;" title="Purple #7c3aed" onclick="copyColor('#7c3aed',this)">
-            <span class="brand-swatch-label">#7c3aed</span>
-          </div>
-          <div class="brand-swatch" style="background:#06b6d4;" title="Cyan #06b6d4" onclick="copyColor('#06b6d4',this)">
-            <span class="brand-swatch-label">#06b6d4</span>
-          </div>
-          <div class="brand-swatch" style="background:#0a0a0a;border-color:rgba(255,255,255,0.18);" title="Dark #0a0a0a" onclick="copyColor('#0a0a0a',this)">
-            <span class="brand-swatch-label">#0a0a0a</span>
-          </div>
-          <div class="brand-swatch" style="background:#9d5cf5;" title="Purple Light #9d5cf5" onclick="copyColor('#9d5cf5',this)">
-            <span class="brand-swatch-label">#9d5cf5</span>
-          </div>
-          <div class="brand-swatch" style="background:#22d3ee;" title="Cyan Light #22d3ee" onclick="copyColor('#22d3ee',this)">
-            <span class="brand-swatch-label">#22d3ee</span>
-          </div>
-          <div class="brand-swatch" style="background:#111111;border-color:rgba(255,255,255,0.14);" title="Card #111111" onclick="copyColor('#111111',this)">
-            <span class="brand-swatch-label">#111111</span>
-          </div>
+        <!-- Color swatches -->
+        <div class="brand-section-label">Color Swatches</div>
+        <div class="brand-add-row">
+          <input type="color" class="brand-color-pick" id="brand-color-pick" value="#7c3aed" />
+          <button class="brand-add-swatch-btn" onclick="addBrandSwatch()">+ Add Swatch</button>
         </div>
-        <div class="brand-logo-row" draggable="true" title="Drag into canvas">
-          <div class="brand-logo-text">FRML<span style="background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">S</span></div>
-          <div class="brand-drag-hint">drag · click to copy</div>
+        <div class="brand-swatches-dyn" id="brand-swatches-dyn"></div>
+        <!-- Brand logos -->
+        <div class="brand-section-label">Brand Logos</div>
+        <div class="brand-logo-upload-row">
+          <button class="brand-logo-upload-btn" onclick="document.getElementById('brand-logo-input').click()">+ Upload Logo</button>
         </div>
+        <input type="file" id="brand-logo-input" accept="image/*" style="display:none" />
+        <div class="brand-logos-grid" id="brand-logos-grid"></div>
       </div>
 
     </div><!-- /sb-scroll -->
@@ -3746,6 +3963,372 @@ document.getElementById('canvas-viewport').addEventListener('mousedown', functio
 //  DRAG-FROM-LIBRARY ONTO CANVAS VIEWPORT
 // ══════════════════════════════════════════════════════════════
 
+// ══════════════════════════════════════════════════════════════
+//  VIDEO SUPPORT
+// ══════════════════════════════════════════════════════════════
+
+var vidDuration = 0;
+var vidTrimStart = 0;
+var vidTrimEnd = 0;
+var vidOverlays = [];
+var vidOverlayCounter = 0;
+var mediaRecorder = null;
+
+function initVideoUpload() {
+  var dz = document.getElementById('vid-drop-zone');
+  var fi = document.getElementById('vid-file-input');
+  fi.addEventListener('change', function() {
+    if (fi.files[0]) loadVideo(fi.files[0]);
+  });
+  dz.addEventListener('dragover', function(e) {
+    e.preventDefault(); e.stopPropagation(); dz.classList.add('drag-active');
+  });
+  dz.addEventListener('dragleave', function() { dz.classList.remove('drag-active'); });
+  dz.addEventListener('drop', function(e) {
+    e.preventDefault(); e.stopPropagation(); dz.classList.remove('drag-active');
+    var f = e.dataTransfer.files[0];
+    if (f && f.type.startsWith('video/')) loadVideo(f);
+  });
+}
+
+function loadVideo(file) {
+  var vid = document.getElementById('vid-el');
+  vid.src = URL.createObjectURL(file);
+  vid.load();
+  vid.onloadedmetadata = function() {
+    vidDuration = vid.duration;
+    vidTrimStart = 0;
+    vidTrimEnd = vidDuration;
+    document.getElementById('vid-loaded').style.display = 'block';
+    document.getElementById('vid-drop-zone').style.display = 'none';
+    updateTrimUI();
+    initTrimHandles();
+    vid.addEventListener('timeupdate', function() {
+      updatePlayhead();
+      updateVidTimeLabel();
+      if (vid.currentTime >= vidTrimEnd) {
+        vid.pause();
+        vid.currentTime = vidTrimStart;
+        document.getElementById('vid-play-btn').textContent = '\u25B6';
+      }
+    });
+  };
+}
+
+function fmtTime(s) {
+  var m = Math.floor(s / 60);
+  var ss = Math.floor(s % 60);
+  return m + ':' + (ss < 10 ? '0' : '') + ss;
+}
+
+function updateVidTimeLabel() {
+  var vid = document.getElementById('vid-el');
+  document.getElementById('vid-time-lbl').textContent = fmtTime(vid.currentTime) + ' / ' + fmtTime(vidDuration);
+}
+
+function toggleVidPlay() {
+  var vid = document.getElementById('vid-el');
+  var btn = document.getElementById('vid-play-btn');
+  if (vid.paused) {
+    if (vid.currentTime >= vidTrimEnd) vid.currentTime = vidTrimStart;
+    vid.play();
+    btn.textContent = '\u23F8';
+  } else {
+    vid.pause();
+    btn.textContent = '\u25B6';
+  }
+}
+
+function setVidVolume(v) {
+  document.getElementById('vid-el').volume = parseFloat(v);
+}
+
+function updatePlayhead() {
+  var vid = document.getElementById('vid-el');
+  var ph = document.getElementById('vid-playhead');
+  if (!vidDuration) return;
+  ph.style.left = ((vid.currentTime / vidDuration) * 100) + '%';
+}
+
+function updateTrimUI() {
+  if (!vidDuration) return;
+  var startPct = (vidTrimStart / vidDuration) * 100;
+  var endPct   = (vidTrimEnd   / vidDuration) * 100;
+  document.getElementById('vid-trim-start').style.left = startPct + '%';
+  document.getElementById('vid-trim-end').style.left   = endPct + '%';
+  var range = document.getElementById('vid-tl-range');
+  range.style.left  = startPct + '%';
+  range.style.width = (endPct - startPct) + '%';
+  document.getElementById('vid-trim-start-lbl').textContent = 'Start: ' + fmtTime(vidTrimStart);
+  document.getElementById('vid-trim-end-lbl').textContent   = 'End: '   + fmtTime(vidTrimEnd);
+}
+
+function initTrimHandles() {
+  ['vid-trim-start', 'vid-trim-end'].forEach(function(id) {
+    var el = document.getElementById(id);
+    var isStart = id === 'vid-trim-start';
+    el.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      var tl = document.getElementById('vid-timeline');
+      function onMove(me) {
+        var rect = tl.getBoundingClientRect();
+        var pct  = Math.max(0, Math.min(1, (me.clientX - rect.left) / rect.width));
+        var t    = pct * vidDuration;
+        if (isStart) { vidTrimStart = Math.min(t, vidTrimEnd - 0.25); }
+        else          { vidTrimEnd   = Math.max(t, vidTrimStart + 0.25); }
+        updateTrimUI();
+      }
+      function onUp() {
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  });
+}
+
+function addVideoOverlay() {
+  var txt = document.getElementById('vid-overlay-text').value.trim();
+  if (!txt) return;
+  var vid = document.getElementById('vid-el');
+  vidOverlays.push({
+    id: ++vidOverlayCounter,
+    text: txt,
+    startTime: Math.max(vidTrimStart, isNaN(vid.currentTime) ? vidTrimStart : vid.currentTime),
+    duration: 3,
+    fontSize: 48,
+    color: '#ffffff'
+  });
+  document.getElementById('vid-overlay-text').value = '';
+  renderOverlayList();
+}
+
+function renderOverlayList() {
+  var list = document.getElementById('vid-overlay-list');
+  if (!vidOverlays.length) { list.innerHTML = ''; return; }
+  list.innerHTML = vidOverlays.map(function(ov) {
+    return '<div class="vid-overlay-item">' +
+      '<span class="vid-overlay-label">' + ov.text +
+      ' <span style="color:rgba(255,255,255,0.28);">@ ' + fmtTime(ov.startTime) + '</span></span>' +
+      '<button class="vid-overlay-del" onclick="removeVideoOverlay(' + ov.id + ')">\u2715</button>' +
+      '</div>';
+  }).join('');
+}
+
+function removeVideoOverlay(id) {
+  vidOverlays = vidOverlays.filter(function(o) { return o.id !== id; });
+  renderOverlayList();
+}
+
+function exportVideo() {
+  var vid = document.getElementById('vid-el');
+  if (!vid.src) return;
+  var w = vid.videoWidth  || 1080;
+  var h = vid.videoHeight || 1920;
+  var cvs = document.createElement('canvas');
+  cvs.width = w; cvs.height = h;
+  var ctx = cvs.getContext('2d');
+
+  var mimeType = 'video/webm;codecs=vp9,opus';
+  if (!MediaRecorder.isTypeSupported(mimeType)) {
+    mimeType = MediaRecorder.isTypeSupported('video/webm') ? 'video/webm' : 'video/webm';
+  }
+
+  var chunks = [];
+  var stream = cvs.captureStream(30);
+  try {
+    if (vid.captureStream) {
+      vid.captureStream().getAudioTracks().forEach(function(t) { stream.addTrack(t); });
+    }
+  } catch(e) {}
+
+  var exportBtn = document.getElementById('vid-export-btn');
+  mediaRecorder = new MediaRecorder(stream, { mimeType: mimeType });
+  mediaRecorder.ondataavailable = function(e) { if (e.data.size > 0) chunks.push(e.data); };
+  mediaRecorder.onstop = function() {
+    var blob = new Blob(chunks, { type: mimeType });
+    saveAs(blob, 'frmls-export.webm');
+    mediaRecorder = null;
+    exportBtn.textContent = 'Export Video';
+    exportBtn.disabled = false;
+  };
+
+  vid.currentTime = vidTrimStart;
+  var rafId;
+  function drawFrame() {
+    ctx.drawImage(vid, 0, 0, w, h);
+    var t = vid.currentTime;
+    vidOverlays.forEach(function(ov) {
+      if (t >= ov.startTime && t < ov.startTime + ov.duration) {
+        ctx.save();
+        ctx.font = 'bold ' + ov.fontSize + 'px Inter,sans-serif';
+        ctx.fillStyle = ov.color;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.shadowColor = 'rgba(0,0,0,0.8)';
+        ctx.shadowBlur = 8;
+        ctx.fillText(ov.text, w / 2, h * 0.85);
+        ctx.restore();
+      }
+    });
+    if (vid.currentTime < vidTrimEnd && !vid.paused) {
+      rafId = requestAnimationFrame(drawFrame);
+    } else {
+      mediaRecorder.stop();
+      cancelAnimationFrame(rafId);
+    }
+  }
+
+  exportBtn.textContent = 'Recording\u2026';
+  exportBtn.disabled = true;
+  mediaRecorder.start(100);
+  vid.play().then(function() {
+    rafId = requestAnimationFrame(drawFrame);
+  }).catch(function(err) {
+    console.error(err);
+    mediaRecorder.stop();
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+//  BRAND PANEL
+// ══════════════════════════════════════════════════════════════
+
+var brandSwatches = ['#7c3aed','#06b6d4','#9d5cf5','#22d3ee','#0a0a0a','#ffffff'];
+var brandLogos = [];
+
+function loadBrand() {
+  try {
+    var raw = localStorage.getItem('frmls-brand-v1');
+    if (raw) {
+      var data = JSON.parse(raw);
+      if (Array.isArray(data.swatches)) brandSwatches = data.swatches;
+      if (Array.isArray(data.logos))   brandLogos   = data.logos;
+    }
+  } catch(e) {}
+}
+
+function saveBrand() {
+  try {
+    localStorage.setItem('frmls-brand-v1', JSON.stringify({ swatches: brandSwatches, logos: brandLogos }));
+  } catch(e) {}
+}
+
+function loadCustomTemplates() {
+  try {
+    var raw = localStorage.getItem('frmls-templates-v1');
+    if (raw) {
+      var data = JSON.parse(raw);
+      if (Array.isArray(data)) customTemplates = data;
+    }
+  } catch(e) {}
+}
+
+function saveCustomTemplates() {
+  try {
+    var slim = customTemplates.map(function(t) {
+      return Object.assign({}, t, { thumbDataUrl: null });
+    });
+    localStorage.setItem('frmls-templates-v1', JSON.stringify(slim));
+  } catch(e) {}
+}
+
+function renderBrandPanel() {
+  renderBrandSwatches();
+  renderBrandLogos();
+  var inp = document.getElementById('brand-logo-input');
+  if (inp && !inp._wired) {
+    inp._wired = true;
+    inp.addEventListener('change', function() {
+      if (inp.files[0]) uploadBrandLogo(inp.files[0]);
+    });
+  }
+}
+
+function renderBrandSwatches() {
+  var wrap = document.getElementById('brand-swatches-dyn');
+  if (!wrap) return;
+  wrap.innerHTML = brandSwatches.map(function(hex, i) {
+    return '<div class="brand-swatch-dyn" style="background:' + hex + ';" title="' + hex + '" ' +
+      'onclick="applyBrandColor(\'' + hex + '\')">' +
+      '<div class="brand-swatch-del" onclick="event.stopPropagation();deleteBrandSwatch(' + i + ')">\u2715</div>' +
+      '</div>';
+  }).join('');
+}
+
+function renderBrandLogos() {
+  var grid = document.getElementById('brand-logos-grid');
+  if (!grid) return;
+  if (!brandLogos.length) {
+    grid.innerHTML = '<div style="font-size:11px;color:rgba(255,255,255,0.20);padding:6px 0;">No logos uploaded yet</div>';
+    return;
+  }
+  grid.innerHTML = brandLogos.map(function(logo, i) {
+    return '<div class="brand-logo-item" draggable="true" ' +
+      'ondragstart="event.dataTransfer.setData(\'application/frmls-brand-logo\',\'' + i + '\')">' +
+      '<img src="' + logo.src + '" alt="' + logo.name + '" />' +
+      '<span class="brand-logo-item-name">' + logo.name + '</span>' +
+      '<button class="brand-logo-place-btn" title="Place on canvas" onclick="placeBrandLogo(' + i + ')">\u2193</button>' +
+      '<button class="brand-logo-del-btn" title="Delete" onclick="deleteBrandLogo(' + i + ')">\u2715</button>' +
+      '</div>';
+  }).join('');
+}
+
+function addBrandSwatch() {
+  var hex = document.getElementById('brand-color-pick').value;
+  if (!brandSwatches.includes(hex)) {
+    brandSwatches.push(hex);
+    saveBrand();
+    renderBrandSwatches();
+  }
+}
+
+function deleteBrandSwatch(i) {
+  brandSwatches.splice(i, 1);
+  saveBrand();
+  renderBrandSwatches();
+}
+
+function applyBrandColor(hex) {
+  if (selectedTxtId) {
+    var obj = textElements.find(function(t) { return t.id === selectedTxtId; });
+    if (obj) {
+      obj.color = hex;
+      applyTxtStyle(obj);
+      var cp = document.getElementById('txt-color');
+      if (cp) cp.value = hex;
+    }
+  } else {
+    navigator.clipboard.writeText(hex).catch(function() {});
+  }
+}
+
+function uploadBrandLogo(file) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    brandLogos.push({ name: file.name, src: e.target.result });
+    try { saveBrand(); } catch(err) {}
+    renderBrandLogos();
+  };
+  reader.readAsDataURL(file);
+}
+
+function placeBrandLogo(i) {
+  if (!activeKey) return;
+  var logo = brandLogos[i];
+  if (!logo) return;
+  var cw = parseInt(canvasContent.style.width)  || 1080;
+  var ch = parseInt(canvasContent.style.height) || 1350;
+  placeImage(logo.src, logo.name, (cw - 300) / 2, (ch - 300) / 2, 300, 300);
+}
+
+function deleteBrandLogo(i) {
+  brandLogos.splice(i, 1);
+  saveBrand();
+  renderBrandLogos();
+}
+
 function initCanvasDrop() {
   const vp = document.getElementById('canvas-viewport');
 
@@ -3757,6 +4340,21 @@ function initCanvasDrop() {
   vp.addEventListener('drop', function(e) {
     e.preventDefault();
     if (!activeKey) return;
+
+    // Brand logo drop takes priority
+    var logoIdxRaw = e.dataTransfer.getData('application/frmls-brand-logo');
+    if (logoIdxRaw !== '') {
+      var logoIdx = parseInt(logoIdxRaw);
+      if (!isNaN(logoIdx) && brandLogos[logoIdx]) {
+        var logo = brandLogos[logoIdx];
+        var cc2 = canvasContent.getBoundingClientRect();
+        var es2 = cc2.width / (parseInt(canvasContent.style.width) || 1080);
+        var cx2 = (e.clientX - cc2.left) / es2;
+        var cy2 = (e.clientY - cc2.top)  / es2;
+        placeImage(logo.src, logo.name, cx2 - 150, cy2 - 150, 300, 300);
+        return;
+      }
+    }
 
     const idx = parseInt(e.dataTransfer.getData('text/plain'));
     if (isNaN(idx) || !uploadedImages[idx]) return;
@@ -4445,7 +5043,7 @@ function saveCurrentAsTemplate() {
     thumbDataUrl: null
   };
 
-  if (!el) { customTemplates.push(tpl); renderTemplateGrid(); return; }
+  if (!el) { customTemplates.push(tpl); saveCustomTemplates(); renderTemplateGrid(); return; }
 
   // Capture thumbnail
   var prevTransform   = stage.style.transform;
@@ -4465,12 +5063,14 @@ function saveCurrentAsTemplate() {
     applyFrame();
     tpl.thumbDataUrl = canvas.toDataURL('image/jpeg', 0.80);
     customTemplates.push(tpl);
+    saveCustomTemplates();
     renderTemplateGrid();
   }).catch(function() {
     stage.style.transform   = prevTransform;
     canvasContent.style.transform = prevContentTf;
     applyFrame();
     customTemplates.push(tpl);
+    saveCustomTemplates();
     renderTemplateGrid();
   });
 }
@@ -4478,6 +5078,7 @@ function saveCurrentAsTemplate() {
 // ── Delete custom template ──
 function deleteCustomTemplate(id) {
   customTemplates = customTemplates.filter(function(t) { return t.id !== id; });
+  saveCustomTemplates();
   renderTemplateGrid();
 }
 
@@ -4554,10 +5155,14 @@ window.addEventListener('resize', function() {
 
 // ── Init ──
 document.addEventListener('DOMContentLoaded', function() {
+  loadBrand();
+  loadCustomTemplates();
   renderTemplateGrid();
   renderAssetList();
+  renderBrandPanel();
   initDropZone();
   initCanvasDrop();
+  initVideoUpload();
   selectCanvas('grid');
 });
 </script>

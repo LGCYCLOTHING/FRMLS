@@ -2702,1464 +2702,6 @@ html, body {
 </style>
 </head>
 <body>
-
-<!-- ======================================================================= -->
-<!-- ===== WHOP DASHBOARD BANNER =========================================== -->
-<!-- CAPTURE AT 1500×500px USING CHROME DEV TOOLS                          -->
-<!-- Set device viewport to 1500×500, DPR 1, then capture full-size        -->
-<!-- screenshot of #whop-banner                                             -->
-<!-- ======================================================================= -->
-<section class="whop-banner-section">
-  <div class="whop-banner-wrap" id="whop-banner" data-capture="whop-banner">
-
-    <!-- Dot-grid texture -->
-    <div class="wb-grid"></div>
-    <!-- Noise micro-texture -->
-    <div class="wb-noise"></div>
-    <!-- Vivid orbs -->
-    <div class="wb-orb-left"></div>
-    <div class="wb-orb-right"></div>
-    <!-- Edge vignette to frame composition -->
-    <div class="wb-vignette"></div>
-    <!-- Center section divider -->
-    <div class="wb-center-divider"></div>
-
-    <!-- Scattered particle dots as inline SVG -->
-    <svg class="wb-particles" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="188" cy="66"  r="2"   fill="white" opacity="0.14"/>
-      <circle cx="308" cy="428" r="1.5" fill="white" opacity="0.10"/>
-      <circle cx="582" cy="42"  r="1.5" fill="white" opacity="0.12"/>
-      <circle cx="412" cy="462" r="2"   fill="white" opacity="0.10"/>
-      <circle cx="94"  cy="314" r="1.5" fill="white" opacity="0.10"/>
-      <circle cx="220" cy="388" r="1.5" fill="white" opacity="0.08"/>
-      <circle cx="472" cy="52"  r="2"   fill="white" opacity="0.10"/>
-      <circle cx="1185" cy="74"  r="2"   fill="white" opacity="0.12"/>
-      <circle cx="1342" cy="382" r="1.5" fill="white" opacity="0.10"/>
-      <circle cx="1422" cy="148" r="2"   fill="white" opacity="0.14"/>
-      <circle cx="1108" cy="454" r="1.5" fill="white" opacity="0.10"/>
-      <circle cx="984"  cy="36"  r="1.5" fill="white" opacity="0.12"/>
-      <circle cx="1268" cy="466" r="1.5" fill="white" opacity="0.08"/>
-      <circle cx="1450" cy="310" r="2"   fill="white" opacity="0.10"/>
-    </svg>
-
-    <!-- ── LEFT: logo · tagline · gradient line · url ── -->
-    <div class="wb-left">
-      <div class="wb-logo-img">FRML<span class="logo-s">S</span></div>
-      <div class="wb-tagline">your store. built right.</div>
-      <hr class="wb-divline">
-      <div class="wb-url">frmls.com</div>
-    </div>
-
-    <!-- ── RIGHT: perspective-tilted browser window mockup ── -->
-    <div class="wb-right">
-      <div class="wb-browser-glow"></div>
-      <div class="wb-browser">
-        <!-- Chrome title bar -->
-        <div class="wb-chrome">
-          <span class="wb-dot" style="background:#ff5f57"></span>
-          <span class="wb-dot" style="background:#febc2e"></span>
-          <span class="wb-dot" style="background:#28c840"></span>
-          <div class="wb-url-bar">frmls.com</div>
-        </div>
-        <!-- Dashboard interior -->
-        <div class="wb-content">
-          <div class="wb-content-header">
-            <span class="wb-content-logo">FRML<span class="logo-s">S</span></span>
-          </div>
-          <div class="wb-box-grid">
-            <div class="wb-box wb-box-purple">
-              <div class="wb-box-title">Brand Kit</div>
-              <div class="wb-box-desc">colors, fonts, and identity</div>
-            </div>
-            <div class="wb-box wb-box-cyan">
-              <div class="wb-box-title">Prompt Pack</div>
-              <div class="wb-box-desc">prompts to build your store</div>
-            </div>
-            <div class="wb-box wb-box-blue">
-              <div class="wb-box-title">Designer Prompts</div>
-              <div class="wb-box-desc">visual layout guidance</div>
-            </div>
-            <div class="wb-box wb-box-orange">
-              <div class="wb-box-title">Store Inspiration</div>
-              <div class="wb-box-desc">reference stores by niche</div>
-            </div>
-            <div class="wb-box wb-box-green">
-              <div class="wb-box-title">Launch Checklist</div>
-              <div class="wb-box-desc">go live step by step</div>
-            </div>
-            <div class="wb-box wb-box-violet">
-              <div class="wb-box-title">Store Roadmap</div>
-              <div class="wb-box-desc">your full build plan</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-  </div>
-</section>
-
-
-<!-- ======================================================================= -->
-<!-- ===== CUSTOMER JOURNEY CAROUSEL — 4 slides, 1080×1350px (4:5 Instagram) ===== -->
-<!-- ===== Scales to viewport on mobile · heavy weights for screenshot quality ===== -->
-<!-- ======================================================================= -->
-
-<style>
-/* ─────────────────────────────────────────
-   SCAFFOLD
-───────────────────────────────────────── */
-.cj-section {
-  background: #0a0a0a;
-  padding: 48px 0 64px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
-}
-.cj-slide-outer { overflow: hidden; flex-shrink: 0; }
-.cj-slide {
-  width: 1080px;
-  height: 1350px;
-  position: relative;
-  overflow: hidden;
-  background: #0a0a0a;
-  transform-origin: top left;
-}
-
-/* Subtle dot-grid texture on every slide */
-.cj-slide::after {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px);
-  background-size: 36px 36px;
-  pointer-events: none; z-index: 1;
-}
-
-/* Ambient orbs */
-.cj-orb-purple {
-  position: absolute; top: -240px; left: -220px;
-  width: 740px; height: 740px;
-  background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 65%);
-  pointer-events: none; z-index: 0;
-}
-.cj-orb-cyan {
-  position: absolute; bottom: -240px; right: -220px;
-  width: 640px; height: 640px;
-  background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 65%);
-  pointer-events: none; z-index: 0;
-}
-
-/* ─────────────────────────────────────────
-   FRMLS LOGO — bottom center
-───────────────────────────────────────── */
-.cj-brand {
-  position: absolute;
-  bottom: 24px; left: 50%;
-  transform: translateX(-50%);
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 26px; font-weight: 900;
-  letter-spacing: 0.04em; color: #ffffff;
-  text-transform: uppercase; z-index: 10; white-space: nowrap;
-}
-.cj-brand-s {
-  background: linear-gradient(90deg, #7c3aed, #06b6d4);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-
-/* ─────────────────────────────────────────
-   SHARED UTILITIES
-───────────────────────────────────────── */
-.cj-grad {
-  background: linear-gradient(90deg, #7c3aed, #06b6d4);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.cj-badge {
-  display: inline-block; padding: 11px 30px;
-  font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500;
-  color: rgba(255,255,255,0.65);
-  background-image: linear-gradient(#0a0a0a, #0a0a0a), linear-gradient(90deg, #7c3aed, #06b6d4);
-  background-origin: border-box; background-clip: padding-box, border-box;
-  border: 2px solid transparent; border-radius: 100px; letter-spacing: 0.06em;
-}
-
-/* Gradient-bordered image frame — 2px so it survives compression */
-.cj-img-frame {
-  border-radius: 12px; padding: 2px;
-  background: linear-gradient(135deg, #7c3aed, #06b6d4);
-  flex-shrink: 0;
-}
-.cj-img-frame img {
-  display: block; width: 100%; border-radius: 10px;
-  object-fit: cover; background: #111;
-}
-
-/* ─────────────────────────────────────────
-   SLIDE 1 — HOOK
-───────────────────────────────────────── */
-.cj-s1-inner {
-  position: absolute; inset: 0; z-index: 5;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 72px 72px 96px; gap: 40px;
-}
-.cj-s1-headline {
-  font-family: 'Inter', sans-serif; font-size: 54px; font-weight: 900;
-  line-height: 1.15; color: #ffffff; letter-spacing: -0.03em; max-width: 85%;
-}
-.cj-s1-sub {
-  font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 600;
-  color: #999999; letter-spacing: 0.01em;
-}
-
-/* Metric chips row — floating bad stats */
-.cj-metrics {
-  display: flex; gap: 20px; width: 80%;
-}
-.cj-metric-chip {
-  flex: 1; background: #111111;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px; padding: 20px 18px;
-  text-align: center;
-}
-.cj-metric-chip-val {
-  font-family: 'Inter', sans-serif; font-size: 36px; font-weight: 900;
-  color: #ef4444; line-height: 1; letter-spacing: -0.02em;
-}
-.cj-metric-chip-label {
-  font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500;
-  color: #555555; margin-top: 6px; letter-spacing: 0.04em;
-}
-
-/* Browser mockup */
-.cj-browser-wrap { position: relative; width: 80%; }
-.cj-browser-glow {
-  position: absolute; inset: -50px;
-  background: radial-gradient(ellipse at center, rgba(124,58,237,0.2) 0%, transparent 65%);
-  pointer-events: none; z-index: 0; border-radius: 50%;
-}
-.cj-browser {
-  position: relative; z-index: 1; background: #111111;
-  border-radius: 14px; overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-.cj-browser-bar {
-  background: #1c1c1c; padding: 14px 18px;
-  display: flex; align-items: center; gap: 8px;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-}
-.cj-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
-.cj-url-bar {
-  flex: 1; text-align: center; font-family: 'DM Mono', monospace; font-size: 13px;
-  color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.06);
-  border-radius: 5px; padding: 5px 0; max-width: 200px; margin: 0 auto;
-}
-.cj-browser-body { padding: 20px 22px 22px; }
-.cj-db-hdr {
-  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 900;
-  letter-spacing: 0.12em; color: #fff; text-transform: uppercase; margin-bottom: 16px;
-}
-.cj-db-hdr-s {
-  background: linear-gradient(90deg, #7c3aed, #06b6d4);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.cj-db-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
-.cj-db-box {
-  background: rgba(255,255,255,0.04); border-radius: 8px; padding: 14px 10px;
-  font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
-  color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.06);
-}
-.cj-db-box-purple { border-left: 3px solid #7c3aed; }
-.cj-db-box-cyan   { border-left: 3px solid #06b6d4; }
-.cj-db-box-blue   { border-left: 3px solid #3b82f6; }
-.cj-db-box-orange { border-left: 3px solid #f97316; }
-.cj-db-box-green  { border-left: 3px solid #22c55e; }
-.cj-db-box-violet { border-left: 3px solid #a855f7; }
-
-/* ─────────────────────────────────────────
-   SLIDES 2 & 3 — TOP-ALIGNED
-───────────────────────────────────────── */
-.cj-top-inner {
-  position: absolute; inset: 0; z-index: 5;
-  display: flex; flex-direction: column;
-  align-items: center; text-align: center;
-  padding: 72px 72px 96px;
-}
-.cj-top-headline {
-  font-family: 'Inter', sans-serif; font-size: 54px; font-weight: 900;
-  line-height: 1.15; color: #ffffff; letter-spacing: -0.03em;
-  margin-top: 20px; max-width: 85%;
-}
-.cj-top-sub {
-  margin-top: 28px; font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 600;
-  color: #aaaaaa; line-height: 1.65; max-width: 85%;
-}
-
-/* Stat card — Slide 2 */
-.cj-stat-card {
-  width: 62%; margin-top: 44px; background: #111111; border-radius: 18px;
-  padding: 52px 48px 48px; display: flex; flex-direction: column;
-  align-items: center; text-align: center;
-  background-image: linear-gradient(#111111, #111111), linear-gradient(135deg, #7c3aed, #06b6d4);
-  background-origin: border-box; background-clip: padding-box, border-box;
-  border: 2px solid transparent;
-}
-.cj-stat-num {
-  font-family: 'Inter', sans-serif; font-size: 130px; font-weight: 900; line-height: 1;
-  background: linear-gradient(135deg, #7c3aed, #06b6d4);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.cj-stat-unit {
-  font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 700;
-  color: #ffffff; margin-top: 12px; letter-spacing: 0.04em;
-}
-.cj-stat-label {
-  font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 500;
-  color: #666666; margin-top: 8px;
-}
-
-/* Store preview row below stat card — Slide 2 */
-.cj-store-row {
-  width: 85%; margin-top: 40px; display: flex; gap: 14px;
-}
-.cj-store-row .cj-img-frame { flex: 1; }
-.cj-store-row .cj-img-frame img { height: 160px; filter: saturate(0.5) brightness(0.7); }
-.cj-store-caption {
-  margin-top: 12px; font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500;
-  color: #444444; letter-spacing: 0.05em;
-}
-
-/* Before/After cards — Slide 3 */
-.cj-ba-wrap { width: 85%; margin-top: 44px; display: flex; gap: 16px; align-items: stretch; }
-.cj-ba-col { flex: 1; display: flex; flex-direction: column; }
-.cj-ba-label {
-  font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500;
-  letter-spacing: 0.08em; margin-bottom: 10px; text-align: center;
-}
-.cj-ba-label-bad { color: #444444; }
-.cj-ba-card {
-  flex: 1; background: #111111; border-radius: 12px; overflow: hidden;
-  font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 600;
-  line-height: 1.6; text-align: left;
-}
-.cj-ba-card-img { width: 100%; height: 170px; object-fit: cover; display: block; }
-.cj-ba-card-text { padding: 22px 20px; }
-.cj-ba-card-bad {
-  border: 1px solid rgba(255,255,255,0.04);
-  border-left: 3px solid rgba(239,68,68,0.5);
-  color: #606060;
-}
-.cj-ba-card-good {
-  background-image: linear-gradient(#111111, #111111), linear-gradient(135deg, #7c3aed, #06b6d4);
-  background-origin: border-box; background-clip: padding-box, border-box;
-  border: 2px solid transparent; color: #eeeeee;
-}
-
-/* ─────────────────────────────────────────
-   SLIDE 4 — CTA
-───────────────────────────────────────── */
-.cj-s4-inner {
-  position: absolute; inset: 0; z-index: 5;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 72px 72px 96px;
-}
-.cj-s4-wordmark {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 108px; font-weight: 900; line-height: 1; letter-spacing: -0.03em;
-  background: linear-gradient(90deg, #7c3aed, #06b6d4);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  margin-bottom: 36px;
-}
-.cj-s4-feat-img {
-  width: 76%; margin-bottom: 40px;
-}
-.cj-s4-feat-img .cj-img-frame img { height: 240px; }
-.cj-s4-headline {
-  font-family: 'Inter', sans-serif; font-size: 44px; font-weight: 900;
-  line-height: 1.15; letter-spacing: -0.025em; max-width: 85%;
-}
-.cj-s4-build {
-  margin-top: 24px; font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 600;
-  color: #cccccc; line-height: 1.5;
-}
-.cj-s4-site {
-  font-family: 'Inter', sans-serif; font-size: 36px; font-weight: 800;
-  line-height: 1.3; letter-spacing: -0.02em; margin-top: 4px;
-}
-.cj-s4-price {
-  margin-top: 18px; font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 600;
-  color: #555555; letter-spacing: 0.01em;
-}
-</style>
-
-<section class="cj-section">
-
-  <!-- ════════════════════════════════════
-       SLIDE 1 — Hook
-  ════════════════════════════════════ -->
-  <div class="cj-slide-outer">
-    <div class="cj-slide" id="cj-slide-1">
-      <div class="cj-orb-purple"></div>
-      <div class="cj-orb-cyan"></div>
-
-      <div class="cj-s1-inner">
-        <h1 class="cj-s1-headline">your store is <span class="cj-grad">losing</span> customers.</h1>
-
-        <!-- Bad metric chips -->
-        <div class="cj-metrics">
-          <div class="cj-metric-chip">
-            <div class="cj-metric-chip-val">78%</div>
-            <div class="cj-metric-chip-label">bounce rate</div>
-          </div>
-          <div class="cj-metric-chip">
-            <div class="cj-metric-chip-val">0:07</div>
-            <div class="cj-metric-chip-label">avg. session</div>
-          </div>
-          <div class="cj-metric-chip">
-            <div class="cj-metric-chip-val">1.2%</div>
-            <div class="cj-metric-chip-label">conversion</div>
-          </div>
-        </div>
-
-        <!-- Browser mockup -->
-        <div class="cj-browser-wrap">
-          <div class="cj-browser-glow"></div>
-          <div class="cj-browser">
-            <div class="cj-browser-bar">
-              <span class="cj-dot" style="background:#ff5f57"></span>
-              <span class="cj-dot" style="background:#febc2e"></span>
-              <span class="cj-dot" style="background:#28c840"></span>
-              <div class="cj-url-bar">frmls.com</div>
-            </div>
-            <div class="cj-browser-body">
-              <div class="cj-db-hdr">FRML<span class="cj-db-hdr-s">S</span></div>
-              <div class="cj-db-grid">
-                <div class="cj-db-box cj-db-box-purple">Brand Kit</div>
-                <div class="cj-db-box cj-db-box-cyan">Prompt Pack</div>
-                <div class="cj-db-box cj-db-box-blue">Designer Prompts</div>
-                <div class="cj-db-box cj-db-box-orange">Store Inspiration</div>
-                <div class="cj-db-box cj-db-box-green">Launch Checklist</div>
-                <div class="cj-db-box cj-db-box-violet">Store Roadmap</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <p class="cj-s1-sub">here's why →</p>
-      </div>
-
-      <span class="cj-brand">FRML<span class="cj-brand-s">S</span></span>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════
-       SLIDE 2 — The Problem
-  ════════════════════════════════════ -->
-  <div class="cj-slide-outer">
-    <div class="cj-slide" id="cj-slide-2">
-      <div class="cj-orb-purple"></div>
-      <div class="cj-orb-cyan"></div>
-
-      <div class="cj-top-inner">
-        <span class="cj-badge">the problem</span>
-        <h2 class="cj-top-headline">first impressions take 3 seconds.</h2>
-
-        <!-- Stat card -->
-        <div class="cj-stat-card">
-          <div class="cj-stat-num">3</div>
-          <div class="cj-stat-unit">seconds</div>
-          <div class="cj-stat-label">to make or break a first impression</div>
-        </div>
-
-        <!-- Row of 3 generic-looking store images -->
-        <div class="cj-store-row">
-          <div class="cj-img-frame">
-            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&q=80&auto=format&fit=crop" alt="store" />
-          </div>
-          <div class="cj-img-frame">
-            <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=300&q=80&auto=format&fit=crop" alt="store" />
-          </div>
-          <div class="cj-img-frame">
-            <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=300&q=80&auto=format&fit=crop" alt="store" />
-          </div>
-        </div>
-        <p class="cj-store-caption">every store looks the same</p>
-
-        <p class="cj-top-sub">if it doesn't feel like a brand immediately — they're gone.</p>
-      </div>
-
-      <span class="cj-brand">FRML<span class="cj-brand-s">S</span></span>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════
-       SLIDE 3 — The Reason
-  ════════════════════════════════════ -->
-  <div class="cj-slide-outer">
-    <div class="cj-slide" id="cj-slide-3">
-      <div class="cj-orb-purple"></div>
-      <div class="cj-orb-cyan"></div>
-
-      <div class="cj-top-inner">
-        <span class="cj-badge">the reason</span>
-        <h2 class="cj-top-headline">most stores feel like templates.</h2>
-
-        <!-- Before / After cards with images -->
-        <div class="cj-ba-wrap">
-          <div class="cj-ba-col">
-            <div class="cj-ba-label cj-ba-label-bad">most stores</div>
-            <div class="cj-ba-card cj-ba-card-bad">
-              <img class="cj-ba-card-img" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&q=80&auto=format&fit=crop" alt="" style="filter:saturate(0.2) brightness(0.55)" />
-              <div class="cj-ba-card-text">welcome to our store. shop our latest collection.</div>
-            </div>
-          </div>
-          <div class="cj-ba-col">
-            <div class="cj-ba-label"><span class="cj-grad">yours</span></div>
-            <div class="cj-ba-card cj-ba-card-good">
-              <img class="cj-ba-card-img" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80&auto=format&fit=crop" alt="" />
-              <div class="cj-ba-card-text">built for the ones who move quiet.</div>
-            </div>
-          </div>
-        </div>
-
-        <p class="cj-top-sub">no brand identity. no direction. just a theme with products dropped in.</p>
-      </div>
-
-      <span class="cj-brand">FRML<span class="cj-brand-s">S</span></span>
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════
-       SLIDE 4 — CTA
-  ════════════════════════════════════ -->
-  <div class="cj-slide-outer">
-    <div class="cj-slide cj-s4" id="cj-slide-4">
-      <div class="cj-orb-purple"></div>
-      <div class="cj-orb-cyan"></div>
-
-      <div class="cj-s4-inner">
-        <div class="cj-s4-wordmark">FRMLS</div>
-
-        <!-- Featured image — store on laptop with gradient border -->
-        <div class="cj-s4-feat-img">
-          <div class="cj-img-frame">
-            <img src="https://images.unsplash.com/photo-1503602642458-232111445657?w=800&q=80&auto=format&fit=crop" alt="store" />
-          </div>
-        </div>
-
-        <p class="cj-s4-headline cj-grad">your store should feel like something.</p>
-        <p class="cj-s4-build">build it right at</p>
-        <p class="cj-s4-site cj-grad">frmls.com</p>
-        <p class="cj-s4-price">$37 one time</p>
-      </div>
-
-      <span class="cj-brand">FRML<span class="cj-brand-s">S</span></span>
-    </div>
-  </div>
-
-</section>
-
-<script>
-(function () {
-  function scaleCJSlides() {
-    var vw = window.innerWidth;
-    var scale = vw < 1080 ? vw / 1080 : 1;
-    document.querySelectorAll('.cj-slide-outer').forEach(function (outer) {
-      var slide = outer.querySelector('.cj-slide');
-      if (scale < 1) {
-        slide.style.transform = 'scale(' + scale + ')';
-        outer.style.width  = vw + 'px';
-        outer.style.height = Math.round(1350 * scale) + 'px';
-      } else {
-        slide.style.transform = '';
-        outer.style.width  = '1080px';
-        outer.style.height = '1350px';
-      }
-    });
-  }
-  scaleCJSlides();
-  window.addEventListener('resize', scaleCJSlides);
-})();
-</script>
-
-
-<!-- JSZip for bundled export -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-
-<!-- =====================================================
-     INSTAGRAM CAROUSEL SECTION — 5 slides 1080x1080
-     ===================================================== -->
-<style>
-/* ---- carousel wrapper ---- */
-#ig-carousel-section {
-  padding: 80px 0 100px;
-  background: #0a0a0a;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
-}
-#ig-carousel-section h2 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 800;
-  font-size: 28px;
-  color: #ffffff;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.55;
-}
-/* export button */
-#ig-export-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 32px;
-  border-radius: 8px;
-  border: 1.5px solid rgba(255,255,255,0.18);
-  background: linear-gradient(135deg,rgba(124,58,237,0.18),rgba(6,182,212,0.12));
-  color: #fff;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 15px;
-  letter-spacing: 0.06em;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-}
-#ig-export-btn:hover {
-  background: linear-gradient(135deg,rgba(124,58,237,0.35),rgba(6,182,212,0.25));
-  border-color: rgba(255,255,255,0.32);
-}
-
-/* ---- slide scaler ---- */
-.ig-slide-outer {
-  width: 1080px;
-  height: 1080px;
-  overflow: hidden;
-  position: relative;
-}
-.ig-slide {
-  width: 1080px;
-  height: 1080px;
-  position: relative;
-  overflow: hidden;
-  background: #0a0a0a;
-  transform-origin: top left;
-}
-
-/* ---- ambient blurred backdrop ---- */
-.ig-ambient, .ig-ambient-l, .ig-ambient-r {
-  position: absolute;
-  background-size: cover;
-  background-position: center;
-  filter: blur(68px) brightness(0.85) saturate(1.15);
-  z-index: 0;
-}
-/* full-slide ambient */
-.ig-ambient {
-  top: -60px; left: -60px; right: -60px; bottom: -60px;
-}
-/* split halves */
-.ig-ambient-l {
-  top: -60px; left: -60px; bottom: -60px;
-  width: calc(50% + 60px);
-}
-.ig-ambient-r {
-  top: -60px; right: -60px; bottom: -60px;
-  width: calc(50% + 60px);
-}
-
-/* ---- shared slide internals ---- */
-.ig-bg {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  z-index: 1;
-}
-.ig-bg img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  display: block;
-  image-rendering: high-quality;
-}
-/* split layout (slide 1) */
-.ig-bg.split img {
-  width: 50%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  image-rendering: high-quality;
-}
-.ig-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-}
-/* text-zone only gradient (default for image slides) */
-.ig-overlay.grad-text {
-  background: linear-gradient(to bottom, transparent 38%, rgba(0,0,0,0.68) 100%);
-}
-/* gradient overlay variant (slide 5) */
-.ig-overlay.gradient {
-  background: linear-gradient(
-    to bottom,
-    transparent 35%,
-    rgba(0,0,0,0.65) 100%
-  );
-}
-
-/* ---- text block ---- */
-.ig-text {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 35%;
-  padding: 0 64px 72px 64px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 16px;
-  text-align: left;
-  overflow: hidden;
-}
-.ig-headline {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 62px;
-  line-height: 1.1;
-  color: #ffffff;
-  letter-spacing: -0.02em;
-  text-transform: lowercase;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
-  text-shadow: 0 2px 24px rgba(0,0,0,0.85), 0 1px 6px rgba(0,0,0,0.6);
-}
-.ig-subtext {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  font-size: 30px;
-  line-height: 1.35;
-  color: rgba(255,255,255,0.72);
-  letter-spacing: 0.01em;
-}
-/* accent underline bar */
-.ig-accent-bar {
-  display: block;
-  width: 72px;
-  height: 5px;
-  border-radius: 3px;
-  margin-bottom: 8px;
-  flex-shrink: 0;
-}
-
-/* ---- logo watermark (text mark) ---- */
-.ig-logo {
-  position: absolute;
-  bottom: 32px;
-  right: 44px;
-  pointer-events: none;
-  z-index: 20;
-  font-family: 'Inter', sans-serif;
-  font-weight: 900;
-  font-size: 20px;
-  letter-spacing: 0.04em;
-  color: rgba(255,255,255,0.50);
-  text-transform: uppercase;
-}
-.ig-logo .logo-s {
-  background: linear-gradient(90deg, #7c3aed, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ---- slide nav dots ---- */
-.ig-nav {
-  display: flex;
-  gap: 10px;
-  margin-top: -16px;
-}
-.ig-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.22);
-  transition: background 0.2s;
-}
-.ig-dot.active { background: #ffffff; }
-</style>
-
-<!-- Export Button -->
-<section id="ig-carousel-section">
-  <h2>Instagram Carousel</h2>
-  <button id="ig-export-btn">&#8681; Export All 5 Slides as ZIP</button>
-
-  <!-- SLIDE 1 — Split layout Porsche + GT3RS -->
-  <div class="ig-slide-outer" id="ig-outer-1">
-    <div class="ig-slide" id="ig-slide-1">
-      <div class="ig-ambient-l" style="background-image:url('Porsche.jpg');"></div>
-      <div class="ig-ambient-r" style="background-image:url('download (3).jpg');"></div>
-      <div class="ig-bg split">
-        <img src="Porsche.jpg" alt="Beige Porsche" />
-        <img src="download (3).jpg" alt="Green GT3RS" />
-      </div>
-      <div class="ig-overlay grad-text"></div>
-      <div class="ig-text">
-        <span class="ig-accent-bar" style="background:linear-gradient(90deg,#7c3aed,#06b6d4);"></span>
-        <div class="ig-headline">"the best brands don't explain themselves. you just feel it."</div>
-      </div>
-      <div class="ig-logo">FRML<span class="logo-s">S</span></div>
-    </div>
-  </div>
-
-  <!-- SLIDE 2 — Lamborghini Huracán -->
-  <div class="ig-slide-outer" id="ig-outer-2">
-    <div class="ig-slide" id="ig-slide-2">
-      <div class="ig-ambient" style="background-image:url('Black Beast on the Track – Lamborghini Huracán in Full Speed Mode.jpg');"></div>
-      <div class="ig-bg">
-        <img src="Black Beast on the Track – Lamborghini Huracán in Full Speed Mode.jpg" alt="Lamborghini Huracán" />
-      </div>
-      <div class="ig-overlay grad-text"></div>
-      <div class="ig-text">
-        <span class="ig-accent-bar" style="background:#06b6d4;"></span>
-        <div class="ig-headline">"same industry. completely different feeling. that's brand identity."</div>
-      </div>
-      <div class="ig-logo">FRML<span class="logo-s">S</span></div>
-    </div>
-  </div>
-
-  <!-- SLIDE 3 — Premium Apple Products -->
-  <div class="ig-slide-outer" id="ig-outer-3">
-    <div class="ig-slide" id="ig-slide-3">
-      <div class="ig-ambient" style="background-image:url('Premium Apple Products.jpg');"></div>
-      <div class="ig-bg">
-        <img src="Premium Apple Products.jpg" alt="Premium Apple Products" />
-      </div>
-      <div class="ig-overlay grad-text"></div>
-      <div class="ig-text">
-        <span class="ig-accent-bar" style="background:#c9a96e;"></span>
-        <div class="ig-headline">"the product is never really the product. the feeling is."</div>
-      </div>
-      <div class="ig-logo">FRML<span class="logo-s">S</span></div>
-    </div>
-  </div>
-
-  <!-- SLIDE 4 — Minimalist Interior -->
-  <div class="ig-slide-outer" id="ig-outer-4">
-    <div class="ig-slide" id="ig-slide-4">
-      <div class="ig-ambient" style="background-image:url('Minimalist Modern Interior Design Ideas_ Get Inspired.jpg');"></div>
-      <div class="ig-bg">
-        <img src="Minimalist Modern Interior Design Ideas_ Get Inspired.jpg" alt="Minimalist Interior" />
-      </div>
-      <div class="ig-overlay grad-text"></div>
-      <div class="ig-text">
-        <span class="ig-accent-bar" style="background:#c4a882;"></span>
-        <div class="ig-headline">"intentional design is felt. not explained."</div>
-      </div>
-      <div class="ig-logo">FRML<span class="logo-s">S</span></div>
-    </div>
-  </div>
-
-  <!-- SLIDE 5 — Brown Porsche with coffee -->
-  <div class="ig-slide-outer" id="ig-outer-5">
-    <div class="ig-slide" id="ig-slide-5">
-      <div class="ig-ambient" style="background-image:url('download (4).jpg');"></div>
-      <div class="ig-bg">
-        <img src="download (4).jpg" alt="Porsche with coffee" />
-      </div>
-      <div class="ig-overlay gradient"></div>
-      <div class="ig-text">
-        <span class="ig-accent-bar" style="background:#d4a853;"></span>
-        <div class="ig-headline">"you already know what your brand should feel like."</div>
-      </div>
-      <div class="ig-logo">FRML<span class="logo-s">S</span></div>
-    </div>
-  </div>
-
-  <!-- nav dots (visual only) -->
-  <div class="ig-nav">
-    <div class="ig-dot active"></div>
-    <div class="ig-dot"></div>
-    <div class="ig-dot"></div>
-    <div class="ig-dot"></div>
-    <div class="ig-dot"></div>
-  </div>
-</section>
-
-<script>
-/* ---- scale IG slides to viewport width ---- */
-(function(){
-  function scaleIGSlides(){
-    var vw = Math.min(window.innerWidth, 1080);
-    var scale = vw / 1080;
-    for(var i=1;i<=5;i++){
-      var outer = document.getElementById('ig-outer-'+i);
-      var slide = document.getElementById('ig-slide-'+i);
-      if(!outer||!slide) continue;
-      if(scale < 1){
-        slide.style.transform = 'scale('+scale+')';
-        outer.style.width  = vw + 'px';
-        outer.style.height = Math.round(1080*scale) + 'px';
-      } else {
-        slide.style.transform = '';
-        outer.style.width  = '1080px';
-        outer.style.height = '1080px';
-      }
-    }
-  }
-  scaleIGSlides();
-  window.addEventListener('resize', scaleIGSlides);
-})();
-
-/* ---- export: capture all slides → single ZIP download ---- */
-document.getElementById('ig-export-btn').addEventListener('click', async function(){
-  var btn = this;
-  btn.textContent = 'Rendering slides…';
-  btn.disabled = true;
-
-  var names = [
-    'frmls-ig-1-brands.png',
-    'frmls-ig-2-identity.png',
-    'frmls-ig-3-feeling.png',
-    'frmls-ig-4-design.png',
-    'frmls-ig-5-brand.png'
-  ];
-
-  /* save current outer sizes so we can restore them */
-  var savedOuterW = [], savedOuterH = [], savedTransform = [];
-  for(var i=1;i<=5;i++){
-    var o = document.getElementById('ig-outer-'+i);
-    var s = document.getElementById('ig-slide-'+i);
-    savedOuterW[i] = o.style.width;
-    savedOuterH[i] = o.style.height;
-    savedTransform[i] = s.style.transform;
-    /* expand to full 1080×1080 for capture */
-    s.style.transform = 'none';
-    o.style.width  = '1080px';
-    o.style.height = '1080px';
-  }
-
-  /* small paint settle */
-  await new Promise(function(r){ setTimeout(r, 120); });
-
-  var zip = new JSZip();
-  var folder = zip.folder('frmls-instagram-carousel');
-
-  for(var i=1;i<=5;i++){
-    btn.textContent = 'Capturing slide ' + i + ' of 5…';
-    var slide = document.getElementById('ig-slide-'+i);
-    try {
-      var canvas = await html2canvas(slide, {
-        width: 1080,
-        height: 1080,
-        scale: 1,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#0a0a0a',
-        logging: false
-      });
-      /* canvas.toDataURL gives "data:image/png;base64,XXXX" — strip prefix */
-      var dataURL = canvas.toDataURL('image/png');
-      var base64 = dataURL.split(',')[1];
-      folder.file(names[i-1], base64, { base64: true });
-    } catch(e){
-      console.error('Capture failed for slide '+i, e);
-    }
-    await new Promise(function(r){ setTimeout(r, 80); });
-  }
-
-  btn.textContent = 'Building ZIP…';
-
-  /* restore transforms */
-  for(var i=1;i<=5;i++){
-    var o = document.getElementById('ig-outer-'+i);
-    var s = document.getElementById('ig-slide-'+i);
-    s.style.transform = savedTransform[i];
-    o.style.width  = savedOuterW[i];
-    o.style.height = savedOuterH[i];
-  }
-
-  /* generate & trigger download */
-  zip.generateAsync({ type: 'blob' }).then(function(blob){
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'frmls-instagram-carousel.zip';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(function(){ URL.revokeObjectURL(url); }, 3000);
-    btn.textContent = '✓ Downloaded!';
-    btn.disabled = false;
-    setTimeout(function(){ btn.innerHTML = '&#8681; Export All 5 Slides as ZIP'; }, 2500);
-  });
-});
-</script>
-
-
-<!-- =====================================================
-     Brand Variety Carousel — 6 slides 1080x1080
-     ===================================================== -->
-<style>
-/* ---- BV section wrapper ---- */
-#bv-carousel-section {
-  padding: 100px 0 120px;
-  background: #0a0a0a;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
-  border-top: 1px solid rgba(255,255,255,0.06);
-}
-#bv-carousel-section > h2 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 800;
-  font-size: 28px;
-  color: #ffffff;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.55;
-}
-/* export button */
-#bv-export-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 32px;
-  border-radius: 8px;
-  border: 1.5px solid rgba(255,255,255,0.18);
-  background: linear-gradient(135deg,rgba(124,58,237,0.18),rgba(6,182,212,0.12));
-  color: #fff;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 15px;
-  letter-spacing: 0.06em;
-  cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-}
-#bv-export-btn:hover {
-  background: linear-gradient(135deg,rgba(124,58,237,0.35),rgba(6,182,212,0.25));
-  border-color: rgba(255,255,255,0.32);
-}
-
-/* ---- BV slide scaler ---- */
-.bv-slide-outer {
-  width: 1080px;
-  height: 1080px;
-  overflow: hidden;
-  position: relative;
-}
-.bv-slide {
-  width: 1080px;
-  height: 1080px;
-  position: relative;
-  overflow: hidden;
-  background: #0a0a0a;
-  transform-origin: top left;
-}
-
-/* ---- BV ambient blurred backdrop ---- */
-.bv-ambient {
-  position: absolute;
-  top: -60px; left: -60px; right: -60px; bottom: -60px;
-  background-size: cover;
-  background-position: center;
-  filter: blur(68px) brightness(0.85) saturate(1.15);
-  z-index: 0;
-}
-
-/* ---- BV bg image ---- */
-.bv-bg {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  z-index: 1;
-}
-.bv-bg img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  display: block;
-  image-rendering: high-quality;
-}
-
-/* ---- BV overlays ---- */
-.bv-overlay { position: absolute; inset: 0; z-index: 2; }
-.bv-overlay.solid-35  { background: rgba(0,0,0,0.32); }
-.bv-overlay.solid-60  { background: rgba(0,0,0,0.62); }
-/* gradient overlays: dark band covers bottom for readable text */
-.bv-overlay.grad-50   { background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.25) 45%, rgba(0,0,0,0.68) 100%); }
-.bv-overlay.grad-45   { background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.22) 42%, rgba(0,0,0,0.65) 100%); }
-/* text-zone only — for bright images (pura) */
-.bv-overlay.grad-text { background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.60) 100%); }
-
-/* ---- BV bottom-left text block ---- */
-.bv-text {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  padding: 0 64px 72px 64px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  text-align: left;
-  z-index: 10;
-  overflow: hidden;
-}
-.bv-headline {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 64px;
-  line-height: 1.08;
-  color: #ffffff;
-  letter-spacing: -0.02em;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  text-shadow: 0 2px 24px rgba(0,0,0,0.85), 0 1px 6px rgba(0,0,0,0.6);
-}
-.bv-subtext {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 1.4;
-  color: rgba(255,255,255,0.80);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-shadow: 0 1px 12px rgba(0,0,0,0.8);
-}
-
-/* ---- BV swipe indicator ---- */
-@keyframes bv-swipe-pulse {
-  0%   { transform: translateX(-5px); opacity: 0.55; }
-  55%  { transform: translateX(8px);  opacity: 1;    }
-  100% { transform: translateX(-5px); opacity: 0.55; }
-}
-.bv-swipe-cta {
-  position: absolute;
-  bottom: 64px;
-  left: 0; right: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  z-index: 15;
-  pointer-events: none;
-}
-.bv-swipe-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: 0.20em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
-}
-.bv-swipe-arrow {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  animation: bv-swipe-pulse 1.9s ease-in-out infinite;
-}
-.bv-swipe-arrow svg {
-  width: 68px;
-  height: 68px;
-}
-
-/* ---- BV pill tag ---- */
-.bv-tag {
-  position: absolute;
-  top: 64px; left: 64px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
-  font-size: 18px;
-  color: rgba(255,255,255,0.88);
-  border: 1.5px solid rgba(255,255,255,0.26);
-  border-radius: 100px;
-  padding: 9px 22px;
-  background: rgba(255,255,255,0.07);
-  z-index: 10;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
-}
-
-/* ---- BV logo watermark (text mark) ---- */
-.bv-logo {
-  position: absolute;
-  bottom: 32px; right: 44px;
-  pointer-events: none;
-  z-index: 20;
-  font-family: 'Inter', sans-serif;
-  font-weight: 900;
-  font-size: 20px;
-  letter-spacing: 0.04em;
-  color: rgba(255,255,255,0.50);
-  text-transform: uppercase;
-}
-.bv-logo .logo-s {
-  background: linear-gradient(90deg, #7c3aed, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ---- BV nav dots ---- */
-.bv-nav {
-  display: flex;
-  gap: 10px;
-  margin-top: -16px;
-}
-.bv-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.22);
-}
-.bv-dot.active { background: #ffffff; }
-</style>
-
-<section id="bv-carousel-section">
-  <h2>Brand Variety Carousel</h2>
-  <button id="bv-export-btn">&#8681; Export All 6 Slides as ZIP</button>
-
-  <!-- SLIDE 0 — HOOK (no image) -->
-  <div class="bv-slide-outer" id="bv-outer-0">
-    <div class="bv-slide" id="bv-slide-0">
-      <!-- purple glow left -->
-      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 72% 85% at 10% 52%, rgba(124,58,237,0.26) 0%, transparent 62%);pointer-events:none;z-index:1;"></div>
-      <!-- cyan glow right -->
-      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 72% 85% at 90% 52%, rgba(6,182,212,0.22) 0%, transparent 62%);pointer-events:none;z-index:1;"></div>
-      <!-- subtle center haze -->
-      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 50%, rgba(90,40,180,0.07) 0%, transparent 70%);pointer-events:none;z-index:1;"></div>
-      <!-- top left logo (small) -->
-      <div style="position:absolute;top:60px;left:64px;z-index:10;font-family:'Inter',sans-serif;font-weight:900;font-size:34px;letter-spacing:0.04em;color:#ffffff;text-transform:uppercase;">FRML<span style="background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">S</span></div>
-      <!-- center main content — vertically centered -->
-      <div style="position:absolute;top:50%;left:64px;right:64px;transform:translateY(-55%);z-index:10;display:flex;flex-direction:column;gap:30px;">
-        <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:78px;line-height:1.06;color:#ffffff;letter-spacing:-0.025em;word-wrap:break-word;">a store sells products.<br>a brand sells<br>a <span style="background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">feeling</span>.</div>
-        <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:32px;letter-spacing:-0.01em;background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">FRMLS builds the feeling.</div>
-      </div>
-      <!-- swipe indicator -->
-      <div class="bv-swipe-cta">
-        <span class="bv-swipe-label">swipe to explore</span>
-        <div class="bv-swipe-arrow">
-          <svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="swipe-grad" x1="0" y1="0" x2="68" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#7c3aed"/>
-                <stop offset="100%" stop-color="#06b6d4"/>
-              </linearGradient>
-            </defs>
-            <!-- arrow shaft -->
-            <line x1="6" y1="34" x2="54" y2="34" stroke="url(#swipe-grad)" stroke-width="3.5" stroke-linecap="round"/>
-            <!-- arrowhead -->
-            <polyline points="38,18 56,34 38,50" stroke="url(#swipe-grad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-          </svg>
-        </div>
-      </div>
-      <!-- logo watermark -->
-      <div class="bv-logo">FRML<span class="logo-s">S</span></div>
-    </div>
-  </div>
-
-  <!-- SLIDE 1 — NOIR STUDIO -->
-  <div class="bv-slide-outer" id="bv-outer-1">
-    <div class="bv-slide" id="bv-slide-1">
-      <div class="bv-ambient" style="background-image:url('noir-studio.jpg');"></div>
-      <div class="bv-bg">
-        <img src="noir-studio.jpg" alt="Noir Studio">
-      </div>
-      <div class="bv-overlay grad-45"></div>
-      <div class="bv-tag">minimal. dark. editorial.</div>
-      <div class="bv-text">
-        <div class="bv-headline">your brand has a <span style="background:linear-gradient(90deg,#e8edf2,#9aa5b4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">voice</span>.</div>
-        <div class="bv-subtext">Noir Studio — built with FRMLS</div>
-      </div>
-      <div class="bv-logo">FRML<span class="logo-s">S</span></div>
-    </div>
-  </div>
-
-  <!-- SLIDE 2 — SOLEIL -->
-  <div class="bv-slide-outer" id="bv-outer-2">
-    <div class="bv-slide" id="bv-slide-2">
-      <div class="bv-ambient" style="background-image:url('soleil.jpg');"></div>
-      <div class="bv-bg">
-        <img src="soleil.jpg" alt="Soleil">
-      </div>
-      <div class="bv-overlay grad-50"></div>
-      <div class="bv-text">
-        <div class="bv-headline"><span style="background:linear-gradient(90deg,#e8a030,#d4a853);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">warm</span>. intentional. <span style="background:linear-gradient(90deg,#f5c09a,#f0e4cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">effortless</span>.</div>
-        <div class="bv-subtext">Soleil — built with FRMLS</div>
-      </div>
-      <div class="bv-logo">FRML<span class="logo-s">S</span></div>
-    </div>
-  </div>
-
-  <!-- SLIDE 3 — PURA -->
-  <div class="bv-slide-outer" id="bv-outer-3">
-    <div class="bv-slide" id="bv-slide-3">
-      <div class="bv-ambient" style="background-image:url('pura.jpg');"></div>
-      <div class="bv-bg">
-        <img src="pura.jpg" alt="Pura">
-      </div>
-      <div class="bv-overlay grad-text"></div>
-      <div class="bv-text">
-        <div class="bv-headline"><span style="background:linear-gradient(90deg,#f5f5f0,#84a98c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">clean</span> design. clear identity.</div>
-        <div class="bv-subtext">Pura — built with FRMLS</div>
-      </div>
-      <div class="bv-logo">FRML<span class="logo-s">S</span></div>
-    </div>
-  </div>
-
-  <!-- SLIDE 4 — TERRA -->
-  <div class="bv-slide-outer" id="bv-outer-4">
-    <div class="bv-slide" id="bv-slide-4">
-      <div class="bv-ambient" style="background-image:url('terra.jpg');"></div>
-      <div class="bv-bg">
-        <img src="terra.jpg" alt="Terra">
-      </div>
-      <div class="bv-overlay grad-45"></div>
-      <div class="bv-text">
-        <div class="bv-headline"><span style="background:linear-gradient(90deg,#8B5E3C,#c4a882);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">grounded</span>. organic. yours.</div>
-        <div class="bv-subtext">Terra — built with FRMLS</div>
-      </div>
-      <div class="bv-logo">FRML<span class="logo-s">S</span></div>
-    </div>
-  </div>
-
-  <!-- SLIDE 5 — CTA (no image) -->
-  <div class="bv-slide-outer" id="bv-outer-5">
-    <div class="bv-slide" id="bv-slide-5">
-      <!-- subtle glows -->
-      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 65% 70% at 12% 52%, rgba(124,58,237,0.22) 0%, transparent 60%);pointer-events:none;z-index:1;"></div>
-      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 65% 70% at 88% 52%, rgba(6,182,212,0.18) 0%, transparent 60%);pointer-events:none;z-index:1;"></div>
-      <!-- top tag top left -->
-      <div class="bv-tag" style="white-space:nowrap;">same tool. 4 different brands.</div>
-      <!-- center content -->
-      <div style="position:absolute;top:50%;left:64px;right:64px;transform:translateY(-50%);z-index:10;display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center;">
-        <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:80px;letter-spacing:0.04em;color:#ffffff;text-transform:uppercase;line-height:1;">FRML<span style="background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">S</span></div>
-        <div style="font-family:'Inter',sans-serif;font-weight:700;font-size:52px;line-height:1.1;color:#ffffff;letter-spacing:-0.02em;word-wrap:break-word;">build a store that<br><span style="background:linear-gradient(90deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">feels like something.</span></div>
-        <div style="font-family:'Inter',sans-serif;font-weight:400;font-size:20px;color:rgba(255,255,255,0.40);letter-spacing:0.08em;text-transform:uppercase;">brand kit · prompt pack · launch checklist</div>
-      </div>
-      <div class="bv-logo">FRML<span class="logo-s">S</span></div>
-    </div>
-  </div>
-
-  <!-- nav dots -->
-  <div class="bv-nav">
-    <div class="bv-dot active"></div>
-    <div class="bv-dot"></div>
-    <div class="bv-dot"></div>
-    <div class="bv-dot"></div>
-    <div class="bv-dot"></div>
-    <div class="bv-dot"></div>
-  </div>
-</section>
-
-<script>
-/* ---- scale BV slides to viewport ---- */
-(function(){
-  function scaleBVSlides(){
-    var vw = Math.min(window.innerWidth, 1080);
-    var scale = vw / 1080;
-    for(var i = 0; i <= 5; i++){
-      var outer = document.getElementById('bv-outer-'+i);
-      var slide = document.getElementById('bv-slide-'+i);
-      if(!outer || !slide) continue;
-      if(scale < 1){
-        slide.style.transform = 'scale('+scale+')';
-        outer.style.width  = vw + 'px';
-        outer.style.height = Math.round(1080 * scale) + 'px';
-      } else {
-        slide.style.transform = '';
-        outer.style.width  = '1080px';
-        outer.style.height = '1080px';
-      }
-    }
-  }
-  scaleBVSlides();
-  window.addEventListener('resize', scaleBVSlides);
-})();
-
-/* ---- BV export: 6 slides → ZIP with individual PNGs ---- */
-document.getElementById('bv-export-btn').addEventListener('click', async function(){
-  var btn = this;
-  btn.textContent = 'Rendering slides…';
-  btn.disabled = true;
-
-  var names = [
-    'slide-0-hook.png',
-    'slide-1-noir.png',
-    'slide-2-soleil.png',
-    'slide-3-pura.png',
-    'slide-4-terra.png',
-    'slide-5-cta.png'
-  ];
-
-  /* expand all slides to 1080×1080 for capture */
-  var savedW = [], savedH = [], savedT = [];
-  for(var i = 0; i <= 5; i++){
-    var o = document.getElementById('bv-outer-'+i);
-    var s = document.getElementById('bv-slide-'+i);
-    savedW[i] = o.style.width;
-    savedH[i] = o.style.height;
-    savedT[i] = s.style.transform;
-    s.style.transform = 'none';
-    o.style.width  = '1080px';
-    o.style.height = '1080px';
-  }
-  /* let browser repaint */
-  await new Promise(function(r){ setTimeout(r, 150); });
-
-  var zip = new JSZip();
-  var folder = zip.folder('frmls-brand-variety');
-
-  for(var i = 0; i <= 5; i++){
-    btn.textContent = 'Capturing slide ' + (i + 1) + ' of 6…';
-    var slide = document.getElementById('bv-slide-'+i);
-    try {
-      var canvas = await html2canvas(slide, {
-        width: 1080,
-        height: 1080,
-        scale: 1,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#0a0a0a',
-        logging: false
-      });
-      var base64 = canvas.toDataURL('image/png').split(',')[1];
-      folder.file(names[i], base64, { base64: true });
-    } catch(e){ console.error('BV export failed slide '+i, e); }
-    await new Promise(function(r){ setTimeout(r, 80); });
-  }
-
-  /* restore transforms */
-  for(var i = 0; i <= 5; i++){
-    var o = document.getElementById('bv-outer-'+i);
-    var s = document.getElementById('bv-slide-'+i);
-    s.style.transform = savedT[i];
-    o.style.width  = savedW[i];
-    o.style.height = savedH[i];
-  }
-
-  btn.textContent = 'Building ZIP…';
-  zip.generateAsync({ type: 'blob' }).then(function(blob){
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'frmls-brand-variety-carousel.zip';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(function(){ URL.revokeObjectURL(url); }, 3000);
-    btn.textContent = '✓ Downloaded!';
-    btn.disabled = false;
-    setTimeout(function(){ btn.innerHTML = '&#8681; Export All 6 Slides as ZIP'; }, 2500);
-  });
-});
-</script>
-
-
 <!-- =====================================================
      FRMLS Profile Picture — 500×500
      ===================================================== -->
@@ -4344,6 +2886,344 @@ document.getElementById('bv-export-btn').addEventListener('click', async functio
       alert('Export failed — try opening in Chrome.');
     };
     img.src = url;
+  });
+})();
+</script>
+
+
+<!-- =====================================================
+     FRMLS Dashboard Grid — 1080×1350 Instagram Post
+     ===================================================== -->
+<style>
+#grid-section {
+  padding: 100px 0 120px;
+  background: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+#grid-section h2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  color: #ffffff;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+/* The card itself — 1080×1350 at 50% scale for preview */
+#grid-card-wrap {
+  width: 540px;
+  height: 675px;
+  transform-origin: top left;
+  position: relative;
+}
+#grid-card {
+  width: 1080px;
+  height: 1350px;
+  background: #0a0a0a;
+  transform: scale(0.5);
+  transform-origin: top left;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 2×2 grid takes up 1230px of height, strip takes 120px */
+#grid-quadrants {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  flex: 1;
+  gap: 0;
+}
+
+.gq {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 54px 50px;
+}
+
+/* Dividers via borders */
+.gq-tl { border-right: 2px solid #0a0a0a; border-bottom: 2px solid #0a0a0a; }
+.gq-tr { border-bottom: 2px solid #0a0a0a; }
+.gq-bl { border-right: 2px solid #0a0a0a; }
+
+/* Q1 — Brand Kit */
+.gq-tl {
+  background: linear-gradient(135deg, #1a0533 0%, #2d1054 100%);
+}
+.gq-tl .gq-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 60% at 30% 30%, rgba(139,60,255,0.28) 0%, transparent 70%);
+}
+
+/* Q2 — Prompt Pack */
+.gq-tr {
+  background: linear-gradient(135deg, #011818 0%, #023030 100%);
+}
+.gq-tr .gq-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 60% at 70% 25%, rgba(6,182,212,0.22) 0%, transparent 70%);
+}
+
+/* Q3 — Launch Checklist */
+.gq-bl {
+  background: linear-gradient(135deg, #020818 0%, #051530 100%);
+}
+.gq-bl .gq-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 60% at 30% 70%, rgba(29,78,216,0.24) 0%, transparent 70%);
+}
+
+/* Q4 — Store Inspiration */
+.gq-br {
+  background: linear-gradient(135deg, #1a0a00 0%, #2d1500 100%);
+}
+.gq-br .gq-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 60% at 70% 70%, rgba(217,119,6,0.22) 0%, transparent 70%);
+}
+
+/* Icon wrapper */
+.gq-icon {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* Text block */
+.gq-text { position: relative; z-index: 2; }
+.gq-label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 38px;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+.gq-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 20px;
+  color: #aaaaaa;
+  letter-spacing: 0.02em;
+}
+
+/* Bottom strip */
+#grid-strip {
+  width: 1080px;
+  height: 120px;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 54px;
+  flex-shrink: 0;
+}
+
+#grid-strip-logo {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 36px;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+#grid-strip-logo span {
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+#grid-strip-url {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 26px;
+  letter-spacing: 0.01em;
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Export button */
+#grid-dl {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255,255,255,0.18);
+  background: linear-gradient(135deg,rgba(124,58,237,0.18),rgba(6,182,212,0.12));
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+}
+#grid-dl:hover {
+  background: linear-gradient(135deg,rgba(124,58,237,0.35),rgba(6,182,212,0.25));
+  border-color: rgba(255,255,255,0.32);
+}
+#grid-dl:disabled { opacity: 0.5; cursor: default; }
+#grid-note {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.30);
+  letter-spacing: 0.04em;
+}
+</style>
+
+<section id="grid-section">
+  <h2>Dashboard Grid Post</h2>
+
+  <div id="grid-card-wrap">
+    <div id="grid-card">
+
+      <!-- 2×2 Quadrants -->
+      <div id="grid-quadrants">
+
+        <!-- Q1: Brand Kit (top-left) -->
+        <div class="gq gq-tl">
+          <div class="gq-glow"></div>
+          <div class="gq-icon">
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M28 6L34 18H46L36 26L40 38L28 30L16 38L20 26L10 18H22L28 6Z" fill="none" stroke="rgba(180,130,255,0.85)" stroke-width="2" stroke-linejoin="round"/>
+              <circle cx="28" cy="28" r="6" fill="rgba(180,130,255,0.25)" stroke="rgba(180,130,255,0.7)" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="gq-text">
+            <div class="gq-label">Brand Kit</div>
+            <div class="gq-sub">colors. fonts. voice.</div>
+          </div>
+        </div>
+
+        <!-- Q2: Prompt Pack (top-right) -->
+        <div class="gq gq-tr">
+          <div class="gq-glow"></div>
+          <div class="gq-icon">
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="8" width="36" height="40" rx="4" stroke="rgba(6,182,212,0.8)" stroke-width="2" fill="none"/>
+              <line x1="18" y1="20" x2="38" y2="20" stroke="rgba(6,182,212,0.6)" stroke-width="2" stroke-linecap="round"/>
+              <line x1="18" y1="28" x2="38" y2="28" stroke="rgba(6,182,212,0.6)" stroke-width="2" stroke-linecap="round"/>
+              <line x1="18" y1="36" x2="30" y2="36" stroke="rgba(6,182,212,0.6)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="gq-text">
+            <div class="gq-label">Prompt Pack</div>
+            <div class="gq-sub">built for you prompts.</div>
+          </div>
+        </div>
+
+        <!-- Q3: Launch Checklist (bottom-left) -->
+        <div class="gq gq-bl">
+          <div class="gq-glow"></div>
+          <div class="gq-icon">
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="10" width="28" height="36" rx="3" stroke="rgba(96,165,250,0.8)" stroke-width="2" fill="none"/>
+              <polyline points="16,22 20,26 28,18" stroke="rgba(96,165,250,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="16" y1="32" x2="32" y2="32" stroke="rgba(96,165,250,0.5)" stroke-width="2" stroke-linecap="round"/>
+              <line x1="16" y1="38" x2="26" y2="38" stroke="rgba(96,165,250,0.5)" stroke-width="2" stroke-linecap="round"/>
+              <path d="M36 22 L46 12" stroke="rgba(96,165,250,0.7)" stroke-width="2" stroke-linecap="round"/>
+              <path d="M40 10 L48 10 L48 18" stroke="rgba(96,165,250,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <div class="gq-text">
+            <div class="gq-label">Launch Checklist</div>
+            <div class="gq-sub">go live. step by step.</div>
+          </div>
+        </div>
+
+        <!-- Q4: Store Inspiration (bottom-right) -->
+        <div class="gq gq-br">
+          <div class="gq-glow"></div>
+          <div class="gq-icon">
+            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8"  y="8"  width="16" height="16" rx="3" stroke="rgba(251,191,36,0.8)" stroke-width="2" fill="rgba(251,191,36,0.08)"/>
+              <rect x="32" y="8"  width="16" height="16" rx="3" stroke="rgba(251,191,36,0.8)" stroke-width="2" fill="rgba(251,191,36,0.08)"/>
+              <rect x="8"  y="32" width="16" height="16" rx="3" stroke="rgba(251,191,36,0.8)" stroke-width="2" fill="rgba(251,191,36,0.08)"/>
+              <rect x="32" y="32" width="16" height="16" rx="3" stroke="rgba(251,191,36,0.8)" stroke-width="2" fill="rgba(251,191,36,0.08)"/>
+            </svg>
+          </div>
+          <div class="gq-text">
+            <div class="gq-label">Store Inspiration</div>
+            <div class="gq-sub">reference stores by niche.</div>
+          </div>
+        </div>
+
+      </div><!-- /grid-quadrants -->
+
+      <!-- Bottom strip -->
+      <div id="grid-strip">
+        <div id="grid-strip-logo">FRML<span>S</span></div>
+        <div id="grid-strip-url">frmls.com</div>
+      </div>
+
+    </div><!-- /grid-card -->
+  </div><!-- /grid-card-wrap -->
+
+  <button id="grid-dl">&#8681; Export as PNG</button>
+  <p id="grid-note">1080×1350px PNG · 4:5 Instagram post ratio</p>
+</section>
+
+<script>
+(function(){
+  document.getElementById('grid-dl').addEventListener('click', function(){
+    var btn = this;
+    btn.textContent = 'Generating…';
+    btn.disabled = true;
+
+    var card = document.getElementById('grid-card');
+
+    // Temporarily un-scale the card so html2canvas captures at full 1080×1350
+    card.style.transform = 'none';
+
+    html2canvas(card, {
+      width: 1080,
+      height: 1350,
+      scale: 1,
+      useCORS: true,
+      backgroundColor: '#0a0a0a',
+      logging: false
+    }).then(function(canvas){
+      // Re-apply the preview scale
+      card.style.transform = 'scale(0.5)';
+
+      canvas.toBlob(function(blob){
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'frmls-grid-story.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function(){ URL.revokeObjectURL(a.href); }, 3000);
+        btn.innerHTML = '&#8681; Export as PNG';
+        btn.disabled = false;
+      }, 'image/png');
+    }).catch(function(){
+      card.style.transform = 'scale(0.5)';
+      btn.innerHTML = '&#8681; Export as PNG';
+      btn.disabled = false;
+      alert('Export failed — try opening in Chrome.');
+    });
   });
 })();
 </script>

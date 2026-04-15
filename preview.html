@@ -3236,35 +3236,9 @@ html, body {
   position: absolute; inset: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 0 58px;
 }
-/* FRMLS wordmark */
-#gs-logo {
-  font-family: 'Inter', sans-serif;
-  font-weight: 900;
-  font-size: 54px;
-  letter-spacing: -0.03em;
-  color: #ffffff;
-  line-height: 1;
-}
-#gs-logo span {
-  background: linear-gradient(90deg, #a855f7 0%, #06b6d4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-/* Right CTA */
-#gs-cta {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 26px;
-  letter-spacing: -0.01em;
-  background: linear-gradient(90deg, #a855f7 0%, #06b6d4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+#gs-svg { display: block; }
 
 /* ── Export button ── */
 #grid-dl {
@@ -3448,8 +3422,34 @@ html, body {
         <div id="gs-topline"></div>
         <div id="gs-topline-glow"></div>
         <div id="gs-inner">
-          <div id="gs-logo">FRML<span>S</span></div>
-          <div id="gs-cta">frmls.com &mdash; $37 one time</div>
+          <!-- SVG text with gradient fill — renders correctly in html2canvas unlike background-clip:text -->
+          <svg id="gs-svg" width="964" height="70" viewBox="0 0 964 70"
+               xmlns="http://www.w3.org/2000/svg"
+               shape-rendering="geometricPrecision" text-rendering="optimizeLegibility">
+            <defs>
+              <!-- Gradient scoped to S glyph x-range (~175–212px at these sizes) -->
+              <linearGradient id="gs-s-grad" x1="175" y1="0" x2="212" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#a855f7"/>
+                <stop offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+              <!-- Full-width gradient for CTA -->
+              <linearGradient id="gs-cta-grad" x1="560" y1="0" x2="964" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#a855f7"/>
+                <stop offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <!-- FRMLS wordmark: FRML white, S gradient -->
+            <text y="54"
+              font-family="'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif"
+              font-size="54" font-weight="900" letter-spacing="-2">
+              <tspan fill="#ffffff">FRML</tspan><tspan fill="url(#gs-s-grad)">S</tspan>
+            </text>
+            <!-- CTA right-aligned -->
+            <text x="964" y="54" text-anchor="end"
+              font-family="'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif"
+              font-size="26" font-weight="700" letter-spacing="-0.3"
+              fill="url(#gs-cta-grad)">frmls.com — $37 one time</text>
+          </svg>
         </div>
       </div>
 

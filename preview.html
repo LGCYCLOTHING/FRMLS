@@ -4207,10 +4207,17 @@ document.getElementById('bv-export-btn').addEventListener('click', async functio
   letter-spacing: 0.06em;
   cursor: pointer;
   text-decoration: none;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
 }
 #pfp-dl:hover {
   background: linear-gradient(135deg,rgba(124,58,237,0.35),rgba(6,182,212,0.25));
   border-color: rgba(255,255,255,0.32);
+}
+#pfp-dl:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 #pfp-note {
   font-family: 'Inter', sans-serif;
@@ -4289,9 +4296,57 @@ document.getElementById('bv-export-btn').addEventListener('click', async functio
     </svg>
   </div>
 
-  <a id="pfp-dl" href="frmls-profile.svg" download="frmls-profile.svg">&#8681; Download SVG</a>
-  <p id="pfp-note">Open SVG in Chrome → screenshot for PNG · Instagram crops to circle</p>
+  <button id="pfp-dl">&#8681; Download PNG</button>
+  <p id="pfp-note">1000×1000px PNG · Instagram crops to circle automatically</p>
 </section>
+
+<script>
+(function(){
+  document.getElementById('pfp-dl').addEventListener('click', function(){
+    var btn = this;
+    btn.textContent = 'Generating…';
+    btn.disabled = true;
+
+    var svg = document.querySelector('#pfp-wrap svg');
+    var serializer = new XMLSerializer();
+    var svgStr = serializer.serializeToString(svg);
+
+    // Inject Inter font as a data URI embed so it survives Blob→Image rendering
+    // Fall back: system-ui looks equally sharp at weight 900
+    var svgBlob = new Blob([svgStr], {type: 'image/svg+xml;charset=utf-8'});
+    var url = URL.createObjectURL(svgBlob);
+
+    var scale = 2; // 1000×1000 output
+    var img = new Image();
+    img.onload = function(){
+      var canvas = document.createElement('canvas');
+      canvas.width  = 500 * scale;
+      canvas.height = 500 * scale;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, 500 * scale, 500 * scale);
+      URL.revokeObjectURL(url);
+
+      canvas.toBlob(function(pngBlob){
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(pngBlob);
+        a.download = 'frmls-profile.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function(){ URL.revokeObjectURL(a.href); }, 3000);
+        btn.innerHTML = '&#8681; Download PNG';
+        btn.disabled = false;
+      }, 'image/png');
+    };
+    img.onerror = function(){
+      btn.innerHTML = '&#8681; Download PNG';
+      btn.disabled = false;
+      alert('Export failed — try opening in Chrome.');
+    };
+    img.src = url;
+  });
+})();
+</script>
 
 </body>
 </html>

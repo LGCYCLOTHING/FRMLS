@@ -1930,6 +1930,84 @@ body::before {
   box-shadow: 0 0 55px rgba(124,58,237,0.65), 0 8px 32px rgba(124,58,237,0.3);
   transform: translateY(-2px);
 }
+/* Brand output card (completion screen) */
+.bf-output-card {
+  width: 100%; max-width: 600px; margin: 0 auto 28px;
+  background: #111111; border-radius: 16px; padding: 40px;
+  position: relative; z-index: 1;
+  opacity: 0; transform: translateY(32px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+.bf-output-card::before {
+  content: ''; position: absolute; inset: -1px; border-radius: 17px;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4); z-index: -1;
+}
+.bf-output-card.bf-card-visible { opacity: 1; transform: translateY(0); }
+.bf-enter-btn-wrap {
+  opacity: 0; transition: opacity 0.5s ease 0.2s; position: relative; z-index: 1;
+}
+.bf-enter-btn-wrap.bf-card-visible { opacity: 1; }
+.bf-output-label {
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.15em;
+  text-transform: uppercase; text-align: center; margin-bottom: 18px;
+  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.bf-output-archetype {
+  font-size: 28px; font-weight: 800; color: #ffffff;
+  letter-spacing: -0.02em; text-align: center; margin-bottom: 0;
+}
+.bf-output-divider {
+  height: 1px; width: 100%; margin: 22px 0;
+  background: linear-gradient(90deg, transparent, rgba(124,58,237,0.45), rgba(6,182,212,0.45), transparent);
+}
+.bf-output-summary {
+  font-size: 16px; color: rgba(255,255,255,0.8); line-height: 1.8; font-style: italic;
+}
+.bf-output-section-label {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 16px;
+}
+.bf-output-words {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; flex-wrap: wrap;
+}
+.bf-output-word {
+  font-size: 32px; font-weight: 800; letter-spacing: -0.03em;
+  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.bf-output-word-dot {
+  font-size: 20px; font-weight: 300; opacity: 0.35; color: #9d5cf5;
+  -webkit-text-fill-color: initial;
+}
+.bf-output-voice-list { display: flex; flex-direction: column; gap: 14px; }
+.bf-output-voice-line {
+  font-size: 18px; color: #ffffff; font-style: italic; line-height: 1.5;
+  padding-left: 18px; position: relative;
+}
+.bf-output-voice-line::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; border-radius: 1px;
+  background: linear-gradient(to bottom, #7c3aed, #06b6d4);
+}
+.bf-output-avoid {
+  font-size: 15px; color: #888888; font-style: italic; line-height: 1.7;
+}
+/* Three words in dashboard header */
+.dash-three-words {
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; margin-top: 8px; min-height: 0;
+  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  display: block; transition: opacity 0.4s ease;
+}
+@media (max-width: 767px) {
+  .bf-output-card { padding: 28px 22px; }
+  .bf-output-archetype { font-size: 22px; }
+  .bf-output-word { font-size: 24px; }
+  .bf-output-voice-line { font-size: 16px; }
+  .dash-three-words { font-size: 10px; }
+}
 /* Brand Foundation dash-box status badge */
 .bf-status-badge {
   display: inline-flex; align-items: center; gap: 5px;
@@ -2411,6 +2489,7 @@ body::before {
     <div class="dash-welcome">
       <div class="dash-brand-name" id="dash-brand-name">YOUR BRAND</div>
       <div class="dash-subtitle" id="dash-meta">—</div>
+      <span class="dash-three-words" id="dash-three-words"></span>
     </div>
     <div class="dash-grid" id="dash-grid">
       <div class="dash-box" id="box-brandkit" data-panel="panel-brandkit" onclick="openPanel('panel-brandkit')">
@@ -2667,7 +2746,11 @@ body::before {
       <div class="bf-completion-logo">FRMLS</div>
       <div class="bf-completion-title">your brand foundation is set.</div>
       <p class="bf-completion-sub">everything in your dashboard is now shaped around your answers.</p>
-      <button class="bf-enter-btn" onclick="bfEnterDashboard()">enter your dashboard →</button>
+      <!-- Brand output card — populated by JS, slides up after 800ms -->
+      <div class="bf-output-card" id="bf-output-card"></div>
+      <div class="bf-enter-btn-wrap" id="bf-enter-btn-wrap">
+        <button class="bf-enter-btn" onclick="bfEnterDashboard()">enter your dashboard →</button>
+      </div>
     </div>
 
   </div><!-- /bf-screens-container -->
@@ -4039,6 +4122,7 @@ function buildDashboard() {
   loadSocials();
   bfLoadAnswers();
   bfUpdateBoxStatus();
+  bfRefreshDashThreeWords();
 }
 
 function updateDashProgress() {
@@ -5987,6 +6071,169 @@ function shRenderReminders() {
   }).join('');
 }
 
+/* ===== BRAND ARCHETYPES & OUTPUT ===== */
+const BF_OUTPUT_KEY     = 'frmls_brand_output';
+const BF_THREE_WORDS_KEY = 'frmls_three_words';
+
+const BF_ARCHETYPES = [
+  {
+    id: 1,
+    name: 'The Quiet Luxury Brand',
+    moodTriggers: ['Quiet','Calm','Minimal','Refined','Elevated','Intentional','Mysterious'],
+    personTriggers: ['quiet-confident','elevated-refined'],
+    summary: "Your brand is the person who walks into a room and doesn't need anyone's attention — but gets it anyway. They dress with intention, speak only when they have something worth saying, and never explain themselves. Everything they touch feels considered. Nothing is accidental. They stand against noise, against brands that shout, against anything that tries too hard. They exist for the person who already knows who they are — and just needs the brand to match.",
+    threeWords: ['Intentional','Quiet','Elevated'],
+    voiceExamples: ['wear less. mean more.','built for the ones who don\'t need to be seen.','nothing loud. nothing wasted. everything right.'],
+    avoid: "Loud colors, excessive gradients, aggressive marketing language, hype-driven copy, anything that feels like it's trying too hard."
+  },
+  {
+    id: 2,
+    name: 'The Bold Statement Brand',
+    moodTriggers: ['Powerful','Bold','Fearless','Unstoppable','Loud'],
+    personTriggers: ['bold-loud','rebellious-raw'],
+    summary: "Your brand walks in first and apologizes to nobody. It's the one that takes up space, says what others won't, and makes people feel something the moment they see it. Not aggressive for the sake of it — bold because it believes in something. It stands against playing it safe, against brands that blend in, against anything that asks permission. It exists for the person who wants to be felt before they're heard.",
+    threeWords: ['Bold','Fearless','Unapologetic'],
+    voiceExamples: ['not for everyone. exactly as planned.','built for the ones who don\'t wait.','loud by design. quiet by choice.'],
+    avoid: "Soft tones, overly refined language, anything that feels apologetic or hesitant."
+  },
+  {
+    id: 3,
+    name: 'The Authentic Raw Brand',
+    moodTriggers: ['Raw','Honest','Grounded','Free'],
+    personTriggers: ['grounded-real'],
+    summary: "Your brand doesn't perform. It doesn't curate a version of itself for an audience — it just is what it is, and that's the point. Raw, honest, real. It stands against brands that hide behind aesthetics, against anything polished to the point of feeling fake. It exists for the person who is tired of brands that feel manufactured — who wants something that feels like it came from a real place.",
+    threeWords: ['Honest','Raw','Real'],
+    voiceExamples: ['no filter. no performance. just this.','built from something real.','you can feel the difference.'],
+    avoid: "Over-polished imagery, corporate language, anything that feels manufactured or fake."
+  },
+  {
+    id: 4,
+    name: 'The Editorial Cold Brand',
+    moodTriggers: ['Cold','Sharp','Pure','Mysterious'],
+    personTriggers: ['cold-editorial','mysterious'],
+    summary: "Your brand is a closed book that everyone wants to open. Cold on the surface, precise in every detail, editorial in everything it does. It doesn't explain itself and doesn't need to. The work speaks. It stands against warmth that isn't earned, against brands that over-communicate, against anything that dilutes the vision. It exists for the person with taste sharp enough to understand it without being told.",
+    threeWords: ['Precise','Cold','Editorial'],
+    voiceExamples: ['the work speaks. we don\'t.','cold by design. sharp by nature.','not for everyone. exactly the point.'],
+    avoid: "Warm tones, friendly casual language, anything that over-explains or over-communicates."
+  },
+  {
+    id: 5,
+    name: 'The Warm Human Brand',
+    moodTriggers: ['Warm','Soft'],
+    personTriggers: ['warm-approachable'],
+    summary: "Your brand feels like someone you trust. Not a company — a person. Warm, genuine, the kind of brand that remembers your name and means it. It stands against cold corporate brands, against brands that feel distant or manufactured, against anything that forgets there are real people on the other side. It exists for the person who wants to buy from something that actually cares.",
+    threeWords: ['Warm','Genuine','Human'],
+    voiceExamples: ['made with people in mind. always.','the brand that actually gives a damn.','built for real people. by real people.'],
+    avoid: "Cold editorial tones, overly minimal design that feels clinical, anything that feels distant or impersonal."
+  },
+  {
+    id: 6,
+    name: 'The Rebellious Cultural Brand',
+    moodTriggers: ['Rebellious'],
+    personTriggers: ['rebellious-raw'],
+    summary: "Your brand comes from somewhere. It has roots, references, a point of view that didn't come from a brand strategy document — it came from culture. It rejects the mainstream not as a pose but as a genuine position. It stands against brands that appropriate culture without living it, against anything that feels like it was designed by committee, against playing by rules that weren't made for people like them. It exists for the person who knows the difference between real and fake — and only accepts real.",
+    threeWords: ['Cultural','Rebellious','Genuine'],
+    voiceExamples: ['not inspired by culture. part of it.','built from the inside out.','you know if it\'s for you.'],
+    avoid: "Corporate polish, anything that feels like it's trying to seem cool, mainstream aesthetics."
+  }
+];
+
+function bfMatchArchetype(answers) {
+  const moods           = (answers[2] && answers[2].moods)      || [];
+  const personSelections = (answers[1] && answers[1].selections) || [];
+
+  const scores = BF_ARCHETYPES.map(arch => {
+    let s = 0;
+    moods.forEach(m           => { if (arch.moodTriggers.includes(m))   s++; });
+    personSelections.forEach(p => { if (arch.personTriggers.includes(p)) s++; });
+    return s;
+  });
+
+  const maxScore = Math.max(...scores);
+  if (maxScore === 0) return BF_ARCHETYPES[0]; // no matches → default to Archetype 1
+
+  const tied = scores.reduce((acc, s, i) => { if (s === maxScore) acc.push(i); return acc; }, []);
+  if (tied.length > 1) return BF_ARCHETYPES[0]; // tie → default to Archetype 1
+
+  return BF_ARCHETYPES[tied[0]];
+}
+
+function bfGenerateAndSaveOutput() {
+  let answers = {};
+  try { answers = JSON.parse(localStorage.getItem(BF_ANSWERS_KEY) || '{}'); } catch(e) {}
+
+  const arch = bfMatchArchetype(answers);
+  const output = {
+    archetypeName: arch.name,
+    summary:       arch.summary,
+    threeWords:    arch.threeWords,
+    voiceExamples: arch.voiceExamples,
+    avoid:         arch.avoid
+  };
+
+  localStorage.setItem(BF_OUTPUT_KEY,      JSON.stringify(output));
+  localStorage.setItem(BF_THREE_WORDS_KEY, arch.threeWords.join(' · '));
+  return output;
+}
+
+function bfRenderOutputCard(output) {
+  const card = document.getElementById('bf-output-card');
+  if (!card || !output) return;
+
+  /* Build voice lines with gradient left-border */
+  const voiceHTML = output.voiceExamples
+    .map(ex => `<div class="bf-output-voice-line">"${ex}"</div>`)
+    .join('');
+
+  card.innerHTML =
+    `<div class="bf-output-label">your brand identity</div>` +
+    `<div class="bf-output-archetype">${output.archetypeName}</div>` +
+    `<div class="bf-output-divider"></div>` +
+    `<p class="bf-output-summary">${output.summary}</p>` +
+    `<div class="bf-output-divider"></div>` +
+    `<div class="bf-output-section-label">your three words</div>` +
+    `<div class="bf-output-words">` +
+      `<span class="bf-output-word">${output.threeWords[0]}</span>` +
+      `<span class="bf-output-word-dot">·</span>` +
+      `<span class="bf-output-word">${output.threeWords[1]}</span>` +
+      `<span class="bf-output-word-dot">·</span>` +
+      `<span class="bf-output-word">${output.threeWords[2]}</span>` +
+    `</div>` +
+    `<div class="bf-output-divider"></div>` +
+    `<div class="bf-output-section-label">your brand sounds like</div>` +
+    `<div class="bf-output-voice-list">${voiceHTML}</div>` +
+    `<div class="bf-output-divider"></div>` +
+    `<div class="bf-output-section-label">what to avoid</div>` +
+    `<p class="bf-output-avoid">${output.avoid}</p>`;
+}
+
+function bfShowOutputCard() {
+  const card    = document.getElementById('bf-output-card');
+  const btnWrap = document.getElementById('bf-enter-btn-wrap');
+
+  // Reset to hidden state first
+  if (card)    { card.classList.remove('bf-card-visible');    card.innerHTML = ''; }
+  if (btnWrap)   btnWrap.classList.remove('bf-card-visible');
+
+  // Generate / save output, populate card
+  const output = bfGenerateAndSaveOutput();
+  bfRenderOutputCard(output);
+
+  // Slide up after 800ms
+  setTimeout(() => {
+    if (card)    card.classList.add('bf-card-visible');
+    if (btnWrap) btnWrap.classList.add('bf-card-visible');
+    // Refresh three-words in dashboard header immediately
+    bfRefreshDashThreeWords();
+  }, 800);
+}
+
+function bfRefreshDashThreeWords() {
+  const words = localStorage.getItem(BF_THREE_WORDS_KEY);
+  const el    = document.getElementById('dash-three-words');
+  if (el) el.textContent = words || '';
+}
+
 /* ===== BRAND FOUNDATION ===== */
 const BF_COMPLETE_KEY = 'frmls_foundation_complete';
 const BF_STEP_KEY     = 'frmls_foundation_step';
@@ -6109,8 +6356,11 @@ function bfGoTo(step, animate) {
       });
     });
 
-    // Init completion particles
-    if (step === BF_TOTAL_STEPS) bfInitParticles();
+    // Init completion particles + generate brand output card
+    if (step === BF_TOTAL_STEPS) {
+      bfInitParticles();
+      bfShowOutputCard();
+    }
   }
 
   if (animate && currentEl && currentEl !== nextEl) {
@@ -6175,6 +6425,7 @@ function bfComplete() {
 
 function bfEnterDashboard() {
   bfHideOverlay();
+  bfRefreshDashThreeWords();
 }
 
 /* Toggle a checkbox card */

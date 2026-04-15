@@ -1640,6 +1640,164 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   letter-spacing: 0.04em;
 }
 
+/* ─────────────────────────────────────────
+   TIP POST — BRAND VOICE CAROUSEL SLIDES
+───────────────────────────────────────── */
+.tip-bg {
+  position: absolute; inset: 0;
+  background: #f5f0e8;
+}
+.tip-glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 920px; height: 920px;
+  background: radial-gradient(ellipse at center,
+    rgba(255,252,242,0.85) 0%,
+    rgba(250,244,230,0.50) 35%,
+    transparent 65%);
+  pointer-events: none;
+}
+.tip-noise {
+  position: absolute; inset: 0;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+.tip-num {
+  position: absolute; top: 52px; right: 64px;
+  font-family: 'DM Mono', monospace;
+  font-size: 14px; font-weight: 400;
+  color: #aaa49a; letter-spacing: 0.08em;
+}
+.tip-frmls {
+  position: absolute; bottom: 52px; right: 64px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: #888880;
+}
+.tip-content {
+  position: absolute;
+  left: 64px; right: 64px;
+  top: 0; bottom: 0;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 90px 0;
+}
+.tip-h {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 800; color: #1a1a1a;
+  line-height: 1.06; letter-spacing: -0.03em;
+  text-shadow: 0 2px 24px rgba(160,120,60,0.10);
+  margin: 0;
+}
+.tip-line {
+  width: 80px; height: 4px;
+  background: linear-gradient(90deg, #c4622d, #d4a853);
+  border-radius: 2px;
+  margin-top: 28px; margin-bottom: 40px;
+  flex-shrink: 0;
+}
+.tip-body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 34px; font-weight: 400;
+  color: #4a4540; line-height: 1.62;
+  text-shadow: 0 1px 8px rgba(160,120,60,0.06);
+  margin: 0;
+}
+.tip-bold { font-weight: 700; color: #1a1a1a; }
+.tip-g {
+  background: linear-gradient(90deg, #c4622d, #d4a853);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+/* Slide 7 CTA — dark variant */
+.tip-bg-dark { position: absolute; inset: 0; background: #1a1a1a; }
+.tip-glow-dark {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px; height: 700px;
+  background: radial-gradient(ellipse at center,
+    rgba(196,98,45,0.12) 0%,
+    rgba(212,168,83,0.06) 40%,
+    transparent 70%);
+  pointer-events: none;
+}
+.tip-cta-content {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 32px;
+  padding: 80px 64px;
+}
+.tip-cta-logo {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 96px; font-weight: 900;
+  color: #ffffff; letter-spacing: -0.04em;
+  line-height: 1; text-align: center;
+}
+.tip-cta-tagline {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 42px; font-weight: 700;
+  color: #ffffff; letter-spacing: -0.02em;
+  line-height: 1.2; text-align: center;
+  text-shadow: 0 2px 24px rgba(196,98,45,0.25);
+}
+.tip-cta-price {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 32px; font-weight: 700;
+  letter-spacing: -0.01em; text-align: center;
+  background: linear-gradient(90deg, #c4622d, #d4a853);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.tip-cta-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 16px; font-weight: 400;
+  color: #888880; letter-spacing: 0.06em;
+  text-align: center;
+}
+/* Sidebar carousel section */
+.carousel-export-btn {
+  width: 100%; height: 44px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(196,98,45,0.40);
+  background: rgba(196,98,45,0.08);
+  color: rgba(212,168,83,0.95);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer; transition: all 0.15s;
+}
+.carousel-export-btn:hover {
+  background: rgba(196,98,45,0.18);
+  border-color: rgba(196,98,45,0.72);
+  color: #d4a853;
+}
+.carousel-export-btn:disabled { opacity: 0.4; pointer-events: none; }
+.carousel-slide-row {
+  display: flex; gap: 5px; flex-wrap: wrap;
+  margin-top: 12px;
+}
+.carousel-slide-thumb {
+  width: 40px; height: 50px;
+  border-radius: 5px;
+  background: linear-gradient(150deg, #f5f0e8 0%, #e8d5bc 100%);
+  border: 1px solid rgba(196,98,45,0.22);
+  cursor: pointer; transition: all 0.12s;
+  font-size: 9px; font-weight: 500;
+  color: #aaa49a; font-family: 'DM Mono', monospace;
+  display: flex; align-items: center; justify-content: center;
+}
+.carousel-slide-thumb:hover { border-color: rgba(196,98,45,0.60); transform: scale(1.08); }
+.carousel-slide-thumb.tip-cta-thumb {
+  background: linear-gradient(150deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: rgba(255,255,255,0.35);
+}
 /* ───────────── VIDEO SECTION ───────────── */
 .vid-drop-zone {
   border: 1.5px dashed rgba(124,58,237,0.35);
@@ -1846,6 +2004,24 @@ body.eyedropper-mode * { cursor: crosshair !important; }
         </div>
         <div class="template-grid" id="template-grid">
           <!-- populated by renderTemplateGrid() -->
+        </div>
+      </div>
+
+      <!-- TIP POST CAROUSEL -->
+      <div class="sb-section" id="sb-tip-carousel">
+        <div class="sb-section-header">
+          <span class="sb-section-title">Tip Post Carousel</span>
+          <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">7 slides · 1080×1350</span>
+        </div>
+        <button class="carousel-export-btn" id="tip-export-btn" onclick="exportTipCarousel()">↓ Export All 7 Slides</button>
+        <div class="carousel-slide-row" id="carousel-thumbs">
+          <div class="carousel-slide-thumb" onclick="selectCanvas('tip1');closeMobileSidebar()" title="Slide 1 — Hook">01</div>
+          <div class="carousel-slide-thumb" onclick="selectCanvas('tip2');closeMobileSidebar()" title="Slide 2 — Problem">02</div>
+          <div class="carousel-slide-thumb" onclick="selectCanvas('tip3');closeMobileSidebar()" title="Slide 3 — Agitate">03</div>
+          <div class="carousel-slide-thumb" onclick="selectCanvas('tip4');closeMobileSidebar()" title="Slide 4 — Agitate 2">04</div>
+          <div class="carousel-slide-thumb" onclick="selectCanvas('tip5');closeMobileSidebar()" title="Slide 5 — Reframe">05</div>
+          <div class="carousel-slide-thumb" onclick="selectCanvas('tip6');closeMobileSidebar()" title="Slide 6 — Solve">06</div>
+          <div class="carousel-slide-thumb tip-cta-thumb" onclick="selectCanvas('tip7');closeMobileSidebar()" title="Slide 7 — CTA">07</div>
         </div>
       </div>
 
@@ -2490,6 +2666,171 @@ body.eyedropper-mode * { cursor: crosshair !important; }
     </div>
   </div>
 
+
+  <!-- ════════════════════════════════════════════
+       TIP POST — BRAND VOICE PROBLEM  (7 slides)
+  ════════════════════════════════════════════ -->
+
+  <!-- SLIDE 1 — HOOK -->
+  <div id="cvs-tip1" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
+    <div class="tip-bg"></div>
+    <div class="tip-glow"></div>
+    <div class="tip-noise"></div>
+    <span class="tip-num">01 / 07</span>
+    <span class="tip-frmls">FRMLS</span>
+    <div class="tip-content">
+      <div class="tip-h" style="font-size:80px;">
+        you know exactly<br>
+        what your brand<br>
+        should <span class="tip-g">feel like.</span>
+      </div>
+      <div class="tip-line"></div>
+      <div class="tip-body" style="font-size:40px;color:#4a4540;font-weight:400;">
+        so why does your store<br>
+        feel like everyone else's?
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 — PROBLEM -->
+  <div id="cvs-tip2" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
+    <div class="tip-bg"></div>
+    <div class="tip-glow"></div>
+    <div class="tip-noise"></div>
+    <span class="tip-num">02 / 07</span>
+    <span class="tip-frmls">FRMLS</span>
+    <div class="tip-content">
+      <div class="tip-h" style="font-size:66px;">
+        the vision is clear<br>
+        in your head.
+      </div>
+      <div class="tip-line"></div>
+      <div class="tip-body" style="font-size:34px;">
+        you know the vibe.<br>
+        you know the energy.<br>
+        you know who your brand is for.<br>
+        but the second you open Shopify —<br>
+        <span class="tip-bold" style="font-size:38px;">you freeze.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 — AGITATE -->
+  <div id="cvs-tip3" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
+    <div class="tip-bg"></div>
+    <div class="tip-glow"></div>
+    <div class="tip-noise"></div>
+    <span class="tip-num">03 / 07</span>
+    <span class="tip-frmls">FRMLS</span>
+    <div class="tip-content">
+      <div class="tip-h" style="font-size:66px;">
+        so you do what<br>
+        everyone does.
+      </div>
+      <div class="tip-line"></div>
+      <div class="tip-body" style="font-size:33px;">
+        you pick a template.<br>
+        you copy some product descriptions.<br>
+        you choose fonts that look clean enough.<br>
+        and you launch a store<br>
+        that technically works.<br>
+        <span class="tip-bold tip-g" style="font-size:37px;display:block;margin-top:14px;">but doesn't feel like anything.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 — AGITATE DEEPER -->
+  <div id="cvs-tip4" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
+    <div class="tip-bg"></div>
+    <div class="tip-glow"></div>
+    <div class="tip-noise"></div>
+    <span class="tip-num">04 / 07</span>
+    <span class="tip-frmls">FRMLS</span>
+    <div class="tip-content">
+      <div class="tip-h" style="font-size:76px;">
+        and people<br>
+        can tell.
+      </div>
+      <div class="tip-line"></div>
+      <div class="tip-body" style="font-size:33px;">
+        they land on your store.<br>
+        they look around for 8 seconds.<br>
+        nothing grabs them.<br>
+        nothing feels different.<br>
+        they leave.<br>
+        <span class="tip-bold" style="display:block;margin-top:14px;">not because your product is bad.</span>
+        because your brand has <span class="tip-bold tip-g">no identity.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 — REFRAME -->
+  <div id="cvs-tip5" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
+    <div class="tip-bg"></div>
+    <div class="tip-glow"></div>
+    <div class="tip-noise"></div>
+    <span class="tip-num">05 / 07</span>
+    <span class="tip-frmls">FRMLS</span>
+    <div class="tip-content">
+      <div class="tip-h" style="font-size:66px;">
+        this isn't a<br>
+        design problem.
+      </div>
+      <div class="tip-line"></div>
+      <div class="tip-body" style="font-size:33px;">
+        it's a <span class="tip-bold tip-g">language problem.</span><br>
+        you never had the right questions to ask.<br>
+        what does your brand sound like?<br>
+        what does it stand for?<br>
+        who exactly is it for?<br>
+        <span class="tip-bold" style="display:block;margin-top:14px;">nobody ever helped you<br>figure that out.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 — SOLVE -->
+  <div id="cvs-tip6" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
+    <div class="tip-bg"></div>
+    <div class="tip-glow"></div>
+    <div class="tip-noise"></div>
+    <span class="tip-num">06 / 07</span>
+    <span class="tip-frmls">FRMLS</span>
+    <div class="tip-content">
+      <div class="tip-h" style="font-size:62px;">
+        that's exactly<br>
+        what FRMLS does.
+      </div>
+      <div class="tip-line"></div>
+      <div class="tip-body" style="font-size:31px;">
+        the Brand Kit walks you through<br>
+        your identity step by step.<br>
+        colors. fonts. tone of voice.<br>
+        the Prompt Pack gives you exact words<br>
+        to use with AI to build your store.<br>
+        no more generic outputs.<br>
+        no more blank page paralysis.<br>
+        <span class="tip-bold" style="display:block;margin-top:14px;">just a store that finally <span class="tip-g">feels like yours.</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 — CTA -->
+  <div id="cvs-tip7" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
+    <div class="tip-bg-dark"></div>
+    <div class="tip-glow-dark"></div>
+    <div class="tip-noise" style="opacity:0.04;"></div>
+    <span class="tip-num" style="color:rgba(170,164,154,0.45);">07 / 07</span>
+    <div class="tip-cta-content">
+      <div class="tip-cta-logo">FRMLS</div>
+      <div class="tip-cta-tagline">
+        build a store that<br>
+        feels like something.
+      </div>
+      <div class="tip-cta-price">frmls.com — $37 one time</div>
+      <div class="tip-cta-sub">brand kit · prompt pack · launch checklist</div>
+    </div>
+  </div>
+
 </div><!-- /canvas-pool -->
 
 
@@ -2556,7 +2897,14 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 
 const BUILT_IN = [
   { key:'grid', name:'Grid Story',      w:1080, h:1350, thumb:'linear-gradient(135deg,#0d0120 0%,#001318 50%,#130900 100%)', deletable:false },
-  { key:'pfp',  name:'Profile Picture', w:500,  h:500,  thumb:'linear-gradient(135deg,#07070f 0%,#7c3aed22 50%,#06b6d422 100%)', deletable:false }
+  { key:'pfp',  name:'Profile Picture', w:500,  h:500,  thumb:'linear-gradient(135deg,#07070f 0%,#7c3aed22 50%,#06b6d422 100%)', deletable:false },
+  { key:'tip1', name:'Tip Slide 1 — Hook',        w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:false },
+  { key:'tip2', name:'Tip Slide 2 — Problem',      w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:false },
+  { key:'tip3', name:'Tip Slide 3 — Agitate',      w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:false },
+  { key:'tip4', name:'Tip Slide 4 — Agitate 2',    w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:false },
+  { key:'tip5', name:'Tip Slide 5 — Reframe',      w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:false },
+  { key:'tip6', name:'Tip Slide 6 — Solve',        w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:false },
+  { key:'tip7', name:'Tip Slide 7 — CTA',          w:1080, h:1350, thumb:'linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%)', deletable:false }
 ];
 
 let userCanvases    = [];
@@ -5087,6 +5435,77 @@ function copyColor(hex, el) {
   navigator.clipboard.writeText(hex).catch(function() {});
   el.style.transform = 'scale(1.25)';
   setTimeout(function() { el.style.transform = ''; }, 300);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  TIP POST CAROUSEL — EXPORT ALL 7 SLIDES
+// ══════════════════════════════════════════════════════════════
+
+async function exportTipCarousel() {
+  const btn = document.getElementById('tip-export-btn');
+  if (btn) { btn.textContent = 'Exporting…'; btn.disabled = true; }
+
+  const tipKeys = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7'];
+  const prevActive = activeKey;
+
+  for (let i = 0; i < tipKeys.length; i++) {
+    const slideKey = tipKeys[i];
+    const slideMeta = getMeta(slideKey);
+    if (!slideMeta) continue;
+
+    await new Promise(function(resolve) {
+      selectCanvas(slideKey);
+      const el = document.getElementById('cvs-' + slideKey);
+      if (!el) { resolve(); return; }
+
+      const prevTransform = stage.style.transform;
+      const prevContentTf = canvasContent.style.transform;
+      const prevContentW  = canvasContent.style.width;
+      const prevContentH  = canvasContent.style.height;
+
+      stage.style.transform         = 'translate(-50%,-50%) scale(1)';
+      canvasContent.style.transform = 'translate(-50%,-50%) scale(1)';
+      canvasContent.style.width     = '1080px';
+      canvasContent.style.height    = '1350px';
+
+      const bg = slideKey === 'tip7' ? '#1a1a1a' : '#f5f0e8';
+      const slideNum = i + 1;
+
+      html2canvas(el, {
+        width: 1080, height: 1350,
+        scale: 1, useCORS: true,
+        backgroundColor: bg,
+        logging: false
+      }).then(function(canvas) {
+        stage.style.transform         = prevTransform;
+        canvasContent.style.transform = prevContentTf;
+        canvasContent.style.width     = prevContentW;
+        canvasContent.style.height    = prevContentH;
+        applyFrame();
+
+        canvas.toBlob(function(blob) {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'tip-slide-' + slideNum + '.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(function() { URL.revokeObjectURL(a.href); }, 3000);
+          resolve();
+        }, 'image/png');
+      }).catch(function() {
+        stage.style.transform         = prevTransform;
+        canvasContent.style.transform = prevContentTf;
+        canvasContent.style.width     = prevContentW;
+        canvasContent.style.height    = prevContentH;
+        applyFrame();
+        resolve();
+      });
+    });
+  }
+
+  if (prevActive) selectCanvas(prevActive);
+  if (btn) { btn.textContent = '↓ Export All 7 Slides'; btn.disabled = false; }
 }
 
 // ── Mobile sidebar ──

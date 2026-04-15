@@ -2892,7 +2892,7 @@ html, body {
 
 
 <!-- =====================================================
-     FRMLS Dashboard Grid — 1080×1350 Instagram Post
+     FRMLS Dashboard Grid — 1080×1350 Instagram Post (v2)
      ===================================================== -->
 <style>
 #grid-section {
@@ -2914,31 +2914,31 @@ html, body {
   opacity: 0.55;
 }
 
-/* The card itself — 1080×1350 at 50% scale for preview */
+/* Card wrapper — 50% scale for preview */
 #grid-card-wrap {
   width: 540px;
   height: 675px;
-  transform-origin: top left;
   position: relative;
+  overflow: hidden;
 }
 #grid-card {
   width: 1080px;
   height: 1350px;
-  background: #0a0a0a;
+  background: #06060e;
   transform: scale(0.5);
   transform-origin: top left;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
 }
 
-/* 2×2 grid takes up 1230px of height, strip takes 120px */
+/* ── Quadrant Grid ── */
 #grid-quadrants {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   flex: 1;
-  gap: 0;
 }
 
 .gq {
@@ -2948,119 +2948,325 @@ html, body {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
-  padding: 54px 50px;
+  padding: 62px 58px;
 }
 
-/* Dividers via borders */
-.gq-tl { border-right: 2px solid #0a0a0a; border-bottom: 2px solid #0a0a0a; }
-.gq-tr { border-bottom: 2px solid #0a0a0a; }
-.gq-bl { border-right: 2px solid #0a0a0a; }
-
-/* Q1 — Brand Kit */
-.gq-tl {
-  background: linear-gradient(135deg, #1a0533 0%, #2d1054 100%);
-}
-.gq-tl .gq-glow {
-  position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 70% 60% at 30% 30%, rgba(139,60,255,0.28) 0%, transparent 70%);
-}
-
-/* Q2 — Prompt Pack */
-.gq-tr {
-  background: linear-gradient(135deg, #011818 0%, #023030 100%);
-}
-.gq-tr .gq-glow {
-  position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 70% 60% at 70% 25%, rgba(6,182,212,0.22) 0%, transparent 70%);
-}
-
-/* Q3 — Launch Checklist */
-.gq-bl {
-  background: linear-gradient(135deg, #020818 0%, #051530 100%);
-}
-.gq-bl .gq-glow {
-  position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 70% 60% at 30% 70%, rgba(29,78,216,0.24) 0%, transparent 70%);
-}
-
-/* Q4 — Store Inspiration */
-.gq-br {
-  background: linear-gradient(135deg, #1a0a00 0%, #2d1500 100%);
-}
-.gq-br .gq-glow {
-  position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 70% 60% at 70% 70%, rgba(217,119,6,0.22) 0%, transparent 70%);
-}
-
-/* Icon wrapper */
-.gq-icon {
+/* ── Orb layers — multi-stop radial gradients (no filter:blur) ── */
+.gq-orb {
   position: absolute;
-  top: 50px;
-  left: 50px;
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Light streak — diagonal linear gradient band ── */
+.gq-streak {
+  position: absolute;
+  pointer-events: none;
   z-index: 2;
 }
 
-/* Text block */
-.gq-text { position: relative; z-index: 2; }
+/* ── Noise grain texture ── */
+.gq-noise {
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 3;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='nz'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23nz)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* ── Icon ── */
+.gq-icon { position: absolute; top: 54px; left: 58px; z-index: 5; }
+
+/* ── Text ── */
+.gq-text { position: relative; z-index: 5; }
 .gq-label {
   font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  font-size: 38px;
+  font-weight: 900;
+  font-size: 50px;
   color: #ffffff;
-  letter-spacing: -0.01em;
-  line-height: 1.1;
-  margin-bottom: 10px;
+  letter-spacing: -0.03em;
+  line-height: 1.0;
+  margin-bottom: 16px;
+  max-width: 370px;
 }
 .gq-sub {
   font-family: 'DM Mono', monospace;
-  font-size: 20px;
-  color: #aaaaaa;
-  letter-spacing: 0.02em;
+  font-size: 22px;
+  color: rgba(200,200,210,0.70);
+  letter-spacing: 0.025em;
 }
 
-/* Bottom strip */
+/* ══════════════════════════════════
+   Q1 — Brand Kit — Vivid Purple
+   ══════════════════════════════════ */
+.gq-tl { background: #0d0120; }
+/* Primary orb: bleeds from top-right corner */
+.gq-tl .gq-orb-1 {
+  width: 780px; height: 780px;
+  top: -310px; right: -210px;
+  background: radial-gradient(circle,
+    rgba(220,180,255,0.60) 0%,
+    rgba(192,132,252,0.42) 14%,
+    rgba(168,85,247,0.26) 30%,
+    rgba(124,58,237,0.12) 52%,
+    transparent 72%);
+}
+/* Secondary orb: bleeds from bottom-left */
+.gq-tl .gq-orb-2 {
+  width: 520px; height: 520px;
+  bottom: -180px; left: -130px;
+  background: radial-gradient(circle,
+    rgba(139,92,246,0.50) 0%,
+    rgba(109,40,217,0.28) 32%,
+    rgba(88,28,220,0.10) 58%,
+    transparent 76%);
+}
+/* Diagonal light streak */
+.gq-tl .gq-streak {
+  width: 720px; height: 90px;
+  top: 37%; left: -90px;
+  transform: rotate(-16deg);
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(192,132,252,0.07) 20%,
+    rgba(220,180,255,0.18) 50%,
+    rgba(192,132,252,0.07) 80%,
+    transparent 100%);
+}
+
+/* ══════════════════════════════════
+   Q2 — Prompt Pack — Rich Teal
+   ══════════════════════════════════ */
+.gq-tr { background: #001318; }
+/* Primary orb: bleeds from top-left corner */
+.gq-tr .gq-orb-1 {
+  width: 780px; height: 780px;
+  top: -260px; left: -210px;
+  background: radial-gradient(circle,
+    rgba(110,240,255,0.58) 0%,
+    rgba(34,211,238,0.40) 14%,
+    rgba(6,182,212,0.24) 30%,
+    rgba(8,145,178,0.10) 52%,
+    transparent 72%);
+}
+/* Secondary orb: bleeds from bottom-right */
+.gq-tr .gq-orb-2 {
+  width: 480px; height: 480px;
+  bottom: -140px; right: -110px;
+  background: radial-gradient(circle,
+    rgba(20,184,166,0.48) 0%,
+    rgba(6,182,212,0.24) 35%,
+    transparent 70%);
+}
+/* Diagonal light streak */
+.gq-tr .gq-streak {
+  width: 720px; height: 90px;
+  bottom: 36%; right: -90px;
+  transform: rotate(16deg);
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(34,211,238,0.07) 20%,
+    rgba(110,240,255,0.18) 50%,
+    rgba(34,211,238,0.07) 80%,
+    transparent 100%);
+}
+
+/* ══════════════════════════════════
+   Q3 — Launch Checklist — Deep Blue
+   ══════════════════════════════════ */
+.gq-bl { background: #010920; }
+/* Primary orb: bleeds from bottom-left corner */
+.gq-bl .gq-orb-1 {
+  width: 780px; height: 780px;
+  bottom: -280px; left: -200px;
+  background: radial-gradient(circle,
+    rgba(160,210,255,0.58) 0%,
+    rgba(96,165,250,0.40) 14%,
+    rgba(59,130,246,0.24) 30%,
+    rgba(37,99,235,0.10) 52%,
+    transparent 72%);
+}
+/* Secondary orb: bleeds from top-right */
+.gq-bl .gq-orb-2 {
+  width: 480px; height: 480px;
+  top: -120px; right: -130px;
+  background: radial-gradient(circle,
+    rgba(99,102,241,0.48) 0%,
+    rgba(59,130,246,0.22) 35%,
+    transparent 70%);
+}
+/* Diagonal light streak */
+.gq-bl .gq-streak {
+  width: 720px; height: 90px;
+  top: 52%; left: -70px;
+  transform: rotate(20deg);
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(96,165,250,0.07) 20%,
+    rgba(160,210,255,0.18) 50%,
+    rgba(96,165,250,0.07) 80%,
+    transparent 100%);
+}
+
+/* ══════════════════════════════════
+   Q4 — Store Inspiration — Warm Amber
+   ══════════════════════════════════ */
+.gq-br { background: #130900; }
+/* Primary orb: bleeds from bottom-right corner */
+.gq-br .gq-orb-1 {
+  width: 780px; height: 780px;
+  bottom: -290px; right: -210px;
+  background: radial-gradient(circle,
+    rgba(255,235,130,0.58) 0%,
+    rgba(251,191,36,0.40) 14%,
+    rgba(245,158,11,0.24) 30%,
+    rgba(217,119,6,0.10) 52%,
+    transparent 72%);
+}
+/* Secondary orb: bleeds from top-left */
+.gq-br .gq-orb-2 {
+  width: 480px; height: 480px;
+  top: -110px; left: -110px;
+  background: radial-gradient(circle,
+    rgba(249,115,22,0.48) 0%,
+    rgba(245,158,11,0.22) 35%,
+    transparent 70%);
+}
+/* Diagonal light streak */
+.gq-br .gq-streak {
+  width: 720px; height: 90px;
+  top: 38%; right: -90px;
+  transform: rotate(-20deg);
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(251,191,36,0.07) 20%,
+    rgba(255,235,130,0.18) 50%,
+    rgba(251,191,36,0.07) 80%,
+    transparent 100%);
+}
+
+/* ══════════════════════════════════
+   Gradient Cross Dividers
+   ══════════════════════════════════ */
+/* Glow halos (wide, low-opacity) behind the crisp lines */
+#gd-h-glow {
+  position: absolute; pointer-events: none; z-index: 19;
+  top: 591px; left: 0;
+  width: 1080px; height: 29px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(124,58,237,0.12) 38%,
+    rgba(6,182,212,0.12) 62%,
+    transparent 100%);
+}
+#gd-v-glow {
+  position: absolute; pointer-events: none; z-index: 19;
+  left: 526px; top: 0;
+  width: 29px; height: 1210px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(124,58,237,0.12) 38%,
+    rgba(6,182,212,0.12) 62%,
+    transparent 100%);
+}
+/* Crisp gradient lines */
+#gd-h {
+  position: absolute; pointer-events: none; z-index: 20;
+  top: 604px; left: 0;
+  width: 1080px; height: 3px;
+  background: linear-gradient(90deg,
+    rgba(124,58,237,0.70) 0%,
+    rgba(139,92,246,0.90) 28%,
+    rgba(99,200,255,0.90) 72%,
+    rgba(6,182,212,0.70) 100%);
+}
+#gd-v {
+  position: absolute; pointer-events: none; z-index: 20;
+  left: 539px; top: 0;
+  width: 3px; height: 1210px;
+  background: linear-gradient(180deg,
+    rgba(124,58,237,0.70) 0%,
+    rgba(139,92,246,0.90) 28%,
+    rgba(99,200,255,0.90) 72%,
+    rgba(6,182,212,0.70) 100%);
+}
+/* Bright center intersection dot */
+#gd-center {
+  position: absolute; pointer-events: none; z-index: 21;
+  width: 22px; height: 22px;
+  left: 529px; top: 594px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255,255,255,0.95) 0%,
+    rgba(180,140,255,0.70) 35%,
+    rgba(34,211,238,0.45) 65%,
+    transparent 100%);
+}
+
+/* ══════════════════════════════════
+   Bottom Strip
+   ══════════════════════════════════ */
 #grid-strip {
   width: 1080px;
-  height: 120px;
-  background: #0a0a0a;
+  height: 140px;
+  background: #06060e;
+  flex-shrink: 0;
+  position: relative;
+}
+/* Gradient rule at top of strip */
+#gs-topline {
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg,
+    rgba(124,58,237,0.85) 0%,
+    rgba(139,92,246,1.00) 22%,
+    rgba(34,211,238,1.00) 78%,
+    rgba(6,182,212,0.85) 100%);
+}
+#gs-topline-glow {
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 28px;
+  background: linear-gradient(180deg,
+    rgba(124,58,237,0.18) 0%,
+    rgba(6,182,212,0.10) 55%,
+    transparent 100%);
+}
+#gs-inner {
+  position: absolute; inset: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 54px;
-  flex-shrink: 0;
+  padding: 0 58px;
 }
-
-#grid-strip-logo {
+/* FRMLS wordmark */
+#gs-logo {
   font-family: 'Inter', sans-serif;
   font-weight: 900;
-  font-size: 36px;
-  letter-spacing: -0.02em;
+  font-size: 54px;
+  letter-spacing: -0.03em;
   color: #ffffff;
+  line-height: 1;
 }
-#grid-strip-logo span {
-  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+#gs-logo span {
+  background: linear-gradient(90deg, #a855f7 0%, #06b6d4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
-#grid-strip-url {
+/* Right CTA */
+#gs-cta {
   font-family: 'Inter', sans-serif;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 26px;
-  letter-spacing: 0.01em;
-  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  letter-spacing: -0.01em;
+  background: linear-gradient(90deg, #a855f7 0%, #06b6d4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Export button */
+/* ── Export button ── */
 #grid-dl {
   display: inline-flex;
   align-items: center;
@@ -3087,7 +3293,7 @@ html, body {
 #grid-note {
   font-family: 'Inter', sans-serif;
   font-size: 13px;
-  color: rgba(255,255,255,0.30);
+  color: rgba(255,255,255,0.28);
   letter-spacing: 0.04em;
 }
 </style>
@@ -3098,16 +3304,39 @@ html, body {
   <div id="grid-card-wrap">
     <div id="grid-card">
 
+      <!-- Divider glow halos (behind lines) -->
+      <div id="gd-h-glow"></div>
+      <div id="gd-v-glow"></div>
+      <!-- Crisp gradient divider lines -->
+      <div id="gd-h"></div>
+      <div id="gd-v"></div>
+      <!-- Bright center intersection -->
+      <div id="gd-center"></div>
+
       <!-- 2×2 Quadrants -->
       <div id="grid-quadrants">
 
         <!-- Q1: Brand Kit (top-left) -->
         <div class="gq gq-tl">
-          <div class="gq-glow"></div>
+          <div class="gq-orb gq-orb-1"></div>
+          <div class="gq-orb gq-orb-2"></div>
+          <div class="gq-streak"></div>
+          <div class="gq-noise"></div>
           <div class="gq-icon">
-            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M28 6L34 18H46L36 26L40 38L28 30L16 38L20 26L10 18H22L28 6Z" fill="none" stroke="rgba(180,130,255,0.85)" stroke-width="2" stroke-linejoin="round"/>
-              <circle cx="28" cy="28" r="6" fill="rgba(180,130,255,0.25)" stroke="rgba(180,130,255,0.7)" stroke-width="1.5"/>
+            <svg width="82" height="82" viewBox="0 0 82 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="gq1-bg" x1="0" y1="0" x2="82" y2="82" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#c026d3"/>
+                  <stop offset="100%" stop-color="#7c3aed"/>
+                </linearGradient>
+              </defs>
+              <rect width="82" height="82" rx="22" fill="url(#gq1-bg)" fill-opacity="0.22"/>
+              <rect x="1" y="1" width="80" height="80" rx="21" stroke="rgba(200,150,255,0.45)" stroke-width="1.5" fill="none"/>
+              <!-- Diamond / facets -->
+              <path d="M41 15L61 36L41 65L21 36L41 15Z" stroke="white" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
+              <line x1="21" y1="36" x2="61" y2="36" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+              <path d="M31 16L21 36L31 65" stroke="rgba(255,255,255,0.18)" stroke-width="1.2" stroke-linejoin="round"/>
+              <circle cx="41" cy="36" r="4.5" fill="white" fill-opacity="0.92"/>
             </svg>
           </div>
           <div class="gq-text">
@@ -3118,13 +3347,27 @@ html, body {
 
         <!-- Q2: Prompt Pack (top-right) -->
         <div class="gq gq-tr">
-          <div class="gq-glow"></div>
+          <div class="gq-orb gq-orb-1"></div>
+          <div class="gq-orb gq-orb-2"></div>
+          <div class="gq-streak"></div>
+          <div class="gq-noise"></div>
           <div class="gq-icon">
-            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="10" y="8" width="36" height="40" rx="4" stroke="rgba(6,182,212,0.8)" stroke-width="2" fill="none"/>
-              <line x1="18" y1="20" x2="38" y2="20" stroke="rgba(6,182,212,0.6)" stroke-width="2" stroke-linecap="round"/>
-              <line x1="18" y1="28" x2="38" y2="28" stroke="rgba(6,182,212,0.6)" stroke-width="2" stroke-linecap="round"/>
-              <line x1="18" y1="36" x2="30" y2="36" stroke="rgba(6,182,212,0.6)" stroke-width="2" stroke-linecap="round"/>
+            <svg width="82" height="82" viewBox="0 0 82 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="gq2-bg" x1="0" y1="0" x2="82" y2="82" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#06b6d4"/>
+                  <stop offset="100%" stop-color="#0891b2"/>
+                </linearGradient>
+              </defs>
+              <rect width="82" height="82" rx="22" fill="url(#gq2-bg)" fill-opacity="0.22"/>
+              <rect x="1" y="1" width="80" height="80" rx="21" stroke="rgba(34,211,238,0.45)" stroke-width="1.5" fill="none"/>
+              <!-- Document -->
+              <rect x="19" y="14" width="44" height="54" rx="7" stroke="rgba(255,255,255,0.55)" stroke-width="2" fill="none"/>
+              <line x1="27" y1="29" x2="55" y2="29" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="27" y1="40" x2="55" y2="40" stroke="rgba(255,255,255,0.70)" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="27" y1="51" x2="45" y2="51" stroke="rgba(255,255,255,0.45)" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Sparkle dot -->
+              <circle cx="58" cy="57" r="5.5" fill="white" opacity="0.92"/>
             </svg>
           </div>
           <div class="gq-text">
@@ -3135,15 +3378,29 @@ html, body {
 
         <!-- Q3: Launch Checklist (bottom-left) -->
         <div class="gq gq-bl">
-          <div class="gq-glow"></div>
+          <div class="gq-orb gq-orb-1"></div>
+          <div class="gq-orb gq-orb-2"></div>
+          <div class="gq-streak"></div>
+          <div class="gq-noise"></div>
           <div class="gq-icon">
-            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="10" y="10" width="28" height="36" rx="3" stroke="rgba(96,165,250,0.8)" stroke-width="2" fill="none"/>
-              <polyline points="16,22 20,26 28,18" stroke="rgba(96,165,250,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-              <line x1="16" y1="32" x2="32" y2="32" stroke="rgba(96,165,250,0.5)" stroke-width="2" stroke-linecap="round"/>
-              <line x1="16" y1="38" x2="26" y2="38" stroke="rgba(96,165,250,0.5)" stroke-width="2" stroke-linecap="round"/>
-              <path d="M36 22 L46 12" stroke="rgba(96,165,250,0.7)" stroke-width="2" stroke-linecap="round"/>
-              <path d="M40 10 L48 10 L48 18" stroke="rgba(96,165,250,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <svg width="82" height="82" viewBox="0 0 82 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="gq3-bg" x1="0" y1="0" x2="82" y2="82" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#3b82f6"/>
+                  <stop offset="100%" stop-color="#1d4ed8"/>
+                </linearGradient>
+              </defs>
+              <rect width="82" height="82" rx="22" fill="url(#gq3-bg)" fill-opacity="0.22"/>
+              <rect x="1" y="1" width="80" height="80" rx="21" stroke="rgba(96,165,250,0.45)" stroke-width="1.5" fill="none"/>
+              <!-- Checklist rows -->
+              <rect x="14" y="22" width="13" height="13" rx="3.5" stroke="rgba(255,255,255,0.80)" stroke-width="2" fill="none"/>
+              <polyline points="17,28.5 20.5,32 27,25" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="34" y1="28.5" x2="68" y2="28.5" stroke="rgba(255,255,255,0.70)" stroke-width="2.5" stroke-linecap="round"/>
+              <rect x="14" y="40" width="13" height="13" rx="3.5" stroke="rgba(255,255,255,0.80)" stroke-width="2" fill="none"/>
+              <polyline points="17,46.5 20.5,50 27,43" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <line x1="34" y1="46.5" x2="68" y2="46.5" stroke="rgba(255,255,255,0.55)" stroke-width="2.5" stroke-linecap="round"/>
+              <rect x="14" y="58" width="13" height="13" rx="3.5" stroke="rgba(255,255,255,0.40)" stroke-width="2" fill="none"/>
+              <line x1="34" y1="64.5" x2="58" y2="64.5" stroke="rgba(255,255,255,0.30)" stroke-width="2.5" stroke-linecap="round"/>
             </svg>
           </div>
           <div class="gq-text">
@@ -3154,13 +3411,28 @@ html, body {
 
         <!-- Q4: Store Inspiration (bottom-right) -->
         <div class="gq gq-br">
-          <div class="gq-glow"></div>
+          <div class="gq-orb gq-orb-1"></div>
+          <div class="gq-orb gq-orb-2"></div>
+          <div class="gq-streak"></div>
+          <div class="gq-noise"></div>
           <div class="gq-icon">
-            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="8"  y="8"  width="16" height="16" rx="3" stroke="rgba(251,191,36,0.8)" stroke-width="2" fill="rgba(251,191,36,0.08)"/>
-              <rect x="32" y="8"  width="16" height="16" rx="3" stroke="rgba(251,191,36,0.8)" stroke-width="2" fill="rgba(251,191,36,0.08)"/>
-              <rect x="8"  y="32" width="16" height="16" rx="3" stroke="rgba(251,191,36,0.8)" stroke-width="2" fill="rgba(251,191,36,0.08)"/>
-              <rect x="32" y="32" width="16" height="16" rx="3" stroke="rgba(251,191,36,0.8)" stroke-width="2" fill="rgba(251,191,36,0.08)"/>
+            <svg width="82" height="82" viewBox="0 0 82 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="gq4-bg" x1="0" y1="0" x2="82" y2="82" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#f59e0b"/>
+                  <stop offset="100%" stop-color="#d97706"/>
+                </linearGradient>
+              </defs>
+              <rect width="82" height="82" rx="22" fill="url(#gq4-bg)" fill-opacity="0.22"/>
+              <rect x="1" y="1" width="80" height="80" rx="21" stroke="rgba(251,191,36,0.45)" stroke-width="1.5" fill="none"/>
+              <!-- 2×2 store tile grid -->
+              <rect x="11" y="11" width="26" height="26" rx="6" stroke="white" stroke-width="2.5" fill="rgba(255,255,255,0.09)"/>
+              <rect x="45" y="11" width="26" height="26" rx="6" stroke="rgba(255,255,255,0.70)" stroke-width="2.5" fill="rgba(255,255,255,0.06)"/>
+              <rect x="11" y="45" width="26" height="26" rx="6" stroke="rgba(255,255,255,0.70)" stroke-width="2.5" fill="rgba(255,255,255,0.06)"/>
+              <rect x="45" y="45" width="26" height="26" rx="6" stroke="rgba(255,255,255,0.45)" stroke-width="2.5" fill="rgba(255,255,255,0.04)"/>
+              <!-- Mini storefront in top-left cell -->
+              <path d="M18 27L24 21L30 27" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <rect x="20" y="27" width="8" height="7" rx="1.5" fill="rgba(255,255,255,0.75)"/>
             </svg>
           </div>
           <div class="gq-text">
@@ -3173,8 +3445,12 @@ html, body {
 
       <!-- Bottom strip -->
       <div id="grid-strip">
-        <div id="grid-strip-logo">FRML<span>S</span></div>
-        <div id="grid-strip-url">frmls.com</div>
+        <div id="gs-topline"></div>
+        <div id="gs-topline-glow"></div>
+        <div id="gs-inner">
+          <div id="gs-logo">FRML<span>S</span></div>
+          <div id="gs-cta">frmls.com &mdash; $37 one time</div>
+        </div>
       </div>
 
     </div><!-- /grid-card -->
@@ -3192,8 +3468,6 @@ html, body {
     btn.disabled = true;
 
     var card = document.getElementById('grid-card');
-
-    // Temporarily un-scale the card so html2canvas captures at full 1080×1350
     card.style.transform = 'none';
 
     html2canvas(card, {
@@ -3201,12 +3475,10 @@ html, body {
       height: 1350,
       scale: 1,
       useCORS: true,
-      backgroundColor: '#0a0a0a',
+      backgroundColor: '#06060e',
       logging: false
     }).then(function(canvas){
-      // Re-apply the preview scale
       card.style.transform = 'scale(0.5)';
-
       canvas.toBlob(function(blob){
         var a = document.createElement('a');
         a.href = URL.createObjectURL(blob);

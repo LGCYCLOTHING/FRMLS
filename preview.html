@@ -5715,33 +5715,19 @@ function copyColor(hex, el) {
 // ══════════════════════════════════════════════════════════════
 
 async function exportTipCarousel() {
-  const btn = document.getElementById('tip-export-btn');
-  if (btn) { btn.textContent = 'Exporting…'; btn.disabled = true; }
+  const btn   = document.getElementById('tip-export-btn');
+  if (btn) { btn.textContent = 'Preparing…'; btn.disabled = true; }
 
-  const tipKeys = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7'];
-  const pool    = document.getElementById('canvas-pool');
-  const isIOS   = /iP(ad|hone|od)/.test(navigator.userAgent) && !window.MSStream;
+  const tipKeys  = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7'];
+  const isIOS    = /iP(ad|hone|od)/.test(navigator.userAgent) && !window.MSStream;
+  const isMobile = isIOS || /Android/i.test(navigator.userAgent);
 
-  // Temporary capture container — placed at top-left of document,
-  // out of z-index flow but at real coordinates so html2canvas can see it.
+  // Temp capture container at real coordinates so html2canvas can see it
   const wrap = document.createElement('div');
-  wrap.style.cssText = [
-    'position:fixed',
-    'top:0',
-    'left:0',
-    'width:1080px',
-    'height:1350px',
-    'overflow:hidden',
-    'pointer-events:none',
-    'z-index:-9999',
-    'opacity:1'
-  ].join(';');
+  wrap.style.cssText = 'position:fixed;top:0;left:0;width:1080px;height:1350px;overflow:hidden;pointer-events:none;z-index:-9999;';
   document.body.appendChild(wrap);
 
-  if (isIOS) {
-    // Warn user upfront — iOS needs new-tab approach
-    if (btn) btn.textContent = 'Opening slides…';
-  }
+  const collectedBlobs = []; // used for iOS share-sheet batch
 
   for (let i = 0; i < tipKeys.length; i++) {
     const slideKey = tipKeys[i];
@@ -5751,55 +5737,39 @@ async function exportTipCarousel() {
     const slideNum = i + 1;
     const bg = slideKey === 'tip7' ? '#ede5d3' : '#f2ece0';
 
-    // Move slide into the capture wrapper
-    const prevParent = el.parentNode;
+    const prevParent   = el.parentNode;
     const prevPosition = el.style.position;
-    const prevTop  = el.style.top;
-    const prevLeft = el.style.left;
+    const prevTop      = el.style.top;
+    const prevLeft     = el.style.left;
+
     wrap.appendChild(el);
     el.style.position = 'absolute';
-    el.style.top  = '0';
-    el.style.left = '0';
+    el.style.top      = '0';
+    el.style.left     = '0';
 
-    if (btn) btn.textContent = 'Exporting ' + slideNum + ' / 7…';
+    if (btn) btn.textContent = 'Preparing ' + slideNum + ' / 7…';
 
     await new Promise(function(resolve) {
       html2canvas(el, {
         width: 1080, height: 1350,
-        scale: 1,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: bg,
-        logging: false,
-        x: 0, y: 0,
-        scrollX: 0, scrollY: 0
+        scale: 1, useCORS: true, allowTaint: true,
+        backgroundColor: bg, logging: false,
+        x: 0, y: 0, scrollX: 0, scrollY: 0
       }).then(function(canvas) {
-        // Restore element to its original parent
         el.style.position = prevPosition;
-        el.style.top  = prevTop;
-        el.style.left = prevLeft;
+        el.style.top      = prevTop;
+        el.style.left     = prevLeft;
         if (prevParent) prevParent.appendChild(el);
 
-        if (isIOS) {
-          // iOS Safari ignores a.download — open image in new tab instead
-          const dataUrl = canvas.toDataURL('image/png');
-          const tab = window.open('', '_blank');
-          if (tab) {
-            tab.document.write(
-              '<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width">' +
-              '<title>tip-slide-' + slideNum + '.png</title></head>' +
-              '<body style="margin:0;background:#111;font-family:sans-serif">' +
-              '<p style="color:#fff;padding:14px 16px;font-size:14px;margin:0">' +
-              'Slide ' + slideNum + ' / 7 — <strong>long press → Save to Photos</strong></p>' +
-              '<img src="' + dataUrl + '" style="width:100%;display:block">' +
-              '</body></html>'
-            );
-            tab.document.close();
-          }
-          resolve();
-        } else {
-          canvas.toBlob(function(blob) {
-            if (!blob || blob.size === 0) { resolve(); return; }
+        canvas.toBlob(function(blob) {
+          if (!blob || blob.size === 0) { resolve(); return; }
+
+          if (isIOS) {
+            // Collect for the batch share call below
+            collectedBlobs.push(new File([blob], 'tip-slide-' + slideNum + '.png', { type: 'image/png' }));
+            resolve();
+          } else {
+            // Desktop / Android — trigger download immediately
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = 'tip-slide-' + slideNum + '.png';
@@ -5808,24 +5778,58 @@ async function exportTipCarousel() {
             document.body.removeChild(a);
             setTimeout(function() { URL.revokeObjectURL(a.href); }, 5000);
             resolve();
-          }, 'image/png');
-        }
+          }
+        }, 'image/png');
       }).catch(function(err) {
         el.style.position = prevPosition;
-        el.style.top  = prevTop;
-        el.style.left = prevLeft;
+        el.style.top      = prevTop;
+        el.style.left     = prevLeft;
         if (prevParent) prevParent.appendChild(el);
-        console.warn('Slide ' + slideNum + ' export failed:', err);
+        console.warn('Slide ' + slideNum + ' capture failed:', err);
         resolve();
       });
     });
 
-    // Small pause so the browser can breathe between captures
     await new Promise(function(r) { setTimeout(r, 80); });
   }
 
-  // Clean up wrapper
   if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
+
+  // ── iOS: open native share sheet so user can Save to Photos ──
+  if (isIOS && collectedBlobs.length > 0) {
+    if (btn) btn.textContent = 'Opening share sheet…';
+    try {
+      if (navigator.canShare && navigator.canShare({ files: collectedBlobs })) {
+        // Native share sheet — user taps "Save Image" to send all to Photos
+        await navigator.share({
+          files: collectedBlobs,
+          title: 'FRMLS Tip Post — Brand Voice',
+        });
+      } else {
+        // Older iOS / share API unavailable — open each image in a new tab
+        collectedBlobs.forEach(function(file, idx) {
+          const url = URL.createObjectURL(file);
+          const tab = window.open('', '_blank');
+          if (tab) {
+            tab.document.write(
+              '<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width">' +
+              '<title>' + file.name + '</title></head>' +
+              '<body style="margin:0;background:#111;font-family:sans-serif">' +
+              '<p style="color:#fff;padding:14px 16px;font-size:14px;margin:0">' +
+              'Slide ' + (idx + 1) + ' / 7 — <strong>Hold image → Save to Photos</strong></p>' +
+              '<img src="' + url + '" style="width:100%;display:block">' +
+              '</body></html>'
+            );
+            tab.document.close();
+          }
+        });
+      }
+    } catch (err) {
+      if (err.name !== 'AbortError') console.warn('Share failed:', err);
+      // AbortError = user dismissed sheet — that's fine
+    }
+  }
+
   if (btn) { btn.textContent = '↓ Export All 7 Slides'; btn.disabled = false; }
 }
 

@@ -939,6 +939,184 @@ html, body {
 #ruler-corner.active, #ruler-h.active, #ruler-v.active { display: block; }
 #ruler-h canvas, #ruler-v canvas { display: block; }
 
+/* ───────────── IMAGE LIBRARY ───────────── */
+.img-thumb { position: relative; }
+.img-check {
+  position: absolute; top: 4px; left: 4px;
+  width: 20px; height: 20px;
+  border-radius: 5px;
+  border: 1.5px solid rgba(255,255,255,0.30);
+  background: rgba(0,0,0,0.55);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  transition: opacity 0.12s, background 0.12s, border-color 0.12s;
+  z-index: 5;
+  font-size: 11px; font-weight: 700; color: #fff;
+  pointer-events: none;
+}
+.img-thumb:hover .img-check { opacity: 1; }
+.img-thumb.lib-selected .img-check { opacity: 1; background: #7c3aed; border-color: #9d5cf5; }
+.img-thumb.lib-selected { outline: 2px solid rgba(124,58,237,0.70); outline-offset: 1px; }
+
+.batch-bar {
+  display: flex; align-items: center; gap: 6px;
+  overflow: hidden; max-height: 0; opacity: 0;
+  transition: max-height 0.22s ease, opacity 0.18s, padding 0.18s;
+  padding: 0;
+}
+.batch-bar.visible { max-height: 52px; opacity: 1; padding-bottom: 10px; }
+.batch-count { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.40); flex: 1; white-space: nowrap; }
+.batch-btn {
+  height: 32px; padding: 0 11px;
+  border-radius: 7px; border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.55);
+  font-family: 'Inter', system-ui, sans-serif; font-size: 11px; font-weight: 600;
+  cursor: pointer; transition: all 0.12s; white-space: nowrap;
+}
+.batch-btn:hover { background: rgba(255,255,255,0.10); color: #fff; }
+.batch-btn.del-btn:hover { background: rgba(239,68,68,0.15); color: #f87171; border-color: rgba(239,68,68,0.30); }
+
+/* Eyedropper */
+.eyedropper-btn {
+  width: 36px; height: 36px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.40);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 15px; transition: all 0.12s; flex-shrink: 0;
+}
+.eyedropper-btn:hover { border-color: rgba(6,182,212,0.45); color: #22d3ee; background: rgba(6,182,212,0.08); }
+.eyedropper-btn.active { border-color: rgba(6,182,212,0.65); color: #22d3ee; background: rgba(6,182,212,0.15); }
+body.eyedropper-mode * { cursor: crosshair !important; }
+
+.sampled-color {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 10px; padding: 9px 11px;
+  border-radius: 8px; border: 1px solid rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.03);
+}
+.sampled-swatch {
+  width: 24px; height: 24px; border-radius: 5px;
+  border: 1px solid rgba(255,255,255,0.14); flex-shrink: 0;
+}
+.sampled-hex { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.60); letter-spacing: 0.04em; flex: 1; }
+.sampled-copy {
+  font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.30); cursor: pointer;
+  padding: 3px 8px; border-radius: 5px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08); transition: color 0.1s;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+.sampled-copy:hover { color: #9d5cf5; border-color: rgba(124,58,237,0.35); }
+
+/* ───────────── PLACED IMAGES ON CANVAS ───────────── */
+.placed-img {
+  position: absolute;
+  cursor: move;
+  user-select: none;
+  touch-action: none;
+  box-sizing: border-box;
+}
+.placed-img-inner {
+  position: relative; width: 100%; height: 100%;
+  overflow: hidden; border-radius: 0;
+}
+.placed-img-inner img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block; pointer-events: none;
+}
+.placed-img-backdrop {
+  position: absolute; inset: -40px;
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  background: rgba(0,0,0,0.08);
+  display: none; z-index: -1;
+}
+.placed-img-backdrop.on { display: block; }
+
+/* Selection ring */
+.placed-img.psel .placed-img-inner { outline: 2px solid rgba(124,58,237,0.90); outline-offset: 1px; }
+
+/* Resize + rotate handles (only shown when .psel) */
+.img-handle {
+  position: absolute; box-sizing: border-box;
+  width: 10px; height: 10px;
+  background: #fff; border: 2px solid #7c3aed;
+  border-radius: 3px; z-index: 200;
+  display: none; pointer-events: all;
+}
+.placed-img.psel .img-handle { display: block; }
+.img-handle.nw  { top:-5px;    left:-5px;             cursor: nwse-resize; }
+.img-handle.n   { top:-5px;    left:calc(50% - 5px);  cursor: ns-resize; }
+.img-handle.ne  { top:-5px;    right:-5px;             cursor: nesw-resize; }
+.img-handle.w   { top:calc(50% - 5px); left:-5px;      cursor: ew-resize; }
+.img-handle.e   { top:calc(50% - 5px); right:-5px;     cursor: ew-resize; }
+.img-handle.sw  { bottom:-5px; left:-5px;              cursor: nesw-resize; }
+.img-handle.s   { bottom:-5px; left:calc(50% - 5px);   cursor: ns-resize; }
+.img-handle.se  { bottom:-5px; right:-5px;             cursor: nwse-resize; }
+.img-handle.rot {
+  top: -28px; left: calc(50% - 8px);
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #7c3aed; border-color: #fff; color: #fff;
+  font-size: 10px; line-height: 1;
+  display: none; align-items: center; justify-content: center;
+  cursor: grab;
+}
+.placed-img.psel .img-handle.rot { display: flex; }
+
+/* ───────────── IMAGE PROPERTIES PANEL ───────────── */
+#sb-img-props { padding: 16px 18px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.props-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.props-lbl {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: rgba(255,255,255,0.28);
+  min-width: 54px; flex-shrink: 0;
+}
+.props-num {
+  flex: 1; height: 36px; min-width: 0;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 7px; padding: 0 8px; color: rgba(255,255,255,0.88);
+  font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 600;
+  outline: none; text-align: center;
+}
+.props-num:focus { border-color: rgba(124,58,237,0.45); }
+.props-sep { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.18); flex-shrink: 0; }
+.props-slider {
+  flex: 1; -webkit-appearance: none; appearance: none;
+  height: 4px; border-radius: 4px; background: rgba(255,255,255,0.10);
+  outline: none; cursor: pointer;
+}
+.props-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+  background: #9d5cf5; border: 2px solid #fff; cursor: pointer;
+  box-shadow: 0 0 6px rgba(124,58,237,0.5);
+}
+.props-slider::-moz-range-thumb {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #9d5cf5; border: 2px solid #fff; cursor: pointer;
+}
+.props-val {
+  font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.38);
+  min-width: 38px; text-align: right; flex-shrink: 0;
+}
+.props-hr { border: none; border-top: 1px solid rgba(255,255,255,0.05); margin: 4px 0 10px; }
+.props-toggle {
+  height: 30px; padding: 0 12px; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.09); background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.45); font-size: 11px; font-weight: 700;
+  cursor: pointer; transition: all 0.12s; white-space: nowrap;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+.props-toggle:hover { border-color: rgba(124,58,237,0.40); color: #9d5cf5; }
+.props-toggle.on { border-color: rgba(124,58,237,0.58); background: rgba(124,58,237,0.14); color: #b57eff; }
+.props-delete {
+  height: 30px; padding: 0 12px; border-radius: 6px;
+  border: 1px solid rgba(239,68,68,0.30); background: rgba(239,68,68,0.07);
+  color: rgba(248,113,113,0.75); font-size: 11px; font-weight: 700;
+  cursor: pointer; transition: all 0.12s; white-space: nowrap;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+.props-delete:hover { background: rgba(239,68,68,0.18); color: #f87171; }
+
 /* ───────────── CANVAS CONTENT: GRID STORY ───────────── */
 #grid-card {
   width: 1080px;
@@ -1163,6 +1341,74 @@ html, body {
         </div>
       </div>
 
+      <!-- IMAGE PROPERTIES (shown when placed image selected) -->
+      <div class="sb-section" id="sb-img-props" style="display:none;">
+        <div class="sb-section-header" style="margin-bottom:12px;">
+          <span class="sb-section-title">Image</span>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <button class="props-toggle" id="img-blur-btn" onclick="toggleImageBlur()">Blur BG</button>
+            <button class="props-delete" onclick="deleteSelectedImage()">Delete</button>
+          </div>
+        </div>
+        <!-- Position -->
+        <div class="props-row">
+          <span class="props-lbl">Position</span>
+          <input class="props-num" type="number" id="img-x" placeholder="X" oninput="setImageProp('x',+this.value)" />
+          <span class="props-sep">·</span>
+          <input class="props-num" type="number" id="img-y" placeholder="Y" oninput="setImageProp('y',+this.value)" />
+        </div>
+        <!-- Size -->
+        <div class="props-row">
+          <span class="props-lbl">Size</span>
+          <input class="props-num" type="number" id="img-w" placeholder="W" oninput="setImageProp('w',+this.value)" />
+          <span class="props-sep">×</span>
+          <input class="props-num" type="number" id="img-h" placeholder="H" oninput="setImageProp('h',+this.value)" />
+        </div>
+        <!-- Rotation -->
+        <div class="props-row">
+          <span class="props-lbl">Rotate</span>
+          <input class="props-slider" type="range" id="img-rot" min="-180" max="180" value="0"
+            oninput="setImageProp('rotation',+this.value);document.getElementById('v-rot').textContent=this.value+'°'" />
+          <span class="props-val" id="v-rot">0°</span>
+        </div>
+        <!-- Opacity -->
+        <div class="props-row">
+          <span class="props-lbl">Opacity</span>
+          <input class="props-slider" type="range" id="img-opacity" min="0" max="100" value="100"
+            oninput="setImageProp('opacity',this.value/100);document.getElementById('v-op').textContent=this.value+'%'" />
+          <span class="props-val" id="v-op">100%</span>
+        </div>
+        <!-- Border radius -->
+        <div class="props-row">
+          <span class="props-lbl">Radius</span>
+          <input class="props-slider" type="range" id="img-radius" min="0" max="50" value="0"
+            oninput="setImageProp('borderRadius',+this.value);document.getElementById('v-rad').textContent=this.value+'%'" />
+          <span class="props-val" id="v-rad">0%</span>
+        </div>
+        <hr class="props-hr" />
+        <!-- Brightness -->
+        <div class="props-row">
+          <span class="props-lbl">Bright</span>
+          <input class="props-slider" type="range" id="img-bright" min="0" max="200" value="100"
+            oninput="setImageProp('brightness',+this.value);document.getElementById('v-br').textContent=this.value+'%'" />
+          <span class="props-val" id="v-br">100%</span>
+        </div>
+        <!-- Contrast -->
+        <div class="props-row">
+          <span class="props-lbl">Contrast</span>
+          <input class="props-slider" type="range" id="img-contrast" min="0" max="200" value="100"
+            oninput="setImageProp('contrast',+this.value);document.getElementById('v-con').textContent=this.value+'%'" />
+          <span class="props-val" id="v-con">100%</span>
+        </div>
+        <!-- Saturation -->
+        <div class="props-row">
+          <span class="props-lbl">Saturate</span>
+          <input class="props-slider" type="range" id="img-sat" min="0" max="200" value="100"
+            oninput="setImageProp('saturation',+this.value);document.getElementById('v-sat').textContent=this.value+'%'" />
+          <span class="props-val" id="v-sat">100%</span>
+        </div>
+      </div>
+
       <!-- MY ASSETS -->
       <div class="sb-section" id="sb-assets">
         <div class="sb-section-header">
@@ -1178,13 +1424,27 @@ html, body {
       <div class="sb-section" id="sb-images">
         <div class="sb-section-header">
           <span class="sb-section-title">Images</span>
+          <button class="eyedropper-btn" id="eyedropper-btn" onclick="toggleEyedropper()" title="Sample color from image (click image in library)">🎨</button>
+        </div>
+        <!-- Batch action bar -->
+        <div class="batch-bar" id="batch-bar">
+          <span class="batch-count" id="batch-count">0 selected</span>
+          <button class="batch-btn" onclick="batchExportSelected()">↓ Export</button>
+          <button class="batch-btn del-btn" onclick="batchDelete()">Delete</button>
+          <button class="batch-btn" onclick="clearLibrarySelection()">✕</button>
         </div>
         <div class="drop-zone" id="drop-zone">
-          <div class="dz-text">Drop images here or click to upload</div>
-          <div class="dz-sub">png · jpg · webp · svg</div>
+          <div class="dz-text">Drop images or click to upload</div>
+          <div class="dz-sub">png · jpg · webp · svg · gif</div>
         </div>
-        <input type="file" id="image-input" accept="image/*" multiple style="display:none" />
+        <input type="file" id="image-input" accept="image/*,.gif,image/gif" multiple style="display:none" />
         <div class="image-grid" id="image-grid"></div>
+        <!-- Sampled color display -->
+        <div class="sampled-color" id="sampled-color" style="display:none;">
+          <div class="sampled-swatch" id="sampled-swatch"></div>
+          <span class="sampled-hex" id="sampled-hex">#000000</span>
+          <button class="sampled-copy" onclick="copySampledColor()">copy</button>
+        </div>
       </div>
 
       <!-- BRAND -->
@@ -1258,7 +1518,9 @@ html, body {
       </div>
 
       <div id="canvas-stage">
-        <div id="canvas-content" style="position:absolute;top:50%;left:50%;transform-origin:center center;"></div>
+        <div id="canvas-content" style="position:absolute;top:50%;left:50%;transform-origin:center center;">
+          <div id="image-layer" style="position:absolute;inset:0;z-index:10;pointer-events:none;overflow:visible;"></div>
+        </div>
         <div id="grid-overlay"></div>
       </div>
 
@@ -1807,9 +2069,11 @@ function pickTickInterval(z) {
 
 // ── Select canvas ──
 function selectCanvas(key) {
-  // Return current canvas element to pool
-  const prev = canvasContent.firstElementChild;
-  if (prev) pool.appendChild(prev);
+  // Return the current canvas element (not the image-layer) to pool
+  if (activeKey) {
+    const prev = document.getElementById('cvs-' + activeKey);
+    if (prev && prev.parentNode === canvasContent) pool.appendChild(prev);
+  }
 
   const el = document.getElementById('cvs-' + key);
   if (!el) { console.warn('Canvas element not found: cvs-' + key); return; }
@@ -1818,7 +2082,13 @@ function selectCanvas(key) {
   const w = meta ? meta.w : (parseInt(el.dataset.w) || 1080);
   const h = meta ? meta.h : (parseInt(el.dataset.h) || 1080);
 
-  canvasContent.appendChild(el);
+  // Insert before image-layer so canvas is always behind placed images
+  const imageLayer = document.getElementById('image-layer');
+  if (imageLayer) {
+    canvasContent.insertBefore(el, imageLayer);
+  } else {
+    canvasContent.appendChild(el);
+  }
 
   stage.style.display = 'block';
   emptyState.style.display = 'none';
@@ -2133,7 +2403,13 @@ function doDelete() {
   renderAssetList();
 }
 
-// ── Images ──
+// ══════════════════════════════════════════════════════════════
+//  IMAGE LIBRARY
+// ══════════════════════════════════════════════════════════════
+
+let selectedLibraryImages = new Set(); // indices into uploadedImages
+let eyedropperActive = false;
+
 function initDropZone() {
   const dz  = document.getElementById('drop-zone');
   const inp = document.getElementById('image-input');
@@ -2150,25 +2426,496 @@ function initDropZone() {
     Array.from(e.dataTransfer.files).filter(function(f) { return f.type.startsWith('image/'); }).forEach(handleImg);
   });
 }
+
 function handleImg(file) {
   var r = new FileReader();
-  r.onload = function(e) { uploadedImages.push({ src:e.target.result, name:file.name }); renderImageGrid(); };
+  r.onload = function(e) {
+    uploadedImages.push({ src: e.target.result, name: file.name });
+    renderImageGrid();
+  };
   r.readAsDataURL(file);
 }
+
 function renderImageGrid() {
   imageGrid.innerHTML = '';
-  uploadedImages.forEach(function(img) {
+  uploadedImages.forEach(function(img, idx) {
     var el = document.createElement('div');
-    el.className = 'img-thumb';
-    el.title = img.name + ' — click to copy data URL';
-    el.innerHTML = '<img src="' + img.src + '" alt="' + esc(img.name) + '" />';
-    el.addEventListener('click', function() {
-      navigator.clipboard.writeText(img.src).catch(function() {});
-      el.style.outline = '2px solid #7c3aed';
-      setTimeout(function() { el.style.outline = ''; }, 900);
+    el.className = 'img-thumb' + (selectedLibraryImages.has(idx) ? ' lib-selected' : '');
+    el.draggable = true;
+    el.dataset.idx = idx;
+    el.title = img.name;
+
+    // Checkbox
+    var chk = document.createElement('div');
+    chk.className = 'img-check';
+    el.appendChild(chk);
+
+    var im = document.createElement('img');
+    im.src = img.src;
+    im.alt = esc(img.name);
+    el.appendChild(im);
+
+    // Click: select in library (if eyedropper active → sample) or toggle lib-select
+    el.addEventListener('click', function(e) {
+      if (eyedropperActive) {
+        sampleColorFromImg(img.src, im);
+        return;
+      }
+      if (e.shiftKey || e.ctrlKey || e.metaKey) {
+        toggleLibrarySelect(idx);
+      } else {
+        // single click: place image on canvas
+        if (activeKey) {
+          const fW = frameW || 1080;
+          const fH = frameH || 1080;
+          const meta = getMeta(activeKey);
+          const cW = meta ? meta.w : fW;
+          const cH = meta ? meta.h : fH;
+          placeImage(img.src, img.name, cW / 2 - 150, cH / 2 - 150, 300, 300);
+        }
+        // flash feedback
+        el.style.outline = '2px solid #7c3aed';
+        setTimeout(function() { el.style.outline = ''; }, 600);
+      }
     });
+
+    el.addEventListener('dragstart', function(e) {
+      e.dataTransfer.setData('text/plain', String(idx));
+      e.dataTransfer.effectAllowed = 'copy';
+    });
+
     imageGrid.appendChild(el);
   });
+}
+
+// ── Library multi-select ──
+function toggleLibrarySelect(idx) {
+  if (selectedLibraryImages.has(idx)) {
+    selectedLibraryImages.delete(idx);
+  } else {
+    selectedLibraryImages.add(idx);
+  }
+  renderImageGrid();
+  updateBatchBar();
+}
+
+function clearLibrarySelection() {
+  selectedLibraryImages.clear();
+  renderImageGrid();
+  updateBatchBar();
+}
+
+function updateBatchBar() {
+  const bar = document.getElementById('batch-bar');
+  const cnt = document.getElementById('batch-count');
+  const n = selectedLibraryImages.size;
+  bar.classList.toggle('visible', n > 0);
+  cnt.textContent = n + ' selected';
+}
+
+function batchDelete() {
+  const indices = Array.from(selectedLibraryImages).sort(function(a,b){ return b-a; });
+  indices.forEach(function(i) { uploadedImages.splice(i, 1); });
+  selectedLibraryImages.clear();
+  renderImageGrid();
+  updateBatchBar();
+}
+
+function batchExportSelected() {
+  selectedLibraryImages.forEach(function(idx) {
+    const img = uploadedImages[idx];
+    if (!img) return;
+    const a = document.createElement('a');
+    a.href = img.src;
+    a.download = img.name || ('image-' + idx + '.png');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+//  PLACED IMAGES ON CANVAS
+// ══════════════════════════════════════════════════════════════
+
+let placedImages = [];
+let selectedPlacedId = null;
+let dragState = null;
+let placedImageCounter = 0;
+
+function getImageLayer() {
+  return document.getElementById('image-layer');
+}
+
+// Enable pointer events on the layer only when a canvas is active
+function refreshImageLayerPointers() {
+  const layer = getImageLayer();
+  if (layer) layer.style.pointerEvents = activeKey ? 'auto' : 'none';
+}
+
+function placeImage(src, name, x, y, w, h) {
+  if (!activeKey) return;
+  const id = 'pi-' + (++placedImageCounter);
+  const obj = {
+    id: id,
+    src: src,
+    name: name || 'image',
+    x: Math.round(x),
+    y: Math.round(y),
+    w: Math.round(w || 300),
+    h: Math.round(h || 300),
+    rotation: 0,
+    opacity: 1,
+    borderRadius: 0,
+    blur: false,
+    brightness: 100,
+    contrast: 100,
+    saturation: 100
+  };
+  placedImages.push(obj);
+  createPlacedImageDOM(obj);
+  selectPlacedImage(id);
+}
+
+function createPlacedImageDOM(obj) {
+  const layer = getImageLayer();
+  if (!layer) return;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'placed-img';
+  wrap.id = obj.id;
+
+  const inner = document.createElement('div');
+  inner.className = 'placed-img-inner';
+
+  const backdrop = document.createElement('div');
+  backdrop.className = 'placed-img-backdrop';
+
+  const imgEl = document.createElement('img');
+  imgEl.src = obj.src;
+  imgEl.alt = obj.name;
+  imgEl.draggable = false;
+
+  inner.appendChild(backdrop);
+  inner.appendChild(imgEl);
+  wrap.appendChild(inner);
+
+  // Handles: nw n ne w e sw s se rot
+  ['nw','n','ne','w','e','sw','s','se','rot'].forEach(function(h) {
+    const hEl = document.createElement('div');
+    hEl.className = 'img-handle ' + h;
+    if (h === 'rot') hEl.title = 'Rotate';
+    wrap.appendChild(hEl);
+  });
+
+  // Mouse events
+  wrap.addEventListener('mousedown', function(e) { onPlacedMouseDown(e, obj.id); });
+  wrap.addEventListener('touchstart', function(e) { onPlacedTouchStart(e, obj.id); }, { passive: false });
+
+  layer.appendChild(wrap);
+  applyImageStyle(obj);
+}
+
+function applyImageStyle(obj) {
+  const wrap = document.getElementById(obj.id);
+  if (!wrap) return;
+
+  wrap.style.left   = obj.x + 'px';
+  wrap.style.top    = obj.y + 'px';
+  wrap.style.width  = obj.w + 'px';
+  wrap.style.height = obj.h + 'px';
+  wrap.style.transform = 'rotate(' + obj.rotation + 'deg)';
+  wrap.style.opacity   = obj.opacity;
+
+  const inner = wrap.querySelector('.placed-img-inner');
+  if (inner) inner.style.borderRadius = obj.borderRadius + 'px';
+
+  const imgEl = wrap.querySelector('img');
+  if (imgEl) {
+    imgEl.style.filter =
+      'brightness(' + obj.brightness + '%) ' +
+      'contrast('   + obj.contrast   + '%) ' +
+      'saturate('   + obj.saturation + '%)';
+  }
+
+  const backdrop = wrap.querySelector('.placed-img-backdrop');
+  if (backdrop) backdrop.classList.toggle('on', obj.blur);
+}
+
+// ── Selection ──
+function selectPlacedImage(id) {
+  deselectPlacedImage();
+  selectedPlacedId = id;
+  const wrap = document.getElementById(id);
+  if (wrap) wrap.classList.add('psel');
+  updatePropsPanel(id);
+  document.getElementById('sb-img-props').style.display = '';
+  refreshImageLayerPointers();
+}
+
+function deselectPlacedImage() {
+  if (selectedPlacedId) {
+    const wrap = document.getElementById(selectedPlacedId);
+    if (wrap) wrap.classList.remove('psel');
+  }
+  selectedPlacedId = null;
+  document.getElementById('sb-img-props').style.display = 'none';
+}
+
+function deleteSelectedImage() {
+  if (!selectedPlacedId) return;
+  const wrap = document.getElementById(selectedPlacedId);
+  if (wrap) wrap.remove();
+  placedImages = placedImages.filter(function(p) { return p.id !== selectedPlacedId; });
+  selectedPlacedId = null;
+  document.getElementById('sb-img-props').style.display = 'none';
+}
+
+// ── Props panel ──
+function updatePropsPanel(id) {
+  const obj = placedImages.find(function(p) { return p.id === id; });
+  if (!obj) return;
+  setEl('img-x', obj.x);
+  setEl('img-y', obj.y);
+  setEl('img-w', obj.w);
+  setEl('img-h', obj.h);
+  // Slider IDs must match HTML
+  setRange('img-rot',      obj.rotation,                 'v-rot', obj.rotation + '°');
+  setRange('img-opacity',  Math.round(obj.opacity * 100),'v-op',  Math.round(obj.opacity * 100) + '%');
+  setRange('img-radius',   obj.borderRadius,             'v-rad', obj.borderRadius + 'px');
+  setRange('img-bright',   obj.brightness,               'v-br',  obj.brightness + '%');
+  setRange('img-contrast', obj.contrast,                 'v-con', obj.contrast + '%');
+  setRange('img-sat',      obj.saturation,               'v-sat', obj.saturation + '%');
+  const blurBtn = document.getElementById('img-blur-btn');
+  if (blurBtn) blurBtn.classList.toggle('on', obj.blur);
+}
+
+function setEl(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.value = val;
+}
+
+function setRange(id, val, labelId, labelText) {
+  const el = document.getElementById(id);
+  if (el) el.value = val;
+  const lbl = document.getElementById(labelId);
+  if (lbl) lbl.textContent = labelText;
+}
+
+function setImageProp(prop, value) {
+  if (!selectedPlacedId) return;
+  const obj = placedImages.find(function(p) { return p.id === selectedPlacedId; });
+  if (!obj) return;
+  obj[prop] = value;
+  applyImageStyle(obj);
+}
+
+function toggleImageBlur() {
+  if (!selectedPlacedId) return;
+  const obj = placedImages.find(function(p) { return p.id === selectedPlacedId; });
+  if (!obj) return;
+  obj.blur = !obj.blur;
+  applyImageStyle(obj);
+  const blurBtn = document.getElementById('img-blur-btn');
+  if (blurBtn) blurBtn.classList.toggle('on', obj.blur);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  DRAG / RESIZE / ROTATE
+// ══════════════════════════════════════════════════════════════
+
+function getEffectiveScale() {
+  // Pixels-on-screen per canvas-content pixel
+  const cc = canvasContent.getBoundingClientRect();
+  const obj = placedImages.find(function(p) { return p.id === selectedPlacedId; });
+  if (!obj || !obj.w) return 1;
+  return cc.width / (parseInt(canvasContent.style.width) || 1080);
+}
+
+function onPlacedMouseDown(e, id) {
+  e.stopPropagation();
+  selectPlacedImage(id);
+  const obj = placedImages.find(function(p) { return p.id === id; });
+  if (!obj) return;
+
+  const handle = e.target.classList.contains('img-handle') ? e.target.className.split(' ').find(function(c) { return c !== 'img-handle'; }) : null;
+  const es = getEffectiveScale();
+
+  dragState = {
+    type: handle === 'rot' ? 'rotate' : (handle ? 'resize' : 'move'),
+    handle: handle,
+    id: id,
+    startX: e.clientX,
+    startY: e.clientY,
+    startObj: { x: obj.x, y: obj.y, w: obj.w, h: obj.h, rotation: obj.rotation },
+    effectiveScale: es
+  };
+
+  if (handle === 'rot') {
+    const wrap = document.getElementById(id);
+    const rect = wrap.getBoundingClientRect();
+    dragState.cx = rect.left + rect.width / 2;
+    dragState.cy = rect.top + rect.height / 2;
+    dragState.startAngle = Math.atan2(e.clientY - dragState.cy, e.clientX - dragState.cx) * 180 / Math.PI;
+    dragState.startRot = obj.rotation;
+  }
+
+  e.preventDefault();
+}
+
+function onPlacedTouchStart(e, id) {
+  if (e.touches.length !== 1) return;
+  const touch = e.touches[0];
+  const fakeEvent = { clientX: touch.clientX, clientY: touch.clientY, target: e.target, stopPropagation: function() {}, preventDefault: function() {} };
+  onPlacedMouseDown(fakeEvent, id);
+  e.preventDefault();
+}
+
+document.addEventListener('mousemove', function(e) {
+  if (!dragState) return;
+  const obj = placedImages.find(function(p) { return p.id === dragState.id; });
+  if (!obj) return;
+
+  const dx = (e.clientX - dragState.startX) / dragState.effectiveScale;
+  const dy = (e.clientY - dragState.startY) / dragState.effectiveScale;
+  const so = dragState.startObj;
+
+  if (dragState.type === 'move') {
+    obj.x = Math.round(so.x + dx);
+    obj.y = Math.round(so.y + dy);
+  } else if (dragState.type === 'rotate') {
+    const angle = Math.atan2(e.clientY - dragState.cy, e.clientX - dragState.cx) * 180 / Math.PI;
+    obj.rotation = Math.round(dragState.startRot + angle - dragState.startAngle);
+  } else {
+    // resize
+    const h = dragState.handle;
+    let x = so.x, y = so.y, w = so.w, ht = so.h;
+    if (h.includes('e')) w = Math.max(20, so.w + dx);
+    if (h.includes('s')) ht = Math.max(20, so.h + dy);
+    if (h.includes('w')) { x = so.x + dx; w = Math.max(20, so.w - dx); }
+    if (h.includes('n')) { y = so.y + dy; ht = Math.max(20, so.h - dy); }
+    obj.x = Math.round(x); obj.y = Math.round(y);
+    obj.w = Math.round(w); obj.h = Math.round(ht);
+  }
+
+  applyImageStyle(obj);
+  if (selectedPlacedId === obj.id) updatePropsPanel(obj.id);
+});
+
+document.addEventListener('mouseup', function() {
+  dragState = null;
+});
+
+document.addEventListener('touchmove', function(e) {
+  if (!dragState || e.touches.length !== 1) return;
+  const touch = e.touches[0];
+  const fakeEvent = { clientX: touch.clientX, clientY: touch.clientY };
+  // reuse mousemove logic
+  const obj = placedImages.find(function(p) { return p.id === dragState.id; });
+  if (!obj) return;
+  const dx = (touch.clientX - dragState.startX) / dragState.effectiveScale;
+  const dy = (touch.clientY - dragState.startY) / dragState.effectiveScale;
+  const so = dragState.startObj;
+  if (dragState.type === 'move') { obj.x = Math.round(so.x + dx); obj.y = Math.round(so.y + dy); }
+  else if (dragState.type === 'rotate') {
+    const angle = Math.atan2(touch.clientY - dragState.cy, touch.clientX - dragState.cx) * 180 / Math.PI;
+    obj.rotation = Math.round(dragState.startRot + angle - dragState.startAngle);
+  }
+  applyImageStyle(obj);
+  if (selectedPlacedId === obj.id) updatePropsPanel(obj.id);
+  e.preventDefault();
+}, { passive: false });
+
+document.addEventListener('touchend', function() { dragState = null; });
+
+// Click on canvas viewport background → deselect
+document.getElementById('canvas-viewport').addEventListener('mousedown', function(e) {
+  if (e.target === this || e.target === stage || e.target === canvasContent) {
+    deselectPlacedImage();
+  }
+});
+
+// ══════════════════════════════════════════════════════════════
+//  DRAG-FROM-LIBRARY ONTO CANVAS VIEWPORT
+// ══════════════════════════════════════════════════════════════
+
+function initCanvasDrop() {
+  const vp = document.getElementById('canvas-viewport');
+
+  vp.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+  });
+
+  vp.addEventListener('drop', function(e) {
+    e.preventDefault();
+    if (!activeKey) return;
+
+    const idx = parseInt(e.dataTransfer.getData('text/plain'));
+    if (isNaN(idx) || !uploadedImages[idx]) return;
+
+    const img = uploadedImages[idx];
+
+    // Convert drop position to canvas-content coordinates
+    const cc = canvasContent.getBoundingClientRect();
+    const es = cc.width / (parseInt(canvasContent.style.width) || 1080);
+    const cx = (e.clientX - cc.left) / es;
+    const cy = (e.clientY - cc.top)  / es;
+
+    // Default size: 300×300 centered on drop point
+    const defW = 300, defH = 300;
+    placeImage(img.src, img.name, cx - defW / 2, cy - defH / 2, defW, defH);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+//  EYEDROPPER / COLOR SAMPLER
+// ══════════════════════════════════════════════════════════════
+
+function toggleEyedropper() {
+  eyedropperActive = !eyedropperActive;
+  document.getElementById('eyedropper-btn').classList.toggle('active', eyedropperActive);
+  document.body.classList.toggle('eyedropper-mode', eyedropperActive);
+}
+
+function sampleColorFromImg(src, imgEl) {
+  eyedropperActive = false;
+  document.getElementById('eyedropper-btn').classList.remove('active');
+  document.body.classList.remove('eyedropper-mode');
+
+  const cvs = document.createElement('canvas');
+  const w = imgEl.naturalWidth  || imgEl.width  || 300;
+  const h = imgEl.naturalHeight || imgEl.height || 300;
+  cvs.width = w; cvs.height = h;
+  const ctx = cvs.getContext('2d');
+
+  try {
+    ctx.drawImage(imgEl, 0, 0, w, h);
+    // Sample from center
+    const px = ctx.getImageData(Math.floor(w / 2), Math.floor(h / 2), 1, 1).data;
+    const hex = '#' + [px[0], px[1], px[2]].map(function(v) { return v.toString(16).padStart(2,'0'); }).join('');
+    showSampledColor(hex);
+  } catch(e) {
+    // CORS issue — can't read pixel data from cross-origin image
+    showSampledColor(null);
+  }
+}
+
+function showSampledColor(hex) {
+  const cont = document.getElementById('sampled-color');
+  const swatch = document.getElementById('sampled-swatch');
+  const hexEl  = document.getElementById('sampled-hex');
+  if (!hex) { cont.style.display = 'none'; return; }
+  swatch.style.background = hex;
+  hexEl.textContent = hex;
+  cont.style.display = 'flex';
+}
+
+function copySampledColor() {
+  const hex = document.getElementById('sampled-hex').textContent;
+  navigator.clipboard.writeText(hex).catch(function() {});
+  const btn = document.querySelector('.sampled-copy');
+  if (btn) { btn.textContent = 'copied!'; setTimeout(function() { btn.textContent = 'copy'; }, 1200); }
 }
 
 // ── Brand swatches ──
@@ -2218,7 +2965,14 @@ document.addEventListener('keydown', function(e) {
   if (e.key === '0') { e.preventDefault(); fitZoom(); }
   if (e.key === 'g') { e.preventDefault(); toggleGrid(); }
   if (e.key === 'r') { e.preventDefault(); toggleRuler(); }
-  if (e.key === 'Escape') { closeNewModal(); closeDeleteModal(); closeMobileSidebar(); }
+  if (e.key === 'Delete' || e.key === 'Backspace') {
+    if (selectedPlacedId) { e.preventDefault(); deleteSelectedImage(); }
+  }
+  if (e.key === 'Escape') {
+    if (eyedropperActive) { toggleEyedropper(); return; }
+    if (selectedPlacedId) { deselectPlacedImage(); return; }
+    closeNewModal(); closeDeleteModal(); closeMobileSidebar();
+  }
 });
 
 // ── Window resize → refit ──
@@ -2231,6 +2985,7 @@ window.addEventListener('resize', function() {
 document.addEventListener('DOMContentLoaded', function() {
   renderAssetList();
   initDropZone();
+  initCanvasDrop();
   selectCanvas('grid');
 });
 </script>

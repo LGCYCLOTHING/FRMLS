@@ -484,8 +484,8 @@ body::before {
 .dash-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:2rem; }
 @media (max-width:600px) { .dash-grid { grid-template-columns:1fr; } }
 
-.dash-box { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:24px; padding:28px; cursor:pointer; position:relative; z-index:1; transition:transform 0.3s cubic-bezier(0.16,1,0.3,1),box-shadow 0.3s ease,border-color 0.3s ease,background 0.25s ease; display:flex; flex-direction:column; min-height:160px; }
-.dash-box::before { content:''; position:absolute; inset:-1px; border-radius:25px; background:var(--grad); z-index:-1; opacity:0; transition:opacity 0.22s ease; }
+.dash-box { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:28px; cursor:pointer; position:relative; z-index:1; transition:transform 0.3s cubic-bezier(0.16,1,0.3,1),box-shadow 0.3s ease,border-color 0.3s ease,background 0.25s ease; display:flex; flex-direction:column; min-height:160px; }
+.dash-box::before { content:''; position:absolute; inset:-1px; border-radius:calc(var(--radius-lg)+1px); background:var(--grad); z-index:-1; opacity:0; transition:opacity 0.22s ease; }
 .dash-box:hover { transform:translateY(-3px); box-shadow:0 10px 36px rgba(0,0,0,0.5),0 0 16px rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.1); background:var(--bg-card-2); }
 .dash-box:hover::before { opacity:0.5; }
 .dash-box-icon { font-size:28px; margin-bottom:14px; color:#777777; display:block; line-height:1; transition:color 0.2s; }
@@ -1719,6 +1719,242 @@ body::before {
 /* ---- Scrollbar ---- */
 [data-theme="light"] ::-webkit-scrollbar-track { background: #edecea; }
 [data-theme="light"] ::-webkit-scrollbar-thumb { background: #c8c6c0; }
+
+/* ===== BRAND FOUNDATION FLOW ===== */
+#bf-overlay {
+  position: fixed; inset: 0; z-index: 900;
+  background: #07040f;
+  overflow-y: auto; overflow-x: hidden;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+#bf-overlay.bf-visible {
+  opacity: 1; pointer-events: auto;
+}
+.bf-top-bar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: 14px;
+  padding: 20px 32px 16px;
+  background: linear-gradient(to bottom, #07040f 80%, transparent);
+  flex-shrink: 0;
+}
+.bf-back-btn {
+  font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.35); background: none; border: none; cursor: pointer;
+  padding: 0; visibility: hidden; flex-shrink: 0; white-space: nowrap;
+  transition: color 0.2s;
+}
+.bf-back-btn:hover { color: rgba(255,255,255,0.75); }
+.bf-progress-track {
+  flex: 1; height: 2px; background: rgba(255,255,255,0.08);
+  border-radius: 1px; overflow: hidden;
+}
+.bf-progress-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  border-radius: 1px;
+  transition: width 0.55s cubic-bezier(0.16,1,0.3,1);
+}
+.bf-step-counter {
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.3); white-space: nowrap; flex-shrink: 0;
+}
+.bf-screens-container {
+  width: 100%; display: flex; flex-direction: column; align-items: center;
+  position: relative; min-height: 100vh;
+}
+.bf-screen {
+  width: 100%; max-width: 740px;
+  padding: 40px 32px 120px;
+  flex-direction: column; align-items: flex-start;
+  display: none;
+}
+.bf-screen.bf-active {
+  display: flex;
+}
+.bf-label {
+  font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.18em;
+  text-transform: uppercase; text-align: center; width: 100%; margin-bottom: 24px;
+  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.bf-headline {
+  font-size: 48px; font-weight: 800; color: #ffffff;
+  letter-spacing: -0.03em; line-height: 1.1;
+  text-align: center; width: 100%; margin-bottom: 14px;
+}
+.bf-subline {
+  font-size: 16px; color: rgba(255,255,255,0.45);
+  text-align: center; width: 100%; margin-bottom: 36px; line-height: 1.6;
+}
+.bf-checkbox-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
+  width: 100%; margin-bottom: 20px;
+}
+.bf-checkbox-card {
+  background: #111111; border: 1px solid #222222; border-radius: 16px;
+  padding: 16px; cursor: pointer; font-size: 15px; color: #ffffff; line-height: 1.45;
+  transition: all 0.2s cubic-bezier(0.16,1,0.3,1);
+  position: relative; z-index: 1; user-select: none;
+}
+.bf-checkbox-card::before {
+  content: ''; position: absolute; inset: -1px; border-radius: 17px;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4); z-index: -1;
+  opacity: 0; transition: opacity 0.2s;
+}
+.bf-checkbox-card:hover { background: rgba(124,58,237,0.07); border-color: #333; }
+.bf-checkbox-card.selected { border-color: transparent; background: rgba(124,58,237,0.14); }
+.bf-checkbox-card.selected::before { opacity: 1; }
+.bf-textarea {
+  width: 100%; background: #111111; border: 1px solid #222222;
+  border-radius: 16px; padding: 14px 18px;
+  font-size: 15px; font-family: 'Inter', sans-serif; font-weight: 400;
+  color: #ffffff; line-height: 1.65; resize: none; outline: none;
+  min-height: 80px; margin-bottom: 28px;
+  transition: border-color 0.2s;
+}
+.bf-textarea::placeholder { color: rgba(255,255,255,0.18); }
+.bf-textarea:focus { border-color: rgba(124,58,237,0.45); }
+.bf-pill-grid {
+  display: flex; flex-wrap: wrap; gap: 9px; width: 100%; margin-bottom: 24px;
+}
+.bf-pill {
+  background: #111111; border: 1px solid #222222; border-radius: 100px;
+  padding: 8px 18px; font-size: 14px; color: #ffffff; cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16,1,0.3,1); user-select: none; line-height: 1;
+}
+.bf-pill:hover { border-color: #444; background: rgba(255,255,255,0.05); }
+.bf-pill.selected {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  border-color: transparent;
+}
+.bf-continue-btn {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  border: none; border-radius: 16px; padding: 14px 40px;
+  font-size: 16px; font-weight: 600; color: #ffffff;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+  position: relative; overflow: hidden; align-self: center;
+  min-width: 200px; letter-spacing: 0.01em;
+}
+.bf-continue-btn::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.13), transparent);
+  opacity: 0; transition: opacity 0.2s;
+}
+.bf-continue-btn:hover:not(:disabled) {
+  box-shadow: 0 0 40px rgba(124,58,237,0.55), 0 4px 20px rgba(124,58,237,0.25);
+  transform: translateY(-1px);
+}
+.bf-continue-btn:hover:not(:disabled)::after { opacity: 1; }
+.bf-continue-btn:disabled { opacity: 0.28; cursor: default; }
+.bf-continue-btn:not(:disabled) {
+  box-shadow: 0 0 20px rgba(124,58,237,0.3);
+}
+.bf-complete-btn { font-size: 17px; padding: 16px 44px; }
+.bf-refs-label {
+  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.32); text-transform: uppercase; margin-bottom: 14px;
+}
+.bf-brand-refs { display: flex; flex-direction: column; gap: 18px; width: 100%; margin-bottom: 20px; }
+.bf-brand-pair { display: flex; flex-direction: column; gap: 8px; }
+.bf-brand-input {
+  width: 100%; background: #111111; border: 1px solid #333333;
+  border-radius: 12px; padding: 11px 16px;
+  font-size: 14px; font-family: 'Inter', sans-serif; font-weight: 500;
+  color: #ffffff; outline: none; transition: border-color 0.2s;
+}
+.bf-brand-input::placeholder { color: rgba(255,255,255,0.2); }
+.bf-brand-input:focus { border-color: rgba(124,58,237,0.5); }
+.bf-brand-input.bf-feel { color: rgba(255,255,255,0.75); font-size: 13px; }
+.bf-refs-optional {
+  font-size: 13px; color: rgba(255,255,255,0.25); text-align: center;
+  width: 100%; margin-bottom: 28px;
+}
+.bf-promise-lead {
+  font-size: 36px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;
+  width: 100%; text-align: center; margin-bottom: 28px;
+  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.bf-promise-area { min-height: 140px; font-size: 16px; margin-bottom: 32px; }
+.bf-skip-btn {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+  background: none; border: none; cursor: pointer;
+  font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.22); transition: color 0.2s; z-index: 10;
+  white-space: nowrap;
+}
+.bf-skip-btn:hover { color: rgba(255,255,255,0.6); }
+/* Completion screen */
+.bf-completion-screen {
+  align-items: center; justify-content: center; text-align: center;
+  min-height: calc(100vh - 60px); position: relative; overflow: hidden;
+}
+.bf-particles {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0;
+}
+.bf-particle {
+  position: absolute; width: 3px; height: 3px; border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  animation: bfParticleFloat var(--dur, 8s) var(--delay, 0s) ease-in-out infinite alternate;
+}
+@keyframes bfParticleFloat {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.2; }
+  50% { opacity: 0.7; }
+  100% { transform: translate(var(--tx, 30px), var(--ty, -60px)) scale(0.5); opacity: 0.1; }
+}
+.bf-completion-logo {
+  font-size: 72px; font-weight: 900; letter-spacing: -0.06em; line-height: 1;
+  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 28px; position: relative; z-index: 1;
+}
+.bf-completion-title {
+  font-size: 32px; font-weight: 800; color: #ffffff; letter-spacing: -0.03em;
+  margin-bottom: 16px; line-height: 1.2; position: relative; z-index: 1;
+}
+.bf-completion-sub {
+  font-size: 18px; color: rgba(255,255,255,0.5); line-height: 1.65;
+  margin-bottom: 48px; max-width: 420px; position: relative; z-index: 1;
+}
+.bf-enter-btn {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  border: none; border-radius: 16px; padding: 16px 44px;
+  font-size: 17px; font-weight: 700; color: #ffffff;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+  letter-spacing: -0.01em; position: relative; z-index: 1;
+}
+.bf-enter-btn:hover {
+  box-shadow: 0 0 55px rgba(124,58,237,0.65), 0 8px 32px rgba(124,58,237,0.3);
+  transform: translateY(-2px);
+}
+/* Brand Foundation dash-box status badge */
+.bf-status-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
+  margin-top: 10px; align-self: flex-start;
+}
+.bf-status-complete {
+  background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3);
+}
+.bf-status-progress {
+  background: rgba(124,58,237,0.18); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3);
+}
+/* Mobile */
+@media (max-width: 767px) {
+  .bf-top-bar { padding: 16px 20px 12px; }
+  .bf-screen { padding: 32px 20px 100px; }
+  .bf-headline { font-size: 32px; }
+  .bf-subline { font-size: 14px; margin-bottom: 24px; }
+  .bf-checkbox-grid { grid-template-columns: 1fr; }
+  .bf-promise-lead { font-size: 26px; }
+  .bf-completion-logo { font-size: 52px; }
+  .bf-completion-title { font-size: 26px; }
+  .bf-completion-sub { font-size: 16px; }
+}
 </style>
 </head>
 <body>
@@ -2270,6 +2506,18 @@ body::before {
         <div class="dash-box-last" id="last-panel-moodboard">not opened yet</div>
         <div class="dash-box-arrow">Open →</div>
       </div>
+      <div class="dash-box" id="box-brandfoundation" onclick="openBrandFoundation()" style="background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(6,182,212,0.05));">
+        <div class="dash-box-icon">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="bfGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9d5cf5"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>
+            <path d="M13 2L15.5 9H23L17 13.5L19.5 20.5L13 16L6.5 20.5L9 13.5L3 9H10.5L13 2Z" stroke="url(#bfGrad)" stroke-width="1.6" fill="none" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="dash-box-title">Brand Foundation</div>
+        <div class="dash-box-desc">Your why, your voice, your promise. Define what your brand truly stands for.</div>
+        <div class="dash-box-last" id="bf-box-status">—</div>
+        <div class="dash-box-arrow">Open →</div>
+      </div>
     </div>
     <div class="btn-row">
       <button class="btn" onclick="goTo(6)">← Launch Checklist</button>
@@ -2277,6 +2525,155 @@ body::before {
   </div>
 
 </div><!-- /app -->
+
+<!-- ===== BRAND FOUNDATION FLOW ===== -->
+<div id="bf-overlay" role="dialog" aria-modal="true" aria-label="Brand Foundation">
+  <div class="bf-top-bar">
+    <button id="bf-back-btn" class="bf-back-btn" onclick="bfPrevStep()">← back</button>
+    <div class="bf-progress-track">
+      <div class="bf-progress-fill" id="bf-progress-fill"></div>
+    </div>
+    <span class="bf-step-counter" id="bf-step-counter">step 1 of 6</span>
+  </div>
+
+  <div class="bf-screens-container">
+
+    <!-- Screen 0: The Why -->
+    <div class="bf-screen" id="bf-screen-0">
+      <div class="bf-label">brand foundation — 01</div>
+      <h2 class="bf-headline">why do you actually want to build this brand?</h2>
+      <p class="bf-subline">not the easy answer. the real one.</p>
+      <div class="bf-checkbox-grid">
+        <div class="bf-checkbox-card" data-value="represent" onclick="bfToggleCard(this,0,'represent');bfCheckContinue(0)">I want to create something that represents who I am</div>
+        <div class="bf-checkbox-card" data-value="freedom" onclick="bfToggleCard(this,0,'freedom');bfCheckContinue(0)">I want financial freedom and independence</div>
+        <div class="bf-checkbox-card" data-value="passion" onclick="bfToggleCard(this,0,'passion');bfCheckContinue(0)">I have a genuine passion for this product or space</div>
+        <div class="bf-checkbox-card" data-value="proud" onclick="bfToggleCard(this,0,'proud');bfCheckContinue(0)">I want to build something I'm proud of</div>
+        <div class="bf-checkbox-card" data-value="prove" onclick="bfToggleCard(this,0,'prove');bfCheckContinue(0)">I want to prove something to myself</div>
+        <div class="bf-checkbox-card" data-value="lifestyle" onclick="bfToggleCard(this,0,'lifestyle');bfCheckContinue(0)">I want to create a lifestyle around something I love</div>
+        <div class="bf-checkbox-card" data-value="money" onclick="bfToggleCard(this,0,'money');bfCheckContinue(0)">I want to make money — and do it with something real</div>
+        <div class="bf-checkbox-card" data-value="legacy" onclick="bfToggleCard(this,0,'legacy');bfCheckContinue(0)">I want to leave something behind that matters</div>
+      </div>
+      <textarea class="bf-textarea" data-screen="0" data-key="text" placeholder="or say it in your own words..." oninput="bfSaveTextarea(this,0,'text');bfCheckContinue(0)"></textarea>
+      <button class="bf-continue-btn" id="bf-continue-0" disabled onclick="bfNextStep()">continue →</button>
+    </div>
+
+    <!-- Screen 1: The Person -->
+    <div class="bf-screen" id="bf-screen-1">
+      <div class="bf-label">brand foundation — 02</div>
+      <h2 class="bf-headline">if your brand was a person — who are they?</h2>
+      <p class="bf-subline">describe their energy. how they carry themselves.</p>
+      <div class="bf-checkbox-grid">
+        <div class="bf-checkbox-card" data-value="quiet-confident" onclick="bfToggleCard(this,1,'quiet-confident');bfCheckContinue(1)">Quiet and confident — doesn't need attention but gets it</div>
+        <div class="bf-checkbox-card" data-value="bold-loud" onclick="bfToggleCard(this,1,'bold-loud');bfCheckContinue(1)">Bold and loud — walks in and owns the room</div>
+        <div class="bf-checkbox-card" data-value="warm-approachable" onclick="bfToggleCard(this,1,'warm-approachable');bfCheckContinue(1)">Warm and approachable — feels like a friend not a brand</div>
+        <div class="bf-checkbox-card" data-value="cold-editorial" onclick="bfToggleCard(this,1,'cold-editorial');bfCheckContinue(1)">Cold and editorial — lets the work speak</div>
+        <div class="bf-checkbox-card" data-value="rebellious-raw" onclick="bfToggleCard(this,1,'rebellious-raw');bfCheckContinue(1)">Rebellious and raw — rejects the mainstream</div>
+        <div class="bf-checkbox-card" data-value="elevated-refined" onclick="bfToggleCard(this,1,'elevated-refined');bfCheckContinue(1)">Elevated and refined — everything considered nothing wasted</div>
+        <div class="bf-checkbox-card" data-value="grounded-real" onclick="bfToggleCard(this,1,'grounded-real');bfCheckContinue(1)">Grounded and real — no performance just substance</div>
+        <div class="bf-checkbox-card" data-value="mysterious" onclick="bfToggleCard(this,1,'mysterious');bfCheckContinue(1)">Mysterious and understated — less is always more</div>
+      </div>
+      <textarea class="bf-textarea" data-screen="1" data-key="text" placeholder="describe them in your own words..." oninput="bfSaveTextarea(this,1,'text');bfCheckContinue(1)"></textarea>
+      <button class="bf-continue-btn" id="bf-continue-1" disabled onclick="bfNextStep()">continue →</button>
+    </div>
+
+    <!-- Screen 2: The Feeling -->
+    <div class="bf-screen" id="bf-screen-2">
+      <div class="bf-label">brand foundation — 03</div>
+      <h2 class="bf-headline">what should people feel when they see your brand?</h2>
+      <p class="bf-subline">before they read a single word.</p>
+      <div class="bf-pill-grid">
+        <div class="bf-pill" data-value="Calm" onclick="bfTogglePill(this,2,'Calm');bfCheckContinue(2)">Calm</div>
+        <div class="bf-pill" data-value="Powerful" onclick="bfTogglePill(this,2,'Powerful');bfCheckContinue(2)">Powerful</div>
+        <div class="bf-pill" data-value="Rebellious" onclick="bfTogglePill(this,2,'Rebellious');bfCheckContinue(2)">Rebellious</div>
+        <div class="bf-pill" data-value="Elevated" onclick="bfTogglePill(this,2,'Elevated');bfCheckContinue(2)">Elevated</div>
+        <div class="bf-pill" data-value="Raw" onclick="bfTogglePill(this,2,'Raw');bfCheckContinue(2)">Raw</div>
+        <div class="bf-pill" data-value="Pure" onclick="bfTogglePill(this,2,'Pure');bfCheckContinue(2)">Pure</div>
+        <div class="bf-pill" data-value="Bold" onclick="bfTogglePill(this,2,'Bold');bfCheckContinue(2)">Bold</div>
+        <div class="bf-pill" data-value="Quiet" onclick="bfTogglePill(this,2,'Quiet');bfCheckContinue(2)">Quiet</div>
+        <div class="bf-pill" data-value="Warm" onclick="bfTogglePill(this,2,'Warm');bfCheckContinue(2)">Warm</div>
+        <div class="bf-pill" data-value="Cold" onclick="bfTogglePill(this,2,'Cold');bfCheckContinue(2)">Cold</div>
+        <div class="bf-pill" data-value="Sharp" onclick="bfTogglePill(this,2,'Sharp');bfCheckContinue(2)">Sharp</div>
+        <div class="bf-pill" data-value="Soft" onclick="bfTogglePill(this,2,'Soft');bfCheckContinue(2)">Soft</div>
+        <div class="bf-pill" data-value="Mysterious" onclick="bfTogglePill(this,2,'Mysterious');bfCheckContinue(2)">Mysterious</div>
+        <div class="bf-pill" data-value="Grounded" onclick="bfTogglePill(this,2,'Grounded');bfCheckContinue(2)">Grounded</div>
+        <div class="bf-pill" data-value="Fearless" onclick="bfTogglePill(this,2,'Fearless');bfCheckContinue(2)">Fearless</div>
+        <div class="bf-pill" data-value="Refined" onclick="bfTogglePill(this,2,'Refined');bfCheckContinue(2)">Refined</div>
+        <div class="bf-pill" data-value="Honest" onclick="bfTogglePill(this,2,'Honest');bfCheckContinue(2)">Honest</div>
+        <div class="bf-pill" data-value="Unstoppable" onclick="bfTogglePill(this,2,'Unstoppable');bfCheckContinue(2)">Unstoppable</div>
+        <div class="bf-pill" data-value="Minimal" onclick="bfTogglePill(this,2,'Minimal');bfCheckContinue(2)">Minimal</div>
+        <div class="bf-pill" data-value="Loud" onclick="bfTogglePill(this,2,'Loud');bfCheckContinue(2)">Loud</div>
+        <div class="bf-pill" data-value="Intentional" onclick="bfTogglePill(this,2,'Intentional');bfCheckContinue(2)">Intentional</div>
+        <div class="bf-pill" data-value="Free" onclick="bfTogglePill(this,2,'Free');bfCheckContinue(2)">Free</div>
+      </div>
+      <textarea class="bf-textarea" data-screen="2" data-key="text" placeholder="anything else?" oninput="bfSaveTextarea(this,2,'text');bfCheckContinue(2)"></textarea>
+      <button class="bf-continue-btn" id="bf-continue-2" disabled onclick="bfNextStep()">continue →</button>
+    </div>
+
+    <!-- Screen 3: The Enemy -->
+    <div class="bf-screen" id="bf-screen-3">
+      <div class="bf-label">brand foundation — 04</div>
+      <h2 class="bf-headline">what does your brand stand against?</h2>
+      <p class="bf-subline">every strong brand rejects something.</p>
+      <div class="bf-checkbox-grid">
+        <div class="bf-checkbox-card" data-value="fast-fashion" onclick="bfToggleCard(this,3,'fast-fashion');bfCheckContinue(3)">Fast fashion and disposable products</div>
+        <div class="bf-checkbox-card" data-value="hype-over-quality" onclick="bfToggleCard(this,3,'hype-over-quality');bfCheckContinue(3)">Brands that care more about hype than quality</div>
+        <div class="bf-checkbox-card" data-value="generic-stores" onclick="bfToggleCard(this,3,'generic-stores');bfCheckContinue(3)">Generic stores that look like everyone else</div>
+        <div class="bf-checkbox-card" data-value="performance" onclick="bfToggleCard(this,3,'performance');bfCheckContinue(3)">Brands that perform instead of being real</div>
+        <div class="bf-checkbox-card" data-value="overpriced" onclick="bfToggleCard(this,3,'overpriced');bfCheckContinue(3)">Overpriced products with no substance behind them</div>
+        <div class="bf-checkbox-card" data-value="talk-down" onclick="bfToggleCard(this,3,'talk-down');bfCheckContinue(3)">Brands that talk down to their customer</div>
+        <div class="bf-checkbox-card" data-value="too-loud" onclick="bfToggleCard(this,3,'too-loud');bfCheckContinue(3)">Too much noise — too loud too much trying</div>
+        <div class="bf-checkbox-card" data-value="playing-safe" onclick="bfToggleCard(this,3,'playing-safe');bfCheckContinue(3)">Playing it safe</div>
+      </div>
+      <textarea class="bf-textarea" data-screen="3" data-key="text" placeholder="define your own..." oninput="bfSaveTextarea(this,3,'text');bfCheckContinue(3)"></textarea>
+      <button class="bf-continue-btn" id="bf-continue-3" disabled onclick="bfNextStep()">continue →</button>
+    </div>
+
+    <!-- Screen 4: The Reference -->
+    <div class="bf-screen" id="bf-screen-4">
+      <div class="bf-label">brand foundation — 05</div>
+      <h2 class="bf-headline">name brands you respect.</h2>
+      <p class="bf-subline">not to copy — because they make you feel something.</p>
+      <div class="bf-refs-label">up to 3 brands</div>
+      <div class="bf-brand-refs">
+        <div class="bf-brand-pair">
+          <input class="bf-brand-input bf-brand-name-input" type="text" placeholder="brand name..." oninput="bfSaveBrandRef(this,0,'name')" />
+          <input class="bf-brand-input bf-feel bf-brand-feel-input" type="text" placeholder="what do they make you feel?" oninput="bfSaveBrandRef(this,0,'feel')" />
+        </div>
+        <div class="bf-brand-pair">
+          <input class="bf-brand-input bf-brand-name-input" type="text" placeholder="brand name..." oninput="bfSaveBrandRef(this,1,'name')" />
+          <input class="bf-brand-input bf-feel bf-brand-feel-input" type="text" placeholder="what do they make you feel?" oninput="bfSaveBrandRef(this,1,'feel')" />
+        </div>
+        <div class="bf-brand-pair">
+          <input class="bf-brand-input bf-brand-name-input" type="text" placeholder="brand name..." oninput="bfSaveBrandRef(this,2,'name')" />
+          <input class="bf-brand-input bf-feel bf-brand-feel-input" type="text" placeholder="what do they make you feel?" oninput="bfSaveBrandRef(this,2,'feel')" />
+        </div>
+      </div>
+      <p class="bf-refs-optional">not sure? skip this one — it is optional.</p>
+      <button class="bf-continue-btn" id="bf-continue-4" onclick="bfNextStep()">continue →</button>
+    </div>
+
+    <!-- Screen 5: The Promise -->
+    <div class="bf-screen" id="bf-screen-5">
+      <div class="bf-label">brand foundation — 06</div>
+      <h2 class="bf-headline">complete this sentence:</h2>
+      <p class="bf-promise-lead">my brand exists so that...</p>
+      <textarea class="bf-textarea bf-promise-area" data-screen="5" data-key="promise" placeholder="write the first true thing that comes to mind. don't overthink it." oninput="bfSaveTextarea(this,5,'promise');bfCheckContinue(5)"></textarea>
+      <button class="bf-continue-btn bf-complete-btn" id="bf-continue-5" disabled onclick="bfComplete()">Complete Foundation</button>
+    </div>
+
+    <!-- Screen 6: Completion -->
+    <div class="bf-screen bf-completion-screen" id="bf-screen-6">
+      <div class="bf-particles" id="bf-particles"></div>
+      <div class="bf-completion-logo">FRMLS</div>
+      <div class="bf-completion-title">your brand foundation is set.</div>
+      <p class="bf-completion-sub">everything in your dashboard is now shaped around your answers.</p>
+      <button class="bf-enter-btn" onclick="bfEnterDashboard()">enter your dashboard →</button>
+    </div>
+
+  </div><!-- /bf-screens-container -->
+
+  <button id="bf-skip-btn" class="bf-skip-btn" onclick="bfSkip()">skip for now</button>
+</div><!-- /bf-overlay -->
 
 <!-- ===== PANEL OVERLAY ===== -->
 <div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
@@ -3206,7 +3603,7 @@ function goTo(n) {
   if (n === 5) buildStepList();
   if (n === 6) buildLaunchChecklist();
   if (n === 0) initDecisionTree();
-  if (n === 7) buildDashboard();
+  if (n === 7) { buildDashboard(); initBrandFoundation(); }
 
   const currentEl = document.querySelector('.screen.active');
   const nextEl = document.getElementById('screen-' + n);
@@ -3640,6 +4037,8 @@ function buildDashboard() {
   fnLoadNotes();
   loadStoreUrl();
   loadSocials();
+  bfLoadAnswers();
+  bfUpdateBoxStatus();
 }
 
 function updateDashProgress() {
@@ -5586,6 +5985,307 @@ function shRenderReminders() {
       <button class="sh-card-btn danger" onclick="shDeleteReminder(${r.id})">Del</button>
     </div>`;
   }).join('');
+}
+
+/* ===== BRAND FOUNDATION ===== */
+const BF_COMPLETE_KEY = 'frmls_foundation_complete';
+const BF_STEP_KEY     = 'frmls_foundation_step';
+const BF_ANSWERS_KEY  = 'frmls_foundation_answers';
+const BF_TOTAL_STEPS  = 6;
+
+let bfCurrentStep = 0;
+let bfAnswers     = {};
+let bfIsAnimating = false;
+
+function bfLoadAnswers() {
+  try { bfAnswers = JSON.parse(localStorage.getItem(BF_ANSWERS_KEY) || '{}') || {}; } catch(e) { bfAnswers = {}; }
+}
+
+function bfSaveAnswers() {
+  localStorage.setItem(BF_ANSWERS_KEY, JSON.stringify(bfAnswers));
+}
+
+/* Called from goTo(7) — shows overlay if not yet complete */
+function initBrandFoundation() {
+  bfLoadAnswers();
+  if (localStorage.getItem(BF_COMPLETE_KEY)) {
+    bfUpdateBoxStatus();
+    return;
+  }
+  const saved = parseInt(localStorage.getItem(BF_STEP_KEY) || '0', 10);
+  bfCurrentStep = isNaN(saved) ? 0 : Math.min(saved, BF_TOTAL_STEPS - 1);
+  bfShowOverlay();
+}
+
+/* Called from dashboard box — always opens the flow */
+function openBrandFoundation() {
+  bfLoadAnswers();
+  bfCurrentStep = 0;
+  bfShowOverlay();
+}
+
+function bfShowOverlay() {
+  const overlay = document.getElementById('bf-overlay');
+  if (!overlay) return;
+  overlay.classList.add('bf-visible');
+  document.body.style.overflow = 'hidden';
+  bfGoTo(bfCurrentStep, false);
+}
+
+function bfHideOverlay() {
+  const overlay = document.getElementById('bf-overlay');
+  if (!overlay) return;
+  overlay.classList.remove('bf-visible');
+  document.body.style.overflow = '';
+  bfUpdateBoxStatus();
+}
+
+function bfUpdateBoxStatus() {
+  const el = document.getElementById('bf-box-status');
+  if (!el) return;
+  if (localStorage.getItem(BF_COMPLETE_KEY)) {
+    el.textContent = '✓ complete';
+    el.style.color = '#34d399';
+  } else if (Object.keys(bfAnswers).length > 0) {
+    el.textContent = '• in progress';
+    el.style.color = '#a78bfa';
+  } else {
+    el.textContent = 'not started';
+    el.style.color = '';
+  }
+}
+
+function bfGoTo(step, animate) {
+  if (bfIsAnimating) return;
+  if (typeof animate === 'undefined') animate = true;
+
+  const currentEl = document.querySelector('#bf-overlay .bf-screen.bf-active');
+  const nextEl    = document.getElementById('bf-screen-' + step);
+  if (!nextEl) return;
+
+  function showNext() {
+    bfIsAnimating = true;
+    bfCurrentStep = step;
+    localStorage.setItem(BF_STEP_KEY, step);
+
+    // Update top bar
+    const backBtn = document.getElementById('bf-back-btn');
+    const counter  = document.getElementById('bf-step-counter');
+    const skipBtn  = document.getElementById('bf-skip-btn');
+    if (backBtn) backBtn.style.visibility = (step > 0 && step < BF_TOTAL_STEPS) ? 'visible' : 'hidden';
+    if (counter) counter.textContent = step < BF_TOTAL_STEPS ? ('step ' + (step + 1) + ' of ' + BF_TOTAL_STEPS) : '';
+    if (skipBtn) skipBtn.style.display = step < BF_TOTAL_STEPS ? 'block' : 'none';
+
+    // Update progress bar
+    const fill = document.getElementById('bf-progress-fill');
+    if (fill) fill.style.width = (step >= BF_TOTAL_STEPS ? 100 : (step / BF_TOTAL_STEPS) * 100) + '%';
+
+    // Prepare next screen: show it but invisible, slightly below
+    nextEl.style.transition = 'none';
+    nextEl.style.opacity = '0';
+    nextEl.style.transform = 'translateY(20px)';
+    nextEl.classList.add('bf-active'); // display: flex
+
+    // Restore saved selections/text
+    bfRestoreScreen(step);
+
+    // Scroll overlay to top
+    const overlay = document.getElementById('bf-overlay');
+    if (overlay) overlay.scrollTo({ top: 0 });
+
+    // Trigger fade-in on next frame (after browser paints the starting state)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        nextEl.style.transition = 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1)';
+        nextEl.style.opacity = '1';
+        nextEl.style.transform = 'translateY(0)';
+        setTimeout(() => {
+          // Clean up inline styles once animation completes
+          nextEl.style.transition = '';
+          nextEl.style.opacity = '';
+          nextEl.style.transform = '';
+          bfIsAnimating = false;
+        }, 420);
+      });
+    });
+
+    // Init completion particles
+    if (step === BF_TOTAL_STEPS) bfInitParticles();
+  }
+
+  if (animate && currentEl && currentEl !== nextEl) {
+    bfIsAnimating = true;
+    // Fade out current
+    currentEl.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    currentEl.style.opacity = '0';
+    currentEl.style.transform = 'translateY(-12px)';
+    setTimeout(() => {
+      currentEl.classList.remove('bf-active');
+      currentEl.style.transition = '';
+      currentEl.style.opacity = '';
+      currentEl.style.transform = '';
+      bfIsAnimating = false;
+      showNext();
+    }, 300);
+  } else {
+    if (currentEl && currentEl !== nextEl) {
+      currentEl.classList.remove('bf-active');
+    }
+    showNext();
+  }
+}
+
+function bfNextStep() {
+  if (bfCurrentStep < BF_TOTAL_STEPS) bfGoTo(bfCurrentStep + 1, true);
+}
+
+function bfPrevStep() {
+  if (bfCurrentStep > 0) bfGoTo(bfCurrentStep - 1, true);
+}
+
+function bfSkip() {
+  localStorage.setItem(BF_COMPLETE_KEY, 'true');
+  bfHideOverlay();
+}
+
+function bfComplete() {
+  bfSaveAnswers();
+  localStorage.setItem(BF_COMPLETE_KEY, 'true');
+  localStorage.removeItem(BF_STEP_KEY);
+
+  const currentEl = document.getElementById('bf-screen-5');
+  if (currentEl) {
+    bfIsAnimating = true;
+    currentEl.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    currentEl.style.opacity = '0';
+    currentEl.style.transform = 'translateY(-12px)';
+    setTimeout(() => {
+      currentEl.classList.remove('bf-active');
+      currentEl.style.transition = '';
+      currentEl.style.opacity = '';
+      currentEl.style.transform = '';
+      bfIsAnimating = false;
+      // 600ms extra delay before completion screen appears
+      setTimeout(() => { bfGoTo(BF_TOTAL_STEPS, false); }, 600);
+    }, 300);
+  } else {
+    setTimeout(() => { bfGoTo(BF_TOTAL_STEPS, false); }, 600);
+  }
+}
+
+function bfEnterDashboard() {
+  bfHideOverlay();
+}
+
+/* Toggle a checkbox card */
+function bfToggleCard(el, screenIdx, value) {
+  el.classList.toggle('selected');
+  if (!bfAnswers[screenIdx]) bfAnswers[screenIdx] = {};
+  if (!bfAnswers[screenIdx].selections) bfAnswers[screenIdx].selections = [];
+  const arr = bfAnswers[screenIdx].selections;
+  const i = arr.indexOf(value);
+  if (i >= 0) arr.splice(i, 1); else arr.push(value);
+  bfSaveAnswers();
+}
+
+/* Toggle a mood pill */
+function bfTogglePill(el, screenIdx, value) {
+  el.classList.toggle('selected');
+  if (!bfAnswers[screenIdx]) bfAnswers[screenIdx] = {};
+  if (!bfAnswers[screenIdx].moods) bfAnswers[screenIdx].moods = [];
+  const arr = bfAnswers[screenIdx].moods;
+  const i = arr.indexOf(value);
+  if (i >= 0) arr.splice(i, 1); else arr.push(value);
+  bfSaveAnswers();
+}
+
+/* Save a textarea value */
+function bfSaveTextarea(el, screenIdx, key) {
+  if (!bfAnswers[screenIdx]) bfAnswers[screenIdx] = {};
+  bfAnswers[screenIdx][key] = el.value;
+  bfSaveAnswers();
+}
+
+/* Save a brand reference input */
+function bfSaveBrandRef(el, refIdx, field) {
+  if (!bfAnswers[4]) bfAnswers[4] = {};
+  if (!bfAnswers[4].brands) bfAnswers[4].brands = [{},{},{}];
+  while (bfAnswers[4].brands.length <= refIdx) bfAnswers[4].brands.push({});
+  bfAnswers[4].brands[refIdx][field] = el.value;
+  bfSaveAnswers();
+}
+
+/* Check if continue button should be enabled */
+function bfCheckContinue(screenIdx) {
+  const btn = document.getElementById('bf-continue-' + screenIdx);
+  if (!btn) return;
+
+  // Screen 4 (Reference) is always optional
+  if (screenIdx === 4) { btn.disabled = false; return; }
+
+  const screen = document.getElementById('bf-screen-' + screenIdx);
+  if (!screen) return;
+
+  let hasValue = false;
+  if (screen.querySelector('.bf-checkbox-card.selected, .bf-pill.selected')) hasValue = true;
+  const ta = screen.querySelector('.bf-textarea');
+  if (ta && ta.value.trim()) hasValue = true;
+
+  btn.disabled = !hasValue;
+}
+
+/* Restore saved state when navigating to a screen */
+function bfRestoreScreen(step) {
+  const screen = document.getElementById('bf-screen-' + step);
+  if (!screen) return;
+  const ans = bfAnswers[step] || {};
+
+  // Restore checkbox cards
+  screen.querySelectorAll('.bf-checkbox-card').forEach(card => {
+    const v = card.dataset.value;
+    card.classList.toggle('selected', !!(ans.selections && ans.selections.includes(v)));
+  });
+
+  // Restore mood pills
+  screen.querySelectorAll('.bf-pill').forEach(pill => {
+    const v = pill.dataset.value;
+    pill.classList.toggle('selected', !!(ans.moods && ans.moods.includes(v)));
+  });
+
+  // Restore textareas
+  screen.querySelectorAll('.bf-textarea').forEach(ta => {
+    const key = ta.dataset.key;
+    if (key && ans[key] !== undefined) ta.value = ans[key];
+  });
+
+  // Restore brand ref inputs (screen 4)
+  if (step === 4 && ans.brands) {
+    const nameInputs = screen.querySelectorAll('.bf-brand-name-input');
+    const feelInputs = screen.querySelectorAll('.bf-brand-feel-input');
+    nameInputs.forEach((inp, i) => { if (ans.brands[i]) inp.value = ans.brands[i].name || ''; });
+    feelInputs.forEach((inp, i) => { if (ans.brands[i]) inp.value = ans.brands[i].feel || ''; });
+  }
+
+  bfCheckContinue(step);
+}
+
+/* Create particles for completion screen */
+function bfInitParticles() {
+  const container = document.getElementById('bf-particles');
+  if (!container || container.children.length > 0) return;
+  for (let i = 0; i < 24; i++) {
+    const p = document.createElement('div');
+    p.className = 'bf-particle';
+    p.style.setProperty('--dur',   (5 + Math.random() * 7) + 's');
+    p.style.setProperty('--delay', (Math.random() * 3) + 's');
+    p.style.setProperty('--tx',    (Math.random() * 120 - 60) + 'px');
+    p.style.setProperty('--ty',    -(40 + Math.random() * 100) + 'px');
+    p.style.left = (3 + Math.random() * 94) + '%';
+    p.style.top  = (5 + Math.random() * 85) + '%';
+    p.style.width  = (2 + Math.random() * 4) + 'px';
+    p.style.height = p.style.width;
+    container.appendChild(p);
+  }
 }
 
 /* ===== CSV DOWNLOAD TEMPLATES ===== */

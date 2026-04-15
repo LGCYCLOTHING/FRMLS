@@ -5719,65 +5719,113 @@ async function exportTipCarousel() {
   if (btn) { btn.textContent = 'Exporting…'; btn.disabled = true; }
 
   const tipKeys = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7'];
-  const prevActive = activeKey;
+  const pool    = document.getElementById('canvas-pool');
+  const isIOS   = /iP(ad|hone|od)/.test(navigator.userAgent) && !window.MSStream;
+
+  // Temporary capture container — placed at top-left of document,
+  // out of z-index flow but at real coordinates so html2canvas can see it.
+  const wrap = document.createElement('div');
+  wrap.style.cssText = [
+    'position:fixed',
+    'top:0',
+    'left:0',
+    'width:1080px',
+    'height:1350px',
+    'overflow:hidden',
+    'pointer-events:none',
+    'z-index:-9999',
+    'opacity:1'
+  ].join(';');
+  document.body.appendChild(wrap);
+
+  if (isIOS) {
+    // Warn user upfront — iOS needs new-tab approach
+    if (btn) btn.textContent = 'Opening slides…';
+  }
 
   for (let i = 0; i < tipKeys.length; i++) {
     const slideKey = tipKeys[i];
-    const slideMeta = getMeta(slideKey);
-    if (!slideMeta) continue;
+    const el = document.getElementById('cvs-' + slideKey);
+    if (!el) continue;
+
+    const slideNum = i + 1;
+    const bg = slideKey === 'tip7' ? '#ede5d3' : '#f2ece0';
+
+    // Move slide into the capture wrapper
+    const prevParent = el.parentNode;
+    const prevPosition = el.style.position;
+    const prevTop  = el.style.top;
+    const prevLeft = el.style.left;
+    wrap.appendChild(el);
+    el.style.position = 'absolute';
+    el.style.top  = '0';
+    el.style.left = '0';
+
+    if (btn) btn.textContent = 'Exporting ' + slideNum + ' / 7…';
 
     await new Promise(function(resolve) {
-      selectCanvas(slideKey);
-      const el = document.getElementById('cvs-' + slideKey);
-      if (!el) { resolve(); return; }
-
-      const prevTransform = stage.style.transform;
-      const prevContentTf = canvasContent.style.transform;
-      const prevContentW  = canvasContent.style.width;
-      const prevContentH  = canvasContent.style.height;
-
-      stage.style.transform         = 'translate(-50%,-50%) scale(1)';
-      canvasContent.style.transform = 'translate(-50%,-50%) scale(1)';
-      canvasContent.style.width     = '1080px';
-      canvasContent.style.height    = '1350px';
-
-      const bg = slideKey === 'tip7' ? '#1a1a1a' : '#f5f0e8';
-      const slideNum = i + 1;
-
       html2canvas(el, {
         width: 1080, height: 1350,
-        scale: 1, useCORS: true,
+        scale: 1,
+        useCORS: true,
+        allowTaint: true,
         backgroundColor: bg,
-        logging: false
+        logging: false,
+        x: 0, y: 0,
+        scrollX: 0, scrollY: 0
       }).then(function(canvas) {
-        stage.style.transform         = prevTransform;
-        canvasContent.style.transform = prevContentTf;
-        canvasContent.style.width     = prevContentW;
-        canvasContent.style.height    = prevContentH;
-        applyFrame();
+        // Restore element to its original parent
+        el.style.position = prevPosition;
+        el.style.top  = prevTop;
+        el.style.left = prevLeft;
+        if (prevParent) prevParent.appendChild(el);
 
-        canvas.toBlob(function(blob) {
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(blob);
-          a.download = 'tip-slide-' + slideNum + '.png';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          setTimeout(function() { URL.revokeObjectURL(a.href); }, 3000);
+        if (isIOS) {
+          // iOS Safari ignores a.download — open image in new tab instead
+          const dataUrl = canvas.toDataURL('image/png');
+          const tab = window.open('', '_blank');
+          if (tab) {
+            tab.document.write(
+              '<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width">' +
+              '<title>tip-slide-' + slideNum + '.png</title></head>' +
+              '<body style="margin:0;background:#111;font-family:sans-serif">' +
+              '<p style="color:#fff;padding:14px 16px;font-size:14px;margin:0">' +
+              'Slide ' + slideNum + ' / 7 — <strong>long press → Save to Photos</strong></p>' +
+              '<img src="' + dataUrl + '" style="width:100%;display:block">' +
+              '</body></html>'
+            );
+            tab.document.close();
+          }
           resolve();
-        }, 'image/png');
-      }).catch(function() {
-        stage.style.transform         = prevTransform;
-        canvasContent.style.transform = prevContentTf;
-        canvasContent.style.width     = prevContentW;
-        canvasContent.style.height    = prevContentH;
-        applyFrame();
+        } else {
+          canvas.toBlob(function(blob) {
+            if (!blob || blob.size === 0) { resolve(); return; }
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'tip-slide-' + slideNum + '.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(function() { URL.revokeObjectURL(a.href); }, 5000);
+            resolve();
+          }, 'image/png');
+        }
+      }).catch(function(err) {
+        el.style.position = prevPosition;
+        el.style.top  = prevTop;
+        el.style.left = prevLeft;
+        if (prevParent) prevParent.appendChild(el);
+        console.warn('Slide ' + slideNum + ' export failed:', err);
         resolve();
       });
     });
+
+    // Small pause so the browser can breathe between captures
+    await new Promise(function(r) { setTimeout(r, 80); });
   }
 
-  if (prevActive) selectCanvas(prevActive);
+  // Clean up wrapper
+  if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
   if (btn) { btn.textContent = '↓ Export All 7 Slides'; btn.disabled = false; }
 }
 

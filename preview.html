@@ -5725,49 +5725,52 @@ function triggerDownload(dataUrl, filename) {
 // ══════════════════════════════════════════════════════════════
 
 function mobileExport() {
-  var tipKeys = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7'];
-  if (tipKeys.indexOf(activeKey) !== -1) {
-    exportTipCarousel();
-  } else {
-    exportCurrent();
-  }
+  // On mobile, always export the full carousel — it's the only export users need.
+  exportTipCarousel();
 }
 
 async function exportTipCarousel() {
-  var btn = document.getElementById('tip-export-btn');
-  if (btn) { btn.textContent = 'Preparing…'; btn.disabled = true; }
+  var sidebarBtn  = document.getElementById('tip-export-btn');
+  var mobileBtn   = document.getElementById('mtab-export');
+  var mobileLbl   = mobileBtn ? mobileBtn.querySelector('span:last-child') : null;
+
+  function setProgress(text) {
+    if (sidebarBtn) { sidebarBtn.textContent = text; sidebarBtn.disabled = true; }
+    if (mobileLbl)  { mobileLbl.textContent  = text; }
+  }
+  function resetBtns() {
+    if (sidebarBtn) { sidebarBtn.textContent = '↓ Export All 7 Slides'; sidebarBtn.disabled = false; }
+    if (mobileLbl)  { mobileLbl.textContent  = 'Export'; }
+  }
+
+  setProgress('Preparing…');
 
   var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
   var tipKeys = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7']
     .filter(function(k) { return !!document.getElementById('cvs-' + k); });
 
-  // Capture all slides
   var slides = [];
   for (var i = 0; i < tipKeys.length; i++) {
     var key = tipKeys[i];
-    if (btn) btn.textContent = 'Capturing ' + (i + 1) + ' / ' + tipKeys.length + '…';
+    setProgress((i + 1) + ' / ' + tipKeys.length);
     var dataUrl = await captureSlide(
       document.getElementById('cvs-' + key), 1080, 1350,
       key === 'tip7' ? '#ede5d3' : '#f2ece0'
     );
     slides.push({ dataUrl: dataUrl, num: i + 1 });
-    await new Promise(function(r) { setTimeout(r, 80); });
+    await new Promise(function(r) { setTimeout(r, 60); });
   }
 
-  if (btn) { btn.textContent = '↓ Export All Slides'; btn.disabled = false; }
+  resetBtns();
 
   var failed = slides.filter(function(s) { return !s.dataUrl; }).length;
   if (failed === slides.length) { alert('Capture failed — try again.'); return; }
 
   if (isMobile) {
-    // Show in-page modal — no new tab needed.
-    // Each "Open Slide" button calls openCapturedSlide(idx) synchronously from its tap,
-    // which opens a blob URL in a new tab. iOS allows window.open from a direct user tap.
     window.__frmlsSlides = slides;
     showSaveModal(slides, tipKeys.length);
   } else {
-    // Desktop: direct download each file
     for (var j = 0; j < slides.length; j++) {
       if (slides[j].dataUrl) {
         triggerDownload(slides[j].dataUrl, 'tip-slide-' + slides[j].num + '.png');
@@ -5778,64 +5781,81 @@ async function exportTipCarousel() {
 }
 
 function openCapturedSlide(idx) {
-  var slides = window.__frmlsSlides;
-  if (!slides || !slides[idx] || !slides[idx].dataUrl) return;
-  var dataUrl = slides[idx].dataUrl;
-  // Convert to blob URL — handles large images better than raw data URLs
-  var parts = dataUrl.split(',');
+  var s = (window.__frmlsSlides || [])[idx];
+  if (!s || !s.dataUrl) return;
+  var parts = s.dataUrl.split(',');
   var byteStr = atob(parts[1]);
   var ab = new ArrayBuffer(byteStr.length);
   var ia = new Uint8Array(ab);
   for (var i = 0; i < byteStr.length; i++) ia[i] = byteStr.charCodeAt(i);
   var blob = new Blob([ab], { type: 'image/png' });
-  var url = URL.createObjectURL(blob);
-  window.open(url, '_blank');
+  window.open(URL.createObjectURL(blob), '_blank');
 }
 
 function showSaveModal(slides, total) {
   var existing = document.getElementById('save-modal');
-  if (existing) existing.parentNode.removeChild(existing);
+  if (existing) existing.remove();
 
+  // ── Modal container ──
   var modal = document.createElement('div');
   modal.id = 'save-modal';
-  modal.style.cssText = [
-    'position:fixed', 'inset:0', 'background:#0a0805', 'z-index:99999',
-    'overflow-y:auto', '-webkit-overflow-scrolling:touch',
-    'font-family:system-ui,sans-serif', 'padding:20px 16px 100px'
-  ].join(';');
+  modal.style.cssText = 'position:fixed;inset:0;background:#0a0805;z-index:99999;' +
+    'overflow-y:auto;-webkit-overflow-scrolling:touch;font-family:system-ui,sans-serif;' +
+    'padding:20px 16px 100px;';
 
-  var header = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">' +
-    '<div style="color:#fff;font-size:22px;font-weight:900;letter-spacing:-.02em;">Your Slides</div>' +
-    '<button onclick="document.getElementById(\'save-modal\').remove()" ' +
-      'style="background:rgba(255,255,255,.1);border:none;color:#fff;font-size:15px;' +
-      'padding:8px 14px;border-radius:8px;cursor:pointer;font-family:inherit;">✕ Close</button>' +
-    '</div>';
+  // ── Header ──
+  var hdr = document.createElement('div');
+  hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;';
+  var title = document.createElement('div');
+  title.style.cssText = 'color:#fff;font-size:22px;font-weight:900;letter-spacing:-.02em;';
+  title.textContent = 'Your Slides';
+  var closeBtn = document.createElement('button');
+  closeBtn.style.cssText = 'background:rgba(255,255,255,.1);border:none;color:#fff;font-size:15px;' +
+    'padding:8px 14px;border-radius:8px;cursor:pointer;font-family:inherit;';
+  closeBtn.textContent = '✕ Close';
+  closeBtn.onclick = function() { modal.remove(); };
+  hdr.appendChild(title);
+  hdr.appendChild(closeBtn);
+  modal.appendChild(hdr);
 
-  var tip = '<div style="background:rgba(212,168,83,.12);border:1px solid rgba(212,168,83,.3);' +
+  // ── Instruction ──
+  var tip = document.createElement('div');
+  tip.style.cssText = 'background:rgba(212,168,83,.12);border:1px solid rgba(212,168,83,.3);' +
     'border-radius:10px;padding:12px 14px;font-size:13px;color:rgba(255,255,255,.75);' +
-    'line-height:1.6;margin-bottom:20px;">' +
-    'Tap <strong style="color:#d4a853">Open Slide</strong> below — the image opens full screen. ' +
-    'Then tap the <strong style="color:#d4a853">Share button ⬆</strong> and choose ' +
-    '<strong style="color:#d4a853">Save Image</strong>.' +
-    '</div>';
+    'line-height:1.6;margin-bottom:20px;';
+  tip.innerHTML = 'Tap <strong style="color:#d4a853">Open Slide</strong> — image opens full screen. ' +
+    'Tap <strong style="color:#d4a853">Share ⬆</strong> → <strong style="color:#d4a853">Save Image</strong>.';
+  modal.appendChild(tip);
 
-  var rows = slides.map(function(s, idx) {
-    if (!s.dataUrl) return '';
-    return '<div style="margin-bottom:24px;">' +
-      '<div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;' +
-        'text-transform:uppercase;margin-bottom:8px;">Slide ' + s.num + ' of ' + total + '</div>' +
-      '<img src="' + s.dataUrl + '" style="width:100%;border-radius:12px 12px 0 0;display:block;' +
-        '-webkit-touch-callout:default;" />' +
-      '<button onclick="openCapturedSlide(' + idx + ')" ' +
-        'style="width:100%;padding:16px;background:#1a1208;border:none;color:#d4a853;' +
-        'font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;' +
-        'border-radius:0 0 12px 12px;letter-spacing:.01em;">' +
-        '↗ Open Slide ' + s.num +
-      '</button>' +
-    '</div>';
-  }).join('');
+  // ── Slide rows — build with DOM, set img.src separately (avoids giant innerHTML) ──
+  slides.forEach(function(s, idx) {
+    if (!s.dataUrl) return;
 
-  modal.innerHTML = header + tip + rows;
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'margin-bottom:24px;';
+
+    var label = document.createElement('div');
+    label.style.cssText = 'font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;' +
+      'text-transform:uppercase;margin-bottom:8px;';
+    label.textContent = 'Slide ' + s.num + ' of ' + total;
+
+    var img = document.createElement('img');
+    img.style.cssText = 'width:100%;border-radius:12px 12px 0 0;display:block;-webkit-touch-callout:default;';
+    img.src = s.dataUrl;
+
+    var openBtn = document.createElement('button');
+    openBtn.style.cssText = 'width:100%;padding:16px;background:#1a1208;border:none;color:#d4a853;' +
+      'font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;' +
+      'border-radius:0 0 12px 12px;letter-spacing:.01em;';
+    openBtn.textContent = '↗ Open Slide ' + s.num;
+    openBtn.addEventListener('click', function() { openCapturedSlide(idx); });
+
+    wrap.appendChild(label);
+    wrap.appendChild(img);
+    wrap.appendChild(openBtn);
+    modal.appendChild(wrap);
+  });
+
   document.body.appendChild(modal);
 }
 

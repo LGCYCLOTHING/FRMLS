@@ -5739,20 +5739,6 @@ async function exportTipCarousel() {
 
   var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-  // On mobile: open save tab NOW while we still have the button-tap gesture context.
-  // (After any await, iOS blocks programmatic downloads/tab-opens.)
-  var saveTab = null;
-  if (isMobile) {
-    saveTab = window.open('', '_blank');
-    if (saveTab) {
-      saveTab.document.write('<html><head><meta name="viewport" content="width=device-width,initial-scale=1">' +
-        '<style>body{margin:0;background:#0a0805;display:flex;align-items:center;justify-content:center;' +
-        'height:100vh;font-family:system-ui,sans-serif;color:#fff;font-size:16px;}</style></head>' +
-        '<body>⏳ Preparing slides…</body></html>');
-      saveTab.document.close();
-    }
-  }
-
   var tipKeys = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7']
     .filter(function(k) { return !!document.getElementById('cvs-' + k); });
 
@@ -5774,49 +5760,12 @@ async function exportTipCarousel() {
   var failed = slides.filter(function(s) { return !s.dataUrl; }).length;
   if (failed === slides.length) { alert('Capture failed — try again.'); return; }
 
-  if (isMobile && saveTab && !saveTab.closed) {
-    // ── Build save page in the pre-opened tab ──
-    // Each button opens the image as a raw data URL in a new tab.
-    // iOS Safari renders it full-screen → user taps Share (⬆) → Save Image.
-    // This is synchronous (window.open inside onclick) so iOS always allows it.
-    var script = 'var S=' + JSON.stringify(slides) + ';' +
-      'function save(i){' +
-        'var s=S[i];' +
-        'if(!s||!s.dataUrl)return;' +
-        'window.open(s.dataUrl,"_blank");' +
-      '}';
-
-    var rows = slides.map(function(s, idx) {
-      if (!s.dataUrl) return '';
-      return '<div style="margin-bottom:28px;">' +
-        '<div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">Slide ' + s.num + ' of ' + tipKeys.length + '</div>' +
-        '<img src="' + s.dataUrl + '" style="width:100%;border-radius:12px 12px 0 0;display:block;">' +
-        '<button onclick="save(' + idx + ')" ' +
-          'style="width:100%;padding:16px;background:#1a1208;border:none;color:#d4a853;font-size:16px;' +
-          'font-weight:700;cursor:pointer;font-family:inherit;border-radius:0 0 12px 12px;letter-spacing:.01em;">' +
-          '↗ Open Slide ' + s.num + '</button>' +
-        '</div>';
-    }).join('');
-
-    var page = '<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">' +
-      '<style>body{margin:0;background:#0a0805;font-family:system-ui,sans-serif;padding:20px 16px 80px;}</style>' +
-      '</head><body>' +
-      '<div style="margin-bottom:22px;">' +
-        '<div style="color:#fff;font-size:22px;font-weight:900;letter-spacing:-.02em;margin-bottom:10px;">Your Slides</div>' +
-        '<div style="background:rgba(212,168,83,.12);border:1px solid rgba(212,168,83,.3);border-radius:10px;' +
-          'padding:12px 14px;font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.6;">' +
-          'Tap <strong style="color:#d4a853">Open Slide</strong> → image opens full screen → tap the ' +
-          '<strong style="color:#d4a853">Share button ⬆</strong> → tap <strong style="color:#d4a853">Save Image</strong>' +
-        '</div>' +
-      '</div>' +
-      rows +
-      '<script>' + script + '<\/script>' +
-      '</body></html>';
-
-    saveTab.document.open();
-    saveTab.document.write(page);
-    saveTab.document.close();
-
+  if (isMobile) {
+    // Show in-page modal — no new tab needed.
+    // Each "Open Slide" button calls openCapturedSlide(idx) synchronously from its tap,
+    // which opens a blob URL in a new tab. iOS allows window.open from a direct user tap.
+    window.__frmlsSlides = slides;
+    showSaveModal(slides, tipKeys.length);
   } else {
     // Desktop: direct download each file
     for (var j = 0; j < slides.length; j++) {
@@ -5826,6 +5775,68 @@ async function exportTipCarousel() {
       }
     }
   }
+}
+
+function openCapturedSlide(idx) {
+  var slides = window.__frmlsSlides;
+  if (!slides || !slides[idx] || !slides[idx].dataUrl) return;
+  var dataUrl = slides[idx].dataUrl;
+  // Convert to blob URL — handles large images better than raw data URLs
+  var parts = dataUrl.split(',');
+  var byteStr = atob(parts[1]);
+  var ab = new ArrayBuffer(byteStr.length);
+  var ia = new Uint8Array(ab);
+  for (var i = 0; i < byteStr.length; i++) ia[i] = byteStr.charCodeAt(i);
+  var blob = new Blob([ab], { type: 'image/png' });
+  var url = URL.createObjectURL(blob);
+  window.open(url, '_blank');
+}
+
+function showSaveModal(slides, total) {
+  var existing = document.getElementById('save-modal');
+  if (existing) existing.parentNode.removeChild(existing);
+
+  var modal = document.createElement('div');
+  modal.id = 'save-modal';
+  modal.style.cssText = [
+    'position:fixed', 'inset:0', 'background:#0a0805', 'z-index:99999',
+    'overflow-y:auto', '-webkit-overflow-scrolling:touch',
+    'font-family:system-ui,sans-serif', 'padding:20px 16px 100px'
+  ].join(';');
+
+  var header = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">' +
+    '<div style="color:#fff;font-size:22px;font-weight:900;letter-spacing:-.02em;">Your Slides</div>' +
+    '<button onclick="document.getElementById(\'save-modal\').remove()" ' +
+      'style="background:rgba(255,255,255,.1);border:none;color:#fff;font-size:15px;' +
+      'padding:8px 14px;border-radius:8px;cursor:pointer;font-family:inherit;">✕ Close</button>' +
+    '</div>';
+
+  var tip = '<div style="background:rgba(212,168,83,.12);border:1px solid rgba(212,168,83,.3);' +
+    'border-radius:10px;padding:12px 14px;font-size:13px;color:rgba(255,255,255,.75);' +
+    'line-height:1.6;margin-bottom:20px;">' +
+    'Tap <strong style="color:#d4a853">Open Slide</strong> below — the image opens full screen. ' +
+    'Then tap the <strong style="color:#d4a853">Share button ⬆</strong> and choose ' +
+    '<strong style="color:#d4a853">Save Image</strong>.' +
+    '</div>';
+
+  var rows = slides.map(function(s, idx) {
+    if (!s.dataUrl) return '';
+    return '<div style="margin-bottom:24px;">' +
+      '<div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;' +
+        'text-transform:uppercase;margin-bottom:8px;">Slide ' + s.num + ' of ' + total + '</div>' +
+      '<img src="' + s.dataUrl + '" style="width:100%;border-radius:12px 12px 0 0;display:block;' +
+        '-webkit-touch-callout:default;" />' +
+      '<button onclick="openCapturedSlide(' + idx + ')" ' +
+        'style="width:100%;padding:16px;background:#1a1208;border:none;color:#d4a853;' +
+        'font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;' +
+        'border-radius:0 0 12px 12px;letter-spacing:.01em;">' +
+        '↗ Open Slide ' + s.num +
+      '</button>' +
+    '</div>';
+  }).join('');
+
+  modal.innerHTML = header + tip + rows;
+  document.body.appendChild(modal);
 }
 
 // ── Mobile sidebar ──

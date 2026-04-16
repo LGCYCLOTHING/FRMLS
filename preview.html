@@ -3593,48 +3593,27 @@ function esc(str) {
 }
 
 // ── Export active canvas ──
-function exportCurrent() {
+async function exportCurrent() {
   if (!activeKey) return;
-  const meta   = getMeta(activeKey);
+  var meta = getMeta(activeKey);
   if (!meta) return;
-  const original = document.getElementById('cvs-' + activeKey);
-  if (!original) return;
+  var el = document.getElementById('cvs-' + activeKey);
+  if (!el) return;
 
-  const mainBtn = document.getElementById('btn-export-png');
+  var mainBtn = document.getElementById('btn-export-png');
   if (mainBtn) { mainBtn.textContent = 'Saving…'; mainBtn.disabled = true; }
 
-  // Clone so the live canvas is never disturbed
-  const clone = original.cloneNode(true);
-  clone.removeAttribute('id');
-  clone.style.cssText = 'position:fixed;top:0;left:0;width:' + meta.w + 'px;height:' + meta.h + 'px;overflow:hidden;pointer-events:none;z-index:-9999;';
-  document.body.appendChild(clone);
+  var bg = (activeKey === 'tip7') ? '#ede5d3' : '#f2ece0';
+  var dataUrl = await captureSlide(el, meta.w, meta.h, bg);
 
-  const bg = (activeKey === 'tip7') ? '#ede5d3' : '#f2ece0';
-
-  html2canvas(clone, {
-    width: meta.w, height: meta.h,
-    scale: 1, useCORS: true, allowTaint: true,
-    backgroundColor: bg, logging: false,
-    x: 0, y: 0, scrollX: 0, scrollY: 0
-  }).then(function(canvas) {
-    if (clone.parentNode) clone.parentNode.removeChild(clone);
-    canvas.toBlob(function(blob) {
-      if (mainBtn) { mainBtn.textContent = 'Export'; mainBtn.disabled = false; }
-      if (!blob || blob.size === 0) return;
-      const fname = 'frmls-' + meta.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.png';
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = fname;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(function() { URL.revokeObjectURL(a.href); }, 30000);
-    }, 'image/png');
-  }).catch(function() {
-    if (clone.parentNode) clone.parentNode.removeChild(clone);
-    if (mainBtn) { mainBtn.textContent = 'Export'; mainBtn.disabled = false; }
-  });
+  if (mainBtn) { mainBtn.textContent = 'Export'; mainBtn.disabled = false; }
+  if (dataUrl) {
+    var fname = 'frmls-' + meta.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.png';
+    triggerDownload(dataUrl, fname);
+  }
 }
 
-function exportCanvas(key, btnEl) { /* removed — use exportCurrent() */ }
+function exportCanvas(key, btnEl) { if (key === activeKey) exportCurrent(); }
 
 // ── Export All as ZIP ──
 async function exportAll() {
@@ -5705,79 +5684,83 @@ function copyColor(hex, el) {
 }
 
 // ══════════════════════════════════════════════════════════════
+//  SHARED CAPTURE HELPER
+// ══════════════════════════════════════════════════════════════
+
+// Clones an element, places it at fixed coords, waits 2 frames,
+// captures with html2canvas, returns a data-URI string or null.
+async function captureSlide(el, w, h, bg) {
+  var clone = el.cloneNode(true);
+  clone.removeAttribute('id');
+  clone.style.cssText = 'position:fixed!important;top:0!important;left:0!important;' +
+    'width:' + w + 'px!important;height:' + h + 'px!important;' +
+    'overflow:hidden!important;pointer-events:none!important;z-index:99998!important;' +
+    'transform:none!important;opacity:1!important;visibility:visible!important;';
+  document.body.appendChild(clone);
+
+  // Two animation frames so the browser fully renders the clone
+  await new Promise(function(r) { requestAnimationFrame(function() { requestAnimationFrame(r); }); });
+
+  try {
+    var canvas = await html2canvas(clone, {
+      width: w, height: h, scale: 1,
+      useCORS: true, allowTaint: true,
+      backgroundColor: bg, logging: false,
+      x: 0, y: 0, scrollX: 0, scrollY: 0
+    });
+    document.body.removeChild(clone);
+    return canvas.toDataURL('image/png');
+  } catch (err) {
+    if (clone.parentNode) document.body.removeChild(clone);
+    console.error('captureSlide failed:', err);
+    return null;
+  }
+}
+
+function triggerDownload(dataUrl, filename) {
+  var a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+// ══════════════════════════════════════════════════════════════
 //  TIP POST CAROUSEL — EXPORT ALL 7 SLIDES
 // ══════════════════════════════════════════════════════════════
 
 async function exportTipCarousel() {
-  const btn = document.getElementById('tip-export-btn');
+  var btn = document.getElementById('tip-export-btn');
   if (btn) { btn.textContent = 'Saving…'; btn.disabled = true; }
 
-  const tipKeys = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7'];
+  var tipKeys = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7']
+    .filter(function(k) { return !!document.getElementById('cvs-' + k); });
 
-  const wrap = document.createElement('div');
-  wrap.style.cssText = 'position:fixed;top:0;left:0;width:1080px;height:1350px;overflow:hidden;pointer-events:none;z-index:-9999;';
-  document.body.appendChild(wrap);
-
-  for (var i = 0; i < tipKeys.length; i++) {
-    var slideKey = tipKeys[i];
-    var el = document.getElementById('cvs-' + slideKey);
-    if (!el) continue;
-
-    var slideNum = i + 1;
-    var bg = (slideKey === 'tip7') ? '#ede5d3' : '#f2ece0';
-
-    if (btn) btn.textContent = 'Saving ' + slideNum + ' / 7…';
-
-    var prevParent   = el.parentNode;
-    var prevPosition = el.style.position;
-    var prevTop      = el.style.top;
-    var prevLeft     = el.style.left;
-    wrap.appendChild(el);
-    el.style.position = 'absolute';
-    el.style.top  = '0';
-    el.style.left = '0';
-
-    await (function(elem, num, prevP, prevPos, prevT, prevL, bgCol) {
-      return new Promise(function(resolve) {
-        html2canvas(elem, {
-          width: 1080, height: 1350,
-          scale: 1, useCORS: true, allowTaint: true,
-          backgroundColor: bgCol, logging: false,
-          x: 0, y: 0, scrollX: 0, scrollY: 0
-        }).then(function(canvas) {
-          elem.style.position = prevPos;
-          elem.style.top  = prevT;
-          elem.style.left = prevL;
-          if (prevP) prevP.appendChild(elem);
-          canvas.toBlob(function(blob) {
-            if (blob && blob.size > 0) {
-              var url = URL.createObjectURL(blob);
-              var a = document.createElement('a');
-              a.href     = url;
-              a.download = 'tip-slide-' + num + '.png';
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
-              setTimeout(function() { URL.revokeObjectURL(url); }, 30000);
-            }
-            resolve();
-          }, 'image/png');
-        }).catch(function() {
-          elem.style.position = prevPos;
-          elem.style.top  = prevT;
-          elem.style.left = prevL;
-          if (prevP) prevP.appendChild(elem);
-          resolve();
-        });
-      });
-    })(el, slideNum, prevParent, prevPosition, prevTop, prevLeft, bg);
-
-    // gap so browser treats each as a separate download, not a batch zip
-    await new Promise(function(r) { setTimeout(r, 600); });
+  if (tipKeys.length === 0) {
+    alert('No slides found.');
+    if (btn) { btn.textContent = '↓ Export All Slides'; btn.disabled = false; }
+    return;
   }
 
-  if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
-  if (btn) { btn.textContent = '↓ Export All 7 Slides'; btn.disabled = false; }
+  var failed = 0;
+  for (var i = 0; i < tipKeys.length; i++) {
+    var key = tipKeys[i];
+    var num = i + 1;
+    if (btn) btn.textContent = 'Saving ' + num + ' / ' + tipKeys.length + '…';
+    var bg  = (key === 'tip7') ? '#ede5d3' : '#f2ece0';
+    var el  = document.getElementById('cvs-' + key);
+    var dataUrl = await captureSlide(el, 1080, 1350, bg);
+    if (dataUrl) {
+      triggerDownload(dataUrl, 'tip-slide-' + num + '.png');
+      await new Promise(function(r) { setTimeout(r, 700); });
+    } else {
+      failed++;
+    }
+  }
+
+  if (btn) { btn.textContent = '↓ Export All Slides'; btn.disabled = false; }
+  if (failed > 0) alert(failed + ' slide(s) could not be captured. Try again.');
 }
 
 // ── Mobile sidebar ──

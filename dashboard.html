@@ -1724,7 +1724,10 @@ body::before {
 #bf-overlay {
   position: fixed; inset: 0; z-index: 900;
   background: #07040f;
-  overflow-y: auto; overflow-x: hidden;
+  overflow-y: scroll; overflow-x: hidden;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   opacity: 0; pointer-events: none;
   transition: opacity 0.4s ease;
 }
@@ -6277,6 +6280,21 @@ function bfShowOverlay() {
   if (!overlay) return;
   overlay.classList.add('bf-visible');
   document.body.style.overflow = 'hidden';
+  // Stop Lenis so it doesn't intercept wheel events while overlay is open
+  if (typeof lenis !== 'undefined') lenis.stop();
+  // Wire overlay wheel scroll once — bypasses Lenis's global wheel listener
+  if (!overlay._bfWheelBound) {
+    overlay.addEventListener('wheel', function(e) {
+      let delta = e.deltaY;
+      if (e.deltaMode === 1) delta *= 16;             // line mode → px
+      if (e.deltaMode === 2) delta *= window.innerHeight; // page mode → px
+      overlay.scrollTop += delta;
+      e.stopPropagation();  // prevent Lenis (window bubble) from seeing this
+      e.preventDefault();   // prevent any duplicate browser scroll
+    }, { passive: false });
+    overlay._bfWheelBound = true;
+  }
+  overlay.scrollTop = 0;
   bfGoTo(bfCurrentStep, false);
 }
 
@@ -6285,6 +6303,8 @@ function bfHideOverlay() {
   if (!overlay) return;
   overlay.classList.remove('bf-visible');
   document.body.style.overflow = '';
+  // Re-enable Lenis smooth scroll for the main page
+  if (typeof lenis !== 'undefined') lenis.start();
   bfUpdateBoxStatus();
 }
 

@@ -5688,32 +5688,46 @@ function copyColor(hex, el) {
 // ══════════════════════════════════════════════════════════════
 
 async function captureSlide(el, w, h, bg) {
-  // Clone is placed on-screen at z-index:99998 so iOS fully paints it.
-  // A dark overlay at z-index:99999 hides it from the user.
-  // html2canvas captures the clone element directly — it ignores the overlay on top.
-  var clone = el.cloneNode(true);
-  clone.removeAttribute('id');
-  clone.style.cssText = 'position:fixed!important;top:0!important;left:0!important;' +
+  // canvas-pool lives at position:fixed;left:-20000px — iOS does not paint off-screen
+  // fixed elements. Moving the element directly into body (on-screen) before capture
+  // ensures the browser fully paints it. The capture overlay (z-index:99999) hides
+  // the element from the user while it's temporarily repositioned.
+  var origParent  = el.parentNode;
+  var origNextSib = el.nextSibling;
+  var origStyle   = el.getAttribute('style') || '';
+
+  document.body.appendChild(el);
+  el.style.cssText = 'position:fixed!important;top:0!important;left:0!important;' +
     'width:' + w + 'px!important;height:' + h + 'px!important;' +
     'overflow:hidden!important;pointer-events:none!important;z-index:99998!important;' +
-    'transform:none!important;opacity:1!important;visibility:visible!important;';
-  document.body.appendChild(clone);
-  // Two rAF frames so the browser paints the clone before html2canvas reads it
+    'transform:none!important;';
+
+  // Two rAF frames so the browser paints the element before html2canvas reads it
   await new Promise(function(r) { requestAnimationFrame(function() { requestAnimationFrame(r); }); });
+
+  var result = null;
   try {
-    var canvas = await html2canvas(clone, {
+    var canvas = await html2canvas(el, {
       width: w, height: h, scale: 1,
-      useCORS: true, allowTaint: true,
-      backgroundColor: bg, logging: false,
-      x: 0, y: 0, scrollX: 0, scrollY: 0
+      useCORS: true,
+      backgroundColor: bg,
+      logging: false,
+      x: 0, y: 0, scrollX: 0, scrollY: 0,
+      ignoreElements: function(e) { return e.id === 'capture-overlay'; }
     });
-    document.body.removeChild(clone);
-    return canvas.toDataURL('image/png');
+    result = canvas.toDataURL('image/png');
   } catch (err) {
-    if (clone.parentNode) document.body.removeChild(clone);
     console.error('captureSlide failed:', err);
-    return null;
   }
+
+  // Always restore element to its original parent + position
+  el.setAttribute('style', origStyle);
+  if (origParent) {
+    if (origNextSib) origParent.insertBefore(el, origNextSib);
+    else origParent.appendChild(el);
+  }
+
+  return result;
 }
 
 function triggerDownload(dataUrl, filename) {

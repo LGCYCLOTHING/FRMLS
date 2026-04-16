@@ -2417,7 +2417,6 @@ body.eyedropper-mode * { cursor: crosshair !important; }
         <!-- Batch action bar -->
         <div class="batch-bar" id="batch-bar">
           <span class="batch-count" id="batch-count">0 selected</span>
-          <button class="batch-btn" onclick="batchExportSelected()">↓ Export</button>
           <button class="batch-btn del-btn" onclick="batchDelete()">Delete</button>
           <button class="batch-btn" onclick="clearLibrarySelection()">✕</button>
         </div>
@@ -2528,11 +2527,7 @@ body.eyedropper-mode * { cursor: crosshair !important; }
         <button class="export-qual-btn" id="eq-90" onclick="setExportQuality(0.9)">90%</button>
         <button class="export-qual-btn active" id="eq-100" onclick="setExportQuality(1.0)">100%</button>
       </div>
-      <!-- Export action buttons -->
-      <div class="export-btns-row">
-        <button class="btn-export-sel" id="btn-export-sel" onclick="exportSelected()">Export (0)</button>
-        <button class="btn-export-all" id="btn-export-all" onclick="exportAll()">Export All as ZIP</button>
-      </div>
+      <!-- Export action buttons removed (use carousel export or toolbar Export button) -->
     </div>
   </aside>
 
@@ -3536,7 +3531,6 @@ function renderAssetList() {
         '<div class="asset-dims">' + meta.w + ' × ' + meta.h + '</div>' +
       '</div>' +
       '<div class="asset-actions">' +
-        '<button class="asset-btn dl" title="Export" data-key="' + meta.key + '">↓</button>' +
         (meta.deletable ? '<button class="asset-btn del" title="Delete" data-key="' + meta.key + '">×</button>' : '') +
       '</div>';
 
@@ -3598,79 +3592,49 @@ function esc(str) {
     .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ── Export single canvas (format-aware) ──
-function exportCanvas(key, btnEl) {
-  const meta = getMeta(key);
+// ── Export active canvas ──
+function exportCurrent() {
+  if (!activeKey) return;
+  const meta   = getMeta(activeKey);
   if (!meta) return;
-  if (key !== activeKey) selectCanvas(key);
+  const original = document.getElementById('cvs-' + activeKey);
+  if (!original) return;
 
-  if (exportFormat === 'svg') { exportAsSvg(key, btnEl); return; }
-
-  const el = document.getElementById('cvs-' + key);
-  if (!el) return;
-
-  if (btnEl) { btnEl.textContent = '…'; btnEl.disabled = true; }
   const mainBtn = document.getElementById('btn-export-png');
-  if (mainBtn) { mainBtn.textContent = 'Exporting…'; mainBtn.disabled = true; }
+  if (mainBtn) { mainBtn.textContent = 'Saving…'; mainBtn.disabled = true; }
 
-  const mimeType = exportFormat === 'jpg' ? 'image/jpeg' : 'image/png';
-  const ext      = exportFormat === 'jpg' ? '.jpg' : '.png';
-  const quality  = exportFormat === 'jpg' ? exportQuality : undefined;
-  const fmtLabel = exportFormat.toUpperCase();
+  // Clone so the live canvas is never disturbed
+  const clone = original.cloneNode(true);
+  clone.removeAttribute('id');
+  clone.style.cssText = 'position:fixed;top:0;left:0;width:' + meta.w + 'px;height:' + meta.h + 'px;overflow:hidden;pointer-events:none;z-index:-9999;';
+  document.body.appendChild(clone);
 
-  // Move element to a fixed-position capture container so html2canvas
-  // captures it at real coordinates (works on mobile/iOS)
-  const wrap = document.createElement('div');
-  wrap.style.cssText = 'position:fixed;top:0;left:0;width:' + meta.w + 'px;height:' + meta.h + 'px;overflow:hidden;pointer-events:none;z-index:-9999;';
-  document.body.appendChild(wrap);
+  const bg = (activeKey === 'tip7') ? '#ede5d3' : '#f2ece0';
 
-  const prevParent   = el.parentNode;
-  const prevPosition = el.style.position;
-  const prevTop      = el.style.top;
-  const prevLeft     = el.style.left;
-  wrap.appendChild(el);
-  el.style.position = 'absolute';
-  el.style.top  = '0';
-  el.style.left = '0';
-
-  function restoreEl() {
-    el.style.position = prevPosition;
-    el.style.top  = prevTop;
-    el.style.left = prevLeft;
-    if (prevParent) prevParent.appendChild(el);
-    if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
-    applyFrame();
-  }
-
-  html2canvas(el, {
+  html2canvas(clone, {
     width: meta.w, height: meta.h,
     scale: 1, useCORS: true, allowTaint: true,
-    backgroundColor: '#0a0a0a', logging: false,
+    backgroundColor: bg, logging: false,
     x: 0, y: 0, scrollX: 0, scrollY: 0
   }).then(function(canvas) {
-    restoreEl();
+    if (clone.parentNode) clone.parentNode.removeChild(clone);
     canvas.toBlob(function(blob) {
-      if (btnEl) { btnEl.textContent = '↓'; btnEl.disabled = false; }
-      if (mainBtn) { mainBtn.textContent = 'Export ' + fmtLabel; mainBtn.disabled = false; }
-      if (!blob || blob.size === 0) { alert('Export produced an empty image — try again.'); return; }
-      const fname = 'frmls-' + meta.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + ext;
+      if (mainBtn) { mainBtn.textContent = 'Export'; mainBtn.disabled = false; }
+      if (!blob || blob.size === 0) return;
+      const fname = 'frmls-' + meta.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.png';
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = fname;
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
       setTimeout(function() { URL.revokeObjectURL(a.href); }, 30000);
-    }, mimeType, quality);
+    }, 'image/png');
   }).catch(function() {
-    restoreEl();
-    if (btnEl) { btnEl.textContent = '↓'; btnEl.disabled = false; }
-    if (mainBtn) { mainBtn.textContent = 'Export ' + fmtLabel; mainBtn.disabled = false; }
-    alert('Export failed — try selecting the canvas first, then export again.');
+    if (clone.parentNode) clone.parentNode.removeChild(clone);
+    if (mainBtn) { mainBtn.textContent = 'Export'; mainBtn.disabled = false; }
   });
 }
 
-function exportCurrent() {
-  if (activeKey) exportCanvas(activeKey, null);
-}
+function exportCanvas(key, btnEl) { /* removed — use exportCurrent() */ }
 
 // ── Export All as ZIP ──
 async function exportAll() {

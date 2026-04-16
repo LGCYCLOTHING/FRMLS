@@ -5721,19 +5721,17 @@ function copyColor(hex, el) {
 // ══════════════════════════════════════════════════════════════
 
 async function exportTipCarousel() {
-  const btn   = document.getElementById('tip-export-btn');
+  const btn  = document.getElementById('tip-export-btn');
   if (btn) { btn.textContent = 'Preparing…'; btn.disabled = true; }
 
-  const tipKeys  = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7'];
-  const isIOS    = /iP(ad|hone|od)/.test(navigator.userAgent) && !window.MSStream;
-  const isMobile = isIOS || /Android/i.test(navigator.userAgent);
+  const tipKeys = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7'];
+  const isIOS   = /iP(ad|hone|od)/.test(navigator.userAgent) && !window.MSStream;
 
-  // Temp capture container at real coordinates so html2canvas can see it
   const wrap = document.createElement('div');
   wrap.style.cssText = 'position:fixed;top:0;left:0;width:1080px;height:1350px;overflow:hidden;pointer-events:none;z-index:-9999;';
   document.body.appendChild(wrap);
 
-  const collectedBlobs = []; // used for iOS share-sheet batch
+  const collectedItems = []; // { file, url, slideNum }
 
   for (let i = 0; i < tipKeys.length; i++) {
     const slideKey = tipKeys[i];
@@ -5750,8 +5748,8 @@ async function exportTipCarousel() {
 
     wrap.appendChild(el);
     el.style.position = 'absolute';
-    el.style.top      = '0';
-    el.style.left     = '0';
+    el.style.top  = '0';
+    el.style.left = '0';
 
     if (btn) btn.textContent = 'Preparing ' + slideNum + ' / 7…';
 
@@ -5763,19 +5761,18 @@ async function exportTipCarousel() {
         x: 0, y: 0, scrollX: 0, scrollY: 0
       }).then(function(canvas) {
         el.style.position = prevPosition;
-        el.style.top      = prevTop;
-        el.style.left     = prevLeft;
+        el.style.top  = prevTop;
+        el.style.left = prevLeft;
         if (prevParent) prevParent.appendChild(el);
 
         canvas.toBlob(function(blob) {
           if (!blob || blob.size === 0) { resolve(); return; }
-
           if (isIOS) {
-            // Collect for the batch share call below
-            collectedBlobs.push(new File([blob], 'tip-slide-' + slideNum + '.png', { type: 'image/png' }));
+            const url  = URL.createObjectURL(blob);
+            const file = new File([blob], 'tip-slide-' + slideNum + '.png', { type: 'image/png' });
+            collectedItems.push({ file: file, url: url, slideNum: slideNum });
             resolve();
           } else {
-            // Desktop / Android — trigger download immediately
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = 'tip-slide-' + slideNum + '.png';
@@ -5788,8 +5785,8 @@ async function exportTipCarousel() {
         }, 'image/png');
       }).catch(function(err) {
         el.style.position = prevPosition;
-        el.style.top      = prevTop;
-        el.style.left     = prevLeft;
+        el.style.top  = prevTop;
+        el.style.left = prevLeft;
         if (prevParent) prevParent.appendChild(el);
         console.warn('Slide ' + slideNum + ' capture failed:', err);
         resolve();
@@ -5800,42 +5797,92 @@ async function exportTipCarousel() {
   }
 
   if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
-
-  // ── iOS: share one image at a time → shows "Save Image" (not zip) ──
-  if (isIOS && collectedBlobs.length > 0) {
-    const canShareFiles = navigator.canShare && navigator.canShare({ files: [collectedBlobs[0]] });
-    for (let si = 0; si < collectedBlobs.length; si++) {
-      const file = collectedBlobs[si];
-      if (btn) btn.textContent = 'Save slide ' + (si + 1) + ' of 7 — tap Save Image';
-      if (canShareFiles) {
-        try {
-          await navigator.share({ files: [file] });
-        } catch (err) {
-          if (err.name === 'AbortError') break; // user tapped Cancel — stop
-        }
-      } else {
-        // Web Share not supported — open image in new tab for long-press save
-        const url = URL.createObjectURL(file);
-        const tab = window.open('', '_blank');
-        if (tab) {
-          tab.document.write(
-            '<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width">' +
-            '<title>Slide ' + (si + 1) + ' / 7</title></head>' +
-            '<body style="margin:0;background:#111;font-family:sans-serif">' +
-            '<p style="color:#fff;padding:14px 16px;font-size:15px;margin:0">' +
-            'Slide ' + (si + 1) + ' / 7 — <strong>Hold image → Save to Photos</strong></p>' +
-            '<img src="' + url + '" style="width:100%;display:block">' +
-            '</body></html>'
-          );
-          tab.document.close();
-        }
-      }
-      // Brief pause so iOS can settle between share sheets
-      await new Promise(function(r) { setTimeout(r, 350); });
-    }
-  }
-
   if (btn) { btn.textContent = '↓ Export All 7 Slides'; btn.disabled = false; }
+
+  // iOS: show gallery modal — each Save button is a fresh tap so iOS allows navigator.share()
+  if (isIOS && collectedItems.length > 0) {
+    showIosSaveModal(collectedItems);
+  }
+}
+
+function showIosSaveModal(items) {
+  window._iosSaveItems = items;
+
+  var modal = document.createElement('div');
+  modal.id = 'ios-save-modal';
+  modal.style.cssText = [
+    'position:fixed;inset:0;z-index:99999;',
+    'background:rgba(10,8,5,0.96);',
+    'overflow-y:auto;-webkit-overflow-scrolling:touch;',
+    'padding:28px 18px 60px;',
+    'font-family:Inter,system-ui,sans-serif;'
+  ].join('');
+
+  var rows = '';
+  items.forEach(function(item, idx) {
+    rows += '<div style="margin-bottom:18px;border-radius:14px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,0.5);">';
+    rows += '<img src="' + item.url + '" style="width:100%;display:block;">';
+    rows += '<button id="ios-save-btn-' + idx + '" onclick="iosSaveSlide(' + idx + ')" ';
+    rows += 'style="width:100%;padding:15px;background:#1a1208;border:none;';
+    rows += 'color:#d4a853;font-size:16px;font-weight:700;cursor:pointer;';
+    rows += 'letter-spacing:0.01em;border-top:1px solid rgba(255,255,255,0.07);';
+    rows += 'font-family:Inter,system-ui,sans-serif;">';
+    rows += '↓ Save Slide ' + item.slideNum + ' to Photos</button>';
+    rows += '</div>';
+  });
+
+  modal.innerHTML = [
+    '<div style="max-width:460px;margin:0 auto;">',
+    '  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">',
+    '    <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.02em;">Save to Photos</div>',
+    '    <button onclick="closeIosSaveModal()" style="background:rgba(255,255,255,0.1);border:none;',
+    '      color:rgba(255,255,255,0.7);font-size:14px;padding:8px 18px;border-radius:20px;cursor:pointer;',
+    '      font-family:Inter,system-ui,sans-serif;">Done</button>',
+    '  </div>',
+    '  <div style="font-size:13px;color:rgba(255,255,255,0.38);margin-bottom:22px;">',
+    '    Tap each button — iOS will ask to Save Image</div>',
+    rows,
+    '</div>'
+  ].join('');
+
+  document.body.appendChild(modal);
+}
+
+async function iosSaveSlide(idx) {
+  var items = window._iosSaveItems;
+  if (!items || !items[idx]) return;
+  var item = items[idx];
+  var btn  = document.getElementById('ios-save-btn-' + idx);
+  if (btn) { btn.textContent = 'Opening…'; btn.disabled = true; }
+  try {
+    if (navigator.canShare && navigator.canShare({ files: [item.file] })) {
+      await navigator.share({ files: [item.file] });
+      if (btn) {
+        btn.textContent = '✓ Saved — Slide ' + item.slideNum;
+        btn.style.color = '#4ade80';
+      }
+    } else {
+      // Fallback: display in new tab, long-press to save
+      var tab = window.open('', '_blank');
+      if (tab) {
+        tab.document.write('<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width"></head>' +
+          '<body style="margin:0;background:#000"><img src="' + item.url + '" style="width:100%;display:block"></body></html>');
+        tab.document.close();
+      }
+      if (btn) { btn.textContent = 'Hold image → Save to Photos'; btn.disabled = false; }
+    }
+  } catch(e) {
+    if (btn) { btn.textContent = '↓ Save Slide ' + item.slideNum + ' to Photos'; btn.disabled = false; }
+  }
+}
+
+function closeIosSaveModal() {
+  var modal = document.getElementById('ios-save-modal');
+  if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
+  if (window._iosSaveItems) {
+    window._iosSaveItems.forEach(function(item) { URL.revokeObjectURL(item.url); });
+    window._iosSaveItems = null;
+  }
 }
 
 // ── Mobile sidebar ──

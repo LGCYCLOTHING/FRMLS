@@ -5688,26 +5688,24 @@ function copyColor(hex, el) {
 // ══════════════════════════════════════════════════════════════
 
 async function captureSlide(el, w, h, bg) {
-  // canvas-pool is at position:fixed;left:-20000px — iOS won't paint off-screen elements.
-  // Any opaque overlay on top also blocks painting (browser skips occluded layers).
-  // Solution: move the element fully on-screen (no hiding), capture, restore.
-  // The brief visual flash is acceptable — captures are ~300ms each.
-  var origParent  = el.parentNode;
-  var origNextSib = el.nextSibling;
-  var origStyle   = el.getAttribute('style') || '';
-
-  document.body.appendChild(el);
-  el.style.cssText = 'position:fixed!important;top:0!important;left:0!important;' +
+  // Clone approach: cloneNode so the original stays in canvas-pool undisturbed.
+  // Clone is placed on-screen at top:0 left:0 z-index:99999 — iOS fully paints it.
+  // This is the approach that previously caused a visible "zoom" flash, confirming
+  // html2canvas can capture it. The save mechanism now uses navigator.share.
+  var clone = el.cloneNode(true);
+  clone.removeAttribute('id');
+  clone.style.cssText = 'position:fixed!important;top:0!important;left:0!important;' +
     'width:' + w + 'px!important;height:' + h + 'px!important;' +
     'overflow:hidden!important;pointer-events:none!important;z-index:99999!important;' +
     'transform:none!important;';
+  document.body.appendChild(clone);
 
-  // Two rAF frames — browser must paint before html2canvas reads pixels
+  // Two rAF frames — browser must paint the clone before html2canvas reads it
   await new Promise(function(r) { requestAnimationFrame(function() { requestAnimationFrame(r); }); });
 
   var result = null;
   try {
-    var canvas = await html2canvas(el, {
+    var canvas = await html2canvas(clone, {
       width: w, height: h, scale: 1,
       useCORS: true,
       backgroundColor: bg,
@@ -5719,13 +5717,7 @@ async function captureSlide(el, w, h, bg) {
     console.error('captureSlide failed:', err);
   }
 
-  // Restore element to original parent + position
-  el.setAttribute('style', origStyle);
-  if (origParent) {
-    if (origNextSib) origParent.insertBefore(el, origNextSib);
-    else origParent.appendChild(el);
-  }
-
+  if (clone.parentNode) clone.parentNode.removeChild(clone);
   return result;
 }
 

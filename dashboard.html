@@ -1910,9 +1910,13 @@ body::before {
 }
 .bf-completion-logo {
   font-size: 72px; font-weight: 900; letter-spacing: -0.06em; line-height: 1;
-  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
+  color: #ffffff;
+  margin-bottom: 28px; position: relative; z-index: 1; overflow: visible;
+}
+.bf-completion-logo-s {
+  display: inline-block; padding-right: 8px;
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  margin-bottom: 28px; position: relative; z-index: 1;
 }
 .bf-completion-title {
   font-size: 32px; font-weight: 800; color: #ffffff; letter-spacing: -0.03em;
@@ -1937,14 +1941,13 @@ body::before {
 /* Brand output card (completion screen) */
 .bf-output-card {
   width: 100%; max-width: 600px; margin: 0 auto 28px;
-  background: #1a1a1a; border-radius: 16px; padding: 40px;
+  background: linear-gradient(#1a1a1a, #1a1a1a) padding-box,
+              linear-gradient(135deg, #7c3aed, #06b6d4) border-box;
+  border: 1px solid transparent;
+  border-radius: 16px; padding: 40px;
   position: relative; z-index: 1;
   opacity: 0; transform: translateY(32px);
   transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
-}
-.bf-output-card::before {
-  content: ''; position: absolute; inset: -1px; border-radius: 17px;
-  background: linear-gradient(135deg, #7c3aed, #06b6d4); z-index: -1;
 }
 .bf-output-card.bf-card-visible { opacity: 1; transform: translateY(0); }
 .bf-enter-btn-wrap {
@@ -1970,7 +1973,7 @@ body::before {
 }
 .bf-output-section-label {
   font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em;
-  text-transform: uppercase; color: #888888; margin-bottom: 16px;
+  text-transform: uppercase; color: #999999; margin-bottom: 16px;
 }
 .bf-output-words {
   display: flex; align-items: center; justify-content: center;
@@ -1995,7 +1998,7 @@ body::before {
   background: linear-gradient(to bottom, #7c3aed, #06b6d4);
 }
 .bf-output-avoid {
-  font-size: 15px; color: #888888; font-style: italic; line-height: 1.7;
+  font-size: 15px; color: #aaaaaa; font-style: italic; line-height: 1.7;
 }
 /* Three words in dashboard header */
 .dash-three-words {
@@ -2747,7 +2750,7 @@ body::before {
     <!-- Screen 6: Completion -->
     <div class="bf-screen bf-completion-screen" id="bf-screen-6">
       <div class="bf-particles" id="bf-particles"></div>
-      <div class="bf-completion-logo">FRMLS</div>
+      <div class="bf-completion-logo">FRML<span class="bf-completion-logo-s">S</span></div>
       <div class="bf-completion-title">your brand foundation is set.</div>
       <p class="bf-completion-sub">everything in your dashboard is now shaped around your answers.</p>
       <!-- Brand output card — populated by JS, slides up after 800ms -->

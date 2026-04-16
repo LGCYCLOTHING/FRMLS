@@ -5767,45 +5767,39 @@ async function exportTipCarousel() {
 
   if (isMobile && saveTab && !saveTab.closed) {
     // ── Build save page in the pre-opened tab ──
+    // Each button opens the image as a raw data URL in a new tab.
+    // iOS Safari renders it full-screen → user taps Share (⬆) → Save Image.
+    // This is synchronous (window.open inside onclick) so iOS always allows it.
     var script = 'var S=' + JSON.stringify(slides) + ';' +
-      'async function save(i){' +
-        'var s=S[i],b=document.getElementById("b"+i);' +
+      'function save(i){' +
+        'var s=S[i];' +
         'if(!s||!s.dataUrl)return;' +
-        'if(b){b.disabled=true;b.textContent="Saving…";}' +
-        'try{' +
-          'var u8=new Uint8Array(atob(s.dataUrl.split(",")[1]).split("").map(function(c){return c.charCodeAt(0);}));' +
-          'var file=new File([u8],"tip-slide-"+s.num+".png",{type:"image/png"});' +
-          'if(navigator.canShare&&navigator.canShare({files:[file]})){' +
-            'await navigator.share({files:[file]});' +
-            'if(b){b.textContent="✓ Saved";b.style.background="#14532d";}' +
-          '}else{' +
-            'var a=document.createElement("a");a.href=s.dataUrl;a.download="tip-slide-"+s.num+".png";' +
-            'document.body.appendChild(a);a.click();document.body.removeChild(a);' +
-            'if(b){b.textContent="✓ Downloaded";b.style.background="#14532d";}' +
-          '}' +
-        '}catch(e){if(b){b.disabled=false;b.textContent="Save Slide "+s.num;}}' +
+        'window.open(s.dataUrl,"_blank");' +
       '}';
 
     var rows = slides.map(function(s, idx) {
       if (!s.dataUrl) return '';
-      return '<div style="margin-bottom:24px;">' +
-        '<div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">Slide ' + s.num + ' / ' + tipKeys.length + '</div>' +
-        '<img src="' + s.dataUrl + '" style="width:100%;border-radius:10px;display:block;">' +
-        '<button id="b' + idx + '" onclick="save(' + idx + ')" ' +
-          'style="width:100%;padding:14px;background:#1a1208;border:none;color:#d4a853;font-size:15px;' +
-          'font-weight:700;cursor:pointer;font-family:inherit;border-radius:0 0 10px 10px;margin-top:0;">' +
-          '↓ Save Slide ' + s.num + '</button>' +
+      return '<div style="margin-bottom:28px;">' +
+        '<div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;">Slide ' + s.num + ' of ' + tipKeys.length + '</div>' +
+        '<img src="' + s.dataUrl + '" style="width:100%;border-radius:12px 12px 0 0;display:block;">' +
+        '<button onclick="save(' + idx + ')" ' +
+          'style="width:100%;padding:16px;background:#1a1208;border:none;color:#d4a853;font-size:16px;' +
+          'font-weight:700;cursor:pointer;font-family:inherit;border-radius:0 0 12px 12px;letter-spacing:.01em;">' +
+          '↗ Open Slide ' + s.num + '</button>' +
         '</div>';
     }).join('');
 
     var page = '<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">' +
-      '<style>body{margin:0;background:#0a0805;font-family:system-ui,sans-serif;padding:20px 16px 80px;}' +
-      'h2{color:#fff;font-size:21px;font-weight:900;letter-spacing:-.02em;margin:0 0 6px;}' +
-      '.tip{background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.25);border-radius:10px;' +
-      'padding:11px 14px;font-size:13px;color:rgba(255,255,255,.7);margin-bottom:22px;line-height:1.5;}' +
-      '</style></head><body>' +
-      '<h2>Save Slides</h2>' +
-      '<div class="tip">Tap <strong style="color:#d4a853">Save Slide</strong> under each image to save it to your Photos.</div>' +
+      '<style>body{margin:0;background:#0a0805;font-family:system-ui,sans-serif;padding:20px 16px 80px;}</style>' +
+      '</head><body>' +
+      '<div style="margin-bottom:22px;">' +
+        '<div style="color:#fff;font-size:22px;font-weight:900;letter-spacing:-.02em;margin-bottom:10px;">Your Slides</div>' +
+        '<div style="background:rgba(212,168,83,.12);border:1px solid rgba(212,168,83,.3);border-radius:10px;' +
+          'padding:12px 14px;font-size:13.5px;color:rgba(255,255,255,.75);line-height:1.6;">' +
+          'Tap <strong style="color:#d4a853">Open Slide</strong> → image opens full screen → tap the ' +
+          '<strong style="color:#d4a853">Share button ⬆</strong> → tap <strong style="color:#d4a853">Save Image</strong>' +
+        '</div>' +
+      '</div>' +
       rows +
       '<script>' + script + '<\/script>' +
       '</body></html>';

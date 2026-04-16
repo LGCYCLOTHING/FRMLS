@@ -5688,14 +5688,14 @@ function copyColor(hex, el) {
 // ══════════════════════════════════════════════════════════════
 
 async function captureSlide(el, w, h, bg) {
-  // Place clone off the left edge — invisible to the user but fully painted by the browser.
-  // z-index:-9999 caused rendering skips on iOS (element treated as behind body = not painted).
-  var offX = w + 20;
+  // Clone is placed on-screen at z-index:99998 so iOS fully paints it.
+  // A dark overlay at z-index:99999 hides it from the user.
+  // html2canvas captures the clone element directly — it ignores the overlay on top.
   var clone = el.cloneNode(true);
   clone.removeAttribute('id');
-  clone.style.cssText = 'position:fixed!important;top:0!important;left:-' + offX + 'px!important;' +
+  clone.style.cssText = 'position:fixed!important;top:0!important;left:0!important;' +
     'width:' + w + 'px!important;height:' + h + 'px!important;' +
-    'overflow:hidden!important;pointer-events:none!important;' +
+    'overflow:hidden!important;pointer-events:none!important;z-index:99998!important;' +
     'transform:none!important;opacity:1!important;visibility:visible!important;';
   document.body.appendChild(clone);
   // Two rAF frames so the browser paints the clone before html2canvas reads it
@@ -5705,8 +5705,7 @@ async function captureSlide(el, w, h, bg) {
       width: w, height: h, scale: 1,
       useCORS: true, allowTaint: true,
       backgroundColor: bg, logging: false,
-      x: 0, y: 0,
-      scrollX: -offX, scrollY: 0
+      x: 0, y: 0, scrollX: 0, scrollY: 0
     });
     document.body.removeChild(clone);
     return canvas.toDataURL('image/png');
@@ -5750,12 +5749,29 @@ async function exportTipCarousel() {
 
   var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
+  // Dark overlay covers the clone during capture so user doesn't see the 1080px flash.
+  // Must be z-index:99999 (above the clone at 99998).
+  var capOverlay = document.createElement('div');
+  capOverlay.style.cssText = 'position:fixed;inset:0;background:#0a0805;z-index:99999;' +
+    'display:flex;flex-direction:column;align-items:center;justify-content:center;' +
+    'font-family:system-ui,sans-serif;gap:12px;';
+  var capLabel = document.createElement('div');
+  capLabel.style.cssText = 'color:#fff;font-size:17px;font-weight:600;';
+  capLabel.textContent = 'Preparing slides…';
+  var capSub = document.createElement('div');
+  capSub.style.cssText = 'color:rgba(255,255,255,.4);font-size:13px;';
+  capSub.textContent = 'This takes a few seconds';
+  capOverlay.appendChild(capLabel);
+  capOverlay.appendChild(capSub);
+  document.body.appendChild(capOverlay);
+
   var tipKeys = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7']
     .filter(function(k) { return !!document.getElementById('cvs-' + k); });
 
   var slides = [];
   for (var i = 0; i < tipKeys.length; i++) {
     var key = tipKeys[i];
+    capLabel.textContent = 'Slide ' + (i + 1) + ' of ' + tipKeys.length + '…';
     setProgress((i + 1) + ' / ' + tipKeys.length);
     var dataUrl = await captureSlide(
       document.getElementById('cvs-' + key), 1080, 1350,
@@ -5765,6 +5781,7 @@ async function exportTipCarousel() {
     await new Promise(function(r) { setTimeout(r, 60); });
   }
 
+  capOverlay.remove();
   resetBtns();
 
   var failed = slides.filter(function(s) { return !s.dataUrl; }).length;

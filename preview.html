@@ -3174,16 +3174,14 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 // FRMLS Content Studio
 // ─────────────────────────────────────────────────────
 
-const BUILT_IN = [
-  { key:'grid', name:'Grid Story',      w:1080, h:1350, thumb:'linear-gradient(135deg,#0d0120 0%,#001318 50%,#130900 100%)', deletable:false },
-  { key:'pfp',  name:'Profile Picture', w:500,  h:500,  thumb:'linear-gradient(135deg,#07070f 0%,#7c3aed22 50%,#06b6d422 100%)', deletable:false },
-  { key:'tip1', name:'Tip Slide 1 — Hook',        w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:false },
-  { key:'tip2', name:'Tip Slide 2 — Problem',      w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:false },
-  { key:'tip3', name:'Tip Slide 3 — Agitate',      w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:false },
-  { key:'tip4', name:'Tip Slide 4 — Agitate 2',    w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:false },
-  { key:'tip5', name:'Tip Slide 5 — Reframe',      w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:false },
-  { key:'tip6', name:'Tip Slide 6 — Solve',        w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:false },
-  { key:'tip7', name:'Tip Slide 7 — CTA',          w:1080, h:1350, thumb:'linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%)', deletable:false }
+let BUILT_IN = [
+  { key:'tip1', name:'Tip Slide 1 — Hook',        w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:true },
+  { key:'tip2', name:'Tip Slide 2 — Problem',      w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:true },
+  { key:'tip3', name:'Tip Slide 3 — Agitate',      w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:true },
+  { key:'tip4', name:'Tip Slide 4 — Agitate 2',    w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:true },
+  { key:'tip5', name:'Tip Slide 5 — Reframe',      w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:true },
+  { key:'tip6', name:'Tip Slide 6 — Solve',        w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:true },
+  { key:'tip7', name:'Tip Slide 7 — CTA',          w:1080, h:1350, thumb:'linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%)', deletable:true }
 ];
 
 let userCanvases    = [];
@@ -3425,6 +3423,7 @@ function pickTickInterval(z) {
 
 // ── Select canvas ──
 function selectCanvas(key) {
+  if (!getMeta(key)) return; // canvas was deleted
   // ── Save current canvas state ──
   if (activeKey) {
     canvasTextMap[activeKey]  = textElements.map(function(t) { return Object.assign({}, t); });
@@ -4142,11 +4141,21 @@ function doDelete() {
     document.getElementById('frame-w').value = '';
     document.getElementById('frame-h').value = '';
   }
-  userCanvases = userCanvases.filter(function(c) { return c.key !== key; });
+  BUILT_IN      = BUILT_IN.filter(function(c) { return c.key !== key; });
+  userCanvases  = userCanvases.filter(function(c) { return c.key !== key; });
   delete canvasTextMap[key];
   delete canvasImageMap[key];
   var el = document.getElementById('cvs-' + key);
   if (el) el.remove();
+  // Hide carousel thumb if it exists (tip slides)
+  var thumbRow = document.getElementById('carousel-thumbs');
+  if (thumbRow) {
+    thumbRow.querySelectorAll('.carousel-slide-thumb').forEach(function(t) {
+      if (t.getAttribute('onclick') && t.getAttribute('onclick').indexOf("'" + key + "'") !== -1) {
+        t.style.display = 'none';
+      }
+    });
+  }
   closeDeleteModal();
   renderAssetList();
   renderLayerPanel();

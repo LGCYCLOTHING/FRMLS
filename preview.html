@@ -3617,7 +3617,6 @@ function exportCanvas(key, btnEl) {
   const ext      = exportFormat === 'jpg' ? '.jpg' : '.png';
   const quality  = exportFormat === 'jpg' ? exportQuality : undefined;
   const fmtLabel = exportFormat.toUpperCase();
-  const isIOS    = /iP(ad|hone|od)/.test(navigator.userAgent) && !window.MSStream;
 
   // Move element to a fixed-position capture container so html2canvas
   // captures it at real coordinates (works on mobile/iOS)
@@ -3654,16 +3653,12 @@ function exportCanvas(key, btnEl) {
       if (btnEl) { btnEl.textContent = '↓'; btnEl.disabled = false; }
       if (mainBtn) { mainBtn.textContent = 'Export ' + fmtLabel; mainBtn.disabled = false; }
       if (!blob || blob.size === 0) { alert('Export produced an empty image — try again.'); return; }
-      if (isIOS) {
-        showIosSingleSave(blob, meta.name);
-      } else {
-        const fname = 'frmls-' + meta.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + ext;
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = fname;
-        document.body.appendChild(a); a.click(); document.body.removeChild(a);
-        setTimeout(function() { URL.revokeObjectURL(a.href); }, 3000);
-      }
+      const fname = 'frmls-' + meta.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + ext;
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = fname;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function() { URL.revokeObjectURL(a.href); }, 30000);
     }, mimeType, quality);
   }).catch(function() {
     restoreEl();
@@ -5750,153 +5745,75 @@ function copyColor(hex, el) {
 // ══════════════════════════════════════════════════════════════
 
 async function exportTipCarousel() {
-  const btn  = document.getElementById('tip-export-btn');
-  if (btn) { btn.textContent = 'Preparing…'; btn.disabled = true; }
+  const btn = document.getElementById('tip-export-btn');
+  if (btn) { btn.textContent = 'Saving…'; btn.disabled = true; }
 
   const tipKeys = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7'];
-  const isIOS   = /iP(ad|hone|od)/.test(navigator.userAgent) && !window.MSStream;
 
   const wrap = document.createElement('div');
   wrap.style.cssText = 'position:fixed;top:0;left:0;width:1080px;height:1350px;overflow:hidden;pointer-events:none;z-index:-9999;';
   document.body.appendChild(wrap);
 
-  const collectedItems = []; // { file, url, slideNum }
-
-  for (let i = 0; i < tipKeys.length; i++) {
-    const slideKey = tipKeys[i];
-    const el = document.getElementById('cvs-' + slideKey);
+  for (var i = 0; i < tipKeys.length; i++) {
+    var slideKey = tipKeys[i];
+    var el = document.getElementById('cvs-' + slideKey);
     if (!el) continue;
 
-    const slideNum = i + 1;
-    const bg = slideKey === 'tip7' ? '#ede5d3' : '#f2ece0';
+    var slideNum = i + 1;
+    var bg = (slideKey === 'tip7') ? '#ede5d3' : '#f2ece0';
 
-    const prevParent   = el.parentNode;
-    const prevPosition = el.style.position;
-    const prevTop      = el.style.top;
-    const prevLeft     = el.style.left;
+    if (btn) btn.textContent = 'Saving ' + slideNum + ' / 7…';
 
+    var prevParent   = el.parentNode;
+    var prevPosition = el.style.position;
+    var prevTop      = el.style.top;
+    var prevLeft     = el.style.left;
     wrap.appendChild(el);
     el.style.position = 'absolute';
     el.style.top  = '0';
     el.style.left = '0';
 
-    if (btn) btn.textContent = 'Preparing ' + slideNum + ' / 7…';
-
-    await new Promise(function(resolve) {
-      html2canvas(el, {
-        width: 1080, height: 1350,
-        scale: 1, useCORS: true, allowTaint: true,
-        backgroundColor: bg, logging: false,
-        x: 0, y: 0, scrollX: 0, scrollY: 0
-      }).then(function(canvas) {
-        el.style.position = prevPosition;
-        el.style.top  = prevTop;
-        el.style.left = prevLeft;
-        if (prevParent) prevParent.appendChild(el);
-
-        canvas.toBlob(function(blob) {
-          if (!blob || blob.size === 0) { resolve(); return; }
-          if (isIOS) {
-            const url  = URL.createObjectURL(blob);
-            const file = new File([blob], 'tip-slide-' + slideNum + '.png', { type: 'image/png' });
-            collectedItems.push({ file: file, url: url, slideNum: slideNum });
+    await (function(elem, num, prevP, prevPos, prevT, prevL, bgCol) {
+      return new Promise(function(resolve) {
+        html2canvas(elem, {
+          width: 1080, height: 1350,
+          scale: 1, useCORS: true, allowTaint: true,
+          backgroundColor: bgCol, logging: false,
+          x: 0, y: 0, scrollX: 0, scrollY: 0
+        }).then(function(canvas) {
+          elem.style.position = prevPos;
+          elem.style.top  = prevT;
+          elem.style.left = prevL;
+          if (prevP) prevP.appendChild(elem);
+          canvas.toBlob(function(blob) {
+            if (blob && blob.size > 0) {
+              var url = URL.createObjectURL(blob);
+              var a = document.createElement('a');
+              a.href     = url;
+              a.download = 'tip-slide-' + num + '.png';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              setTimeout(function() { URL.revokeObjectURL(url); }, 30000);
+            }
             resolve();
-          } else {
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = 'tip-slide-' + slideNum + '.png';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            setTimeout(function() { URL.revokeObjectURL(a.href); }, 5000);
-            resolve();
-          }
-        }, 'image/png');
-      }).catch(function(err) {
-        el.style.position = prevPosition;
-        el.style.top  = prevTop;
-        el.style.left = prevLeft;
-        if (prevParent) prevParent.appendChild(el);
-        console.warn('Slide ' + slideNum + ' capture failed:', err);
-        resolve();
+          }, 'image/png');
+        }).catch(function() {
+          elem.style.position = prevPos;
+          elem.style.top  = prevT;
+          elem.style.left = prevL;
+          if (prevP) prevP.appendChild(elem);
+          resolve();
+        });
       });
-    });
+    })(el, slideNum, prevParent, prevPosition, prevTop, prevLeft, bg);
 
-    await new Promise(function(r) { setTimeout(r, 80); });
+    // gap so browser treats each as a separate download, not a batch zip
+    await new Promise(function(r) { setTimeout(r, 600); });
   }
 
   if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
   if (btn) { btn.textContent = '↓ Export All 7 Slides'; btn.disabled = false; }
-
-  // iOS: show gallery modal — each Save button is a fresh tap so iOS allows navigator.share()
-  if (isIOS && collectedItems.length > 0) {
-    showIosSaveModal(collectedItems);
-  }
-}
-
-function showIosSaveModal(items) {
-  window._iosSaveItems = items;
-
-  var rows = '';
-  items.forEach(function(item) {
-    rows += '<div style="margin-bottom:28px;">';
-    rows += '<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Slide ' + item.slideNum + ' / 7</div>';
-    rows += '<img src="' + item.url + '" style="width:100%;display:block;border-radius:12px;-webkit-touch-callout:default;" />';
-    rows += '<div style="text-align:center;font-size:13px;color:rgba(255,255,255,0.38);margin-top:8px;letter-spacing:0.01em;">Hold image → Add to Photos</div>';
-    rows += '</div>';
-  });
-
-  var modal = document.createElement('div');
-  modal.id = 'ios-save-modal';
-  modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#0a0805;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:24px 18px 80px;font-family:Inter,system-ui,sans-serif;';
-  modal.innerHTML =
-    '<div style="max-width:500px;margin:0 auto;">' +
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">' +
-    '<div style="font-size:21px;font-weight:900;color:#fff;letter-spacing:-0.02em;">Save to Photos</div>' +
-    '<button onclick="closeIosSaveModal()" style="background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.7);font-size:14px;padding:8px 18px;border-radius:20px;cursor:pointer;font-family:inherit;">Done</button>' +
-    '</div>' +
-    '<div style="background:rgba(212,168,83,0.12);border:1px solid rgba(212,168,83,0.25);border-radius:10px;padding:12px 14px;margin-bottom:24px;font-size:14px;color:rgba(255,255,255,0.75);line-height:1.5;">' +
-    '<strong style="color:#d4a853;">Hold each image</strong> then tap <strong style="color:#d4a853;">"Add to Photos"</strong> — works in Safari &amp; Chrome' +
-    '</div>' +
-    rows +
-    '</div>';
-
-  document.body.appendChild(modal);
-}
-
-function closeIosSaveModal() {
-  var modal = document.getElementById('ios-save-modal');
-  if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
-  if (window._iosSaveItems) {
-    window._iosSaveItems.forEach(function(item) { URL.revokeObjectURL(item.url); });
-    window._iosSaveItems = null;
-  }
-}
-
-function showIosSingleSave(blob, canvasName) {
-  var url = URL.createObjectURL(blob);
-  window._iosSingleUrl = url;
-  var modal = document.createElement('div');
-  modal.id = 'ios-single-save-modal';
-  modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#0a0805;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:24px 18px 80px;font-family:Inter,system-ui,sans-serif;';
-  modal.innerHTML =
-    '<div style="max-width:500px;margin:0 auto;">' +
-    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">' +
-    '<div style="font-size:21px;font-weight:900;color:#fff;letter-spacing:-0.02em;">' + canvasName + '</div>' +
-    '<button onclick="closeIosSingleSave()" style="background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.7);font-size:14px;padding:8px 18px;border-radius:20px;cursor:pointer;font-family:inherit;">Done</button>' +
-    '</div>' +
-    '<div style="background:rgba(212,168,83,0.12);border:1px solid rgba(212,168,83,0.25);border-radius:10px;padding:12px 14px;margin-bottom:20px;font-size:14px;color:rgba(255,255,255,0.75);line-height:1.5;">' +
-    '<strong style="color:#d4a853;">Hold the image</strong> then tap <strong style="color:#d4a853;">"Add to Photos"</strong>' +
-    '</div>' +
-    '<img src="' + url + '" style="width:100%;display:block;border-radius:12px;-webkit-touch-callout:default;" />' +
-    '</div>';
-  document.body.appendChild(modal);
-}
-
-function closeIosSingleSave() {
-  var modal = document.getElementById('ios-single-save-modal');
-  if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
-  if (window._iosSingleUrl) { URL.revokeObjectURL(window._iosSingleUrl); window._iosSingleUrl = null; }
 }
 
 // ── Mobile sidebar ──

@@ -5801,38 +5801,37 @@ async function exportTipCarousel() {
 
   if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
 
-  // ── iOS: open native share sheet so user can Save to Photos ──
+  // ── iOS: share one image at a time → shows "Save Image" (not zip) ──
   if (isIOS && collectedBlobs.length > 0) {
-    if (btn) btn.textContent = 'Opening share sheet…';
-    try {
-      if (navigator.canShare && navigator.canShare({ files: collectedBlobs })) {
-        // Native share sheet — user taps "Save Image" to send all to Photos
-        await navigator.share({
-          files: collectedBlobs,
-          title: 'FRMLS Tip Post — Brand Voice',
-        });
+    const canShareFiles = navigator.canShare && navigator.canShare({ files: [collectedBlobs[0]] });
+    for (let si = 0; si < collectedBlobs.length; si++) {
+      const file = collectedBlobs[si];
+      if (btn) btn.textContent = 'Save slide ' + (si + 1) + ' of 7 — tap Save Image';
+      if (canShareFiles) {
+        try {
+          await navigator.share({ files: [file] });
+        } catch (err) {
+          if (err.name === 'AbortError') break; // user tapped Cancel — stop
+        }
       } else {
-        // Older iOS / share API unavailable — open each image in a new tab
-        collectedBlobs.forEach(function(file, idx) {
-          const url = URL.createObjectURL(file);
-          const tab = window.open('', '_blank');
-          if (tab) {
-            tab.document.write(
-              '<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width">' +
-              '<title>' + file.name + '</title></head>' +
-              '<body style="margin:0;background:#111;font-family:sans-serif">' +
-              '<p style="color:#fff;padding:14px 16px;font-size:14px;margin:0">' +
-              'Slide ' + (idx + 1) + ' / 7 — <strong>Hold image → Save to Photos</strong></p>' +
-              '<img src="' + url + '" style="width:100%;display:block">' +
-              '</body></html>'
-            );
-            tab.document.close();
-          }
-        });
+        // Web Share not supported — open image in new tab for long-press save
+        const url = URL.createObjectURL(file);
+        const tab = window.open('', '_blank');
+        if (tab) {
+          tab.document.write(
+            '<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width">' +
+            '<title>Slide ' + (si + 1) + ' / 7</title></head>' +
+            '<body style="margin:0;background:#111;font-family:sans-serif">' +
+            '<p style="color:#fff;padding:14px 16px;font-size:15px;margin:0">' +
+            'Slide ' + (si + 1) + ' / 7 — <strong>Hold image → Save to Photos</strong></p>' +
+            '<img src="' + url + '" style="width:100%;display:block">' +
+            '</body></html>'
+          );
+          tab.document.close();
+        }
       }
-    } catch (err) {
-      if (err.name !== 'AbortError') console.warn('Share failed:', err);
-      // AbortError = user dismissed sheet — that's fine
+      // Brief pause so iOS can settle between share sheets
+      await new Promise(function(r) { setTimeout(r, 350); });
     }
   }
 

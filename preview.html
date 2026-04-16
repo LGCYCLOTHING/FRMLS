@@ -5687,20 +5687,17 @@ function copyColor(hex, el) {
 //  SHARED CAPTURE HELPER
 // ══════════════════════════════════════════════════════════════
 
-// Clones an element, places it at fixed coords, waits 2 frames,
-// captures with html2canvas, returns a data-URI string or null.
 async function captureSlide(el, w, h, bg) {
+  // Place clone off-screen behind everything (z-index:-9999 = invisible but capturable)
   var clone = el.cloneNode(true);
   clone.removeAttribute('id');
   clone.style.cssText = 'position:fixed!important;top:0!important;left:0!important;' +
     'width:' + w + 'px!important;height:' + h + 'px!important;' +
-    'overflow:hidden!important;pointer-events:none!important;z-index:99998!important;' +
+    'overflow:hidden!important;pointer-events:none!important;z-index:-9999!important;' +
     'transform:none!important;opacity:1!important;visibility:visible!important;';
   document.body.appendChild(clone);
-
-  // Two animation frames so the browser fully renders the clone
+  // Two rAF frames so browser renders the clone before capture
   await new Promise(function(r) { requestAnimationFrame(function() { requestAnimationFrame(r); }); });
-
   try {
     var canvas = await html2canvas(clone, {
       width: w, height: h, scale: 1,
@@ -5719,11 +5716,8 @@ async function captureSlide(el, w, h, bg) {
 
 function triggerDownload(dataUrl, filename) {
   var a = document.createElement('a');
-  a.href = dataUrl;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  a.href = dataUrl; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -5732,35 +5726,103 @@ function triggerDownload(dataUrl, filename) {
 
 async function exportTipCarousel() {
   var btn = document.getElementById('tip-export-btn');
-  if (btn) { btn.textContent = 'Saving…'; btn.disabled = true; }
+  if (btn) { btn.textContent = 'Preparing…'; btn.disabled = true; }
+
+  var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  // On mobile: open save tab NOW while we still have the button-tap gesture context.
+  // (After any await, iOS blocks programmatic downloads/tab-opens.)
+  var saveTab = null;
+  if (isMobile) {
+    saveTab = window.open('', '_blank');
+    if (saveTab) {
+      saveTab.document.write('<html><head><meta name="viewport" content="width=device-width,initial-scale=1">' +
+        '<style>body{margin:0;background:#0a0805;display:flex;align-items:center;justify-content:center;' +
+        'height:100vh;font-family:system-ui,sans-serif;color:#fff;font-size:16px;}</style></head>' +
+        '<body>⏳ Preparing slides…</body></html>');
+      saveTab.document.close();
+    }
+  }
 
   var tipKeys = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7']
     .filter(function(k) { return !!document.getElementById('cvs-' + k); });
 
-  if (tipKeys.length === 0) {
-    alert('No slides found.');
-    if (btn) { btn.textContent = '↓ Export All Slides'; btn.disabled = false; }
-    return;
-  }
-
-  var failed = 0;
+  // Capture all slides
+  var slides = [];
   for (var i = 0; i < tipKeys.length; i++) {
     var key = tipKeys[i];
-    var num = i + 1;
-    if (btn) btn.textContent = 'Saving ' + num + ' / ' + tipKeys.length + '…';
-    var bg  = (key === 'tip7') ? '#ede5d3' : '#f2ece0';
-    var el  = document.getElementById('cvs-' + key);
-    var dataUrl = await captureSlide(el, 1080, 1350, bg);
-    if (dataUrl) {
-      triggerDownload(dataUrl, 'tip-slide-' + num + '.png');
-      await new Promise(function(r) { setTimeout(r, 700); });
-    } else {
-      failed++;
-    }
+    if (btn) btn.textContent = 'Capturing ' + (i + 1) + ' / ' + tipKeys.length + '…';
+    var dataUrl = await captureSlide(
+      document.getElementById('cvs-' + key), 1080, 1350,
+      key === 'tip7' ? '#ede5d3' : '#f2ece0'
+    );
+    slides.push({ dataUrl: dataUrl, num: i + 1 });
+    await new Promise(function(r) { setTimeout(r, 80); });
   }
 
   if (btn) { btn.textContent = '↓ Export All Slides'; btn.disabled = false; }
-  if (failed > 0) alert(failed + ' slide(s) could not be captured. Try again.');
+
+  var failed = slides.filter(function(s) { return !s.dataUrl; }).length;
+  if (failed === slides.length) { alert('Capture failed — try again.'); return; }
+
+  if (isMobile && saveTab && !saveTab.closed) {
+    // ── Build save page in the pre-opened tab ──
+    var script = 'var S=' + JSON.stringify(slides) + ';' +
+      'async function save(i){' +
+        'var s=S[i],b=document.getElementById("b"+i);' +
+        'if(!s||!s.dataUrl)return;' +
+        'if(b){b.disabled=true;b.textContent="Saving…";}' +
+        'try{' +
+          'var u8=new Uint8Array(atob(s.dataUrl.split(",")[1]).split("").map(function(c){return c.charCodeAt(0);}));' +
+          'var file=new File([u8],"tip-slide-"+s.num+".png",{type:"image/png"});' +
+          'if(navigator.canShare&&navigator.canShare({files:[file]})){' +
+            'await navigator.share({files:[file]});' +
+            'if(b){b.textContent="✓ Saved";b.style.background="#14532d";}' +
+          '}else{' +
+            'var a=document.createElement("a");a.href=s.dataUrl;a.download="tip-slide-"+s.num+".png";' +
+            'document.body.appendChild(a);a.click();document.body.removeChild(a);' +
+            'if(b){b.textContent="✓ Downloaded";b.style.background="#14532d";}' +
+          '}' +
+        '}catch(e){if(b){b.disabled=false;b.textContent="Save Slide "+s.num;}}' +
+      '}';
+
+    var rows = slides.map(function(s, idx) {
+      if (!s.dataUrl) return '';
+      return '<div style="margin-bottom:24px;">' +
+        '<div style="font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;">Slide ' + s.num + ' / ' + tipKeys.length + '</div>' +
+        '<img src="' + s.dataUrl + '" style="width:100%;border-radius:10px;display:block;">' +
+        '<button id="b' + idx + '" onclick="save(' + idx + ')" ' +
+          'style="width:100%;padding:14px;background:#1a1208;border:none;color:#d4a853;font-size:15px;' +
+          'font-weight:700;cursor:pointer;font-family:inherit;border-radius:0 0 10px 10px;margin-top:0;">' +
+          '↓ Save Slide ' + s.num + '</button>' +
+        '</div>';
+    }).join('');
+
+    var page = '<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">' +
+      '<style>body{margin:0;background:#0a0805;font-family:system-ui,sans-serif;padding:20px 16px 80px;}' +
+      'h2{color:#fff;font-size:21px;font-weight:900;letter-spacing:-.02em;margin:0 0 6px;}' +
+      '.tip{background:rgba(212,168,83,.1);border:1px solid rgba(212,168,83,.25);border-radius:10px;' +
+      'padding:11px 14px;font-size:13px;color:rgba(255,255,255,.7);margin-bottom:22px;line-height:1.5;}' +
+      '</style></head><body>' +
+      '<h2>Save Slides</h2>' +
+      '<div class="tip">Tap <strong style="color:#d4a853">Save Slide</strong> under each image to save it to your Photos.</div>' +
+      rows +
+      '<script>' + script + '<\/script>' +
+      '</body></html>';
+
+    saveTab.document.open();
+    saveTab.document.write(page);
+    saveTab.document.close();
+
+  } else {
+    // Desktop: direct download each file
+    for (var j = 0; j < slides.length; j++) {
+      if (slides[j].dataUrl) {
+        triggerDownload(slides[j].dataUrl, 'tip-slide-' + slides[j].num + '.png');
+        await new Promise(function(r) { setTimeout(r, 700); });
+      }
+    }
+  }
 }
 
 // ── Mobile sidebar ──

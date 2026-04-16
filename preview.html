@@ -5688,22 +5688,25 @@ function copyColor(hex, el) {
 // ══════════════════════════════════════════════════════════════
 
 async function captureSlide(el, w, h, bg) {
-  // Place clone off-screen behind everything (z-index:-9999 = invisible but capturable)
+  // Place clone off the left edge — invisible to the user but fully painted by the browser.
+  // z-index:-9999 caused rendering skips on iOS (element treated as behind body = not painted).
+  var offX = w + 20;
   var clone = el.cloneNode(true);
   clone.removeAttribute('id');
-  clone.style.cssText = 'position:fixed!important;top:0!important;left:0!important;' +
+  clone.style.cssText = 'position:fixed!important;top:0!important;left:-' + offX + 'px!important;' +
     'width:' + w + 'px!important;height:' + h + 'px!important;' +
-    'overflow:hidden!important;pointer-events:none!important;z-index:-9999!important;' +
+    'overflow:hidden!important;pointer-events:none!important;' +
     'transform:none!important;opacity:1!important;visibility:visible!important;';
   document.body.appendChild(clone);
-  // Two rAF frames so browser renders the clone before capture
+  // Two rAF frames so the browser paints the clone before html2canvas reads it
   await new Promise(function(r) { requestAnimationFrame(function() { requestAnimationFrame(r); }); });
   try {
     var canvas = await html2canvas(clone, {
       width: w, height: h, scale: 1,
       useCORS: true, allowTaint: true,
       backgroundColor: bg, logging: false,
-      x: 0, y: 0, scrollX: 0, scrollY: 0
+      x: 0, y: 0,
+      scrollX: -offX, scrollY: 0
     });
     document.body.removeChild(clone);
     return canvas.toDataURL('image/png');

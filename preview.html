@@ -2600,7 +2600,7 @@ body.eyedropper-mode * { cursor: crosshair !important; }
     <span class="mtab-icon">◉</span>
     <span>Brand</span>
   </button>
-  <button class="mtab export-tab" onclick="exportCurrent()">
+  <button class="mtab export-tab" id="mtab-export" onclick="mobileExport()">
     <span class="mtab-icon">↓</span>
     <span>Export</span>
   </button>
@@ -5723,6 +5723,15 @@ function triggerDownload(dataUrl, filename) {
 // ══════════════════════════════════════════════════════════════
 //  TIP POST CAROUSEL — EXPORT ALL 7 SLIDES
 // ══════════════════════════════════════════════════════════════
+
+function mobileExport() {
+  var tipKeys = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7'];
+  if (tipKeys.indexOf(activeKey) !== -1) {
+    exportTipCarousel();
+  } else {
+    exportCurrent();
+  }
+}
 
 async function exportTipCarousel() {
   var btn = document.getElementById('tip-export-btn');

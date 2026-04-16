@@ -5688,10 +5688,10 @@ function copyColor(hex, el) {
 // ══════════════════════════════════════════════════════════════
 
 async function captureSlide(el, w, h, bg) {
-  // canvas-pool lives at position:fixed;left:-20000px — iOS does not paint off-screen
-  // fixed elements. Moving the element directly into body (on-screen) before capture
-  // ensures the browser fully paints it. The capture overlay (z-index:99999) hides
-  // the element from the user while it's temporarily repositioned.
+  // canvas-pool is at position:fixed;left:-20000px — iOS won't paint off-screen elements.
+  // Any opaque overlay on top also blocks painting (browser skips occluded layers).
+  // Solution: move the element fully on-screen (no hiding), capture, restore.
+  // The brief visual flash is acceptable — captures are ~300ms each.
   var origParent  = el.parentNode;
   var origNextSib = el.nextSibling;
   var origStyle   = el.getAttribute('style') || '';
@@ -5699,10 +5699,10 @@ async function captureSlide(el, w, h, bg) {
   document.body.appendChild(el);
   el.style.cssText = 'position:fixed!important;top:0!important;left:0!important;' +
     'width:' + w + 'px!important;height:' + h + 'px!important;' +
-    'overflow:hidden!important;pointer-events:none!important;z-index:99998!important;' +
+    'overflow:hidden!important;pointer-events:none!important;z-index:99999!important;' +
     'transform:none!important;';
 
-  // Two rAF frames so the browser paints the element before html2canvas reads it
+  // Two rAF frames — browser must paint before html2canvas reads pixels
   await new Promise(function(r) { requestAnimationFrame(function() { requestAnimationFrame(r); }); });
 
   var result = null;
@@ -5712,15 +5712,14 @@ async function captureSlide(el, w, h, bg) {
       useCORS: true,
       backgroundColor: bg,
       logging: false,
-      x: 0, y: 0, scrollX: 0, scrollY: 0,
-      ignoreElements: function(e) { return e.id === 'capture-overlay'; }
+      x: 0, y: 0, scrollX: 0, scrollY: 0
     });
     result = canvas.toDataURL('image/png');
   } catch (err) {
     console.error('captureSlide failed:', err);
   }
 
-  // Always restore element to its original parent + position
+  // Restore element to original parent + position
   el.setAttribute('style', origStyle);
   if (origParent) {
     if (origNextSib) origParent.insertBefore(el, origNextSib);
@@ -5746,9 +5745,9 @@ function mobileExport() {
 }
 
 async function exportTipCarousel() {
-  var sidebarBtn  = document.getElementById('tip-export-btn');
-  var mobileBtn   = document.getElementById('mtab-export');
-  var mobileLbl   = mobileBtn ? mobileBtn.querySelector('span:last-child') : null;
+  var sidebarBtn = document.getElementById('tip-export-btn');
+  var mobileBtn  = document.getElementById('mtab-export');
+  var mobileLbl  = mobileBtn ? mobileBtn.querySelector('span:last-child') : null;
 
   function setProgress(text) {
     if (sidebarBtn) { sidebarBtn.textContent = text; sidebarBtn.disabled = true; }
@@ -5759,25 +5758,9 @@ async function exportTipCarousel() {
     if (mobileLbl)  { mobileLbl.textContent  = 'Export'; }
   }
 
-  setProgress('Preparing…');
+  setProgress('Capturing…');
 
   var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-  // Dark overlay covers the clone during capture so user doesn't see the 1080px flash.
-  // Must be z-index:99999 (above the clone at 99998).
-  var capOverlay = document.createElement('div');
-  capOverlay.style.cssText = 'position:fixed;inset:0;background:#0a0805;z-index:99999;' +
-    'display:flex;flex-direction:column;align-items:center;justify-content:center;' +
-    'font-family:system-ui,sans-serif;gap:12px;';
-  var capLabel = document.createElement('div');
-  capLabel.style.cssText = 'color:#fff;font-size:17px;font-weight:600;';
-  capLabel.textContent = 'Preparing slides…';
-  var capSub = document.createElement('div');
-  capSub.style.cssText = 'color:rgba(255,255,255,.4);font-size:13px;';
-  capSub.textContent = 'This takes a few seconds';
-  capOverlay.appendChild(capLabel);
-  capOverlay.appendChild(capSub);
-  document.body.appendChild(capOverlay);
 
   var tipKeys = ['tip1','tip2','tip3','tip4','tip5','tip6','tip7']
     .filter(function(k) { return !!document.getElementById('cvs-' + k); });
@@ -5785,21 +5768,19 @@ async function exportTipCarousel() {
   var slides = [];
   for (var i = 0; i < tipKeys.length; i++) {
     var key = tipKeys[i];
-    capLabel.textContent = 'Slide ' + (i + 1) + ' of ' + tipKeys.length + '…';
     setProgress((i + 1) + ' / ' + tipKeys.length);
     var dataUrl = await captureSlide(
       document.getElementById('cvs-' + key), 1080, 1350,
       key === 'tip7' ? '#ede5d3' : '#f2ece0'
     );
     slides.push({ dataUrl: dataUrl, num: i + 1 });
-    await new Promise(function(r) { setTimeout(r, 60); });
+    await new Promise(function(r) { setTimeout(r, 80); });
   }
 
-  capOverlay.remove();
   resetBtns();
 
   var failed = slides.filter(function(s) { return !s.dataUrl; }).length;
-  if (failed === slides.length) { alert('Capture failed — try again.'); return; }
+  if (failed === slides.length) { alert('Capture failed — try refreshing the page.'); return; }
 
   if (isMobile) {
     window.__frmlsSlides = slides;
@@ -5814,79 +5795,91 @@ async function exportTipCarousel() {
   }
 }
 
-function openCapturedSlide(idx) {
+// Called synchronously from a button tap — no await before navigator.share,
+// so iOS gesture context is preserved and "Save Image" appears (not zip).
+function saveSlideToFiles(idx) {
   var s = (window.__frmlsSlides || [])[idx];
   if (!s || !s.dataUrl) return;
-  var parts = s.dataUrl.split(',');
-  var byteStr = atob(parts[1]);
-  var ab = new ArrayBuffer(byteStr.length);
+
+  // atob + Uint8Array + File are all synchronous — no await needed
+  var parts  = s.dataUrl.split(',');
+  var binary = atob(parts[1]);
+  var ab = new ArrayBuffer(binary.length);
   var ia = new Uint8Array(ab);
-  for (var i = 0; i < byteStr.length; i++) ia[i] = byteStr.charCodeAt(i);
-  var blob = new Blob([ab], { type: 'image/png' });
-  window.open(URL.createObjectURL(blob), '_blank');
+  for (var i = 0; i < binary.length; i++) ia[i] = binary.charCodeAt(i);
+  var file = new File([ab], 'frmls-slide-' + s.num + '.png', { type: 'image/png' });
+
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    navigator.share({ files: [file] }).catch(function() {});
+  } else {
+    // Desktop / Android fallback
+    var blob = new Blob([ab], { type: 'image/png' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'frmls-slide-' + s.num + '.png';
+    a.click();
+  }
 }
 
 function showSaveModal(slides, total) {
   var existing = document.getElementById('save-modal');
   if (existing) existing.remove();
 
-  // ── Modal container ──
   var modal = document.createElement('div');
   modal.id = 'save-modal';
-  modal.style.cssText = 'position:fixed;inset:0;background:#0a0805;z-index:99999;' +
+  modal.style.cssText = 'position:fixed;top:0;right:0;bottom:0;left:0;background:#0a0805;z-index:99999;' +
     'overflow-y:auto;-webkit-overflow-scrolling:touch;font-family:system-ui,sans-serif;' +
     'padding:20px 16px 100px;';
 
-  // ── Header ──
+  // Header
   var hdr = document.createElement('div');
   hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;';
-  var title = document.createElement('div');
-  title.style.cssText = 'color:#fff;font-size:22px;font-weight:900;letter-spacing:-.02em;';
-  title.textContent = 'Your Slides';
+  var ttl = document.createElement('div');
+  ttl.style.cssText = 'color:#fff;font-size:22px;font-weight:900;letter-spacing:-.02em;';
+  ttl.textContent = 'Save Your Slides';
   var closeBtn = document.createElement('button');
   closeBtn.style.cssText = 'background:rgba(255,255,255,.1);border:none;color:#fff;font-size:15px;' +
     'padding:8px 14px;border-radius:8px;cursor:pointer;font-family:inherit;';
   closeBtn.textContent = '✕ Close';
   closeBtn.onclick = function() { modal.remove(); };
-  hdr.appendChild(title);
+  hdr.appendChild(ttl);
   hdr.appendChild(closeBtn);
   modal.appendChild(hdr);
 
-  // ── Instruction ──
+  // Instruction
   var tip = document.createElement('div');
   tip.style.cssText = 'background:rgba(212,168,83,.12);border:1px solid rgba(212,168,83,.3);' +
     'border-radius:10px;padding:12px 14px;font-size:13px;color:rgba(255,255,255,.75);' +
     'line-height:1.6;margin-bottom:20px;';
-  tip.innerHTML = 'Tap <strong style="color:#d4a853">Open Slide</strong> — image opens full screen. ' +
-    'Tap <strong style="color:#d4a853">Share ⬆</strong> → <strong style="color:#d4a853">Save Image</strong>.';
+  tip.innerHTML = 'Tap <strong style="color:#d4a853">Save to Files</strong> under each slide.';
   modal.appendChild(tip);
 
-  // ── Slide rows — build with DOM, set img.src separately (avoids giant innerHTML) ──
+  // Slide rows
   slides.forEach(function(s, idx) {
     if (!s.dataUrl) return;
 
     var wrap = document.createElement('div');
     wrap.style.cssText = 'margin-bottom:24px;';
 
-    var label = document.createElement('div');
-    label.style.cssText = 'font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;' +
+    var lbl = document.createElement('div');
+    lbl.style.cssText = 'font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.1em;' +
       'text-transform:uppercase;margin-bottom:8px;';
-    label.textContent = 'Slide ' + s.num + ' of ' + total;
+    lbl.textContent = 'Slide ' + s.num + ' of ' + total;
 
     var img = document.createElement('img');
     img.style.cssText = 'width:100%;border-radius:12px 12px 0 0;display:block;-webkit-touch-callout:default;';
     img.src = s.dataUrl;
 
-    var openBtn = document.createElement('button');
-    openBtn.style.cssText = 'width:100%;padding:16px;background:#1a1208;border:none;color:#d4a853;' +
+    var btn = document.createElement('button');
+    btn.style.cssText = 'width:100%;padding:16px;background:#1a1208;border:none;color:#d4a853;' +
       'font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;' +
       'border-radius:0 0 12px 12px;letter-spacing:.01em;';
-    openBtn.textContent = '↗ Open Slide ' + s.num;
-    openBtn.addEventListener('click', function() { openCapturedSlide(idx); });
+    btn.textContent = '↓ Save Slide ' + s.num;
+    btn.addEventListener('click', function() { saveSlideToFiles(idx); });
 
-    wrap.appendChild(label);
+    wrap.appendChild(lbl);
     wrap.appendChild(img);
-    wrap.appendChild(openBtn);
+    wrap.appendChild(btn);
     modal.appendChild(wrap);
   });
 

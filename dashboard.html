@@ -442,6 +442,54 @@ body::before {
 .pk-personalized-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; background:linear-gradient(90deg,rgba(124,58,237,0.13),rgba(6,182,212,0.13)); border:1px solid rgba(124,58,237,0.22); color:var(--purple-light); border-radius:4px; padding:2px 7px; margin-bottom:10px; }
 .pk-missing-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; background:rgba(245,158,11,0.07); border:1px solid rgba(245,158,11,0.22); color:#f59e0b; border-radius:4px; padding:2px 7px; margin-bottom:10px; }
 
+/* ===== ONBOARDING OVERLAY (Steps 2-6) ===== */
+#ob-overlay { position:fixed; inset:0; z-index:9998; background:#07040f; overflow-y:scroll; overflow-x:hidden; touch-action:pan-y; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; opacity:0; pointer-events:none; transition:opacity 0.4s ease; }
+#ob-overlay.ob-visible { opacity:1; pointer-events:auto; }
+.ob-top-bar { position:sticky; top:0; z-index:10; display:flex; align-items:center; gap:14px; padding:20px 32px 16px; background:linear-gradient(to bottom,#07040f 80%,transparent); flex-shrink:0; }
+.ob-progress-track { flex:1; height:3px; background:rgba(255,255,255,0.1); border-radius:2px; }
+.ob-progress-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,#7c3aed,#06b6d4); transition:width 0.5s cubic-bezier(0.16,1,0.3,1); }
+.ob-step-counter { font-family:'DM Mono',monospace; font-size:11px; color:rgba(255,255,255,0.35); letter-spacing:0.12em; white-space:nowrap; }
+.ob-screen { display:none; padding:48px 32px 80px; max-width:660px; margin:0 auto; }
+.ob-screen.ob-active { display:block; animation:obScreenIn 0.35s cubic-bezier(0.16,1,0.3,1) both; }
+@keyframes obScreenIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+.ob-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.22em; text-transform:uppercase; background:linear-gradient(90deg,#9d5cf5,#22d3ee); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:24px; display:block; }
+.ob-headline { font-size:48px; font-weight:800; color:#fff; letter-spacing:-0.03em; line-height:1.08; margin-bottom:14px; }
+.ob-subline { font-size:16px; color:rgba(255,255,255,0.45); margin-bottom:40px; line-height:1.6; }
+.ob-name-input { width:100%; background:rgba(255,255,255,0.04); border:1.5px solid #333; border-radius:16px; padding:22px 24px; font-size:24px; font-weight:600; color:#fff; letter-spacing:-0.02em; font-family:'Inter',sans-serif; outline:none; transition:border-color 0.2s,box-shadow 0.2s; margin-bottom:12px; display:block; box-sizing:border-box; }
+.ob-name-input::placeholder { color:rgba(255,255,255,0.2); }
+.ob-name-input:focus { border-color:rgba(124,58,237,0.5); box-shadow:0 0 0 3px rgba(124,58,237,0.12); }
+.ob-input-hint { font-size:12px; color:rgba(255,255,255,0.25); font-family:'DM Mono',monospace; margin-bottom:28px; display:block; }
+.ob-cat-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:32px; }
+.ob-card { background:rgba(255,255,255,0.03); border:1.5px solid rgba(255,255,255,0.08); border-radius:16px; padding:18px 20px; cursor:pointer; transition:all 0.2s cubic-bezier(0.16,1,0.3,1); }
+.ob-card:hover { background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.14); }
+.ob-card.ob-selected { background:rgba(124,58,237,0.1); border-color:rgba(124,58,237,0.5); box-shadow:inset 0 0 0 1px rgba(6,182,212,0.2); }
+.ob-cat-inner { display:flex; align-items:center; gap:12px; }
+.ob-cat-icon { font-size:16px; flex-shrink:0; }
+.ob-cat-name { font-size:15px; font-weight:700; color:#fff; }
+.ob-vibe-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:32px; }
+.ob-vibe-name { font-size:16px; font-weight:700; color:#fff; margin-bottom:4px; }
+.ob-vibe-desc { font-size:12px; color:rgba(255,255,255,0.4); font-family:'DM Mono',monospace; }
+.ob-color-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:32px; }
+.ob-swatch-strip { display:flex; border-radius:8px; overflow:hidden; height:34px; margin-bottom:10px; }
+.ob-swatch-strip div { flex:1; }
+.ob-color-name { font-size:14px; font-weight:700; color:#fff; margin-bottom:2px; }
+.ob-color-desc { font-size:11px; color:rgba(255,255,255,0.35); font-family:'DM Mono',monospace; }
+.ob-match-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; background:linear-gradient(90deg,rgba(124,58,237,0.22),rgba(6,182,212,0.22)); border:1px solid rgba(124,58,237,0.4); color:#a78bfa; border-radius:4px; padding:2px 6px; margin-top:8px; }
+.ob-continue-btn { width:100%; padding:18px 24px; border-radius:16px; border:none; background:linear-gradient(135deg,#7c3aed,#06b6d4); cursor:pointer; font-size:16px; font-weight:700; color:#fff; letter-spacing:-0.01em; font-family:'Inter',sans-serif; transition:opacity 0.2s,transform 0.15s; display:block; }
+.ob-continue-btn:disabled { opacity:0.28; cursor:not-allowed; transform:none !important; }
+.ob-continue-btn:not(:disabled):hover { opacity:0.88; transform:translateY(-1px); }
+.ob-completion-wrap { text-align:center; padding-top:60px; position:relative; min-height:60vh; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.ob-completion-logo { font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; font-size:52px; font-weight:900; letter-spacing:-0.04em; color:#fff; margin-bottom:8px; }
+.ob-completion-logo-s { background:linear-gradient(90deg,#7c3aed,#06b6d4); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.ob-completion-title { font-size:32px; font-weight:800; color:#fff; letter-spacing:-0.02em; margin-bottom:12px; }
+.ob-completion-sub { font-size:18px; color:rgba(255,255,255,0.45); line-height:1.6; margin-bottom:40px; max-width:480px; }
+.ob-summary-pills { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:40px; }
+.ob-summary-pill { background:rgba(255,255,255,0.04); border:1px solid rgba(124,58,237,0.3); border-radius:100px; padding:8px 18px; font-size:13px; color:rgba(255,255,255,0.8); font-weight:600; letter-spacing:-0.01em; }
+.ob-enter-btn { display:block; width:100%; max-width:380px; padding:20px 32px; border-radius:16px; border:none; background:linear-gradient(135deg,#7c3aed,#06b6d4); cursor:pointer; font-size:18px; font-weight:700; color:#fff; letter-spacing:-0.01em; font-family:'Inter',sans-serif; transition:opacity 0.2s,transform 0.15s; }
+.ob-enter-btn:hover { opacity:0.88; transform:translateY(-1px); }
+.ob-particles { position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
+@media(max-width:768px) { .ob-headline{font-size:32px} .ob-screen{padding:32px 20px 80px} .ob-cat-grid,.ob-vibe-grid,.ob-color-grid{grid-template-columns:1fr} .ob-completion-title{font-size:24px} .ob-top-bar{padding:16px 20px 12px} }
+
 /* ===== LAUNCH CHECKLIST ===== */
 .checklist-progress { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px 18px; margin-bottom:1.25rem; display:flex; align-items:center; gap:14px; }
 .checklist-count-text { font-family:'DM Mono',monospace; font-size:12px; color:#cccccc; white-space:nowrap; }
@@ -2777,6 +2825,74 @@ body::before {
 
   <button id="bf-skip-btn" class="bf-skip-btn" onclick="bfSkip()">skip for now</button>
 </div><!-- /bf-overlay -->
+
+<!-- ===== ONBOARDING OVERLAY (Brand Details Steps 2–6) ===== -->
+<div id="ob-overlay">
+  <div class="ob-top-bar">
+    <div class="ob-progress-track"><div class="ob-progress-fill" id="ob-progress-fill" style="width:60%"></div></div>
+    <span class="ob-step-counter" id="ob-step-counter">step 7 of 10</span>
+  </div>
+
+  <!-- Screen: Brand Name -->
+  <div class="ob-screen ob-active" id="ob-screen-brandname">
+    <span class="ob-label">brand details — 01</span>
+    <h2 class="ob-headline">what is your brand called?</h2>
+    <p class="ob-subline">this will personalize everything in your dashboard.</p>
+    <input class="ob-name-input" id="obBrandNameInput" type="text" placeholder="your brand name..." oninput="obCheckBrandName()" autocomplete="off" />
+    <span class="ob-input-hint">you can change this later in your dashboard.</span>
+    <button class="ob-continue-btn" id="ob-continue-brandname" disabled onclick="obGoTo('category')">continue →</button>
+  </div>
+
+  <!-- Screen: Category -->
+  <div class="ob-screen" id="ob-screen-category">
+    <span class="ob-label">brand details — 02</span>
+    <h2 class="ob-headline">what are you building?</h2>
+    <p class="ob-subline">pick the category that fits your brand best.</p>
+    <div class="ob-cat-grid" id="ob-cat-grid">
+      <div class="ob-card" onclick="obSelectCat(this,'clothing')"><div class="ob-cat-inner"><span class="ob-cat-icon">◼</span><span class="ob-cat-name">Clothing and Apparel</span></div></div>
+      <div class="ob-card" onclick="obSelectCat(this,'accessories')"><div class="ob-cat-inner"><span class="ob-cat-icon">◇</span><span class="ob-cat-name">Accessories and Jewelry</span></div></div>
+      <div class="ob-card" onclick="obSelectCat(this,'footwear')"><div class="ob-cat-inner"><span class="ob-cat-icon">◈</span><span class="ob-cat-name">Footwear</span></div></div>
+      <div class="ob-card" onclick="obSelectCat(this,'beauty')"><div class="ob-cat-inner"><span class="ob-cat-icon">◉</span><span class="ob-cat-name">Beauty and Skincare</span></div></div>
+      <div class="ob-card" onclick="obSelectCat(this,'home')"><div class="ob-cat-inner"><span class="ob-cat-icon">◻</span><span class="ob-cat-name">Home and Living</span></div></div>
+      <div class="ob-card" onclick="obSelectCat(this,'health')"><div class="ob-cat-inner"><span class="ob-cat-icon">◐</span><span class="ob-cat-name">Health and Wellness</span></div></div>
+      <div class="ob-card" onclick="obSelectCat(this,'digital')"><div class="ob-cat-inner"><span class="ob-cat-icon">▣</span><span class="ob-cat-name">Digital Products</span></div></div>
+      <div class="ob-card" onclick="obSelectCat(this,'food')"><div class="ob-cat-inner"><span class="ob-cat-icon">○</span><span class="ob-cat-name">Food and Beverage</span></div></div>
+      <div class="ob-card" onclick="obSelectCat(this,'art')"><div class="ob-cat-inner"><span class="ob-cat-icon">◎</span><span class="ob-cat-name">Art and Prints</span></div></div>
+      <div class="ob-card" onclick="obSelectCat(this,'general')"><div class="ob-cat-inner"><span class="ob-cat-icon">◆</span><span class="ob-cat-name">General and Dropshipping</span></div></div>
+    </div>
+    <button class="ob-continue-btn" id="ob-continue-category" disabled onclick="obGoTo('vibe')">continue →</button>
+  </div>
+
+  <!-- Screen: Vibe -->
+  <div class="ob-screen" id="ob-screen-vibe">
+    <span class="ob-label">brand details — 03</span>
+    <h2 class="ob-headline">what does your brand feel like?</h2>
+    <p class="ob-subline">pick the vibe that matches your direction.</p>
+    <div class="ob-vibe-grid" id="ob-vibe-grid"></div>
+    <button class="ob-continue-btn" id="ob-continue-vibe" disabled onclick="obGoTo('color')">continue →</button>
+  </div>
+
+  <!-- Screen: Color Mood -->
+  <div class="ob-screen" id="ob-screen-color">
+    <span class="ob-label">brand details — 04</span>
+    <h2 class="ob-headline">pick your color direction.</h2>
+    <p class="ob-subline">this shapes your brand kit and visual identity.</p>
+    <div class="ob-color-grid" id="ob-color-grid"></div>
+    <button class="ob-continue-btn" id="ob-continue-color" disabled onclick="obGoTo('completion')">continue →</button>
+  </div>
+
+  <!-- Screen: Completion -->
+  <div class="ob-screen" id="ob-screen-completion">
+    <div class="ob-particles" id="ob-particles"></div>
+    <div class="ob-completion-wrap">
+      <div class="ob-completion-logo">FRML<span class="ob-completion-logo-s">S</span></div>
+      <div class="ob-completion-title">your brand is ready.</div>
+      <p class="ob-completion-sub">everything in your dashboard is built around your brand.</p>
+      <div class="ob-summary-pills" id="ob-summary-pills"></div>
+      <button class="ob-enter-btn" onclick="obComplete()">enter your dashboard →</button>
+    </div>
+  </div>
+</div><!-- /ob-overlay -->
 
 <!-- ===== PANEL OVERLAY ===== -->
 <div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
@@ -5872,13 +5988,20 @@ function sbRenderTodos() {
 
 /* ===== INIT ===== */
 document.addEventListener('DOMContentLoaded', () => {
-  /* 0. Brand Foundation gate — must run before anything else.
-        New users (no frmls_foundation_complete) see the foundation flow
-        full-screen before the dashboard is accessible. */
-  if (!localStorage.getItem('frmls_foundation_complete')) {
-    bfLoadAnswers();
-    bfCurrentStep = 0;
-    bfShowOverlay();
+  /* 0. Onboarding gate — runs before anything else.
+        Full onboarding = Brand Foundation (6 steps) + Brand Details (4 steps).
+        frmls_onboarding_complete controls entry for all returning users. */
+  if (!localStorage.getItem('frmls_onboarding_complete')) {
+    if (!localStorage.getItem('frmls_foundation_complete')) {
+      // BF not done — start from Brand Foundation
+      bfLoadAnswers();
+      const savedBFStep = parseInt(localStorage.getItem('frmls_foundation_step') || '0', 10);
+      bfCurrentStep = isNaN(savedBFStep) ? 0 : Math.min(savedBFStep, BF_TOTAL_STEPS - 1);
+      bfShowOverlay();
+    } else {
+      // BF done but brand details not — resume OB overlay
+      obShowOverlay();
+    }
   }
 
   /* 1. Theme + color mode (no DOM dependencies) */
@@ -6425,6 +6548,191 @@ function bfRefreshDashThreeWords() {
   if (el) el.textContent = words || '';
 }
 
+/* ===== ONBOARDING FLOW (Brand Detail Steps 2–6) ===== */
+const OB_STEP_KEY     = 'frmls_onboarding_step';
+const OB_COMPLETE_KEY = 'frmls_onboarding_complete';
+
+const OB_SCREENS = ['brandname','category','vibe','color','completion'];
+const OB_SCREEN_STEP = { brandname:7, category:8, vibe:9, color:10, completion:10 };
+
+let obCurrentScreen = 'brandname';
+let obSelectedCat   = '';
+let obSelectedVibe  = '';
+let obSelectedColor = '';
+
+const OB_VIBES = [
+  { id:'clean-minimal',  name:'Clean and Minimal',  desc:'calm, refined, nothing wasted',         archetypes:['The Quiet Luxury Brand'] },
+  { id:'raw-bold',       name:'Raw and Bold',        desc:'unfiltered, direct, real',               archetypes:['The Bold Statement Brand','The Authentic Raw Brand'] },
+  { id:'quiet-luxury',   name:'Quiet Luxury',        desc:'elevated, considered, understated',      archetypes:['The Quiet Luxury Brand','The Editorial Cold Brand'] },
+  { id:'street-urban',   name:'Street and Urban',    desc:'cultural, current, community',           archetypes:['The Rebellious Cultural Brand'] },
+  { id:'warm-organic',   name:'Warm and Organic',    desc:'natural, human, grounded',               archetypes:['The Warm Human Brand','The Authentic Raw Brand'] },
+  { id:'dark-editorial', name:'Dark and Editorial',  desc:'cold, precise, sharp',                   archetypes:['The Editorial Cold Brand'] }
+];
+
+const OB_COLORS = [
+  { id:'Quiet Luxury',    name:'Quiet Luxury',    desc:'elevated, timeless',         swatches:['#F5F0E8','#C9A96E','#2C2C2C','#0A0A0A'], archetypes:['The Quiet Luxury Brand'] },
+  { id:'Street Editorial',name:'Street Editorial',desc:'dark, raw, high contrast',   swatches:['#0A0A0A','#F0EDE6','#6B6B6B','#CC2200'], archetypes:['The Bold Statement Brand','The Rebellious Cultural Brand'] },
+  { id:'Dark Matte',      name:'Dark Matte',      desc:'serious, premium, technical',swatches:['#0D0D0D','#1E1E1E','#2E2E2E','#F5F5F5'], archetypes:['The Editorial Cold Brand'] },
+  { id:'Warm Earth',      name:'Warm Earth',      desc:'organic, natural',           swatches:['#F2EBD9','#D4B896','#C4714A','#3D2314'], archetypes:['The Warm Human Brand','The Authentic Raw Brand'] },
+  { id:'Clean Modern',    name:'Clean Modern',    desc:'minimal, product forward',   swatches:['#FFFFFF','#E8E8E8','#888888','#111111'], archetypes:[] },
+  { id:'Soft Neutral',    name:'Soft Neutral',    desc:'soft, wearable',             swatches:['#F5EEE6','#E0D5CC','#C4A99A','#2C2C2C'], archetypes:['The Warm Human Brand'] },
+  { id:'Bold Mono',       name:'Bold Mono',       desc:'high contrast, graphic',     swatches:['#000000','#FFFFFF','#111111','#EEEEEE'], archetypes:['The Bold Statement Brand'] },
+  { id:'Vintage Washed',  name:'Vintage Washed',  desc:'muted, faded',               swatches:['#1A1A1A','#888880','#F0EBD8','#6B5744'], archetypes:['The Authentic Raw Brand'] }
+];
+
+const OB_VIBE_TO_STATE = {
+  'clean-minimal':'clean & minimal','raw-bold':'raw & bold',
+  'quiet-luxury':'clean & minimal','street-urban':'dark & editorial',
+  'warm-organic':'soft & neutral','dark-editorial':'dark & editorial'
+};
+
+function obGetArchetype() {
+  try { const o = JSON.parse(localStorage.getItem('frmls_brand_output')||'null'); return o ? o.archetypeName : ''; } catch(e) { return ''; }
+}
+
+function obShowOverlay() {
+  const overlay = document.getElementById('ob-overlay');
+  if (!overlay) return;
+  const saved = localStorage.getItem(OB_STEP_KEY);
+  const startScreen = OB_SCREENS.includes(saved) ? saved : 'brandname';
+
+  // Restore saved values
+  const inp = document.getElementById('obBrandNameInput');
+  if (inp && state.brandName) { inp.value = state.brandName; obCheckBrandName(); }
+  if (state.cat) obSelectedCat = state.cat;
+  if (state.vibe) { for (const [id,sv] of Object.entries(OB_VIBE_TO_STATE)) { if (sv === state.vibe) { obSelectedVibe = id; break; } } }
+  if (state.colorMood) obSelectedColor = state.colorMood;
+
+  obBuildVibeGrid();
+  obBuildColorGrid();
+  overlay.classList.add('ob-visible');
+  document.body.style.overflow = 'hidden';
+  if (typeof lenis !== 'undefined') lenis.stop();
+  if (!overlay._obWheelBound) {
+    overlay.addEventListener('wheel', function(e) {
+      let d = e.deltaY; if (e.deltaMode===1) d*=16; if (e.deltaMode===2) d*=window.innerHeight;
+      overlay.scrollTop += d; e.stopPropagation(); e.preventDefault();
+    }, { passive:false });
+    overlay._obWheelBound = true;
+  }
+  overlay.scrollTop = 0;
+  obGoTo(startScreen, false);
+}
+
+function obHideOverlay() {
+  const overlay = document.getElementById('ob-overlay');
+  if (!overlay) return;
+  overlay.classList.remove('ob-visible');
+  document.body.style.overflow = '';
+  if (typeof lenis !== 'undefined') lenis.start();
+}
+
+function obGoTo(screenId, animate) {
+  obCurrentScreen = screenId;
+  localStorage.setItem(OB_STEP_KEY, screenId);
+  const stepNum = OB_SCREEN_STEP[screenId] || 7;
+  const fillEl    = document.getElementById('ob-progress-fill');
+  const counterEl = document.getElementById('ob-step-counter');
+  if (fillEl) fillEl.style.width = (stepNum / 10 * 100) + '%';
+  if (counterEl) counterEl.textContent = screenId === 'completion' ? 'complete' : ('step ' + stepNum + ' of 10');
+  document.querySelectorAll('.ob-screen').forEach(s => s.classList.remove('ob-active'));
+  const target = document.getElementById('ob-screen-' + screenId);
+  if (target) { target.classList.add('ob-active'); const ov = document.getElementById('ob-overlay'); if(ov) ov.scrollTop=0; }
+  if (screenId === 'completion') { obBuildCompletionScreen(); obInitParticles(); }
+}
+
+function obBuildVibeGrid() {
+  const grid = document.getElementById('ob-vibe-grid');
+  if (!grid) return;
+  const arch = obGetArchetype();
+  grid.innerHTML = OB_VIBES.map(v => {
+    const isMatch = arch && v.archetypes.includes(arch);
+    const isSel   = obSelectedVibe === v.id;
+    return `<div class="ob-card${isSel?' ob-selected':''}" onclick="obSelectVibe(this,'${v.id}')">
+      <div class="ob-vibe-name">${v.name}</div>
+      <div class="ob-vibe-desc">${v.desc}</div>
+      ${isMatch?'<div class="ob-match-badge">matches your foundation</div>':''}
+    </div>`;
+  }).join('');
+  const btn = document.getElementById('ob-continue-vibe');
+  if (btn) btn.disabled = !obSelectedVibe;
+}
+
+function obBuildColorGrid() {
+  const grid = document.getElementById('ob-color-grid');
+  if (!grid) return;
+  const arch = obGetArchetype();
+  grid.innerHTML = OB_COLORS.map(c => {
+    const isMatch = arch && c.archetypes.includes(arch);
+    const isSel   = obSelectedColor === c.id;
+    const sw = c.swatches.map(s=>`<div style="background:${s}"></div>`).join('');
+    return `<div class="ob-card${isSel?' ob-selected':''}" onclick="obSelectColor(this,'${c.id}')">
+      <div class="ob-swatch-strip">${sw}</div>
+      <div class="ob-color-name">${c.name}</div>
+      <div class="ob-color-desc">${c.desc}</div>
+      ${isMatch?'<div class="ob-match-badge">matches your foundation</div>':''}
+    </div>`;
+  }).join('');
+  const btn = document.getElementById('ob-continue-color');
+  if (btn) btn.disabled = !obSelectedColor;
+}
+
+function obBuildCompletionScreen() {
+  const el = document.getElementById('ob-summary-pills');
+  if (!el) return;
+  const brandName  = state.brandName || '';
+  const threeWords = localStorage.getItem('frmls_three_words') || '';
+  const vibeObj    = OB_VIBES.find(v => v.id === obSelectedVibe);
+  const vibeName   = vibeObj ? vibeObj.name : (state.vibe || '');
+  el.innerHTML = [brandName, threeWords, vibeName].filter(Boolean).map(p=>`<div class="ob-summary-pill">${p}</div>`).join('');
+}
+
+function obInitParticles() {
+  const c = document.getElementById('ob-particles');
+  if (!c || c.children.length > 0) return;
+  for (let i=0;i<24;i++) {
+    const p = document.createElement('div'); p.className='bf-particle';
+    p.style.setProperty('--dur',(5+Math.random()*7)+'s'); p.style.setProperty('--delay',(Math.random()*3)+'s');
+    p.style.setProperty('--tx',(Math.random()*120-60)+'px'); p.style.setProperty('--ty',-(40+Math.random()*100)+'px');
+    p.style.left=(3+Math.random()*94)+'%'; p.style.top=(5+Math.random()*85)+'%';
+    p.style.width=(2+Math.random()*4)+'px'; p.style.height=p.style.width;
+    c.appendChild(p);
+  }
+}
+
+function obCheckBrandName() {
+  const inp = document.getElementById('obBrandNameInput');
+  const btn = document.getElementById('ob-continue-brandname');
+  if (!inp||!btn) return;
+  const val = inp.value.trim();
+  btn.disabled = !val;
+  if (val) { state.brandName = val; saveState(); const ex=document.getElementById('brandName'); if(ex) ex.value=val; }
+}
+
+function obSelectCat(el, catId) {
+  document.querySelectorAll('#ob-cat-grid .ob-card').forEach(c=>c.classList.remove('ob-selected'));
+  el.classList.add('ob-selected'); obSelectedCat=catId; state.cat=catId; saveState();
+  const btn=document.getElementById('ob-continue-category'); if(btn) btn.disabled=false;
+}
+
+function obSelectVibe(el, vibeId) {
+  document.querySelectorAll('#ob-vibe-grid .ob-card').forEach(c=>c.classList.remove('ob-selected'));
+  el.classList.add('ob-selected'); obSelectedVibe=vibeId; state.vibe=OB_VIBE_TO_STATE[vibeId]||'clean & minimal'; saveState();
+  const btn=document.getElementById('ob-continue-vibe'); if(btn) btn.disabled=false;
+}
+
+function obSelectColor(el, colorId) {
+  document.querySelectorAll('#ob-color-grid .ob-card').forEach(c=>c.classList.remove('ob-selected'));
+  el.classList.add('ob-selected'); obSelectedColor=colorId; state.colorMood=colorId; saveState();
+  const btn=document.getElementById('ob-continue-color'); if(btn) btn.disabled=false;
+}
+
+function obComplete() {
+  localStorage.setItem(OB_COMPLETE_KEY, 'true');
+  obHideOverlay();
+  goTo(7);
+}
+
 /* ===== BRAND FOUNDATION ===== */
 const BF_COMPLETE_KEY = 'frmls_foundation_complete';
 const BF_STEP_KEY     = 'frmls_foundation_step';
@@ -6528,12 +6836,12 @@ function bfGoTo(step, animate) {
     const counter  = document.getElementById('bf-step-counter');
     const skipBtn  = document.getElementById('bf-skip-btn');
     if (backBtn) backBtn.style.visibility = (step > 0 && step < BF_TOTAL_STEPS) ? 'visible' : 'hidden';
-    if (counter) counter.textContent = step < BF_TOTAL_STEPS ? ('step ' + (step + 1) + ' of ' + BF_TOTAL_STEPS) : '';
+    if (counter) counter.textContent = step < BF_TOTAL_STEPS ? ('step ' + (step + 1) + ' of 10') : '';
     if (skipBtn) skipBtn.style.display = step < BF_TOTAL_STEPS ? 'block' : 'none';
 
-    // Update progress bar
+    // Update progress bar — BF covers steps 1-6 of 10 total
     const fill = document.getElementById('bf-progress-fill');
-    if (fill) fill.style.width = (step >= BF_TOTAL_STEPS ? 100 : (step / BF_TOTAL_STEPS) * 100) + '%';
+    if (fill) fill.style.width = (step >= BF_TOTAL_STEPS ? 60 : ((step + 1) / 10) * 100) + '%';
 
     // Prepare next screen: show it but invisible, slightly below
     nextEl.style.transition = 'none';
@@ -6603,7 +6911,9 @@ function bfPrevStep() {
 
 function bfSkip() {
   localStorage.setItem(BF_COMPLETE_KEY, 'true');
+  localStorage.setItem(OB_COMPLETE_KEY, 'true');
   bfHideOverlay();
+  goTo(7);
 }
 
 function bfComplete() {
@@ -6634,6 +6944,7 @@ function bfComplete() {
 function bfEnterDashboard() {
   bfHideOverlay();
   bfRefreshDashThreeWords();
+  obShowOverlay(); // continue to brand detail steps
 }
 
 /* Toggle a checkbox card */

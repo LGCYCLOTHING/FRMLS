@@ -6,6 +6,7 @@
 <title>FRMLS — Store Builder System</title>
 <script>if(location.protocol!=='https:'&&location.hostname!=='localhost'){location.replace('https:'+window.location.href.substring(window.location.protocol.length));}</script>
 <script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('frmls_mode')||'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
+<script>try{if(localStorage.getItem('frmls_onboarding_complete')!=='true'){document.documentElement.classList.add('onboarding-active')}}catch(e){}</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700;900&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet" />
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-V9T01KTX3V"></script>
 <script>
@@ -16,6 +17,11 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <style>
+/* ===== ONBOARDING FLASH PREVENTION ===== */
+html.onboarding-active body { visibility: hidden; }
+html.onboarding-active #bf-overlay,
+html.onboarding-active #ob-overlay { visibility: visible; }
+
 /* ===== BASE ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; overflow-x: hidden; }
@@ -442,53 +448,129 @@ body::before {
 .pk-personalized-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; background:linear-gradient(90deg,rgba(124,58,237,0.13),rgba(6,182,212,0.13)); border:1px solid rgba(124,58,237,0.22); color:var(--purple-light); border-radius:4px; padding:2px 7px; margin-bottom:10px; }
 .pk-missing-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; background:rgba(245,158,11,0.07); border:1px solid rgba(245,158,11,0.22); color:#f59e0b; border-radius:4px; padding:2px 7px; margin-bottom:10px; }
 
-/* ===== ONBOARDING OVERLAY (Steps 2-6) ===== */
-#ob-overlay { position:fixed; inset:0; z-index:9998; background:#07040f; overflow-y:scroll; overflow-x:hidden; touch-action:pan-y; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; opacity:0; pointer-events:none; transition:opacity 0.4s ease; }
+/* ===== ONBOARDING OVERLAY ===== */
+#bf-overlay, #ob-overlay {
+  position:fixed; inset:0; z-index:9998; background:#07040f;
+  overflow-y:scroll; overflow-x:hidden; touch-action:pan-y;
+  -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
+  opacity:0; pointer-events:none; transition:opacity 0.4s ease;
+}
+#bf-overlay { z-index:9999; }
+#bf-overlay.bf-visible { opacity:1; pointer-events:auto; }
 #ob-overlay.ob-visible { opacity:1; pointer-events:auto; }
-.ob-top-bar { position:sticky; top:0; z-index:10; display:flex; align-items:center; gap:14px; padding:20px 32px 16px; background:linear-gradient(to bottom,#07040f 80%,transparent); flex-shrink:0; }
-.ob-progress-track { flex:1; height:3px; background:rgba(255,255,255,0.1); border-radius:2px; }
-.ob-progress-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,#7c3aed,#06b6d4); transition:width 0.5s cubic-bezier(0.16,1,0.3,1); }
-.ob-step-counter { font-family:'DM Mono',monospace; font-size:11px; color:rgba(255,255,255,0.35); letter-spacing:0.12em; white-space:nowrap; }
-.ob-screen { display:none; padding:48px 32px 80px; max-width:660px; margin:0 auto; }
-.ob-screen.ob-active { display:block; animation:obScreenIn 0.35s cubic-bezier(0.16,1,0.3,1) both; }
-@keyframes obScreenIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+/* Atmospheric orbs (shared) */
+.ob-orb {
+  position:fixed; border-radius:50%; filter:blur(120px);
+  pointer-events:none; z-index:0; will-change:transform,opacity;
+  animation:orbPulse 8s ease-in-out infinite alternate;
+}
+.ob-orb-1 { width:500px; height:500px; background:#3b0764; top:-120px; left:-100px; opacity:0.55; animation-delay:0s; }
+.ob-orb-2 { width:400px; height:400px; background:#0c4a6e; bottom:-80px; right:-80px; opacity:0.45; animation-delay:3s; }
+.ob-orb-3 { width:350px; height:350px; background:#4c1d95; top:40%; left:55%; opacity:0.35; animation-delay:5.5s; }
+@keyframes orbPulse { 0%{transform:scale(1) translate(0,0)} 100%{transform:scale(1.18) translate(24px,-18px)} }
+
+/* Shared nav bar (both overlays use this) */
+.ob-nav-bar {
+  position:sticky; top:0; z-index:10; display:flex; align-items:center;
+  gap:16px; padding:20px 32px 16px;
+  background:linear-gradient(to bottom,#07040f 80%,transparent);
+  flex-shrink:0;
+}
+.ob-back-btn {
+  width:36px; height:36px; border-radius:50%; border:1.5px solid rgba(255,255,255,0.14);
+  background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.7);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; flex-shrink:0; transition:background 0.2s,border-color 0.2s;
+}
+.ob-back-btn:disabled { opacity:0.2; cursor:not-allowed; }
+.ob-back-btn:not(:disabled):hover { background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.28); }
+.ob-back-spacer { width:36px; flex-shrink:0; }
+.ob-nav-center { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; }
+.ob-phase-dots { display:flex; align-items:center; gap:8px; }
+.ob-phase-dot {
+  height:6px; border-radius:3px; transition:all 0.45s cubic-bezier(0.16,1,0.3,1);
+}
+.ob-phase-dot.done { width:16px; background:rgba(255,255,255,0.3); }
+.ob-phase-dot.active { width:28px; background:linear-gradient(90deg,#7c3aed,#06b6d4); }
+.ob-phase-dot.upcoming { width:6px; background:rgba(255,255,255,0.12); }
+.ob-phase-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.35); }
+.ob-phase-step-sub { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; color:rgba(255,255,255,0.22); }
+
+/* Screen base */
+.ob-screen { display:none; padding:48px 32px 100px; max-width:660px; margin:0 auto; position:relative; z-index:1; }
+.ob-screen.ob-active { display:block; animation:obScreenIn 0.38s cubic-bezier(0.16,1,0.3,1) both; }
+.bf-screens-container { position:relative; z-index:1; }
+@keyframes obScreenIn { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+/* Brand name screen */
 .ob-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.22em; text-transform:uppercase; background:linear-gradient(90deg,#9d5cf5,#22d3ee); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:24px; display:block; }
-.ob-headline { font-size:48px; font-weight:800; color:#fff; letter-spacing:-0.03em; line-height:1.08; margin-bottom:14px; }
+.ob-headline { font-size:52px; font-weight:800; color:#fff; letter-spacing:-0.03em; line-height:1.06; margin-bottom:14px; }
 .ob-subline { font-size:16px; color:rgba(255,255,255,0.45); margin-bottom:40px; line-height:1.6; }
-.ob-name-input { width:100%; background:rgba(255,255,255,0.04); border:1.5px solid #333; border-radius:16px; padding:22px 24px; font-size:24px; font-weight:600; color:#fff; letter-spacing:-0.02em; font-family:'Inter',sans-serif; outline:none; transition:border-color 0.2s,box-shadow 0.2s; margin-bottom:12px; display:block; box-sizing:border-box; }
+.ob-name-input {
+  width:100%; background:transparent;
+  border:1.5px solid transparent;
+  background-clip:padding-box;
+  border-radius:16px; padding:22px 24px;
+  font-size:24px; font-weight:600; color:#fff;
+  letter-spacing:-0.02em; font-family:'Inter',sans-serif;
+  outline:none; transition:box-shadow 0.25s; margin-bottom:12px; display:block; box-sizing:border-box;
+  box-shadow:0 0 0 1.5px rgba(255,255,255,0.1),inset 0 0 0 100px rgba(255,255,255,0.04);
+}
 .ob-name-input::placeholder { color:rgba(255,255,255,0.2); }
-.ob-name-input:focus { border-color:rgba(124,58,237,0.5); box-shadow:0 0 0 3px rgba(124,58,237,0.12); }
-.ob-input-hint { font-size:12px; color:rgba(255,255,255,0.25); font-family:'DM Mono',monospace; margin-bottom:28px; display:block; }
-.ob-cat-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:32px; }
-.ob-card { background:rgba(255,255,255,0.03); border:1.5px solid rgba(255,255,255,0.08); border-radius:16px; padding:18px 20px; cursor:pointer; transition:all 0.2s cubic-bezier(0.16,1,0.3,1); }
-.ob-card:hover { background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.14); }
-.ob-card.ob-selected { background:rgba(124,58,237,0.1); border-color:rgba(124,58,237,0.5); box-shadow:inset 0 0 0 1px rgba(6,182,212,0.2); }
-.ob-cat-inner { display:flex; align-items:center; gap:12px; }
-.ob-cat-icon { font-size:16px; flex-shrink:0; }
-.ob-cat-name { font-size:15px; font-weight:700; color:#fff; }
-.ob-vibe-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:32px; }
-.ob-vibe-name { font-size:16px; font-weight:700; color:#fff; margin-bottom:4px; }
-.ob-vibe-desc { font-size:12px; color:rgba(255,255,255,0.4); font-family:'DM Mono',monospace; }
-.ob-color-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:32px; }
-.ob-swatch-strip { display:flex; border-radius:8px; overflow:hidden; height:34px; margin-bottom:10px; }
-.ob-swatch-strip div { flex:1; }
-.ob-color-name { font-size:14px; font-weight:700; color:#fff; margin-bottom:2px; }
-.ob-color-desc { font-size:11px; color:rgba(255,255,255,0.35); font-family:'DM Mono',monospace; }
-.ob-match-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; background:linear-gradient(90deg,rgba(124,58,237,0.22),rgba(6,182,212,0.22)); border:1px solid rgba(124,58,237,0.4); color:#a78bfa; border-radius:4px; padding:2px 6px; margin-top:8px; }
-.ob-continue-btn { width:100%; padding:18px 24px; border-radius:16px; border:none; background:linear-gradient(135deg,#7c3aed,#06b6d4); cursor:pointer; font-size:16px; font-weight:700; color:#fff; letter-spacing:-0.01em; font-family:'Inter',sans-serif; transition:opacity 0.2s,transform 0.15s; display:block; }
+.ob-name-input:focus { box-shadow:0 0 0 1.5px #7c3aed,0 0 0 4px rgba(124,58,237,0.15),inset 0 0 0 100px rgba(255,255,255,0.04); }
+.ob-input-hint { font-size:12px; color:rgba(255,255,255,0.25); font-family:'DM Mono',monospace; margin-bottom:36px; display:block; }
+.ob-continue-btn { width:100%; padding:18px 24px; border-radius:16px; border:none; background:linear-gradient(135deg,#7c3aed,#06b6d4); cursor:pointer; font-size:16px; font-weight:700; color:#fff; letter-spacing:-0.01em; font-family:'Inter',sans-serif; transition:opacity 0.2s,transform 0.15s; display:block; position:relative; z-index:1; }
 .ob-continue-btn:disabled { opacity:0.28; cursor:not-allowed; transform:none !important; }
 .ob-continue-btn:not(:disabled):hover { opacity:0.88; transform:translateY(-1px); }
-.ob-completion-wrap { text-align:center; padding-top:60px; position:relative; min-height:60vh; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-.ob-completion-logo { font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; font-size:52px; font-weight:900; letter-spacing:-0.04em; color:#fff; margin-bottom:8px; }
+
+/* Completion screen */
+.ob-completion-wrap { text-align:center; padding:60px 0 40px; position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; }
+.ob-completion-logo { font-family:"Helvetica Neue",Helvetica,Arial,sans-serif; font-size:52px; font-weight:900; letter-spacing:-0.04em; color:#fff; margin-bottom:8px; animation:obFadeUp 0.5s 0.1s both; }
 .ob-completion-logo-s { background:linear-gradient(90deg,#7c3aed,#06b6d4); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.ob-completion-title { font-size:32px; font-weight:800; color:#fff; letter-spacing:-0.02em; margin-bottom:12px; }
-.ob-completion-sub { font-size:18px; color:rgba(255,255,255,0.45); line-height:1.6; margin-bottom:40px; max-width:480px; }
-.ob-summary-pills { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:40px; }
-.ob-summary-pill { background:rgba(255,255,255,0.04); border:1px solid rgba(124,58,237,0.3); border-radius:100px; padding:8px 18px; font-size:13px; color:rgba(255,255,255,0.8); font-weight:600; letter-spacing:-0.01em; }
-.ob-enter-btn { display:block; width:100%; max-width:380px; padding:20px 32px; border-radius:16px; border:none; background:linear-gradient(135deg,#7c3aed,#06b6d4); cursor:pointer; font-size:18px; font-weight:700; color:#fff; letter-spacing:-0.01em; font-family:'Inter',sans-serif; transition:opacity 0.2s,transform 0.15s; }
+.ob-completion-title { font-size:32px; font-weight:800; color:#fff; letter-spacing:-0.02em; margin-bottom:12px; animation:obFadeUp 0.5s 0.22s both; }
+.ob-completion-sub { font-size:17px; color:rgba(255,255,255,0.45); line-height:1.6; margin-bottom:36px; max-width:440px; animation:obFadeUp 0.5s 0.34s both; }
+.ob-summary-pills { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:40px; animation:obFadeUp 0.5s 0.46s both; }
+.ob-summary-pill { background:rgba(255,255,255,0.04); border:1px solid rgba(124,58,237,0.35); border-radius:100px; padding:9px 20px; font-size:13px; color:rgba(255,255,255,0.85); font-weight:600; letter-spacing:-0.01em; }
+.ob-enter-btn { display:block; width:100%; max-width:380px; padding:20px 32px; border-radius:16px; border:none; background:linear-gradient(135deg,#7c3aed,#06b6d4); cursor:pointer; font-size:18px; font-weight:700; color:#fff; letter-spacing:-0.01em; font-family:'Inter',sans-serif; transition:opacity 0.2s,transform 0.15s; animation:obFadeUp 0.5s 0.6s both; position:relative; z-index:1; }
 .ob-enter-btn:hover { opacity:0.88; transform:translateY(-1px); }
-.ob-particles { position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
-@media(max-width:768px) { .ob-headline{font-size:32px} .ob-screen{padding:32px 20px 80px} .ob-cat-grid,.ob-vibe-grid,.ob-color-grid{grid-template-columns:1fr} .ob-completion-title{font-size:24px} .ob-top-bar{padding:16px 20px 12px} }
+@keyframes obFadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+/* Back confirmation message */
+.ob-back-confirm { font-family:'DM Mono',monospace; font-size:12px; color:#f59e0b; letter-spacing:0.06em; margin-bottom:16px; display:none; }
+.ob-back-confirm.visible { display:block; animation:obFadeUp 0.3s both; }
+
+/* Floating particles */
+.ob-particles { position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:0; }
+.ob-particle {
+  position:absolute; border-radius:50%; background:rgba(255,255,255,0.35);
+  animation:obParticleFloat var(--dur,8s) var(--delay,0s) ease-in-out infinite;
+  will-change:transform,opacity;
+}
+@keyframes obParticleFloat {
+  0%   { transform:translate(0,0) scale(1); opacity:0; }
+  15%  { opacity:0.6; }
+  85%  { opacity:0.4; }
+  100% { transform:translate(var(--tx,20px),var(--ty,-80px)) scale(0.6); opacity:0; }
+}
+
+/* Dashboard entry animation */
+@keyframes dashboardFadeIn { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+.dashboard-entering #screen-7 { animation:dashboardFadeIn 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+
+/* Remaining OB legacy items kept for compatibility */
+.ob-card { background:rgba(255,255,255,0.03); border:1.5px solid rgba(255,255,255,0.08); border-radius:16px; padding:18px 20px; cursor:pointer; transition:all 0.2s cubic-bezier(0.16,1,0.3,1); }
+.ob-match-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; background:linear-gradient(90deg,rgba(124,58,237,0.22),rgba(6,182,212,0.22)); border:1px solid rgba(124,58,237,0.4); color:#a78bfa; border-radius:4px; padding:2px 6px; margin-top:8px; }
+
+@media(max-width:768px) {
+  .ob-headline{font-size:34px}
+  .ob-screen{padding:32px 20px 80px}
+  .ob-completion-title{font-size:24px}
+  .ob-nav-bar{padding:16px 20px 12px}
+  .ob-orb-1{width:280px;height:280px}
+  .ob-orb-2{width:240px;height:240px}
+  .ob-orb-3{width:200px;height:200px}
+}
 
 /* ===== LAUNCH CHECKLIST ===== */
 .checklist-progress { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px 18px; margin-bottom:1.25rem; display:flex; align-items:center; gap:14px; }
@@ -1782,47 +1864,6 @@ body::before {
 [data-theme="light"] ::-webkit-scrollbar-thumb { background: #c8c6c0; }
 
 /* ===== BRAND FOUNDATION FLOW ===== */
-#bf-overlay {
-  position: fixed; inset: 0; z-index: 9999;
-  background: #07040f;
-  overflow-y: scroll; overflow-x: hidden;
-  touch-action: pan-y;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.4s ease;
-}
-#bf-overlay.bf-visible {
-  opacity: 1; pointer-events: auto;
-}
-.bf-top-bar {
-  position: sticky; top: 0; z-index: 10;
-  display: flex; align-items: center; gap: 14px;
-  padding: 20px 32px 16px;
-  background: linear-gradient(to bottom, #07040f 80%, transparent);
-  flex-shrink: 0;
-}
-.bf-back-btn {
-  font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.35); background: none; border: none; cursor: pointer;
-  padding: 0; visibility: hidden; flex-shrink: 0; white-space: nowrap;
-  transition: color 0.2s;
-}
-.bf-back-btn:hover { color: rgba(255,255,255,0.75); }
-.bf-progress-track {
-  flex: 1; height: 2px; background: rgba(255,255,255,0.08);
-  border-radius: 1px; overflow: hidden;
-}
-.bf-progress-fill {
-  height: 100%; width: 0%;
-  background: linear-gradient(90deg, #7c3aed, #06b6d4);
-  border-radius: 1px;
-  transition: width 0.55s cubic-bezier(0.16,1,0.3,1);
-}
-.bf-step-counter {
-  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.3); white-space: nowrap; flex-shrink: 0;
-}
 .bf-screens-container {
   width: 100%; display: flex; flex-direction: column; align-items: center;
   position: relative; min-height: 100vh;
@@ -2675,12 +2716,26 @@ body::before {
 
 <!-- ===== BRAND FOUNDATION FLOW ===== -->
 <div id="bf-overlay" role="dialog" aria-modal="true" aria-label="Brand Foundation">
-  <div class="bf-top-bar">
-    <button id="bf-back-btn" class="bf-back-btn" onclick="bfPrevStep()">← back</button>
-    <div class="bf-progress-track">
-      <div class="bf-progress-fill" id="bf-progress-fill"></div>
+  <!-- Atmospheric background -->
+  <div class="ob-orb ob-orb-1"></div>
+  <div class="ob-orb ob-orb-2"></div>
+  <div class="ob-orb ob-orb-3"></div>
+  <div class="ob-particles" id="bf-particles"></div>
+
+  <div class="ob-nav-bar">
+    <button id="bf-back-btn" class="ob-back-btn" onclick="bfNavBack()" disabled aria-label="Back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="ob-nav-center">
+      <div class="ob-phase-dots">
+        <div class="ob-phase-dot active" id="bf-dot-1"></div>
+        <div class="ob-phase-dot upcoming" id="bf-dot-2"></div>
+        <div class="ob-phase-dot upcoming" id="bf-dot-3"></div>
+      </div>
+      <div class="ob-phase-label">BRAND FOUNDATION</div>
+      <div class="ob-phase-step-sub" id="bf-step-counter">question 1 of 6</div>
     </div>
-    <span class="bf-step-counter" id="bf-step-counter">step 1 of 6</span>
+    <div class="ob-back-spacer"></div>
   </div>
 
   <div class="bf-screens-container">
@@ -2810,7 +2865,7 @@ body::before {
 
     <!-- Screen 6: Completion -->
     <div class="bf-screen bf-completion-screen" id="bf-screen-6">
-      <div class="bf-particles" id="bf-particles"></div>
+      <div class="bf-particles" id="bf-completion-particles"></div>
       <div class="bf-completion-logo">FRML<span class="bf-completion-logo-s">S</span></div>
       <div class="bf-completion-title">your brand foundation is set.</div>
       <p class="bf-completion-sub">everything in your dashboard is now shaped around your answers.</p>
@@ -2826,64 +2881,43 @@ body::before {
   <button id="bf-skip-btn" class="bf-skip-btn" onclick="bfSkip()">skip for now</button>
 </div><!-- /bf-overlay -->
 
-<!-- ===== ONBOARDING OVERLAY (Brand Details Steps 2–6) ===== -->
+<!-- ===== ONBOARDING OVERLAY (Brand Name + Completion) ===== -->
 <div id="ob-overlay">
-  <div class="ob-top-bar">
-    <div class="ob-progress-track"><div class="ob-progress-fill" id="ob-progress-fill" style="width:60%"></div></div>
-    <span class="ob-step-counter" id="ob-step-counter">step 7 of 10</span>
+  <!-- Atmospheric background -->
+  <div class="ob-orb ob-orb-1"></div>
+  <div class="ob-orb ob-orb-2"></div>
+  <div class="ob-orb ob-orb-3"></div>
+  <div class="ob-particles" id="ob-particles"></div>
+
+  <div class="ob-nav-bar">
+    <button id="ob-back-btn" class="ob-back-btn" onclick="obNavBack()" aria-label="Back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="ob-nav-center">
+      <div class="ob-phase-dots">
+        <div class="ob-phase-dot done" id="ob-dot-1"></div>
+        <div class="ob-phase-dot active" id="ob-dot-2"></div>
+        <div class="ob-phase-dot upcoming" id="ob-dot-3"></div>
+      </div>
+      <div class="ob-phase-label" id="ob-phase-label">BRAND NAME</div>
+      <div class="ob-phase-step-sub" id="ob-step-counter">phase 2 of 3</div>
+    </div>
+    <div class="ob-back-spacer"></div>
   </div>
 
   <!-- Screen: Brand Name -->
   <div class="ob-screen ob-active" id="ob-screen-brandname">
-    <span class="ob-label">brand details — 01</span>
+    <div class="ob-back-confirm" id="ob-back-confirm">go back to brand foundation?</div>
+    <span class="ob-label">almost there</span>
     <h2 class="ob-headline">what is your brand called?</h2>
-    <p class="ob-subline">this will personalize everything in your dashboard.</p>
+    <p class="ob-subline">this personalizes everything in your dashboard.</p>
     <input class="ob-name-input" id="obBrandNameInput" type="text" placeholder="your brand name..." oninput="obCheckBrandName()" autocomplete="off" />
-    <span class="ob-input-hint">you can change this later in your dashboard.</span>
-    <button class="ob-continue-btn" id="ob-continue-brandname" disabled onclick="obGoTo('category')">continue →</button>
-  </div>
-
-  <!-- Screen: Category -->
-  <div class="ob-screen" id="ob-screen-category">
-    <span class="ob-label">brand details — 02</span>
-    <h2 class="ob-headline">what are you building?</h2>
-    <p class="ob-subline">pick the category that fits your brand best.</p>
-    <div class="ob-cat-grid" id="ob-cat-grid">
-      <div class="ob-card" onclick="obSelectCat(this,'clothing')"><div class="ob-cat-inner"><span class="ob-cat-icon">◼</span><span class="ob-cat-name">Clothing and Apparel</span></div></div>
-      <div class="ob-card" onclick="obSelectCat(this,'accessories')"><div class="ob-cat-inner"><span class="ob-cat-icon">◇</span><span class="ob-cat-name">Accessories and Jewelry</span></div></div>
-      <div class="ob-card" onclick="obSelectCat(this,'footwear')"><div class="ob-cat-inner"><span class="ob-cat-icon">◈</span><span class="ob-cat-name">Footwear</span></div></div>
-      <div class="ob-card" onclick="obSelectCat(this,'beauty')"><div class="ob-cat-inner"><span class="ob-cat-icon">◉</span><span class="ob-cat-name">Beauty and Skincare</span></div></div>
-      <div class="ob-card" onclick="obSelectCat(this,'home')"><div class="ob-cat-inner"><span class="ob-cat-icon">◻</span><span class="ob-cat-name">Home and Living</span></div></div>
-      <div class="ob-card" onclick="obSelectCat(this,'health')"><div class="ob-cat-inner"><span class="ob-cat-icon">◐</span><span class="ob-cat-name">Health and Wellness</span></div></div>
-      <div class="ob-card" onclick="obSelectCat(this,'digital')"><div class="ob-cat-inner"><span class="ob-cat-icon">▣</span><span class="ob-cat-name">Digital Products</span></div></div>
-      <div class="ob-card" onclick="obSelectCat(this,'food')"><div class="ob-cat-inner"><span class="ob-cat-icon">○</span><span class="ob-cat-name">Food and Beverage</span></div></div>
-      <div class="ob-card" onclick="obSelectCat(this,'art')"><div class="ob-cat-inner"><span class="ob-cat-icon">◎</span><span class="ob-cat-name">Art and Prints</span></div></div>
-      <div class="ob-card" onclick="obSelectCat(this,'general')"><div class="ob-cat-inner"><span class="ob-cat-icon">◆</span><span class="ob-cat-name">General and Dropshipping</span></div></div>
-    </div>
-    <button class="ob-continue-btn" id="ob-continue-category" disabled onclick="obGoTo('vibe')">continue →</button>
-  </div>
-
-  <!-- Screen: Vibe -->
-  <div class="ob-screen" id="ob-screen-vibe">
-    <span class="ob-label">brand details — 03</span>
-    <h2 class="ob-headline">what does your brand feel like?</h2>
-    <p class="ob-subline">pick the vibe that matches your direction.</p>
-    <div class="ob-vibe-grid" id="ob-vibe-grid"></div>
-    <button class="ob-continue-btn" id="ob-continue-vibe" disabled onclick="obGoTo('color')">continue →</button>
-  </div>
-
-  <!-- Screen: Color Mood -->
-  <div class="ob-screen" id="ob-screen-color">
-    <span class="ob-label">brand details — 04</span>
-    <h2 class="ob-headline">pick your color direction.</h2>
-    <p class="ob-subline">this shapes your brand kit and visual identity.</p>
-    <div class="ob-color-grid" id="ob-color-grid"></div>
-    <button class="ob-continue-btn" id="ob-continue-color" disabled onclick="obGoTo('completion')">continue →</button>
+    <span class="ob-input-hint">you can update this anytime in your dashboard.</span>
+    <button class="ob-continue-btn" id="ob-continue-brandname" disabled onclick="obGoTo('completion')">continue →</button>
   </div>
 
   <!-- Screen: Completion -->
   <div class="ob-screen" id="ob-screen-completion">
-    <div class="ob-particles" id="ob-particles"></div>
     <div class="ob-completion-wrap">
       <div class="ob-completion-logo">FRML<span class="ob-completion-logo-s">S</span></div>
       <div class="ob-completion-title">your brand is ready.</div>
@@ -6552,8 +6586,7 @@ function bfRefreshDashThreeWords() {
 const OB_STEP_KEY     = 'frmls_onboarding_step';
 const OB_COMPLETE_KEY = 'frmls_onboarding_complete';
 
-const OB_SCREENS = ['brandname','category','vibe','color','completion'];
-const OB_SCREEN_STEP = { brandname:7, category:8, vibe:9, color:10, completion:10 };
+const OB_SCREENS = ['brandname','completion'];
 
 let obCurrentScreen = 'brandname';
 let obSelectedCat   = '';
@@ -6596,15 +6629,11 @@ function obShowOverlay() {
   const saved = localStorage.getItem(OB_STEP_KEY);
   const startScreen = OB_SCREENS.includes(saved) ? saved : 'brandname';
 
-  // Restore saved values
+  // Restore saved brand name
   const inp = document.getElementById('obBrandNameInput');
   if (inp && state.brandName) { inp.value = state.brandName; obCheckBrandName(); }
-  if (state.cat) obSelectedCat = state.cat;
-  if (state.vibe) { for (const [id,sv] of Object.entries(OB_VIBE_TO_STATE)) { if (sv === state.vibe) { obSelectedVibe = id; break; } } }
-  if (state.colorMood) obSelectedColor = state.colorMood;
 
-  obBuildVibeGrid();
-  obBuildColorGrid();
+  obInitParticles();
   overlay.classList.add('ob-visible');
   document.body.style.overflow = 'hidden';
   if (typeof lenis !== 'undefined') lenis.stop();
@@ -6630,15 +6659,34 @@ function obHideOverlay() {
 function obGoTo(screenId, animate) {
   obCurrentScreen = screenId;
   localStorage.setItem(OB_STEP_KEY, screenId);
-  const stepNum = OB_SCREEN_STEP[screenId] || 7;
-  const fillEl    = document.getElementById('ob-progress-fill');
-  const counterEl = document.getElementById('ob-step-counter');
-  if (fillEl) fillEl.style.width = (stepNum / 10 * 100) + '%';
-  if (counterEl) counterEl.textContent = screenId === 'completion' ? 'complete' : ('step ' + stepNum + ' of 10');
+
+  // Update phase dots and labels
+  const dot1 = document.getElementById('ob-dot-1');
+  const dot2 = document.getElementById('ob-dot-2');
+  const dot3 = document.getElementById('ob-dot-3');
+  const label = document.getElementById('ob-phase-label');
+  const counter = document.getElementById('ob-step-counter');
+  const backBtn = document.getElementById('ob-back-btn');
+  if (screenId === 'completion') {
+    if (dot1) dot1.className = 'ob-phase-dot done';
+    if (dot2) dot2.className = 'ob-phase-dot done';
+    if (dot3) dot3.className = 'ob-phase-dot active';
+    if (label) label.textContent = 'COMPLETE';
+    if (counter) counter.textContent = 'phase 3 of 3';
+    if (backBtn) backBtn.disabled = true;
+  } else {
+    if (dot1) dot1.className = 'ob-phase-dot done';
+    if (dot2) dot2.className = 'ob-phase-dot active';
+    if (dot3) dot3.className = 'ob-phase-dot upcoming';
+    if (label) label.textContent = 'BRAND NAME';
+    if (counter) counter.textContent = 'phase 2 of 3';
+    if (backBtn) backBtn.disabled = false;
+  }
+
   document.querySelectorAll('.ob-screen').forEach(s => s.classList.remove('ob-active'));
   const target = document.getElementById('ob-screen-' + screenId);
   if (target) { target.classList.add('ob-active'); const ov = document.getElementById('ob-overlay'); if(ov) ov.scrollTop=0; }
-  if (screenId === 'completion') { obBuildCompletionScreen(); obInitParticles(); }
+  if (screenId === 'completion') { obBuildCompletionScreen(); }
 }
 
 function obBuildVibeGrid() {
@@ -6682,20 +6730,20 @@ function obBuildCompletionScreen() {
   if (!el) return;
   const brandName  = state.brandName || '';
   const threeWords = localStorage.getItem('frmls_three_words') || '';
-  const vibeObj    = OB_VIBES.find(v => v.id === obSelectedVibe);
-  const vibeName   = vibeObj ? vibeObj.name : (state.vibe || '');
-  el.innerHTML = [brandName, threeWords, vibeName].filter(Boolean).map(p=>`<div class="ob-summary-pill">${p}</div>`).join('');
+  let archetypeName = '';
+  try { const o = JSON.parse(localStorage.getItem('frmls_brand_output')||'null'); if(o) archetypeName = o.archetypeName||''; } catch(e){}
+  el.innerHTML = [brandName, threeWords, archetypeName].filter(Boolean).map(p=>`<div class="ob-summary-pill">${p}</div>`).join('');
 }
 
 function obInitParticles() {
   const c = document.getElementById('ob-particles');
   if (!c || c.children.length > 0) return;
-  for (let i=0;i<24;i++) {
-    const p = document.createElement('div'); p.className='bf-particle';
-    p.style.setProperty('--dur',(5+Math.random()*7)+'s'); p.style.setProperty('--delay',(Math.random()*3)+'s');
-    p.style.setProperty('--tx',(Math.random()*120-60)+'px'); p.style.setProperty('--ty',-(40+Math.random()*100)+'px');
-    p.style.left=(3+Math.random()*94)+'%'; p.style.top=(5+Math.random()*85)+'%';
-    p.style.width=(2+Math.random()*4)+'px'; p.style.height=p.style.width;
+  for (let i=0;i<35;i++) {
+    const p = document.createElement('div'); p.className='ob-particle';
+    p.style.setProperty('--dur',(6+Math.random()*9)+'s'); p.style.setProperty('--delay',(Math.random()*6)+'s');
+    p.style.setProperty('--tx',(Math.random()*100-50)+'px'); p.style.setProperty('--ty',-(60+Math.random()*120)+'px');
+    p.style.left=(2+Math.random()*96)+'%'; p.style.top=(10+Math.random()*80)+'%';
+    const sz=(1.5+Math.random()*3)+'px'; p.style.width=sz; p.style.height=sz;
     c.appendChild(p);
   }
 }
@@ -6727,9 +6775,27 @@ function obSelectColor(el, colorId) {
   const btn=document.getElementById('ob-continue-color'); if(btn) btn.disabled=false;
 }
 
+function obNavBack() {
+  if (obCurrentScreen === 'completion') {
+    obGoTo('brandname');
+  } else {
+    // brandname → go back to BF completion screen
+    obHideOverlay();
+    bfShowOverlay();
+    setTimeout(() => { bfGoTo(BF_TOTAL_STEPS, false); }, 50);
+  }
+}
+
 function obComplete() {
   localStorage.setItem(OB_COMPLETE_KEY, 'true');
+  document.documentElement.classList.remove('onboarding-active');
   obHideOverlay();
+  // Dashboard entry animation
+  const appEl = document.querySelector('.app');
+  if (appEl) {
+    appEl.classList.add('dashboard-entering');
+    setTimeout(() => appEl.classList.remove('dashboard-entering'), 700);
+  }
   goTo(7);
 }
 
@@ -6773,6 +6839,7 @@ function openBrandFoundation() {
 function bfShowOverlay() {
   const overlay = document.getElementById('bf-overlay');
   if (!overlay) return;
+  bfInitBFParticles();
   overlay.classList.add('bf-visible');
   document.body.style.overflow = 'hidden';
   // Stop Lenis so it doesn't intercept wheel events while overlay is open
@@ -6831,17 +6898,31 @@ function bfGoTo(step, animate) {
     bfCurrentStep = step;
     localStorage.setItem(BF_STEP_KEY, step);
 
-    // Update top bar
+    // Update nav bar
     const backBtn = document.getElementById('bf-back-btn');
     const counter  = document.getElementById('bf-step-counter');
     const skipBtn  = document.getElementById('bf-skip-btn');
-    if (backBtn) backBtn.style.visibility = (step > 0 && step < BF_TOTAL_STEPS) ? 'visible' : 'hidden';
-    if (counter) counter.textContent = step < BF_TOTAL_STEPS ? ('step ' + (step + 1) + ' of 10') : '';
+    if (backBtn) backBtn.disabled = (step === 0 || step >= BF_TOTAL_STEPS);
+    if (counter) counter.textContent = step < BF_TOTAL_STEPS ? ('question ' + (step + 1) + ' of 6') : '';
     if (skipBtn) skipBtn.style.display = step < BF_TOTAL_STEPS ? 'block' : 'none';
 
-    // Update progress bar — BF covers steps 1-6 of 10 total
-    const fill = document.getElementById('bf-progress-fill');
-    if (fill) fill.style.width = (step >= BF_TOTAL_STEPS ? 60 : ((step + 1) / 10) * 100) + '%';
+    // Update phase dots for BF (phase 1 is always active during BF)
+    const dot1 = document.getElementById('bf-dot-1');
+    const dot2 = document.getElementById('bf-dot-2');
+    const dot3 = document.getElementById('bf-dot-3');
+    if (step < BF_TOTAL_STEPS) {
+      if (dot1) dot1.className = 'ob-phase-dot active';
+      if (dot2) dot2.className = 'ob-phase-dot upcoming';
+      if (dot3) dot3.className = 'ob-phase-dot upcoming';
+    } else {
+      if (dot1) dot1.className = 'ob-phase-dot done';
+      if (dot2) dot2.className = 'ob-phase-dot upcoming';
+      if (dot3) dot3.className = 'ob-phase-dot upcoming';
+    }
+
+    // Update phase label
+    const phaseLabel = document.querySelector('#bf-overlay .ob-phase-label');
+    if (phaseLabel) phaseLabel.textContent = step >= BF_TOTAL_STEPS ? 'BRAND FOUNDATION' : 'BRAND FOUNDATION';
 
     // Prepare next screen: show it but invisible, slightly below
     nextEl.style.transition = 'none';
@@ -6905,13 +6986,16 @@ function bfNextStep() {
   if (bfCurrentStep < BF_TOTAL_STEPS) bfGoTo(bfCurrentStep + 1, true);
 }
 
-function bfPrevStep() {
-  if (bfCurrentStep > 0) bfGoTo(bfCurrentStep - 1, true);
+function bfNavBack() {
+  if (bfCurrentStep > 0 && bfCurrentStep < BF_TOTAL_STEPS) {
+    bfGoTo(bfCurrentStep - 1, true);
+  }
 }
 
 function bfSkip() {
   localStorage.setItem(BF_COMPLETE_KEY, 'true');
   localStorage.setItem(OB_COMPLETE_KEY, 'true');
+  document.documentElement.classList.remove('onboarding-active');
   bfHideOverlay();
   goTo(7);
 }
@@ -7040,8 +7124,24 @@ function bfRestoreScreen(step) {
 }
 
 /* Create particles for completion screen */
-function bfInitParticles() {
+function bfInitBFParticles() {
   const container = document.getElementById('bf-particles');
+  if (!container || container.children.length > 0) return;
+  for (let i = 0; i < 35; i++) {
+    const p = document.createElement('div'); p.className = 'ob-particle';
+    p.style.setProperty('--dur',   (6 + Math.random() * 9) + 's');
+    p.style.setProperty('--delay', (Math.random() * 6) + 's');
+    p.style.setProperty('--tx',    (Math.random() * 100 - 50) + 'px');
+    p.style.setProperty('--ty',    -(60 + Math.random() * 120) + 'px');
+    p.style.left = (2 + Math.random() * 96) + '%';
+    p.style.top  = (10 + Math.random() * 80) + '%';
+    const sz = (1.5 + Math.random() * 3) + 'px'; p.style.width = sz; p.style.height = sz;
+    container.appendChild(p);
+  }
+}
+
+function bfInitParticles() {
+  const container = document.getElementById('bf-completion-particles');
   if (!container || container.children.length > 0) return;
   for (let i = 0; i < 24; i++) {
     const p = document.createElement('div');

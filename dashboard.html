@@ -1735,7 +1735,7 @@ body::before {
 
 /* ===== BRAND FOUNDATION FLOW ===== */
 #bf-overlay {
-  position: fixed; inset: 0; z-index: 900;
+  position: fixed; inset: 0; z-index: 9999;
   background: #07040f;
   overflow-y: scroll; overflow-x: hidden;
   touch-action: pan-y;
@@ -5872,6 +5872,15 @@ function sbRenderTodos() {
 
 /* ===== INIT ===== */
 document.addEventListener('DOMContentLoaded', () => {
+  /* 0. Brand Foundation gate — must run before anything else.
+        New users (no frmls_foundation_complete) see the foundation flow
+        full-screen before the dashboard is accessible. */
+  if (!localStorage.getItem('frmls_foundation_complete')) {
+    bfLoadAnswers();
+    bfCurrentStep = 0;
+    bfShowOverlay();
+  }
+
   /* 1. Theme + color mode (no DOM dependencies) */
   loadTheme();
   initColorMode();

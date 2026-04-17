@@ -9,6 +9,8 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-V9T01KTX3V"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-V9T01KTX3V');</script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
 <style>
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -755,6 +757,331 @@ a { text-decoration: none; color: inherit; }
   .h1-grad  { font-size: 32px; }
   .mock-grid { grid-template-columns: 1fr 1fr; }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   FRAME-BREAK SECTION
+───────────────────────────────────────────────────────────────────────────── */
+.fb-section {
+  height: 300vh;
+  position: relative;
+  background: var(--bg);
+}
+.fb-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+.fb-frame {
+  position: absolute;
+  width: 320px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  border-radius: 12px;
+  border: 2px solid rgba(255,255,255,0.18);
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(124,58,237,0.45), 0 0 15px rgba(6,182,212,0.25);
+  z-index: 2;
+}
+.fb-dash { width: 100%; height: 100%; background: #0a0a12; display: flex; }
+.fb-sidebar {
+  width: 22%; flex-shrink: 0;
+  background: #0d0b17;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  padding: 10px 7px;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.fb-nav-item {
+  height: 5px; border-radius: 3px;
+  background: rgba(255,255,255,0.06);
+}
+.fb-nav-item.on { background: rgba(124,58,237,0.45); }
+.fb-main {
+  flex: 1; padding: 8px;
+  display: flex; flex-direction: column; gap: 5px;
+  overflow: hidden;
+}
+.fb-bar { height: 5px; border-radius: 2px; background: rgba(255,255,255,0.04); }
+.fb-cards {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+}
+.fb-card {
+  height: 24px; border-radius: 4px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.fb-card.p { background: rgba(124,58,237,0.14); border-color: rgba(124,58,237,0.22); }
+.fb-card.c { background: rgba(6,182,212,0.11); border-color: rgba(6,182,212,0.18); }
+.fb-headline {
+  position: absolute;
+  bottom: 14%;
+  left: 50%;
+  text-align: center;
+  z-index: 3;
+  opacity: 0;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.fb-label {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 10px;
+}
+.fb-headline h2 {
+  font-size: clamp(32px, 5vw, 68px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  line-height: 1;
+}
+.fb-scroll-hint {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.fb-scroll-hint::after {
+  content: '';
+  display: block; width: 1px; height: 28px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.28), transparent);
+  animation: fbScrollLine 1.6s ease-in-out infinite;
+}
+@keyframes fbScrollLine {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.5); transform-origin: top; }
+  50% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   STICKY SHOWCASE
+───────────────────────────────────────────────────────────────────────────── */
+.showcase { border-top: 1px solid var(--border); padding: 120px 0; }
+.showcase-head { text-align: center; margin-bottom: 80px; display: flex; flex-direction: column; align-items: center; }
+.showcase-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: start;
+}
+.showcase-left { position: sticky; top: 15vh; }
+.showcase-img {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-mid);
+  background: #0a0a12;
+  aspect-ratio: 4 / 3;
+}
+.sc-dash { width: 100%; height: 100%; display: flex; }
+.sc-sidebar {
+  width: 168px; flex-shrink: 0;
+  background: #0d0b17;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  padding: 18px 14px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.sc-logo {
+  font-size: 13px; font-weight: 900; letter-spacing: -0.02em;
+  margin-bottom: 18px; color: rgba(255,255,255,0.75);
+}
+.sc-nav-item {
+  height: 30px; border-radius: 6px;
+  padding: 0 9px;
+  display: flex; align-items: center;
+  font-size: 10.5px; font-weight: 500;
+  color: rgba(255,255,255,0.25);
+  gap: 7px;
+  transition: background 0.25s, color 0.25s;
+}
+.sc-nav-item.active {
+  background: rgba(124,58,237,0.16);
+  color: rgba(255,255,255,0.8);
+}
+.sc-nav-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: currentColor; flex-shrink: 0;
+}
+.sc-main { flex: 1; padding: 18px; overflow: hidden; }
+.sc-header-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.sc-title {
+  font-size: 13px; font-weight: 700; letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.8);
+  transition: color 0.3s;
+}
+.sc-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 8.5px; letter-spacing: 0.1em; color: rgba(255,255,255,0.18);
+}
+.sc-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 7px; margin-bottom: 10px;
+}
+.sc-card {
+  height: 54px; border-radius: 7px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 9px 11px;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.sc-card.p { background: rgba(124,58,237,0.09); border-color: rgba(124,58,237,0.2); }
+.sc-card.c { background: rgba(6,182,212,0.08); border-color: rgba(6,182,212,0.16); }
+.sc-card-label {
+  font-size: 7.5px; font-family: 'DM Mono', monospace;
+  letter-spacing: 0.1em; color: rgba(255,255,255,0.22); text-transform: uppercase;
+}
+.sc-card-val {
+  font-size: 13px; font-weight: 700;
+  color: rgba(255,255,255,0.6); letter-spacing: -0.02em;
+}
+.sc-list-row { display: flex; flex-direction: column; gap: 4px; }
+.sc-list-item {
+  height: 22px; border-radius: 4px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Highlight overlays */
+.hl-overlay {
+  position: absolute;
+  border-radius: 8px;
+  border: 1.5px solid var(--cyan);
+  box-shadow: 0 0 20px rgba(6,182,212,0.3), inset 0 0 16px rgba(6,182,212,0.05);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Feature blocks */
+.showcase-right { padding: 60px 0; }
+.feat-block {
+  padding: 44px 0;
+  border-bottom: 1px solid var(--border);
+}
+.feat-block:first-child { padding-top: 0; }
+.feat-block:last-child { border-bottom: none; }
+.feat-block-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.18); margin-bottom: 10px;
+}
+.feat-block-title {
+  font-size: 24px; font-weight: 700;
+  letter-spacing: -0.03em; color: var(--white);
+  margin-bottom: 10px; line-height: 1.2;
+  transition: color 0.3s;
+}
+.feat-block-title.active {
+  background: var(--grad-90);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.feat-block-desc {
+  font-size: 14px; color: #5a5a5a;
+  line-height: 1.7; max-width: 360px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   PRICING WATERMARK
+───────────────────────────────────────────────────────────────────────────── */
+.pricing-wrap { position: relative; overflow: hidden; }
+.pricing-watermark {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(200px, 40vw, 560px);
+  font-weight: 500;
+  color: rgba(255,255,255,0.04);
+  letter-spacing: -0.04em;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 0;
+  line-height: 1;
+  user-select: none;
+}
+.pricing-wrap .pricing { position: relative; z-index: 1; }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   FLOATING CTA
+───────────────────────────────────────────────────────────────────────────── */
+.floating-cta {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+}
+.floating-cta.vis { pointer-events: all; }
+.floating-cta a {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 26px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px; font-weight: 500; letter-spacing: 0.1em;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+  border-radius: 100px;
+  box-shadow: 0 4px 24px rgba(124,58,237,0.45), 0 2px 8px rgba(0,0,0,0.5);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  white-space: nowrap;
+  transition: transform 0.22s cubic-bezier(.16,1,.3,1), box-shadow 0.22s;
+}
+.floating-cta a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 40px rgba(124,58,237,0.65), 0 4px 16px rgba(6,182,212,0.35);
+}
+.floating-cta-arrow {
+  width: 14px; height: 14px;
+  stroke: currentColor; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   MOBILE OVERRIDES FOR NEW SECTIONS
+───────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .fb-section { height: auto; }
+  .fb-sticky { position: relative; height: 100vh; }
+  .fb-frame {
+    position: absolute !important;
+    width: 100vw !important; height: 100vh !important;
+    top: 0 !important; left: 0 !important;
+    transform: none !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .fb-headline { opacity: 1 !important; transform: translateX(-50%) translateY(0) !important; }
+  .fb-scroll-hint { display: none; }
+
+  .showcase { padding: 80px 0; }
+  .showcase-inner { grid-template-columns: 1fr; gap: 40px; }
+  .showcase-left { position: relative; top: auto; }
+  .showcase-right { padding: 0; }
+
+  .pricing-watermark { font-size: clamp(120px, 30vw, 240px); }
+
+  .floating-cta a { font-size: 12px; padding: 12px 20px; }
+}
 </style>
 </head>
 <body>
@@ -837,6 +1164,44 @@ a { text-decoration: none; color: inherit; }
   </div>
   <div class="mock-fade"></div>
 </div>
+
+<!-- ═══════════════════════════ FRAME-BREAK ═══════════════════════════ -->
+<section class="fb-section" id="fb-section">
+  <div class="fb-sticky" id="fb-sticky">
+
+    <div class="fb-scroll-hint" id="fb-scroll-hint">scroll</div>
+
+    <div class="fb-frame" id="fb-frame">
+      <div class="fb-dash">
+        <div class="fb-sidebar">
+          <div class="fb-nav-item on" style="width:65%;"></div>
+          <div class="fb-nav-item" style="width:80%;"></div>
+          <div class="fb-nav-item" style="width:55%;"></div>
+          <div class="fb-nav-item" style="width:72%;"></div>
+          <div class="fb-nav-item" style="width:48%;"></div>
+        </div>
+        <div class="fb-main">
+          <div class="fb-bar" style="width:55%;margin-bottom:2px;"></div>
+          <div class="fb-cards">
+            <div class="fb-card p"></div>
+            <div class="fb-card c"></div>
+            <div class="fb-card"></div>
+            <div class="fb-card"></div>
+          </div>
+          <div class="fb-bar" style="margin-top:4px;width:82%;"></div>
+          <div class="fb-bar" style="width:60%;"></div>
+          <div class="fb-bar" style="width:70%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fb-headline" id="fb-headline">
+      <span class="fb-label">FRMLS</span>
+      <h2>Build without limits.</h2>
+    </div>
+
+  </div>
+</section>
 
 <!-- ═══════════════════════════ FEATURES ═══════════════════════════ -->
 <section id="features" class="features">
@@ -1005,7 +1370,103 @@ a { text-decoration: none; color: inherit; }
   </div>
 </section>
 
+<!-- ═══════════════════════════ SHOWCASE ═══════════════════════════ -->
+<section class="showcase" id="showcase">
+  <div class="wrap">
+    <div class="showcase-head">
+      <span class="section-pill rv">Inside the dashboard</span>
+      <h2 class="section-h rv d1">every tool. always within reach.</h2>
+      <p class="section-sub rv d2">scroll to see how each piece fits together.</p>
+    </div>
+    <div class="showcase-inner">
+
+      <!-- LEFT: sticky dashboard mockup -->
+      <div class="showcase-left">
+        <div class="showcase-img" id="showcaseImg">
+          <div class="sc-dash">
+            <div class="sc-sidebar">
+              <div class="sc-logo">FRMLS</div>
+              <div class="sc-nav-item active" id="scNav0"><span class="sc-nav-dot"></span>Prompt Pack</div>
+              <div class="sc-nav-item" id="scNav1"><span class="sc-nav-dot"></span>Brand Identity</div>
+              <div class="sc-nav-item" id="scNav2"><span class="sc-nav-dot"></span>Themes</div>
+              <div class="sc-nav-item" id="scNav3"><span class="sc-nav-dot"></span>Flowchart</div>
+              <div class="sc-nav-item" id="scNav4"><span class="sc-nav-dot"></span>Checklist</div>
+            </div>
+            <div class="sc-main">
+              <div class="sc-header-row">
+                <span class="sc-title" id="scMainTitle">Prompt Pack</span>
+                <span class="sc-tag">FRMLS DASHBOARD</span>
+              </div>
+              <div class="sc-grid">
+                <div class="sc-card p">
+                  <span class="sc-card-label">Prompts Ready</span>
+                  <span class="sc-card-val">12/12</span>
+                </div>
+                <div class="sc-card c">
+                  <span class="sc-card-label">Identity Score</span>
+                  <span class="sc-card-val">87%</span>
+                </div>
+                <div class="sc-card">
+                  <span class="sc-card-label">Themes</span>
+                  <span class="sc-card-val">10</span>
+                </div>
+                <div class="sc-card">
+                  <span class="sc-card-label">Checklist</span>
+                  <span class="sc-card-val">18/20</span>
+                </div>
+              </div>
+              <div class="sc-list-row">
+                <div class="sc-list-item"></div>
+                <div class="sc-list-item"></div>
+                <div class="sc-list-item"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Highlight overlays -->
+          <div class="hl-overlay hl-0" style="top:28%;left:34%;width:62%;height:26%;"></div>
+          <div class="hl-overlay hl-1" style="top:4%;left:1%;width:32%;height:90%;"></div>
+          <div class="hl-overlay hl-2" style="top:55%;left:34%;width:29%;height:26%;"></div>
+          <div class="hl-overlay hl-3" style="top:18%;left:34%;width:62%;height:62%;"></div>
+          <div class="hl-overlay hl-4" style="top:71%;left:34%;width:62%;height:22%;"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: feature blocks -->
+      <div class="showcase-right" id="showcaseRight">
+        <div class="feat-block" data-feat="0" id="sfeat0">
+          <div class="feat-block-num">01</div>
+          <div class="feat-block-title">12-Step Prompt Pack</div>
+          <div class="feat-block-desc">Every prompt pre-loaded with your brand voice, aesthetic, and direction. Paste and run — nothing left blank.</div>
+        </div>
+        <div class="feat-block" data-feat="1" id="sfeat1">
+          <div class="feat-block-num">02</div>
+          <div class="feat-block-title">Brand Identity Finder</div>
+          <div class="feat-block-desc">A guided 5-step flow that locks in your category, vibe, font pairing, color mood, and audience before you build anything.</div>
+        </div>
+        <div class="feat-block" data-feat="2" id="sfeat2">
+          <div class="feat-block-num">03</div>
+          <div class="feat-block-title">10 Themes + Light/Dark Mode</div>
+          <div class="feat-block-desc">Ten complete design systems — each with light and dark variants, color tokens, and type scales matched to your aesthetic.</div>
+        </div>
+        <div class="feat-block" data-feat="3" id="sfeat3">
+          <div class="feat-block-num">04</div>
+          <div class="feat-block-title">Decision Tree Flowchart</div>
+          <div class="feat-block-desc">A visual map of every build decision. See how each step connects and jump directly to any section in one click.</div>
+        </div>
+        <div class="feat-block" data-feat="4" id="sfeat4">
+          <div class="feat-block-num">05</div>
+          <div class="feat-block-title">Launch Checklist</div>
+          <div class="feat-block-desc">20 items covering every critical launch task — from payment testing to mobile review to meta titles. Nothing skipped.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════════════════ PRICING ═══════════════════════════ -->
+<div class="pricing-wrap">
+<div class="pricing-watermark" aria-hidden="true">FRMLS</div>
 <section id="pricing" class="pricing">
   <div class="wrap">
     <div class="pricing-head">
@@ -1059,6 +1520,7 @@ a { text-decoration: none; color: inherit; }
     </div>
   </div>
 </section>
+</div>
 
 <!-- hidden gradient for SVG checkmarks -->
 <svg width="0" height="0" style="position:absolute">
@@ -1098,6 +1560,14 @@ a { text-decoration: none; color: inherit; }
   </div>
 </footer>
 
+<!-- ═══════════════════════════ FLOATING CTA ═══════════════════════════ -->
+<div class="floating-cta" id="floatingCta">
+  <a href="https://whop.com/frmls/frmls-store-builder-system" target="_blank" rel="noopener">
+    Get FRMLS — $37
+    <svg class="floating-cta-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+  </a>
+</div>
+
 <!-- ═══════════════════════════ SCRIPTS ═══════════════════════════ -->
 <script>
 /* ── auto-bypass ─────────────────────────────────────────────────────────── */
@@ -1112,7 +1582,10 @@ const lenis = new Lenis({
   smooth: true, mouseMultiplier: 1,
   smoothTouch: false, touchMultiplier: 2,
 });
-(function rafLoop(t){ lenis.raf(t); requestAnimationFrame(rafLoop); })(0);
+gsap.registerPlugin(ScrollTrigger);
+gsap.ticker.add((time) => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+lenis.on('scroll', ScrollTrigger.update);
 
 /* anchor links */
 document.querySelectorAll('a[href^="#"]').forEach(el => {
@@ -1126,6 +1599,146 @@ document.querySelectorAll('a[href^="#"]').forEach(el => {
 /* ── Nav scroll ──────────────────────────────────────────────────────────── */
 const nav = document.getElementById('nav');
 lenis.on('scroll', ({scroll}) => nav.classList.toggle('scrolled', scroll > 50));
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GSAP SCROLL ANIMATIONS
+══════════════════════════════════════════════════════════════════════════════ */
+
+const mm = gsap.matchMedia();
+
+/* ── 1. FRAME-BREAK ANIMATION ──────────────────────────────────────────── */
+mm.add('(min-width: 768px)', () => {
+  const fbFrame = document.getElementById('fb-frame');
+  if (!fbFrame) return;
+
+  gsap.set(fbFrame, { xPercent: -50, yPercent: -50 });
+
+  const fbTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#fb-section',
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 1.5,
+    }
+  });
+
+  /* Frame expands to fullscreen */
+  fbTl.to(fbFrame, {
+    width: () => window.innerWidth,
+    height: () => window.innerHeight,
+    top: 0, left: 0,
+    xPercent: 0, yPercent: 0,
+    borderRadius: 0,
+    ease: 'none',
+  }, 0);
+
+  /* Border fades away */
+  fbTl.to(fbFrame, {
+    borderColor: 'rgba(255,255,255,0)',
+    ease: 'none',
+  }, 0);
+
+  /* Glow intensifies to 40% mark */
+  fbTl.to(fbFrame, {
+    boxShadow: '0 0 100px rgba(124,58,237,0.95), 0 0 50px rgba(6,182,212,0.6)',
+    duration: 0.4,
+    ease: 'power2.inOut',
+  }, 0);
+
+  /* Glow fades from 40% to 100% */
+  fbTl.to(fbFrame, {
+    boxShadow: '0 0 0px rgba(124,58,237,0)',
+    duration: 0.6,
+    ease: 'power2.in',
+  }, 0.4);
+
+  /* Scroll hint vanishes in first 10% */
+  fbTl.to('#fb-scroll-hint', {
+    opacity: 0, duration: 0.1, ease: 'none',
+  }, 0);
+
+  /* Headline fades in at 70% — xPercent keeps it centered while GSAP owns transform */
+  gsap.set('#fb-headline', { xPercent: -50, y: 0 });
+  fbTl.fromTo('#fb-headline',
+    { opacity: 0, y: 28 },
+    { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' },
+    0.7
+  );
+});
+
+/* Mobile: show final state immediately */
+mm.add('(max-width: 767px)', () => {
+  const fbFrame = document.getElementById('fb-frame');
+  const fbHl    = document.getElementById('fb-headline');
+  const fbHint  = document.getElementById('fb-scroll-hint');
+  if (fbFrame) gsap.set(fbFrame, {
+    width: window.innerWidth, height: window.innerHeight,
+    top: 0, left: 0, xPercent: 0, yPercent: 0,
+    borderRadius: 0, border: 'none', boxShadow: 'none',
+  });
+  if (fbHl)   gsap.set(fbHl,   { opacity: 1, y: 0, xPercent: -50 });
+  if (fbHint) gsap.set(fbHint, { opacity: 0 });
+});
+
+/* ── 2. FLOATING CTA ───────────────────────────────────────────────────── */
+(function() {
+  const cta = document.getElementById('floatingCta');
+  if (!cta) return;
+  gsap.set(cta, { y: 16, opacity: 0 });
+
+  ScrollTrigger.create({
+    trigger: '.hero',
+    start: 'bottom top',
+    onEnter: () => {
+      cta.classList.add('vis');
+      gsap.to(cta, { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' });
+    },
+    onLeaveBack: () => {
+      gsap.to(cta, {
+        opacity: 0, y: 16, duration: 0.3, ease: 'power2.in',
+        onComplete: () => cta.classList.remove('vis'),
+      });
+    },
+  });
+})();
+
+/* ── 3. STICKY SHOWCASE ────────────────────────────────────────────────── */
+(function() {
+  const featBlocks  = document.querySelectorAll('.feat-block');
+  const hlOverlays  = document.querySelectorAll('.hl-overlay');
+  const scNavItems  = document.querySelectorAll('.sc-nav-item');
+  const scTitleEl   = document.getElementById('scMainTitle');
+  const titlesMap   = ['Prompt Pack','Brand Identity','Themes','Flowchart','Checklist'];
+
+  let activeIdx = -1;
+
+  function activateFeature(i) {
+    if (activeIdx === i) return;
+    if (activeIdx >= 0) {
+      gsap.to(hlOverlays[activeIdx], { opacity: 0, duration: 0.35, ease: 'power2.inOut' });
+      featBlocks[activeIdx]?.querySelector('.feat-block-title')?.classList.remove('active');
+      scNavItems[activeIdx]?.classList.remove('active');
+    }
+    activeIdx = i;
+    gsap.to(hlOverlays[i], { opacity: 1, duration: 0.35, ease: 'power2.inOut' });
+    featBlocks[i]?.querySelector('.feat-block-title')?.classList.add('active');
+    scNavItems[i]?.classList.add('active');
+    if (scTitleEl) scTitleEl.textContent = titlesMap[i];
+  }
+
+  mm.add('(min-width: 768px)', () => {
+    featBlocks.forEach((block, i) => {
+      ScrollTrigger.create({
+        trigger: block,
+        start: 'top 58%',
+        end:   'bottom 42%',
+        onEnter:     () => activateFeature(i),
+        onEnterBack: () => activateFeature(i),
+      });
+    });
+    activateFeature(0);
+  });
+})();
 
 /* ── Hamburger ───────────────────────────────────────────────────────────── */
 const burger = document.getElementById('burger');

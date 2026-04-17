@@ -429,6 +429,19 @@ body::before {
 .copy-btn.copied { background:rgba(16,185,129,0.15); border-color:rgba(16,185,129,0.38); color:var(--green); }
 .visual-intro { font-size:13px; color:#aaaaaa; margin-bottom:12px; font-style:italic; line-height:1.6; }
 
+/* ===== BRAND CONTEXT BANNER (PROMPT PACK) ===== */
+.pk-brand-banner { margin-bottom:16px; }
+.pk-ctx-card { background:rgba(124,58,237,0.07); border:1px solid rgba(124,58,237,0.22); border-radius:var(--radius-md); padding:14px 16px; position:relative; }
+.pk-ctx-meta { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-muted); margin-bottom:5px; }
+.pk-ctx-words { font-size:16px; font-weight:800; letter-spacing:-0.02em; background:var(--grad-text); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1.2; margin-bottom:3px; }
+.pk-ctx-archetype { font-family:'DM Mono',monospace; font-size:10px; color:#666; }
+.pk-ctx-edit { position:absolute; top:12px; right:12px; background:none; border:none; cursor:pointer; color:#555; font-size:13px; transition:color 0.2s; padding:2px; line-height:1; }
+.pk-ctx-edit:hover { color:var(--purple-light); }
+.pk-ctx-amber { background:rgba(245,158,11,0.06); border:1px solid rgba(245,158,11,0.22); border-radius:var(--radius-md); padding:12px 14px; font-size:12px; color:#f59e0b; line-height:1.6; }
+.pk-ctx-amber-link { color:#f59e0b; text-decoration:underline; cursor:pointer; background:none; border:none; font-size:12px; font-family:'Inter',sans-serif; padding:0; }
+.pk-personalized-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; background:linear-gradient(90deg,rgba(124,58,237,0.13),rgba(6,182,212,0.13)); border:1px solid rgba(124,58,237,0.22); color:var(--purple-light); border-radius:4px; padding:2px 7px; margin-bottom:10px; }
+.pk-missing-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; background:rgba(245,158,11,0.07); border:1px solid rgba(245,158,11,0.22); color:#f59e0b; border-radius:4px; padding:2px 7px; margin-bottom:10px; }
+
 /* ===== LAUNCH CHECKLIST ===== */
 .checklist-progress { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px 18px; margin-bottom:1.25rem; display:flex; align-items:center; gap:14px; }
 .checklist-count-text { font-family:'DM Mono',monospace; font-size:12px; color:#cccccc; white-space:nowrap; }
@@ -2968,6 +2981,7 @@ body::before {
       </div>
       <div class="tracker-bar-wrap"><div class="tracker-bar-inner" id="pk-trackerFill"></div></div>
     </div>
+    <div id="pk-brand-banner" class="pk-brand-banner"></div>
     <div class="step-list" id="pk-stepList"></div>
   </div>
 </div>
@@ -3947,6 +3961,165 @@ const visualPromptFns = [
   { ideogram:(b,v,a)=>`${b} Instagram profile mockup, ${v} feed aesthetic, grid layout, dark editorial theme, fashion brand`,                                              midjourney:(b,v,a)=>`Pinterest mood board for ${b}, ${v} aesthetic, clothing brand, lifestyle imagery, clean composition --ar 16:9 --v 6` }
 ];
 
+/* ===== BRAND CONTEXT + PERSONALIZED PROMPTS ===== */
+
+function getBrandContext() {
+  const whyLabels = {
+    'represent':'create something that represents who I am',
+    'freedom':'financial freedom and independence',
+    'passion':'genuine passion for this product or space',
+    'proud':'build something I\'m proud of',
+    'prove':'prove something to myself',
+    'lifestyle':'create a lifestyle around something I love',
+    'money':'make money and do it with something real',
+    'legacy':'leave something behind that matters'
+  };
+  const personalityLabels = {
+    'quiet-confident':'quiet and confident',
+    'bold-loud':'bold and loud',
+    'warm-approachable':'warm and approachable',
+    'cold-editorial':'cold and editorial',
+    'rebellious-raw':'rebellious and raw',
+    'elevated-refined':'elevated and refined',
+    'grounded-real':'grounded and real',
+    'mysterious':'mysterious and understated'
+  };
+  const enemyLabels = {
+    'fast-fashion':'fast fashion and disposable products',
+    'hype-over-quality':'brands that care more about hype than quality',
+    'generic-stores':'generic stores that look like everyone else',
+    'performance':'brands that perform instead of being real',
+    'overpriced':'overpriced products with no substance',
+    'talk-down':'brands that talk down to their customer',
+    'too-loud':'too much noise and trying too hard',
+    'playing-safe':'playing it safe'
+  };
+
+  let brandName = '[your brand name]';
+  try { const st = JSON.parse(localStorage.getItem('frmlsState') || '{}'); if (st.brandName) brandName = st.brandName; } catch(e) {}
+
+  let threeWords = '[your three words]';
+  const tw = localStorage.getItem('frmls_three_words');
+  if (tw) threeWords = tw;
+
+  let archetype = '[your archetype]', personalitySummary = '[your personality summary]';
+  let voiceExample1 = '[your voice example]', voiceExample2 = '[your voice example]', voiceExample3 = '[your voice example]';
+  let whatToAvoid = '[what to avoid]';
+  try {
+    const out = JSON.parse(localStorage.getItem('frmls_brand_output') || 'null');
+    if (out) {
+      if (out.archetypeName) archetype = out.archetypeName;
+      if (out.summary) personalitySummary = out.summary;
+      if (out.voiceExamples) {
+        if (out.voiceExamples[0]) voiceExample1 = out.voiceExamples[0];
+        if (out.voiceExamples[1]) voiceExample2 = out.voiceExamples[1];
+        if (out.voiceExamples[2]) voiceExample3 = out.voiceExamples[2];
+      }
+      if (out.avoid) whatToAvoid = out.avoid;
+    }
+  } catch(e) {}
+
+  let brandPromise = '[your brand promise]', moodWords = '[your mood words]';
+  let brandPersonality = '[your brand personality]', brandWhy = '[why you built this]';
+  let brandEnemy = '[what you stand against]', brandReferences = '[your brand references]';
+  try {
+    const ans = JSON.parse(localStorage.getItem('frmls_foundation_answers') || '{}');
+    if (ans[5] && ans[5].promise) brandPromise = ans[5].promise;
+    if (ans[2] && ans[2].moods && ans[2].moods.length) moodWords = ans[2].moods.join(', ');
+    if (ans[1] && ans[1].selections && ans[1].selections.length)
+      brandPersonality = ans[1].selections.map(v => personalityLabels[v] || v).join(', ');
+    const whySels = (ans[0] && ans[0].selections) ? ans[0].selections.map(v => whyLabels[v] || v) : [];
+    const whyText = (ans[0] && ans[0].text) ? ans[0].text.trim() : '';
+    const whyParts = [...whySels]; if (whyText) whyParts.push(whyText);
+    if (whyParts.length) brandWhy = whyParts.join('; ');
+    if (ans[3] && ans[3].selections && ans[3].selections.length)
+      brandEnemy = ans[3].selections.map(v => enemyLabels[v] || v).join(', ');
+    if (ans[4] && ans[4].brands) {
+      const refs = ans[4].brands.filter(b => b.name).map(b => b.feel ? `${b.name} (${b.feel})` : b.name);
+      if (refs.length) brandReferences = refs.join(', ');
+    }
+  } catch(e) {}
+
+  return { brandName, threeWords, archetype, personalitySummary, voiceExample1, voiceExample2, voiceExample3, whatToAvoid, brandPromise, moodWords, brandPersonality, brandWhy, brandEnemy, brandReferences };
+}
+
+function buildPrompt(template) {
+  const c = getBrandContext();
+  return template
+    .replace(/\{\{brandName\}\}/g, c.brandName)
+    .replace(/\{\{threeWords\}\}/g, c.threeWords)
+    .replace(/\{\{archetype\}\}/g, c.archetype)
+    .replace(/\{\{moodWords\}\}/g, c.moodWords)
+    .replace(/\{\{brandPromise\}\}/g, c.brandPromise)
+    .replace(/\{\{voiceExample\}\}/g, c.voiceExample1)
+    .replace(/\{\{whatToAvoid\}\}/g, c.whatToAvoid)
+    .replace(/\{\{brandPersonality\}\}/g, c.brandPersonality)
+    .replace(/\{\{brandWhy\}\}/g, c.brandWhy);
+}
+
+const brandPackSteps = [
+  {
+    title: 'Brand Identity',
+    label: 'Define Your Brand Identity',
+    prompt: 'My brand is called {{brandName}}. It exists because {{brandPromise}}. The feeling it gives people is: {{moodWords}}. The brand personality is: {{brandPersonality}}. Three words that define everything: {{threeWords}}. Write a complete brand identity statement that captures all of this in 3-4 sentences. It should sound like {{voiceExample}} — that is the voice and tone to match throughout everything.'
+  },
+  {
+    title: 'Homepage Headline',
+    label: 'Homepage Headline',
+    prompt: 'Write 5 homepage headline options for {{brandName}}. The brand is {{archetype}} — {{threeWords}}. The feeling it gives people: {{moodWords}}. Brand promise: {{brandPromise}}. Voice reference: {{voiceExample}}. Each headline should be under 8 words, no filler, no generic language. Avoid: {{whatToAvoid}}. The best headline makes someone feel something before they read anything else.'
+  },
+  {
+    title: 'Homepage Subline',
+    label: 'Homepage Subline',
+    prompt: 'Write 5 homepage subline options for {{brandName}} to sit below the main headline. The brand is {{threeWords}} in feeling. Brand promise: {{brandPromise}}. Keep each subline under 12 words. It should support the headline without repeating it. Voice: {{voiceExample}}. Avoid: {{whatToAvoid}}.'
+  },
+  {
+    title: 'Product Description',
+    label: 'Product Description',
+    prompt: 'Write a product description for {{brandName}}. Product: [product name and brief description]. The brand feeling is: {{moodWords}}. Brand personality: {{threeWords}}. Do not list materials or specs — write about the feeling of owning and wearing this product. Who it is for, what it says about them, why they need it in their life. Voice matches: {{voiceExample}}. Under 60 words. Avoid: {{whatToAvoid}}.'
+  },
+  {
+    title: 'About Page',
+    label: 'About Page',
+    prompt: 'Write the about page for {{brandName}}. The brand exists because: {{brandPromise}}. Brand personality: {{brandPersonality}}. The feeling it gives: {{moodWords}}. What it stands against: {{whatToAvoid}}. Write it in first person, honest, no corporate language. It should answer three things: why this brand exists, who it is for, and what it stands for. Voice matches: {{voiceExample}}. Under 150 words.'
+  },
+  {
+    title: 'Brand Story',
+    label: 'Brand Story',
+    prompt: 'Write the origin story for {{brandName}}. The brand was built because: {{brandWhy}}. It exists so that: {{brandPromise}}. Personality: {{threeWords}}. Write it as a short honest narrative — not a press release. Sound like a real person built this for a real reason. Reference the feeling of {{moodWords}} without saying those words directly. Under 100 words. Voice: {{voiceExample}}.'
+  },
+  {
+    title: 'Instagram Bio',
+    label: 'Instagram Bio',
+    prompt: 'Write 5 Instagram bio options for {{brandName}}. The brand is {{threeWords}}. Brand promise: {{brandPromise}}. Each bio must be under 150 characters. No hashtags. No emojis unless they feel completely natural to the brand. The bio should make the right person immediately feel like they found their brand. Avoid: {{whatToAvoid}}.'
+  },
+  {
+    title: 'Welcome Email',
+    label: 'Welcome Email',
+    prompt: 'Write a welcome email for new subscribers of {{brandName}}. Brand personality: {{archetype}} — {{threeWords}}. Brand promise: {{brandPromise}}. Voice matches: {{voiceExample}}. The email should feel like hearing from a real brand for the first time — not a generic welcome. Make the subscriber feel like they made the right choice. Under 150 words. Subject line included. Avoid: {{whatToAvoid}}.'
+  },
+  {
+    title: 'Abandoned Cart Email',
+    label: 'Abandoned Cart Email',
+    prompt: 'Write an abandoned cart email for {{brandName}}. Brand feeling: {{moodWords}}. Voice: {{threeWords}}. Do not use generic urgency tactics like limited time or hurry. Instead remind them of the feeling they were going for when they added to cart. Voice matches: {{voiceExample}}. Under 100 words. Subject line included. Avoid anything that contradicts: {{whatToAvoid}}.'
+  },
+  {
+    title: 'Product Launch Email',
+    label: 'Product Launch Email',
+    prompt: 'Write a product launch email for {{brandName}} announcing a new product. Brand personality: {{archetype}} — {{threeWords}}. Brand promise: {{brandPromise}}. Voice: {{voiceExample}}. The email should build anticipation and make the reader feel something before they see the product. Under 150 words. Subject line included. Avoid: {{whatToAvoid}}.'
+  },
+  {
+    title: 'Collection Page Description',
+    label: 'Collection Page Description',
+    prompt: 'Write a collection page description for {{brandName}}. Collection name: [collection name]. Brand feeling: {{moodWords}}. Personality: {{threeWords}}. Under 40 words. It should set the mood for the collection before they see a single product. Do not describe the products — describe the feeling of the collection. Voice: {{voiceExample}}. Avoid: {{whatToAvoid}}.'
+  },
+  {
+    title: 'SEO and Meta Description',
+    label: 'SEO and Meta Description',
+    prompt: 'Write an SEO title and meta description for the homepage of {{brandName}}. Brand is {{archetype}} — {{threeWords}}. Brand promise: {{brandPromise}}. SEO title: under 60 characters, includes brand name, describes what the brand sells and who it is for. Meta description: under 155 characters, captures the brand feeling and drives clicks. Both should balance search intent with brand voice. Voice reference: {{voiceExample}}.'
+  }
+];
+
 function buildStepList() {
   const b = state.brandName || 'your brand';
   const v = state.vibe      || 'minimalist';
@@ -4404,13 +4577,41 @@ function buildBrandKitPanel() {
 
 /* Panel: Prompt Pack */
 function buildPromptPackPanel() {
-  const b = state.brandName || 'your brand';
-  const v = state.vibe      || 'minimalist';
-  const a = state.audience  || 'your audience';
+  const ctx = getBrandContext();
+  const hasContext = !!localStorage.getItem('frmls_brand_output');
+
+  // Brand context banner
+  const bannerEl = document.getElementById('pk-brand-banner');
+  if (bannerEl) {
+    if (hasContext) {
+      bannerEl.innerHTML = `
+        <div class="pk-ctx-card">
+          <div class="pk-ctx-meta">prompts personalized for</div>
+          <div class="pk-ctx-words">${ctx.threeWords}</div>
+          <div class="pk-ctx-archetype">${ctx.archetype}</div>
+          <button class="pk-ctx-edit" title="Edit Brand Foundation" onclick="openBrandFoundation()">✎</button>
+        </div>`;
+    } else {
+      bannerEl.innerHTML = `
+        <div class="pk-ctx-amber">
+          complete your brand foundation to personalize these prompts —
+          <button class="pk-ctx-amber-link" onclick="openBrandFoundation()">start here →</button>
+        </div>`;
+    }
+  }
 
   const listEl = document.getElementById('pk-stepList');
   if (!listEl) return;
-  listEl.innerHTML = steps.map((step, i) => `
+
+  const badge = hasContext
+    ? `<span class="pk-personalized-badge">personalized</span>`
+    : `<span class="pk-missing-badge">add your brand</span>`;
+
+  window._pkBuiltPrompts = brandPackSteps.map(step => buildPrompt(step.prompt));
+
+  listEl.innerHTML = brandPackSteps.map((step, i) => {
+    const builtPrompt = window._pkBuiltPrompts[i];
+    return `
     <div class="step-item${stepDone.has(i) ? ' step-done' : ''}" id="pk-item-${i}">
       <div class="step-header" onclick="togglePkStep(${i})">
         <span class="step-num">${String(i+1).padStart(2,'0')}</span>
@@ -4423,41 +4624,15 @@ function buildPromptPackPanel() {
         </div>
       </div>
       <div class="step-body" id="pk-body-${i}">
-        <p class="step-desc">${step.desc}</p>
-        <div class="tab-bar">
-          <button class="tab active" onclick="switchTab(this,'pk-claude-${i}','pk-body-${i}')">Copy Prompts</button>
-          <button class="tab"        onclick="switchTab(this,'pk-visual-${i}','pk-body-${i}')">Visual Prompts</button>
-        </div>
-        <div class="tab-panel" id="pk-claude-${i}">
-          ${i === 9 ? `<div class="app-rec-list">
-            <div class="app-rec-item"><span class="app-rec-name">Loox</span><span class="app-rec-desc">photo reviews — builds social proof</span></div>
-            <div class="app-rec-item"><span class="app-rec-name">Judge.me</span><span class="app-rec-desc">free review app — increases trust</span></div>
-            <div class="app-rec-item"><span class="app-rec-name">Klaviyo or Omnisend</span><span class="app-rec-desc">email marketing — automated flows</span></div>
-            <div class="app-rec-item"><span class="app-rec-name">Tidio</span><span class="app-rec-desc">live chat — answer customer questions</span></div>
-            <div class="app-rec-item"><span class="app-rec-name">ReConvert</span><span class="app-rec-desc">post purchase upsell — increases order value</span></div>
-          </div>` : ''}
-          ${step.prompts.map(p => `
-            <div class="prompt-box">
-              <div class="prompt-label">prompt — ${p}</div>
-              <div class="prompt-text">${promptTemplates[p] ? promptTemplates[p](b,v,a) : '—'}</div>
-              <button class="copy-btn" onclick="copyPrompt(this,'${p}','${b}','${v}','${a}')">copy prompt</button>
-            </div>`).join('')}
-        </div>
-        <div class="tab-panel hidden" id="pk-visual-${i}">
-          <p class="visual-intro">Paste these prompts into any image generation tool — Ideogram, Midjourney, or the image generator inside ChatGPT.</p>
-          <div class="prompt-box">
-            <div class="prompt-label ideogram-tag">Ideogram / DALL-E</div>
-            <div class="prompt-text">${visualPromptFns[i].ideogram(b,v,a)}</div>
-            <button class="copy-btn" onclick="copyVisual(this,${i},'ideogram','${b}','${v}','${a}')">copy prompt</button>
-          </div>
-          <div class="prompt-box">
-            <div class="prompt-label midjourney-tag">Midjourney</div>
-            <div class="prompt-text">${visualPromptFns[i].midjourney(b,v,a)}</div>
-            <button class="copy-btn" onclick="copyVisual(this,${i},'midjourney','${b}','${v}','${a}')">copy prompt</button>
-          </div>
+        <div class="prompt-box">
+          ${badge}
+          <div class="prompt-label">prompt — ${step.label}</div>
+          <div class="prompt-text">${builtPrompt}</div>
+          <button class="copy-btn" onclick="copyRaw(this,window._pkBuiltPrompts[${i}])">copy prompt</button>
         </div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 
   updatePkTracker();
 }

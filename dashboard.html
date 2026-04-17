@@ -125,43 +125,138 @@ body::before {
 .sb-nav-item svg { flex-shrink:0; opacity:0.6; }
 .sb-nav-item:hover svg { opacity:1; }
 
-/* ===== IDENTITY PANEL STEPS ===== */
-.idp-intro { font-size:13px; color:rgba(255,255,255,0.4); line-height:1.6; margin-bottom:24px; }
-.idp-steps { display:flex; flex-direction:column; gap:0; }
-.idp-step { border-bottom:1px solid var(--border-subtle); }
-.idp-step:first-child { border-top:1px solid var(--border-subtle); }
-.idp-step-header {
-  display:flex; align-items:center; gap:12px; padding:14px 0;
-  cursor:pointer; user-select:none;
+/* ===== BRAND IDENTITY MODAL ===== */
+#identity-modal-backdrop {
+  display:none; position:fixed; inset:0; z-index:5000;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  align-items:center; justify-content:center;
+  padding:20px;
 }
-.idp-step-header:hover .idp-step-name { color:#ffffff; }
-.idp-step-icon { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; }
-.idp-step-icon.complete { background:rgba(52,211,153,0.1); color:#34d399; border:1px solid rgba(52,211,153,0.2); }
-.idp-step-icon.incomplete { background:rgba(255,255,255,0.04); color:#555555; border:1px solid var(--border-subtle); }
-.idp-step-info { flex:1; min-width:0; }
-.idp-step-name { font-size:14px; font-weight:600; color:#cccccc; transition:color 0.15s; }
-.idp-step-value { font-size:11px; font-family:'DM Mono',monospace; color:rgba(255,255,255,0.28); margin-top:2px; letter-spacing:0.04em; }
-.idp-step-value.set { color:#a78bfa; }
-.idp-edit-btn { font-size:11px; font-family:'DM Mono',monospace; color:rgba(255,255,255,0.3); padding:4px 8px; border:1px solid rgba(255,255,255,0.08); border-radius:6px; background:none; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
-.idp-step-header:hover .idp-edit-btn { color:rgba(255,255,255,0.7); border-color:rgba(255,255,255,0.2); }
-.idp-picker { display:none; padding-bottom:16px; }
-.idp-picker.open { display:block; animation:obFadeUp 0.25s both; }
-.idp-picker-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:4px; }
-.idp-picker-grid.cols-1 { grid-template-columns:1fr; }
-.idp-card {
-  background:rgba(255,255,255,0.03); border:1.5px solid rgba(255,255,255,0.07);
-  border-radius:12px; padding:12px 14px; cursor:pointer;
-  transition:all 0.18s cubic-bezier(0.16,1,0.3,1);
+#identity-modal-backdrop.idm-open { display:flex; animation:idmBackdropIn 0.3s ease both; }
+@keyframes idmBackdropIn { from{opacity:0} to{opacity:1} }
+
+#identity-modal {
+  position:relative; width:90%; max-width:780px; max-height:88vh;
+  background:#0e0e12; border-radius:24px;
+  border:1px solid #1e1e2a;
+  box-shadow:0 32px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(124,58,237,0.15);
+  display:flex; flex-direction:column; overflow:hidden;
+  animation:idmModalIn 0.4s cubic-bezier(0.22,1,0.36,1) both;
 }
-.idp-card:hover { background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.14); }
-.idp-card.idp-selected { background:rgba(124,58,237,0.1); border-color:rgba(124,58,237,0.5); }
-.idp-card-label { font-size:13px; font-weight:700; color:#ffffff; margin-bottom:2px; }
-.idp-card-sub { font-size:11px; color:rgba(255,255,255,0.35); font-family:'DM Mono',monospace; }
-.idp-font-preview { font-size:18px; font-weight:700; color:#ffffff; display:block; margin-bottom:4px; }
-.idp-swatch-strip { display:flex; border-radius:6px; overflow:hidden; height:22px; margin-bottom:7px; }
-.idp-swatch-strip div { flex:1; }
-.idp-color-name { font-size:13px; font-weight:700; color:#ffffff; margin-bottom:2px; }
-.idp-color-sub { font-size:10px; color:rgba(255,255,255,0.35); font-family:'DM Mono',monospace; }
+@keyframes idmModalIn { from{opacity:0;transform:scale(0.94)} to{opacity:1;transform:scale(1)} }
+
+/* Ambient decorations */
+.idm-orb { position:absolute; border-radius:50%; pointer-events:none; z-index:0; }
+.idm-orb-1 { width:400px; height:400px; background:radial-gradient(circle,#7c3aed,transparent 70%); opacity:0.12; top:-80px; right:-60px; filter:blur(80px); }
+.idm-orb-2 { width:350px; height:350px; background:radial-gradient(circle,#06b6d4,transparent 70%); opacity:0.08; bottom:-60px; left:-40px; filter:blur(80px); }
+
+/* Header */
+.idm-header {
+  position:sticky; top:0; z-index:10; display:flex; align-items:center; justify-content:space-between;
+  padding:28px 32px 20px; background:#0e0e12; border-bottom:1px solid #1a1a24; flex-shrink:0;
+}
+.idm-title { font-size:20px; font-weight:700; color:#ffffff; font-family:'Inter',sans-serif; letter-spacing:-0.01em; }
+.idm-close {
+  width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1); cursor:pointer; display:flex; align-items:center;
+  justify-content:center; transition:background 0.2s; flex-shrink:0;
+}
+.idm-close:hover { background:rgba(255,255,255,0.12); }
+
+/* Scrollable body */
+.idm-body {
+  flex:1; overflow-y:auto; padding:32px; display:flex; flex-direction:column; gap:32px;
+  position:relative; z-index:1; scrollbar-width:none;
+}
+.idm-body::-webkit-scrollbar { display:none; }
+
+/* Step cards */
+.idm-step {
+  background:#13131a; border:1px solid #1e1e2a; border-radius:16px; padding:24px; position:relative;
+}
+.idm-step-num {
+  font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase;
+  background:linear-gradient(90deg,#9d5cf5,#22d3ee); -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:6px; display:block;
+}
+.idm-step-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:6px; }
+.idm-step-title { font-size:16px; font-weight:700; color:#ffffff; font-family:'Inter',sans-serif; }
+.idm-badge {
+  font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase;
+  padding:4px 10px; border-radius:100px; white-space:nowrap; flex-shrink:0; margin-top:2px;
+}
+.idm-badge.complete { background:rgba(52,211,153,0.12); color:#34d399; border:1px solid rgba(52,211,153,0.25); }
+.idm-badge.incomplete { background:rgba(255,255,255,0.04); color:#555555; border:1px solid rgba(255,255,255,0.08); }
+.idm-step-desc { font-size:14px; color:rgba(255,255,255,0.4); margin-bottom:20px; }
+
+/* Category pills */
+.idm-pill-row { display:flex; flex-wrap:wrap; gap:10px; }
+.idm-pill {
+  padding:10px 20px; border-radius:100px; font-size:14px; color:#ffffff; cursor:pointer;
+  background:#1a1a24; border:1px solid #252530; transition:all 0.2s ease; white-space:nowrap;
+  font-family:'Inter',sans-serif; font-weight:500;
+}
+.idm-pill:hover { background:#222232; border-color:#333345; }
+.idm-pill.idm-sel { background:rgba(124,58,237,0.12); border-color:rgba(124,58,237,0.5); box-shadow:0 0 0 1px rgba(6,182,212,0.2) inset; }
+
+/* Vibe cards */
+.idm-vibe-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+@media(max-width:600px) { .idm-vibe-grid { grid-template-columns:repeat(2,1fr); } }
+.idm-vibe-card {
+  background:#1a1a24; border:1px solid #252530; border-radius:14px; padding:20px;
+  cursor:pointer; transition:all 0.2s ease;
+}
+.idm-vibe-card:hover { background:#222232; border-color:#333345; }
+.idm-vibe-card.idm-sel { background:rgba(124,58,237,0.08); border-color:rgba(124,58,237,0.5); box-shadow:0 0 0 1px rgba(6,182,212,0.15) inset; }
+.idm-vibe-name { font-size:15px; font-weight:700; color:#ffffff; margin-bottom:4px; }
+.idm-vibe-desc { font-size:13px; color:rgba(255,255,255,0.4); }
+
+/* Font cards */
+.idm-font-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+@media(max-width:600px) { .idm-font-grid { grid-template-columns:1fr; } }
+.idm-font-card {
+  background:#1a1a24; border:1px solid #252530; border-radius:14px; padding:24px;
+  cursor:pointer; transition:all 0.2s ease;
+}
+.idm-font-card:hover { background:#222232; border-color:#333345; }
+.idm-font-card.idm-sel { background:rgba(124,58,237,0.08); border-color:rgba(124,58,237,0.5); box-shadow:0 0 0 1px rgba(6,182,212,0.15) inset,0 4px 20px rgba(124,58,237,0.12); }
+.idm-font-preview { font-size:28px; color:#ffffff; display:block; margin-bottom:10px; line-height:1.2; word-break:break-word; }
+.idm-font-label { font-family:'DM Mono',monospace; font-size:10px; color:rgba(255,255,255,0.35); letter-spacing:0.08em; }
+
+/* Color grid */
+.idm-color-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+@media(max-width:600px) { .idm-color-grid { grid-template-columns:repeat(2,1fr); } }
+.idm-color-card {
+  background:#1a1a24; border:1px solid #252530; border-radius:14px; padding:16px;
+  cursor:pointer; transition:all 0.2s ease;
+}
+.idm-color-card:hover { background:#222232; border-color:#333345; }
+.idm-color-card.idm-sel { border-color:rgba(124,58,237,0.5); background:rgba(124,58,237,0.06); }
+.idm-swatches { display:flex; gap:4px; margin-bottom:10px; }
+.idm-swatch { width:32px; height:32px; border-radius:8px; flex-shrink:0; }
+.idm-color-name { font-size:13px; font-weight:700; color:#ffffff; margin-bottom:3px; }
+.idm-color-sub { font-size:11px; color:rgba(255,255,255,0.35); font-family:'DM Mono',monospace; }
+
+/* Footer */
+.idm-footer {
+  position:sticky; bottom:0; z-index:10; display:flex; align-items:center; justify-content:flex-end;
+  gap:10px; padding:20px 32px; background:#0e0e12; border-top:1px solid #1a1a24; flex-shrink:0;
+}
+.idm-btn-reset {
+  padding:10px 20px; border-radius:12px; background:none; border:1px solid rgba(255,255,255,0.1);
+  color:rgba(255,255,255,0.5); font-size:14px; font-weight:600; cursor:pointer;
+  font-family:'Inter',sans-serif; transition:all 0.2s;
+}
+.idm-btn-reset:hover { border-color:rgba(255,255,255,0.2); color:rgba(255,255,255,0.8); }
+.idm-btn-save {
+  padding:10px 24px; border-radius:12px; background:linear-gradient(135deg,#7c3aed,#06b6d4);
+  border:none; color:#ffffff; font-size:14px; font-weight:700; cursor:pointer;
+  font-family:'Inter',sans-serif; transition:opacity 0.2s;
+}
+.idm-btn-save:hover { opacity:0.88; }
+.idm-btn-save.saved { background:linear-gradient(135deg,#059669,#10b981); }
 
 /* ===== SIDEBAR TODO WIDGET ===== */
 .sb-todo-widget { width:100%; margin-top:16px; padding-top:16px; border-top:1px solid var(--border-subtle); }
@@ -665,10 +760,20 @@ body::before {
 .dash-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:2rem; }
 @media (max-width:600px) { .dash-grid { grid-template-columns:1fr; } }
 
+/* Dashboard atmosphere */
+#screen-7 { position:relative; overflow:visible; }
+.dash-orb { position:absolute; border-radius:50%; pointer-events:none; z-index:0; will-change:transform; animation:dashOrbBreathe 6s ease-in-out infinite alternate; }
+.dash-orb-1 { width:700px; height:700px; background:radial-gradient(circle,#3b0764,transparent 70%); opacity:0.18; top:-200px; right:-150px; filter:blur(150px); animation-delay:0s; }
+.dash-orb-2 { width:600px; height:600px; background:radial-gradient(circle,#0c4a6e,transparent 70%); opacity:0.12; bottom:-100px; left:-100px; filter:blur(130px); animation-delay:2.5s; }
+.dash-orb-3 { width:500px; height:500px; background:radial-gradient(circle,#2d1b69,transparent 70%); opacity:0.10; top:30%; left:40%; filter:blur(160px); animation-delay:4.5s; }
+@keyframes dashOrbBreathe { 0%{transform:scale(1)} 100%{transform:scale(1.1)} }
+#screen-7 .dash-grid, #screen-7 .dash-quick-actions, #screen-7 .dash-welcome, #screen-7 .dash-build-progress { position:relative; z-index:1; }
+#screen-7::before { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.02) 0px,rgba(255,255,255,0.02) 1px,transparent 1px,transparent 60px),repeating-linear-gradient(90deg,rgba(255,255,255,0.02) 0px,rgba(255,255,255,0.02) 1px,transparent 1px,transparent 60px); pointer-events:none; z-index:0; }
+
 .dash-box { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:28px; cursor:pointer; position:relative; z-index:1; transition:transform 0.3s cubic-bezier(0.16,1,0.3,1),box-shadow 0.3s ease,border-color 0.3s ease,background 0.25s ease; display:flex; flex-direction:column; min-height:160px; }
-.dash-box::before { content:''; position:absolute; inset:-1px; border-radius:calc(var(--radius-lg)+1px); background:var(--grad); z-index:-1; opacity:0; transition:opacity 0.22s ease; }
-.dash-box:hover { transform:translateY(-3px); box-shadow:0 10px 36px rgba(0,0,0,0.5),0 0 16px rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.1); background:var(--bg-card-2); }
-.dash-box:hover::before { opacity:0.5; }
+.dash-box::before { content:''; position:absolute; inset:-1px; border-radius:calc(var(--radius-lg)+1px); background:linear-gradient(135deg,rgba(124,58,237,0.4),rgba(6,182,212,0.4)); z-index:-1; opacity:0; transition:opacity 0.3s ease; }
+.dash-box:hover { transform:translateY(-3px); box-shadow:0 8px 32px rgba(124,58,237,0.08),0 10px 36px rgba(0,0,0,0.45); border-color:transparent; background:var(--bg-card-2); }
+.dash-box:hover::before { opacity:1; }
 .dash-box-icon { font-size:28px; margin-bottom:14px; color:#777777; display:block; line-height:1; transition:color 0.2s; }
 .dash-box:hover .dash-box-icon { color:#cccccc; }
 .dash-box-icon svg { display:block; }
@@ -2578,6 +2683,10 @@ body::before {
 
   <!-- ========== SCREEN 7: Dashboard ========== -->
   <div class="screen" id="screen-7">
+    <!-- Atmospheric orbs -->
+    <div class="dash-orb dash-orb-1"></div>
+    <div class="dash-orb dash-orb-2"></div>
+    <div class="dash-orb dash-orb-3"></div>
     <div class="screen-hero">
       <div class="logo">
         <span class="logo-mark">FRML<span class="accent">S</span></span>
@@ -2604,7 +2713,7 @@ body::before {
       <span class="dash-three-words" id="dash-three-words"></span>
     </div>
     <div class="dash-grid" id="dash-grid">
-      <div class="dash-box" id="box-identity" data-panel="panel-identity" onclick="openPanel('panel-identity')">
+      <div class="dash-box" id="box-identity" onclick="openIdentityModal()">
         <div class="dash-box-icon">◈</div>
         <div class="dash-box-title">Brand Identity</div>
         <div class="dash-box-desc">Category, vibe, font, and color direction.</div>
@@ -2938,14 +3047,26 @@ body::before {
   </div>
 </div><!-- /ob-overlay -->
 
-<!-- ===== BRAND IDENTITY PANEL ===== -->
-<div class="side-panel" id="panel-identity">
-  <div class="panel-header">
-    <span class="panel-title">Brand Identity</span>
-    <button class="panel-close" onclick="closePanel()">✕</button>
-  </div>
-  <div class="panel-body" id="panel-identity-body">
-    <!-- Built by buildIdentityPanel() -->
+<!-- ===== BRAND IDENTITY MODAL ===== -->
+<div id="identity-modal-backdrop" onclick="closeIdentityModal()">
+  <div id="identity-modal" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Brand Identity">
+    <!-- Ambient bg decorations -->
+    <div class="idm-orb idm-orb-1"></div>
+    <div class="idm-orb idm-orb-2"></div>
+    <!-- Header -->
+    <div class="idm-header">
+      <span class="idm-title">Brand Identity</span>
+      <button class="idm-close" onclick="closeIdentityModal()" aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <!-- Content -->
+    <div class="idm-body" id="idm-body"></div>
+    <!-- Footer -->
+    <div class="idm-footer">
+      <button class="idm-btn-reset" onclick="idmReset()">Reset</button>
+      <button class="idm-btn-save" id="idm-save-btn" onclick="idmSave()">Save Identity</button>
+    </div>
   </div>
 </div>
 
@@ -4522,7 +4643,7 @@ function refreshLastOpenedLabel(panelId) {
 }
 
 function refreshLastOpenedLabels() {
-  const panels = ['panel-identity','panel-brandkit','panel-prompts','panel-designer','panel-goodlooks','panel-checklist','panel-resources','panel-roadmap','panel-email','panel-moodboard','panel-supplier'];
+  const panels = ['panel-brandkit','panel-prompts','panel-designer','panel-goodlooks','panel-checklist','panel-resources','panel-roadmap','panel-email','panel-moodboard','panel-supplier'];
   panels.forEach(id => refreshLastOpenedLabel(id));
 }
 
@@ -4630,7 +4751,6 @@ function openPanel(id) {
   if (!panel) return;
 
   // Populate panels with live data when opened
-  if (id === 'panel-identity')   buildIdentityPanel();
   if (id === 'panel-brandkit')   buildBrandKitPanel();
   if (id === 'panel-prompts')    buildPromptPackPanel();
   if (id === 'panel-checklist')  buildChecklistPanel();
@@ -4721,148 +4841,166 @@ function refreshIdentityStatus() {
   el.style.color  = completed === 4 ? '#34d399' : '#a78bfa';
 }
 
-/* Panel: Brand Identity */
-function buildIdentityPanel() {
-  const body = document.getElementById('panel-identity-body');
-  if (!body) return;
+/* ===== BRAND IDENTITY MODAL ===== */
+const IDM_CATS = [
+  { val:'clothing',    label:'Clothing and Apparel' },
+  { val:'accessories', label:'Accessories and Jewelry' },
+  { val:'footwear',    label:'Footwear' },
+  { val:'lifestyle',   label:'Lifestyle and Streetwear' }
+];
+const IDM_VIBES = [
+  { val:'clean & minimal',  label:'Clean and Minimal',   desc:'calm, refined, nothing wasted' },
+  { val:'raw & bold',       label:'Raw and Bold',         desc:'unfiltered, direct, real' },
+  { val:'quiet luxury',     label:'Quiet Luxury',         desc:'elevated, considered, understated' },
+  { val:'street & urban',   label:'Street and Urban',     desc:'cultural, current, community' },
+  { val:'warm & organic',   label:'Warm and Organic',     desc:'natural, human, grounded' },
+  { val:'dark & editorial', label:'Dark and Editorial',   desc:'cold, precise, sharp' }
+];
+const IDM_FONTS = [
+  { val:'Sharp Serif',    label:'Sharp Serif — editorial and refined',  style:"font-family:'Playfair Display',serif;font-weight:700" },
+  { val:'Clean Sans',     label:'Clean Sans — modern and minimal',      style:"font-family:'Inter',sans-serif;font-weight:600" },
+  { val:'Bold Grotesque', label:'Bold Grotesque — strong and direct',   style:"font-family:'Barlow Condensed',sans-serif;font-weight:800;letter-spacing:0.02em" }
+];
+const IDM_COLORS = [
+  { val:'Quiet Luxury',    desc:'elevated',    swatches:['#e8e0d5','#c4b9a8','#8a7d6e','#3d342a'] },
+  { val:'Street Editorial',desc:'raw',         swatches:['#e8e8e8','#888888','#333333','#0a0a0a'] },
+  { val:'Dark Matte',      desc:'premium',     swatches:['#1a1a1a','#2d2d2d','#444444','#666666'] },
+  { val:'Warm Earth',      desc:'organic',     swatches:['#d4956a','#b8724a','#8a4e2e','#3d2010'] },
+  { val:'Clean Modern',    desc:'minimal',     swatches:['#ffffff','#f0f0f0','#cccccc','#333333'] },
+  { val:'Soft Neutral',    desc:'wearable',    swatches:['#f5e6e0','#e8c4b8','#d4a090','#8a5548'] },
+  { val:'Bold Mono',       desc:'graphic',     swatches:['#000000','#ffffff','#111111','#eeeeee'] },
+  { val:'Vintage Washed',  desc:'authentic',   swatches:['#c4b090','#a89070','#8a7055','#4a3828'] }
+];
 
+function openIdentityModal() {
+  const bd = document.getElementById('identity-modal-backdrop');
+  if (!bd) return;
+  buildIdentityModal();
+  bd.classList.add('idm-open');
+  document.body.style.overflow = 'hidden';
+}
+function closeIdentityModal() {
+  const bd = document.getElementById('identity-modal-backdrop');
+  if (!bd) return;
+  bd.classList.remove('idm-open');
+  document.body.style.overflow = '';
+  refreshIdentityStatus();
+}
+function buildIdentityModal() {
+  const body = document.getElementById('idm-body');
+  if (!body) return;
   const cat   = state.cat       || '';
   const vibe  = state.vibe      || '';
   const font  = state.fontStyle || '';
   const color = state.colorMood || '';
+  const brandName = (state.brandName || 'BRAND').toUpperCase();
 
-  const CAT_OPTIONS = [
-    { val:'streetwear',  label:'Streetwear',       sub:'drops, graphics, culture' },
-    { val:'minimalist',  label:'Minimalist',        sub:'clean, quiet luxury' },
-    { val:'athletic',    label:'Athletic',          sub:'performance, lifestyle' },
-    { val:'accessories', label:'Accessories',       sub:'eyewear, bags, jewelry' },
-    { val:'luxury',      label:'Luxury / Premium',  sub:'high-end, elevated' },
-    { val:'vintage',     label:'Vintage / Thrift',  sub:'retro, curated finds' },
-    { val:'sportswear',  label:'Sportswear',        sub:'performance, court' },
-    { val:'workwear',    label:'Workwear / Utility',sub:'functional, durable' },
-    { val:'unisex',      label:'Unisex Basics',     sub:'essentials, everyday' },
-    { val:'swimwear',    label:'Swimwear / Resort',  sub:'beach, vacation' }
-  ];
-  const VIBE_OPTIONS = [
-    { val:'dark & editorial', label:'Dark & editorial', sub:'moody, high-contrast' },
-    { val:'clean & minimal',  label:'Clean & minimal',  sub:'white space, refined' },
-    { val:'raw & bold',       label:'Raw & bold',        sub:'graphic, loud, direct' },
-    { val:'soft & neutral',   label:'Soft & neutral',    sub:'earthy, wearable' }
-  ];
-  const FONT_OPTIONS = [
-    { val:'Sharp Serif',    label:'Sharp Serif',    sub:'Playfair Display',   style:"font-family:'Playfair Display',serif;font-weight:700" },
-    { val:'Clean Sans',     label:'Clean Sans',     sub:'DM Sans',            style:"font-family:'DM Sans',sans-serif;font-weight:700" },
-    { val:'Bold Grotesque', label:'Bold Grotesque', sub:'Bebas Neue',         style:"font-family:'Bebas Neue',sans-serif;letter-spacing:0.05em" },
-    { val:'Mono Tech',      label:'Mono Tech',      sub:'DM Mono',            style:"font-family:'DM Mono',monospace;font-size:15px;font-weight:500" },
-    { val:'Elegant Thin',   label:'Elegant Thin',   sub:'Cormorant Garamond', style:"font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic" },
-    { val:'Raw Condensed',  label:'Raw Condensed',  sub:'Barlow Condensed',   style:"font-family:'Barlow Condensed',sans-serif;font-weight:900;letter-spacing:0.02em" }
-  ];
-  const COLOR_OPTIONS = [
-    { val:'Quiet Luxury',    sub:'elevated, timeless',          swatches:['#F5F0E8','#C9A96E','#2C2C2C','#0A0A0A'] },
-    { val:'Street Editorial',sub:'dark, raw, high contrast',    swatches:['#0A0A0A','#F0EDE6','#6B6B6B','#CC2200'] },
-    { val:'Clean Modern',    sub:'minimal, product forward',    swatches:['#FFFFFF','#E8E8E8','#888888','#111111'] },
-    { val:'Warm Earth',      sub:'organic, natural',            swatches:['#F2EBD9','#D4B896','#C4714A','#3D2314'] },
-    { val:'Dark Matte',      sub:'serious, premium, technical', swatches:['#0D0D0D','#1E1E1E','#2E2E2E','#F5F5F5'] },
-    { val:'Soft Neutral',    sub:'soft, wearable',              swatches:['#F5EEE6','#E0D5CC','#C4A99A','#2C2C2C'] },
-    { val:'Bold Mono',       sub:'high contrast, graphic',      swatches:['#000000','#FFFFFF','#111111','#EEEEEE'] },
-    { val:'Vintage Washed',  sub:'retro, authentic',            swatches:['#1A1A1A','#888880','#F0EBD8','#6B5744'] }
-  ];
-
-  function stepRow(id, name, currentVal, pickerHTML) {
-    const done = !!currentVal;
-    const iconCls = done ? 'complete' : 'incomplete';
-    const iconTxt = done ? '✓' : '○';
-    const valCls  = done ? 'set' : '';
-    const valTxt  = done ? currentVal : 'not set';
-    return `
-      <div class="idp-step" id="idp-step-${id}">
-        <div class="idp-step-header" onclick="idpToggle('${id}')">
-          <div class="idp-step-icon ${iconCls}">${iconTxt}</div>
-          <div class="idp-step-info">
-            <div class="idp-step-name">${name}</div>
-            <div class="idp-step-value ${valCls}">${valTxt}</div>
-          </div>
-          <button class="idp-edit-btn" onclick="event.stopPropagation();idpToggle('${id}')">${done ? 'edit' : 'set'} →</button>
-        </div>
-        <div class="idp-picker" id="idp-picker-${id}">${pickerHTML}</div>
-      </div>`;
-  }
-
-  function catCards() {
-    return `<div class="idp-picker-grid">${CAT_OPTIONS.map(o =>
-      `<div class="idp-card${cat===o.val?' idp-selected':''}" onclick="idpSelectCat('${o.val}')">
-        <div class="idp-card-label">${o.label}</div>
-        <div class="idp-card-sub">${o.sub}</div>
-      </div>`).join('')}</div>`;
-  }
-  function vibeCards() {
-    return `<div class="idp-picker-grid">${VIBE_OPTIONS.map(o =>
-      `<div class="idp-card${vibe===o.val?' idp-selected':''}" onclick="idpSelectVibe('${o.val}')">
-        <div class="idp-card-label">${o.label}</div>
-        <div class="idp-card-sub">${o.sub}</div>
-      </div>`).join('')}</div>`;
-  }
-  function fontCards() {
-    return `<div class="idp-picker-grid">${FONT_OPTIONS.map(o =>
-      `<div class="idp-card${font===o.val?' idp-selected':''}" onclick="idpSelectFont('${o.val}')">
-        <span class="idp-font-preview" style="${o.style}">Aa</span>
-        <div class="idp-card-label">${o.label}</div>
-        <div class="idp-card-sub">${o.sub}</div>
-      </div>`).join('')}</div>`;
-  }
-  function colorCards() {
-    return `<div class="idp-picker-grid">${COLOR_OPTIONS.map(o =>
-      `<div class="idp-card${color===o.val?' idp-selected':''}" onclick="idpSelectColor('${o.val}')">
-        <div class="idp-swatch-strip">${o.swatches.map(s=>`<div style="background:${s}"></div>`).join('')}</div>
-        <div class="idp-color-name">${o.val}</div>
-        <div class="idp-color-sub">${o.sub}</div>
-      </div>`).join('')}</div>`;
+  function badge(val) {
+    return val
+      ? `<span class="idm-badge complete">complete</span>`
+      : `<span class="idm-badge incomplete">not set</span>`;
   }
 
   body.innerHTML = `
-    <p class="idp-intro">Set your visual direction. Each choice shapes your brand kit, prompts, and store feel. You can update any step anytime.</p>
-    <div class="idp-steps">
-      ${stepRow('cat',   'Category',   cat,   catCards())}
-      ${stepRow('vibe',  'Vibe',        vibe,  vibeCards())}
-      ${stepRow('font',  'Font',        font,  fontCards())}
-      ${stepRow('color', 'Color Mood',  color, colorCards())}
+    <!-- Step 1: Category -->
+    <div class="idm-step">
+      <span class="idm-step-num">Step 01</span>
+      <div class="idm-step-head">
+        <div class="idm-step-title">What are you building?</div>
+        ${badge(cat)}
+      </div>
+      <p class="idm-step-desc">pick the category that fits your brand.</p>
+      <div class="idm-pill-row">
+        ${IDM_CATS.map(c=>`<div class="idm-pill${cat===c.val?' idm-sel':''}" onclick="idmSelectCat('${c.val}')">${c.label}</div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Step 2: Vibe -->
+    <div class="idm-step">
+      <span class="idm-step-num">Step 02</span>
+      <div class="idm-step-head">
+        <div class="idm-step-title">What does your brand feel like?</div>
+        ${badge(vibe)}
+      </div>
+      <p class="idm-step-desc">this shapes your visual direction.</p>
+      <div class="idm-vibe-grid">
+        ${IDM_VIBES.map(v=>`<div class="idm-vibe-card${vibe===v.val?' idm-sel':''}" onclick="idmSelectVibe('${v.val}')">
+          <div class="idm-vibe-name">${v.label}</div>
+          <div class="idm-vibe-desc">${v.desc}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Step 3: Font -->
+    <div class="idm-step">
+      <span class="idm-step-num">Step 03</span>
+      <div class="idm-step-head">
+        <div class="idm-step-title">Pick your typography direction.</div>
+        ${badge(font)}
+      </div>
+      <p class="idm-step-desc">choose the font style that matches your brand.</p>
+      <div class="idm-font-grid">
+        ${IDM_FONTS.map(f=>`<div class="idm-font-card${font===f.val?' idm-sel':''}" onclick="idmSelectFont('${f.val}')">
+          <span class="idm-font-preview" style="${f.style}">${brandName}</span>
+          <div class="idm-font-label">${f.label}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Step 4: Color -->
+    <div class="idm-step">
+      <span class="idm-step-num">Step 04</span>
+      <div class="idm-step-head">
+        <div class="idm-step-title">Pick your color direction.</div>
+        ${badge(color)}
+      </div>
+      <p class="idm-step-desc">this shapes your brand kit palette.</p>
+      <div class="idm-color-grid">
+        ${IDM_COLORS.map(c=>`<div class="idm-color-card${color===c.val?' idm-sel':''}" onclick="idmSelectColor('${c.val}')">
+          <div class="idm-swatches">${c.swatches.map(s=>`<div class="idm-swatch" style="background:${s}"></div>`).join('')}</div>
+          <div class="idm-color-name">${c.val}</div>
+          <div class="idm-color-sub">${c.desc}</div>
+        </div>`).join('')}
+      </div>
     </div>`;
-
-  refreshIdentityStatus();
 }
 
-function idpToggle(id) {
-  const picker = document.getElementById('idp-picker-' + id);
-  if (!picker) return;
-  const isOpen = picker.classList.contains('open');
-  // Close all pickers first
-  document.querySelectorAll('.idp-picker').forEach(p => p.classList.remove('open'));
-  if (!isOpen) picker.classList.add('open');
-}
-
-function idpSelectCat(val) {
+function idmSelectCat(val) {
   state.cat = val; saveState(); updateSnapshot();
-  document.querySelectorAll('#grid-0 .option-card').forEach(c =>
-    c.classList.toggle('selected', c.getAttribute('onclick') && c.getAttribute('onclick').includes("'"+val+"'")));
-  buildIdentityPanel();
+  document.querySelectorAll('.idm-pill').forEach(el =>
+    el.classList.toggle('idm-sel', el.getAttribute('onclick')&&el.getAttribute('onclick').includes("'"+val+"'")));
+  document.querySelector('#idm-body .idm-step:nth-child(1) .idm-badge').outerHTML =
+    `<span class="idm-badge complete">complete</span>`;
+  buildIdentityModal();
 }
-function idpSelectVibe(val) {
+function idmSelectVibe(val) {
   state.vibe = val; saveState(); updateSnapshot();
-  document.querySelectorAll('#grid-1 .option-card').forEach(c =>
-    c.classList.toggle('selected', c.getAttribute('onclick') && c.getAttribute('onclick').includes("'"+val+"'")));
-  buildIdentityPanel();
+  buildIdentityModal();
 }
-function idpSelectFont(val) {
+function idmSelectFont(val) {
   state.fontStyle = val; saveState(); updateSnapshot();
   document.querySelectorAll('.font-card').forEach(c =>
-    c.classList.toggle('selected', c.getAttribute('onclick') && c.getAttribute('onclick').includes("'"+val+"'")));
-  buildIdentityPanel();
+    c.classList.toggle('selected', c.getAttribute('onclick')&&c.getAttribute('onclick').includes("'"+val+"'")));
+  buildIdentityModal();
 }
-function idpSelectColor(val) {
+function idmSelectColor(val) {
   state.colorMood = val; saveState(); updateSnapshot();
   document.querySelectorAll('.color-card').forEach(c =>
-    c.classList.toggle('selected', c.getAttribute('onclick') && c.getAttribute('onclick').includes("'"+val+"'")));
-  buildIdentityPanel();
+    c.classList.toggle('selected', c.getAttribute('onclick')&&c.getAttribute('onclick').includes("'"+val+"'")));
+  buildIdentityModal();
+}
+function idmReset() {
+  state.cat = ''; state.vibe = ''; state.fontStyle = ''; state.colorMood = '';
+  saveState(); updateSnapshot(); buildIdentityModal(); refreshIdentityStatus();
+}
+function idmSave() {
+  saveState();
+  refreshIdentityStatus();
+  const btn = document.getElementById('idm-save-btn');
+  if (!btn) return;
+  btn.textContent = 'Saved ✓';
+  btn.classList.add('saved');
+  setTimeout(() => { btn.textContent = 'Save Identity'; btn.classList.remove('saved'); }, 1500);
 }
 
 /* Panel: Brand Kit */

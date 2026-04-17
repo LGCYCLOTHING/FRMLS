@@ -110,20 +110,58 @@ body::before {
 .sidebar-item.sb-active .sb-name { font-size:14px; font-weight:700; background:var(--grad-text); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 .sidebar-item.sb-active .sb-num  { background:var(--grad-text); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
 
-/* ===== SIDEBAR DASHBOARD MODE ===== */
-.sb-dashboard-mode { display:none; flex-direction:column; align-items:flex-start; width:100%; }
-.sidebar-nav.mode-dashboard .sb-step-list { display:none; }
-.sidebar-nav.mode-dashboard .sb-dashboard-mode { display:flex; }
-.sidebar-nav.mode-dashboard .sb-logo { margin-bottom:12px; }
-.sb-dash-label { font-size:18px; font-weight:800; letter-spacing:-0.02em; background:var(--grad); padding:10px 14px; border-radius:var(--radius-md); width:100%; color:var(--white); margin-bottom:auto; line-height:1.2; -webkit-background-clip:initial; -webkit-text-fill-color:initial; background-clip:initial; }
-.sb-onboarding-toggle { margin-top:auto; padding-top:16px; border-top:1px solid var(--border-subtle); width:100%; }
-.sb-toggle-btn { display:flex; align-items:center; gap:6px; background:none; border:none; cursor:pointer; padding:4px 2px; transition:opacity 0.2s; }
-.sb-toggle-btn:hover { opacity:1; }
-.sb-toggle-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:#555555; }
-.sb-toggle-chevron { font-size:9px; color:#555555; transition:transform 0.25s ease; }
-.sb-toggle-chevron.open { transform:rotate(180deg); }
-.sb-step-list-expandable { display:none; flex-direction:column; gap:2px; margin-top:8px; width:100%; overflow:hidden; }
-.sb-step-list-expandable.open { display:flex; animation:screenIn 0.25s ease both; }
+/* ===== SIDEBAR NAV (3 items) ===== */
+.sb-nav-list { display:flex; flex-direction:column; gap:2px; width:100%; margin-bottom:auto; }
+.sb-nav-item {
+  display:flex; align-items:center; gap:9px;
+  padding:8px 10px; border-radius:var(--radius-sm);
+  background:none; border:1px solid transparent;
+  cursor:pointer; width:100%; text-align:left;
+  font-size:13px; font-weight:500; color:#aaaaaa;
+  font-family:'Inter',sans-serif; letter-spacing:0.01em;
+  transition:all 0.18s cubic-bezier(0.16,1,0.3,1);
+}
+.sb-nav-item:hover { background:rgba(255,255,255,0.04); border-color:var(--border-subtle); color:#ffffff; }
+.sb-nav-item svg { flex-shrink:0; opacity:0.6; }
+.sb-nav-item:hover svg { opacity:1; }
+
+/* ===== IDENTITY PANEL STEPS ===== */
+.idp-intro { font-size:13px; color:rgba(255,255,255,0.4); line-height:1.6; margin-bottom:24px; }
+.idp-steps { display:flex; flex-direction:column; gap:0; }
+.idp-step { border-bottom:1px solid var(--border-subtle); }
+.idp-step:first-child { border-top:1px solid var(--border-subtle); }
+.idp-step-header {
+  display:flex; align-items:center; gap:12px; padding:14px 0;
+  cursor:pointer; user-select:none;
+}
+.idp-step-header:hover .idp-step-name { color:#ffffff; }
+.idp-step-icon { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; }
+.idp-step-icon.complete { background:rgba(52,211,153,0.1); color:#34d399; border:1px solid rgba(52,211,153,0.2); }
+.idp-step-icon.incomplete { background:rgba(255,255,255,0.04); color:#555555; border:1px solid var(--border-subtle); }
+.idp-step-info { flex:1; min-width:0; }
+.idp-step-name { font-size:14px; font-weight:600; color:#cccccc; transition:color 0.15s; }
+.idp-step-value { font-size:11px; font-family:'DM Mono',monospace; color:rgba(255,255,255,0.28); margin-top:2px; letter-spacing:0.04em; }
+.idp-step-value.set { color:#a78bfa; }
+.idp-edit-btn { font-size:11px; font-family:'DM Mono',monospace; color:rgba(255,255,255,0.3); padding:4px 8px; border:1px solid rgba(255,255,255,0.08); border-radius:6px; background:none; cursor:pointer; transition:all 0.15s; white-space:nowrap; }
+.idp-step-header:hover .idp-edit-btn { color:rgba(255,255,255,0.7); border-color:rgba(255,255,255,0.2); }
+.idp-picker { display:none; padding-bottom:16px; }
+.idp-picker.open { display:block; animation:obFadeUp 0.25s both; }
+.idp-picker-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:4px; }
+.idp-picker-grid.cols-1 { grid-template-columns:1fr; }
+.idp-card {
+  background:rgba(255,255,255,0.03); border:1.5px solid rgba(255,255,255,0.07);
+  border-radius:12px; padding:12px 14px; cursor:pointer;
+  transition:all 0.18s cubic-bezier(0.16,1,0.3,1);
+}
+.idp-card:hover { background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.14); }
+.idp-card.idp-selected { background:rgba(124,58,237,0.1); border-color:rgba(124,58,237,0.5); }
+.idp-card-label { font-size:13px; font-weight:700; color:#ffffff; margin-bottom:2px; }
+.idp-card-sub { font-size:11px; color:rgba(255,255,255,0.35); font-family:'DM Mono',monospace; }
+.idp-font-preview { font-size:18px; font-weight:700; color:#ffffff; display:block; margin-bottom:4px; }
+.idp-swatch-strip { display:flex; border-radius:6px; overflow:hidden; height:22px; margin-bottom:7px; }
+.idp-swatch-strip div { flex:1; }
+.idp-color-name { font-size:13px; font-weight:700; color:#ffffff; margin-bottom:2px; }
+.idp-color-sub { font-size:10px; color:rgba(255,255,255,0.35); font-family:'DM Mono',monospace; }
 
 /* ===== SIDEBAR TODO WIDGET ===== */
 .sb-todo-widget { width:100%; margin-top:16px; padding-top:16px; border-top:1px solid var(--border-subtle); }
@@ -637,6 +675,7 @@ body::before {
 .dash-box-title { font-size:18px; font-weight:600; color:var(--white); margin-bottom:6px; letter-spacing:-0.01em; }
 .dash-box-desc { font-size:14px; color:#aaaaaa; line-height:1.55; flex:1; }
 .dash-box-last { font-family:'DM Mono',monospace; font-size:11px; color:#444444; letter-spacing:0.07em; margin-top:12px; transition:color 0.2s; }
+.dash-box-status { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.07em; margin-top:12px; color:#a78bfa; }
 .dash-box:hover .dash-box-last { color:#777777; }
 .dash-box-arrow { font-size:11px; font-family:'DM Mono',monospace; color:#555555; margin-top:5px; text-align:right; letter-spacing:0.08em; transition:color 0.2s; }
 .dash-box:hover .dash-box-arrow { color:#aaaaaa; }
@@ -2152,57 +2191,28 @@ body::before {
 <!-- ===== LEFT SIDEBAR ===== -->
 <nav class="sidebar-nav" id="sidebarNav">
   <div class="sb-logo">FRML<span class="logo-s">S</span></div>
-
-  <!-- Onboarding step list (screens 0–6) -->
-  <div class="sb-step-list">
-    <div class="sidebar-item sb-active" onclick="goTo(0)"><span class="sb-num">00</span><span class="sb-name">Start Here</span><span class="sb-check">✓</span></div>
-    <div class="sidebar-item" onclick="goTo(1)"><span class="sb-num">01</span><span class="sb-name">Brand Identity</span><span class="sb-check">✓</span></div>
-    <div class="sidebar-item" onclick="goTo(2)"><span class="sb-num">02</span><span class="sb-name">Aesthetic</span><span class="sb-check">✓</span></div>
-    <div class="sidebar-item" onclick="goTo(3)"><span class="sb-num">03</span><span class="sb-name">Identity Card</span><span class="sb-check">✓</span></div>
-    <div class="sidebar-item" onclick="goTo(4)"><span class="sb-num">04</span><span class="sb-name">Brand Kit</span><span class="sb-check">✓</span></div>
-    <div class="sidebar-item" onclick="goTo(5)"><span class="sb-num">05</span><span class="sb-name">Prompt Pack</span><span class="sb-check">✓</span></div>
-    <div class="sidebar-item" onclick="goTo(6)"><span class="sb-num">06</span><span class="sb-name">Launch Checklist</span><span class="sb-check">✓</span></div>
-    <div class="sidebar-item" onclick="goTo(7)"><span class="sb-num">07</span><span class="sb-name">Dashboard</span><span class="sb-check">✓</span></div>
+  <div class="sb-nav-list">
+    <button class="sb-nav-item" onclick="goTo(7)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </button>
+    <button class="sb-nav-item" onclick="openPanel('panel-brandlinks')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      Brand Links
+    </button>
+    <button class="sb-nav-item" onclick="openPanel('panel-customize')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+      Customize
+    </button>
   </div>
-
-  <!-- Dashboard mode (screen 7 only) -->
-  <div class="sb-dashboard-mode">
-    <div class="sb-dash-label">Dashboard</div>
-    <div class="sb-dash-actions">
-      <button class="sb-action-btn" onclick="openPanel('panel-brandlinks')" title="Brand Links">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        Brand Links
-      </button>
-      <button class="sb-action-btn" onclick="openPanel('panel-customize')" title="Customize">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
-        Customize
-      </button>
+  <div class="sb-todo-widget">
+    <div class="sb-todo-title">To-Do</div>
+    <div class="sb-todo-input-row">
+      <input class="sb-todo-input" id="sbTodoInput" type="text" placeholder="add a task…"
+        onkeydown="if(event.key==='Enter')sbAddTodo()" />
+      <button class="sb-todo-add-btn" onclick="sbAddTodo()" title="Add task">+</button>
     </div>
-    <div class="sb-onboarding-toggle">
-      <button class="sb-toggle-btn" onclick="toggleSbSteps(this)" aria-label="Show onboarding steps">
-        <span class="sb-toggle-label">onboarding steps</span>
-        <span class="sb-toggle-chevron">▾</span>
-      </button>
-      <div class="sb-step-list-expandable" id="sbStepsExpanded">
-        <div class="sidebar-item" onclick="goTo(0)"><span class="sb-num">00</span><span class="sb-name">Start Here</span><span class="sb-check">✓</span></div>
-        <div class="sidebar-item" onclick="goTo(1)"><span class="sb-num">01</span><span class="sb-name">Brand Identity</span><span class="sb-check">✓</span></div>
-        <div class="sidebar-item" onclick="goTo(2)"><span class="sb-num">02</span><span class="sb-name">Aesthetic</span><span class="sb-check">✓</span></div>
-        <div class="sidebar-item" onclick="goTo(3)"><span class="sb-num">03</span><span class="sb-name">Identity Card</span><span class="sb-check">✓</span></div>
-        <div class="sidebar-item" onclick="goTo(4)"><span class="sb-num">04</span><span class="sb-name">Brand Kit</span><span class="sb-check">✓</span></div>
-        <div class="sidebar-item" onclick="goTo(5)"><span class="sb-num">05</span><span class="sb-name">Prompt Pack</span><span class="sb-check">✓</span></div>
-        <div class="sidebar-item" onclick="goTo(6)"><span class="sb-num">06</span><span class="sb-name">Launch Checklist</span><span class="sb-check">✓</span></div>
-      </div>
-    </div>
-    <!-- Sidebar To-Do Widget -->
-    <div class="sb-todo-widget">
-      <div class="sb-todo-title">To-Do</div>
-      <div class="sb-todo-input-row">
-        <input class="sb-todo-input" id="sbTodoInput" type="text" placeholder="add a task…"
-          onkeydown="if(event.key==='Enter')sbAddTodo()" />
-        <button class="sb-todo-add-btn" onclick="sbAddTodo()" title="Add task">+</button>
-      </div>
-      <div class="sb-todo-list" id="sbTodoList"></div>
-    </div>
+    <div class="sb-todo-list" id="sbTodoList"></div>
   </div>
 </nav>
 
@@ -2237,13 +2247,6 @@ body::before {
   <span class="mob-menu-logo">FRML<span class="logo-s">S</span></span>
   <nav class="mob-menu-nav">
     <button class="mob-menu-item" onclick="goTo(7);closeHamburger()">Dashboard</button>
-    <button class="mob-menu-item" onclick="goTo(1);closeHamburger()">Brand Identity</button>
-    <button class="mob-menu-item" onclick="goTo(2);closeHamburger()">Aesthetic</button>
-    <button class="mob-menu-item" onclick="goTo(3);closeHamburger()">Identity Card</button>
-    <button class="mob-menu-item" onclick="goTo(4);closeHamburger()">Brand Kit</button>
-    <button class="mob-menu-item" onclick="goTo(5);closeHamburger()">Prompt Pack</button>
-    <button class="mob-menu-item" onclick="goTo(6);closeHamburger()">Launch Checklist</button>
-    <span class="mob-menu-section">Tools</span>
     <button class="mob-menu-item" onclick="openPanel('panel-brandlinks');closeHamburger()">Brand Links</button>
     <button class="mob-menu-item" onclick="openPanel('panel-customize');closeHamburger()">Customize</button>
   </nav>
@@ -2601,6 +2604,13 @@ body::before {
       <span class="dash-three-words" id="dash-three-words"></span>
     </div>
     <div class="dash-grid" id="dash-grid">
+      <div class="dash-box" id="box-identity" data-panel="panel-identity" onclick="openPanel('panel-identity')">
+        <div class="dash-box-icon">◈</div>
+        <div class="dash-box-title">Brand Identity</div>
+        <div class="dash-box-desc">Category, vibe, font, and color direction.</div>
+        <div class="dash-box-status" id="dash-identity-status">—</div>
+        <div class="dash-box-arrow">Open →</div>
+      </div>
       <div class="dash-box" id="box-brandkit" data-panel="panel-brandkit" onclick="openPanel('panel-brandkit')">
         <div class="dash-box-icon">◆</div>
         <div class="dash-box-title">Brand Kit</div>
@@ -2927,6 +2937,17 @@ body::before {
     </div>
   </div>
 </div><!-- /ob-overlay -->
+
+<!-- ===== BRAND IDENTITY PANEL ===== -->
+<div class="side-panel" id="panel-identity">
+  <div class="panel-header">
+    <span class="panel-title">Brand Identity</span>
+    <button class="panel-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="panel-body" id="panel-identity-body">
+    <!-- Built by buildIdentityPanel() -->
+  </div>
+</div>
 
 <!-- ===== PANEL OVERLAY ===== -->
 <div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
@@ -4447,6 +4468,7 @@ function buildDashboard() {
   }
   updateDashProgress();
   refreshLastOpenedLabels();
+  refreshIdentityStatus();
   fnLoadNotes();
   loadStoreUrl();
   loadSocials();
@@ -4500,7 +4522,7 @@ function refreshLastOpenedLabel(panelId) {
 }
 
 function refreshLastOpenedLabels() {
-  const panels = ['panel-brandkit','panel-prompts','panel-designer','panel-goodlooks','panel-checklist','panel-resources','panel-roadmap','panel-email','panel-moodboard','panel-supplier'];
+  const panels = ['panel-identity','panel-brandkit','panel-prompts','panel-designer','panel-goodlooks','panel-checklist','panel-resources','panel-roadmap','panel-email','panel-moodboard','panel-supplier'];
   panels.forEach(id => refreshLastOpenedLabel(id));
 }
 
@@ -4608,6 +4630,7 @@ function openPanel(id) {
   if (!panel) return;
 
   // Populate panels with live data when opened
+  if (id === 'panel-identity')   buildIdentityPanel();
   if (id === 'panel-brandkit')   buildBrandKitPanel();
   if (id === 'panel-prompts')    buildPromptPackPanel();
   if (id === 'panel-checklist')  buildChecklistPanel();
@@ -4689,6 +4712,158 @@ document.addEventListener('keydown', e => {
     closePanel();
   }
 });
+
+function refreshIdentityStatus() {
+  const completed = [state.cat, state.vibe, state.fontStyle, state.colorMood].filter(Boolean).length;
+  const el = document.getElementById('dash-identity-status');
+  if (!el) return;
+  el.textContent = completed === 4 ? '4 / 4 complete' : `${completed} / 4 complete`;
+  el.style.color  = completed === 4 ? '#34d399' : '#a78bfa';
+}
+
+/* Panel: Brand Identity */
+function buildIdentityPanel() {
+  const body = document.getElementById('panel-identity-body');
+  if (!body) return;
+
+  const cat   = state.cat       || '';
+  const vibe  = state.vibe      || '';
+  const font  = state.fontStyle || '';
+  const color = state.colorMood || '';
+
+  const CAT_OPTIONS = [
+    { val:'streetwear',  label:'Streetwear',       sub:'drops, graphics, culture' },
+    { val:'minimalist',  label:'Minimalist',        sub:'clean, quiet luxury' },
+    { val:'athletic',    label:'Athletic',          sub:'performance, lifestyle' },
+    { val:'accessories', label:'Accessories',       sub:'eyewear, bags, jewelry' },
+    { val:'luxury',      label:'Luxury / Premium',  sub:'high-end, elevated' },
+    { val:'vintage',     label:'Vintage / Thrift',  sub:'retro, curated finds' },
+    { val:'sportswear',  label:'Sportswear',        sub:'performance, court' },
+    { val:'workwear',    label:'Workwear / Utility',sub:'functional, durable' },
+    { val:'unisex',      label:'Unisex Basics',     sub:'essentials, everyday' },
+    { val:'swimwear',    label:'Swimwear / Resort',  sub:'beach, vacation' }
+  ];
+  const VIBE_OPTIONS = [
+    { val:'dark & editorial', label:'Dark & editorial', sub:'moody, high-contrast' },
+    { val:'clean & minimal',  label:'Clean & minimal',  sub:'white space, refined' },
+    { val:'raw & bold',       label:'Raw & bold',        sub:'graphic, loud, direct' },
+    { val:'soft & neutral',   label:'Soft & neutral',    sub:'earthy, wearable' }
+  ];
+  const FONT_OPTIONS = [
+    { val:'Sharp Serif',    label:'Sharp Serif',    sub:'Playfair Display',   style:"font-family:'Playfair Display',serif;font-weight:700" },
+    { val:'Clean Sans',     label:'Clean Sans',     sub:'DM Sans',            style:"font-family:'DM Sans',sans-serif;font-weight:700" },
+    { val:'Bold Grotesque', label:'Bold Grotesque', sub:'Bebas Neue',         style:"font-family:'Bebas Neue',sans-serif;letter-spacing:0.05em" },
+    { val:'Mono Tech',      label:'Mono Tech',      sub:'DM Mono',            style:"font-family:'DM Mono',monospace;font-size:15px;font-weight:500" },
+    { val:'Elegant Thin',   label:'Elegant Thin',   sub:'Cormorant Garamond', style:"font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic" },
+    { val:'Raw Condensed',  label:'Raw Condensed',  sub:'Barlow Condensed',   style:"font-family:'Barlow Condensed',sans-serif;font-weight:900;letter-spacing:0.02em" }
+  ];
+  const COLOR_OPTIONS = [
+    { val:'Quiet Luxury',    sub:'elevated, timeless',          swatches:['#F5F0E8','#C9A96E','#2C2C2C','#0A0A0A'] },
+    { val:'Street Editorial',sub:'dark, raw, high contrast',    swatches:['#0A0A0A','#F0EDE6','#6B6B6B','#CC2200'] },
+    { val:'Clean Modern',    sub:'minimal, product forward',    swatches:['#FFFFFF','#E8E8E8','#888888','#111111'] },
+    { val:'Warm Earth',      sub:'organic, natural',            swatches:['#F2EBD9','#D4B896','#C4714A','#3D2314'] },
+    { val:'Dark Matte',      sub:'serious, premium, technical', swatches:['#0D0D0D','#1E1E1E','#2E2E2E','#F5F5F5'] },
+    { val:'Soft Neutral',    sub:'soft, wearable',              swatches:['#F5EEE6','#E0D5CC','#C4A99A','#2C2C2C'] },
+    { val:'Bold Mono',       sub:'high contrast, graphic',      swatches:['#000000','#FFFFFF','#111111','#EEEEEE'] },
+    { val:'Vintage Washed',  sub:'retro, authentic',            swatches:['#1A1A1A','#888880','#F0EBD8','#6B5744'] }
+  ];
+
+  function stepRow(id, name, currentVal, pickerHTML) {
+    const done = !!currentVal;
+    const iconCls = done ? 'complete' : 'incomplete';
+    const iconTxt = done ? '✓' : '○';
+    const valCls  = done ? 'set' : '';
+    const valTxt  = done ? currentVal : 'not set';
+    return `
+      <div class="idp-step" id="idp-step-${id}">
+        <div class="idp-step-header" onclick="idpToggle('${id}')">
+          <div class="idp-step-icon ${iconCls}">${iconTxt}</div>
+          <div class="idp-step-info">
+            <div class="idp-step-name">${name}</div>
+            <div class="idp-step-value ${valCls}">${valTxt}</div>
+          </div>
+          <button class="idp-edit-btn" onclick="event.stopPropagation();idpToggle('${id}')">${done ? 'edit' : 'set'} →</button>
+        </div>
+        <div class="idp-picker" id="idp-picker-${id}">${pickerHTML}</div>
+      </div>`;
+  }
+
+  function catCards() {
+    return `<div class="idp-picker-grid">${CAT_OPTIONS.map(o =>
+      `<div class="idp-card${cat===o.val?' idp-selected':''}" onclick="idpSelectCat('${o.val}')">
+        <div class="idp-card-label">${o.label}</div>
+        <div class="idp-card-sub">${o.sub}</div>
+      </div>`).join('')}</div>`;
+  }
+  function vibeCards() {
+    return `<div class="idp-picker-grid">${VIBE_OPTIONS.map(o =>
+      `<div class="idp-card${vibe===o.val?' idp-selected':''}" onclick="idpSelectVibe('${o.val}')">
+        <div class="idp-card-label">${o.label}</div>
+        <div class="idp-card-sub">${o.sub}</div>
+      </div>`).join('')}</div>`;
+  }
+  function fontCards() {
+    return `<div class="idp-picker-grid">${FONT_OPTIONS.map(o =>
+      `<div class="idp-card${font===o.val?' idp-selected':''}" onclick="idpSelectFont('${o.val}')">
+        <span class="idp-font-preview" style="${o.style}">Aa</span>
+        <div class="idp-card-label">${o.label}</div>
+        <div class="idp-card-sub">${o.sub}</div>
+      </div>`).join('')}</div>`;
+  }
+  function colorCards() {
+    return `<div class="idp-picker-grid">${COLOR_OPTIONS.map(o =>
+      `<div class="idp-card${color===o.val?' idp-selected':''}" onclick="idpSelectColor('${o.val}')">
+        <div class="idp-swatch-strip">${o.swatches.map(s=>`<div style="background:${s}"></div>`).join('')}</div>
+        <div class="idp-color-name">${o.val}</div>
+        <div class="idp-color-sub">${o.sub}</div>
+      </div>`).join('')}</div>`;
+  }
+
+  body.innerHTML = `
+    <p class="idp-intro">Set your visual direction. Each choice shapes your brand kit, prompts, and store feel. You can update any step anytime.</p>
+    <div class="idp-steps">
+      ${stepRow('cat',   'Category',   cat,   catCards())}
+      ${stepRow('vibe',  'Vibe',        vibe,  vibeCards())}
+      ${stepRow('font',  'Font',        font,  fontCards())}
+      ${stepRow('color', 'Color Mood',  color, colorCards())}
+    </div>`;
+
+  refreshIdentityStatus();
+}
+
+function idpToggle(id) {
+  const picker = document.getElementById('idp-picker-' + id);
+  if (!picker) return;
+  const isOpen = picker.classList.contains('open');
+  // Close all pickers first
+  document.querySelectorAll('.idp-picker').forEach(p => p.classList.remove('open'));
+  if (!isOpen) picker.classList.add('open');
+}
+
+function idpSelectCat(val) {
+  state.cat = val; saveState(); updateSnapshot();
+  document.querySelectorAll('#grid-0 .option-card').forEach(c =>
+    c.classList.toggle('selected', c.getAttribute('onclick') && c.getAttribute('onclick').includes("'"+val+"'")));
+  buildIdentityPanel();
+}
+function idpSelectVibe(val) {
+  state.vibe = val; saveState(); updateSnapshot();
+  document.querySelectorAll('#grid-1 .option-card').forEach(c =>
+    c.classList.toggle('selected', c.getAttribute('onclick') && c.getAttribute('onclick').includes("'"+val+"'")));
+  buildIdentityPanel();
+}
+function idpSelectFont(val) {
+  state.fontStyle = val; saveState(); updateSnapshot();
+  document.querySelectorAll('.font-card').forEach(c =>
+    c.classList.toggle('selected', c.getAttribute('onclick') && c.getAttribute('onclick').includes("'"+val+"'")));
+  buildIdentityPanel();
+}
+function idpSelectColor(val) {
+  state.colorMood = val; saveState(); updateSnapshot();
+  document.querySelectorAll('.color-card').forEach(c =>
+    c.classList.toggle('selected', c.getAttribute('onclick') && c.getAttribute('onclick').includes("'"+val+"'")));
+  buildIdentityPanel();
+}
 
 /* Panel: Brand Kit */
 function buildBrandKitPanel() {

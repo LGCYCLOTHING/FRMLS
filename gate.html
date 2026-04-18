@@ -753,7 +753,7 @@ a{text-decoration:none;color:inherit;}
     </div>
   </div>
 
-  <video class="orb-video" src="orb.mp4" autoplay muted loop playsinline preload="metadata"></video>
+  <video class="orb-video" src="orb.mp4" muted playsinline preload="metadata"></video>
   <div class="hero-vignette"></div>
 
 </section>
@@ -1167,26 +1167,43 @@ document.querySelectorAll('.rv').forEach(el => io.observe(el));
 ══════════════════════════════════════════════════════════════════════════════ */
 const mm = gsap.matchMedia();
 
-/* ── 1. ORB HERO PIN ────────────────────────────────────────────────────── */
+/* ── 1. ORB SCROLL-DRIVE ────────────────────────────────────────────────── */
 (function() {
   const video = document.querySelector('.orb-video');
   const subEl = document.querySelector('.hero .sub');
   if (!video) return;
 
-  video.play().catch(() => {});
-
-  /* Pin hero for 200vh so video plays before user can scroll past */
-  ScrollTrigger.create({
-    trigger: '.hero',
-    start: 'top top',
-    end: '+=200%',
-    pin: true,
-    onUpdate: self => {
-      if (subEl) {
-        const t = Math.max(0, Math.min(1, (self.progress - 0.65) / 0.25));
-        subEl.style.opacity = t;
+  function setupScrub() {
+    gsap.to(video, {
+      currentTime: video.duration,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: '+=200%',
+        pin: true,
+        scrub: 1,
+        onUpdate: self => {
+          if (subEl) {
+            const t = Math.max(0, Math.min(1, (self.progress - 0.65) / 0.25));
+            subEl.style.opacity = t;
+          }
+        }
       }
-    }
+    });
+  }
+
+  /* Prime: play briefly so browser makes video seekable, then hand to GSAP */
+  video.play().then(() => {
+    video.pause();
+    video.currentTime = 0;
+    setupScrub();
+  }).catch(() => {
+    /* Autoplay blocked — fall back to autoplay+loop */
+    video.setAttribute('autoplay', '');
+    video.setAttribute('loop', '');
+    video.play().catch(() => {});
+    ScrollTrigger.create({ trigger: '.hero', start: 'top top', end: '+=200%', pin: true });
   });
 })();
 

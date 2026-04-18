@@ -753,7 +753,7 @@ a{text-decoration:none;color:inherit;}
     </div>
   </div>
 
-  <video class="orb-video" src="orb.mp4" muted playsinline preload="metadata"></video>
+  <video class="orb-video" src="orb.mp4" autoplay muted loop playsinline preload="metadata"></video>
   <div class="hero-vignette"></div>
 
 </section>
@@ -1173,31 +1173,19 @@ const mm = gsap.matchMedia();
   const subEl = document.querySelector('.hero .sub');
   if (!video) return;
 
-  function setup() {
-    ScrollTrigger.create({
-      trigger: '.hero',
-      start: 'top top',
-      end: '+=300%',
-      pin: true,
-      onUpdate: self => {
-        const seekTo = self.progress * video.duration;
-        if (video.fastSeek) video.fastSeek(seekTo); else video.currentTime = seekTo;
-        if (subEl) {
-          const fade = Math.max(0, Math.min(1, (self.progress - 0.65) / 0.25));
-          subEl.style.opacity = fade;
-        }
-      }
-    });
-  }
+  video.play().catch(() => {});
 
-  /* Prime video so browser makes it seekable */
-  video.play().then(() => {
-    video.pause();
-    video.currentTime = 0;
-    setup();
-  }).catch(() => {
-    if (video.readyState >= 1) setup();
-    else video.addEventListener('loadedmetadata', setup, { once: true });
+  ScrollTrigger.create({
+    trigger: '.hero',
+    start: 'top top',
+    end: '+=300%',
+    pin: true,
+    onUpdate: self => {
+      if (subEl) {
+        const fade = Math.max(0, Math.min(1, (self.progress - 0.65) / 0.25));
+        subEl.style.opacity = fade;
+      }
+    }
   });
 })();
 

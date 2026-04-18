@@ -1229,12 +1229,20 @@ const mm = gsap.matchMedia();
     });
   }
 
-  if (video.readyState >= 1) {
+  /* Prime the video so it's seekable — play then immediately pause */
+  video.muted = true;
+  video.play().then(() => {
+    video.pause();
+    video.currentTime = 0;
     setupScrub();
-  } else {
-    video.addEventListener('loadedmetadata', setupScrub, { once: true });
-  }
-  video.load();
+  }).catch(() => {
+    if (video.readyState >= 1) {
+      setupScrub();
+    } else {
+      video.addEventListener('loadedmetadata', setupScrub, { once: true });
+      video.load();
+    }
+  });
 })();
 
 /* ── 2. FLOATING CTA ────────────────────────────────────────────────────── */

@@ -242,16 +242,12 @@ a{text-decoration:none;color:inherit;}
 }
 
 /* orb video — full-hero background */
-.orb-container{
-  position:absolute;
-  inset:0;
-  pointer-events:none;z-index:1;
-  overflow:hidden;
-}
 .orb-video{
+  position:absolute;inset:0;
   width:100%;height:100%;
-  object-fit:cover;object-position:center bottom;
+  object-fit:cover;
   display:block;
+  z-index:1;pointer-events:none;
 }
 /* dual-fade: top hides nav edge, bottom blends into page */
 .hero-vignette{
@@ -259,9 +255,6 @@ a{text-decoration:none;color:inherit;}
   background:
     linear-gradient(to bottom, #0a0a0a 0%, transparent 40%),
     linear-gradient(to top,   #0a0a0a 0%, transparent 50%);
-}
-@media(max-width:767px){
-  .orb-video{object-position:center center;}
 }
 
 /* stagger-in — sub is scroll-driven, CTA fades in on load */
@@ -760,9 +753,7 @@ a{text-decoration:none;color:inherit;}
     </div>
   </div>
 
-  <div class="orb-container">
-    <video class="orb-video" src="orb.mp4" autoplay muted loop playsinline preload="auto"></video>
-  </div>
+  <video class="orb-video" src="orb.mp4" autoplay muted loop playsinline preload="auto"></video>
   <div class="hero-vignette"></div>
 
 </section>

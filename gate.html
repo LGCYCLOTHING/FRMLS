@@ -1167,44 +1167,41 @@ document.querySelectorAll('.rv').forEach(el => io.observe(el));
 ══════════════════════════════════════════════════════════════════════════════ */
 const mm = gsap.matchMedia();
 
-/* ── 1. ORB SCROLL-TRIGGERED PLAY ──────────────────────────────────────── */
+/* ── 1. ORB SCROLL-SCRUB ────────────────────────────────────────────────── */
 (function() {
   const video = document.querySelector('.orb-video');
   const subEl = document.querySelector('.hero .sub');
   if (!video) return;
 
   function setup() {
-    /* Pin hero for the video's natural duration (150px per second) */
-    const pinDistance = Math.max(window.innerHeight * 2, video.duration * 150);
-
-    ScrollTrigger.create({
-      trigger: '.hero',
-      start: 'top top',
-      end: '+=' + pinDistance,
-      pin: true,
-      onEnter: () => video.play(),
-      onLeaveBack: () => { video.pause(); video.currentTime = 0; if (subEl) subEl.style.opacity = 0; }
-    });
-
-    /* Fade tagline based on video playback progress */
-    video.addEventListener('timeupdate', () => {
-      if (!subEl || !video.duration) return;
-      const t = Math.max(0, Math.min(1, (video.currentTime / video.duration - 0.65) / 0.25));
-      subEl.style.opacity = t;
-    });
-
-    /* When video ends, scroll past the pin */
-    video.addEventListener('ended', () => {
-      if (subEl) subEl.style.opacity = 1;
-      lenis.scrollTo(document.querySelector('.pills-section'), { duration: 1 });
+    gsap.to(video, {
+      currentTime: video.duration,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: '+=300%',
+        pin: true,
+        scrub: 0.5,
+        onUpdate: self => {
+          if (subEl) {
+            const t = Math.max(0, Math.min(1, (self.progress - 0.65) / 0.25));
+            subEl.style.opacity = t;
+          }
+        }
+      }
     });
   }
 
-  if (video.readyState >= 1) {
+  /* Prime video so browser makes it seekable */
+  video.play().then(() => {
+    video.pause();
+    video.currentTime = 0;
     setup();
-  } else {
-    video.addEventListener('loadedmetadata', setup, { once: true });
-  }
+  }).catch(() => {
+    if (video.readyState >= 1) setup();
+    else video.addEventListener('loadedmetadata', setup, { once: true });
+  });
 })();
 
 /* ── 2. FLOATING CTA ────────────────────────────────────────────────────── */

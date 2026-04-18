@@ -1134,7 +1134,7 @@ mnav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
 gsap.registerPlugin(ScrollTrigger);
 
 const lenis = new Lenis({
-  duration: 0.5,
+  duration: 0.3,
   easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   smooth: true, mouseMultiplier: 1,
   smoothTouch: false, touchMultiplier: 2,
@@ -1174,20 +1174,16 @@ const mm = gsap.matchMedia();
   if (!video) return;
 
   function setup() {
-    gsap.to(video, {
-      currentTime: video.duration,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: '+=300%',
-        pin: true,
-        scrub: true,
-        onUpdate: self => {
-          if (subEl) {
-            const t = Math.max(0, Math.min(1, (self.progress - 0.65) / 0.25));
-            subEl.style.opacity = t;
-          }
+    ScrollTrigger.create({
+      trigger: '.hero',
+      start: 'top top',
+      end: '+=300%',
+      pin: true,
+      onUpdate: self => {
+        video.currentTime = self.progress * video.duration;
+        if (subEl) {
+          const t = Math.max(0, Math.min(1, (self.progress - 0.65) / 0.25));
+          subEl.style.opacity = t;
         }
       }
     });

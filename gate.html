@@ -260,9 +260,6 @@ a{text-decoration:none;color:inherit;}
     linear-gradient(to bottom, #0a0a0a 0%, transparent 40%),
     linear-gradient(to top,   #0a0a0a 0%, transparent 50%);
 }
-@media(prefers-reduced-motion:reduce){
-  .orb-container{display:none;}
-}
 @media(max-width:767px){
   .orb-video{object-position:center center;}
 }
@@ -764,9 +761,7 @@ a{text-decoration:none;color:inherit;}
   </div>
 
   <div class="orb-container">
-    <video class="orb-video" autoplay muted playsinline preload="auto">
-      <source src="orb.mp4" type="video/mp4">
-    </video>
+    <video class="orb-video" src="orb.mp4" autoplay muted loop playsinline preload="auto"></video>
   </div>
   <div class="hero-vignette"></div>
 

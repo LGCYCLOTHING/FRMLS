@@ -1180,10 +1180,11 @@ const mm = gsap.matchMedia();
       end: '+=300%',
       pin: true,
       onUpdate: self => {
-        video.currentTime = self.progress * video.duration;
+        const seekTo = self.progress * video.duration;
+        if (video.fastSeek) video.fastSeek(seekTo); else video.currentTime = seekTo;
         if (subEl) {
-          const t = Math.max(0, Math.min(1, (self.progress - 0.65) / 0.25));
-          subEl.style.opacity = t;
+          const fade = Math.max(0, Math.min(1, (self.progress - 0.65) / 0.25));
+          subEl.style.opacity = fade;
         }
       }
     });

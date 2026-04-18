@@ -1134,7 +1134,7 @@ mnav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
 gsap.registerPlugin(ScrollTrigger);
 
 const lenis = new Lenis({
-  duration: 0.3,
+  duration: 0,
   easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   smooth: true, mouseMultiplier: 1,
   smoothTouch: false, touchMultiplier: 2,

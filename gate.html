@@ -766,8 +766,7 @@ a{text-decoration:none;color:inherit;}
   </div>
 
   <div class="orb-container">
-    <video class="orb-video" muted playsinline preload="auto"
-      poster="orb-poster.jpg">
+    <video class="orb-video" autoplay muted playsinline preload="auto">
       <source src="orb.mp4" type="video/mp4">
     </video>
   </div>
@@ -1184,63 +1183,25 @@ document.querySelectorAll('.rv').forEach(el => io.observe(el));
 ══════════════════════════════════════════════════════════════════════════════ */
 const mm = gsap.matchMedia();
 
-/* ── 1. ORB SCROLL-DRIVE ────────────────────────────────────────────────── */
+/* ── 1. ORB HERO PIN ────────────────────────────────────────────────────── */
 (function() {
   const video = document.querySelector('.orb-video');
+  const subEl = document.querySelector('.hero .sub');
   if (!video) return;
 
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  video.play().catch(() => {});
 
-  if (isIOS) {
-    video.setAttribute('autoplay', '');
-    video.setAttribute('loop', '');
-    video.play().catch(() => {});
-    return;
-  }
-
-  if (prefersReducedMotion) {
-    video.addEventListener('loadedmetadata', () => {
-      video.currentTime = video.duration;
-    });
-    video.load();
-    return;
-  }
-
-  const subEl = document.querySelector('.hero .sub');
-
-  function setupScrub() {
-    gsap.to(video, {
-      currentTime: video.duration,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.hero',
-        start: 'top top',
-        end: '+=200%',
-        pin: true,
-        scrub: 1,
-        onUpdate: self => {
-          if (subEl) {
-            const t = Math.max(0, Math.min(1, (self.progress - 0.70) / 0.25));
-            subEl.style.opacity = t;
-          }
-        }
+  /* Pin hero for 200vh so video plays before user can scroll past */
+  ScrollTrigger.create({
+    trigger: '.hero',
+    start: 'top top',
+    end: '+=200%',
+    pin: true,
+    onUpdate: self => {
+      if (subEl) {
+        const t = Math.max(0, Math.min(1, (self.progress - 0.65) / 0.25));
+        subEl.style.opacity = t;
       }
-    });
-  }
-
-  /* Prime the video so it's seekable — play then immediately pause */
-  video.muted = true;
-  video.play().then(() => {
-    video.pause();
-    video.currentTime = 0;
-    setupScrub();
-  }).catch(() => {
-    if (video.readyState >= 1) {
-      setupScrub();
-    } else {
-      video.addEventListener('loadedmetadata', setupScrub, { once: true });
-      video.load();
     }
   });
 })();

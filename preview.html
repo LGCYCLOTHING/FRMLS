@@ -1917,6 +1917,159 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   letter-spacing: 0.08em; text-align: center;
 }
 
+/* ══════════════════════════════════════════════
+   5 SIGNS CAROUSEL — CSS
+══════════════════════════════════════════════ */
+.sgn-bg {
+  position: absolute; inset: 0;
+  background: #050f08;
+}
+.sgn-bg-cta {
+  position: absolute; inset: 0;
+  background: #020a04;
+}
+.sgn-glow {
+  position: absolute;
+  top: 50%; left: -8%;
+  transform: translateY(-50%);
+  width: 860px; height: 860px;
+  background: radial-gradient(ellipse at center,
+    rgba(26,92,58,0.30) 0%,
+    rgba(26,92,58,0.10) 38%,
+    transparent 66%);
+  pointer-events: none;
+}
+.sgn-glow-cta {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 820px; height: 620px;
+  background: radial-gradient(ellipse at center,
+    rgba(26,92,58,0.44) 0%,
+    rgba(201,168,76,0.18) 44%,
+    transparent 68%);
+  pointer-events: none;
+}
+.sgn-noise {
+  position: absolute; inset: 0;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+.sgn-diag {
+  position: absolute; inset: 0;
+  opacity: 0.02;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255,255,255,0.9) 0px,
+    rgba(255,255,255,0.9) 1px,
+    transparent 1px,
+    transparent 30px
+  );
+}
+.sgn-gold-bottom {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 90px;
+  background: radial-gradient(ellipse at 50% 100%,
+    rgba(201,168,76,0.24) 0%, transparent 70%);
+  pointer-events: none;
+}
+.sgn-wm {
+  position: absolute;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 900; letter-spacing: -0.07em;
+  font-size: 560px; line-height: 1;
+  color: #1a5c3a; opacity: 0.06;
+  pointer-events: none; user-select: none;
+  right: -30px; bottom: -90px;
+}
+.sgn-num {
+  position: absolute; top: 48px; right: 56px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.09em;
+  color: #1a5c3a;
+}
+.sgn-frmls {
+  position: absolute; bottom: 46px; right: 56px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 20px; font-weight: 900;
+  letter-spacing: 0.02em;
+  color: #c9a84c;
+  line-height: 1;
+}
+.sgn-content {
+  position: absolute;
+  left: 64px; right: 72px;
+  top: 0; bottom: 0;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 80px 0;
+}
+.sgn-h {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 900; color: #ffffff;
+  font-size: 80px; line-height: 1.06;
+  letter-spacing: -0.04em;
+  margin: 0;
+}
+.sgn-body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400; font-size: 30px;
+  color: #f0ede6; line-height: 1.65;
+  margin-top: 38px;
+}
+.sgn-sub {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400; font-size: 30px;
+  color: rgba(240,237,230,0.55);
+  line-height: 1.4;
+  margin-top: 18px;
+}
+.sgn-line {
+  width: 120px; height: 1.5px;
+  background: linear-gradient(90deg, #c9a84c 0%, rgba(201,168,76,0) 100%);
+  border-radius: 1px;
+  margin-top: 34px;
+  flex-shrink: 0;
+}
+.sgn-g {
+  background: linear-gradient(90deg, #1a5c3a, #c9a84c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.sgn-cta-content {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 26px; padding: 80px 64px;
+}
+.sgn-cta-logo {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 108px; font-weight: 900;
+  letter-spacing: -0.04em; line-height: 1;
+  text-align: center;
+  background: linear-gradient(90deg, #1a5c3a, #c9a84c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.sgn-cta-tagline {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 52px; font-weight: 900;
+  letter-spacing: -0.03em; line-height: 1.15;
+  text-align: center;
+}
+.sgn-cta-price {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 18px; font-weight: 400;
+  color: #c9a84c; letter-spacing: 0.06em;
+  text-align: center;
+}
+
 /* Sidebar carousel section */
 .carousel-export-btn {
   width: 100%; height: 44px;
@@ -2178,6 +2331,24 @@ body.eyedropper-mode * { cursor: crosshair !important; }
           <div class="carousel-slide-thumb" onclick="selectCanvas('tip5');closeMobileSidebar()" title="Slide 5 — Reframe">05</div>
           <div class="carousel-slide-thumb" onclick="selectCanvas('tip6');closeMobileSidebar()" title="Slide 6 — Solve">06</div>
           <div class="carousel-slide-thumb tip-cta-thumb" onclick="selectCanvas('tip7');closeMobileSidebar()" title="Slide 7 — CTA">07</div>
+        </div>
+      </div>
+
+      <!-- 5 SIGNS CAROUSEL -->
+      <div class="sb-section" id="sb-signs-carousel">
+        <div class="sb-section-header">
+          <span class="sb-section-title">5 Signs Carousel</span>
+          <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">7 slides · 1080×1080</span>
+        </div>
+        <button class="carousel-export-btn" id="signs-export-btn" onclick="exportSignsCarousel()">↓ Export All 7 Slides</button>
+        <div class="carousel-slide-row" id="signs-carousel-thumbs">
+          <div class="carousel-slide-thumb" onclick="selectCanvas('signs1');closeMobileSidebar()" title="Slide 1 — Hook">01</div>
+          <div class="carousel-slide-thumb" onclick="selectCanvas('signs2');closeMobileSidebar()" title="Slide 2 — Sign 1">02</div>
+          <div class="carousel-slide-thumb" onclick="selectCanvas('signs3');closeMobileSidebar()" title="Slide 3 — Sign 2">03</div>
+          <div class="carousel-slide-thumb" onclick="selectCanvas('signs4');closeMobileSidebar()" title="Slide 4 — Sign 3">04</div>
+          <div class="carousel-slide-thumb" onclick="selectCanvas('signs5');closeMobileSidebar()" title="Slide 5 — Sign 4">05</div>
+          <div class="carousel-slide-thumb" onclick="selectCanvas('signs6');closeMobileSidebar()" title="Slide 6 — Sign 5">06</div>
+          <div class="carousel-slide-thumb tip-cta-thumb" onclick="selectCanvas('signs7');closeMobileSidebar()" title="Slide 7 — CTA">07</div>
         </div>
       </div>
 
@@ -3105,6 +3276,230 @@ body.eyedropper-mode * { cursor: crosshair !important; }
     </div>
   </div>
 
+
+  <!-- ═══════════════════════════════════════════════════
+       5 SIGNS CAROUSEL — 7 SLIDES @ 1080×1080
+  ═══════════════════════════════════════════════════ -->
+
+  <!-- SLIDE 1 — HOOK -->
+  <div id="cvs-signs1" data-w="1080" data-h="1080" style="width:1080px;height:1080px;overflow:hidden;position:relative;">
+    <div class="sgn-bg"></div>
+    <div class="sgn-glow"></div>
+    <div class="sgn-noise"></div>
+    <div class="sgn-diag"></div>
+    <div class="sgn-gold-bottom"></div>
+    <svg style="position:absolute;inset:0;width:1080px;height:1080px;pointer-events:none;z-index:10;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sgn-g1" x1="0" y1="0" x2="1080" y2="1080" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#1a5c3a"/>
+          <stop offset="50%" stop-color="#c9a84c"/>
+          <stop offset="100%" stop-color="#1a5c3a"/>
+        </linearGradient>
+      </defs>
+      <rect x="4" y="4" width="1072" height="1072" rx="12" ry="12" fill="none" stroke="url(#sgn-g1)" stroke-width="8" opacity="0.75"/>
+    </svg>
+    <span class="sgn-frmls">FRMLS</span>
+    <div class="sgn-content">
+      <div class="sgn-h" style="font-size:86px;">
+        5 signs your Shopify store<br>
+        <span class="sgn-g">isn't ready to sell.</span>
+      </div>
+      <div class="sgn-line"></div>
+      <div class="sgn-sub">most stores have all 5.</div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 — SIGN 1 -->
+  <div id="cvs-signs2" data-w="1080" data-h="1080" style="width:1080px;height:1080px;overflow:hidden;position:relative;">
+    <div class="sgn-bg"></div>
+    <div class="sgn-glow"></div>
+    <div class="sgn-noise"></div>
+    <div class="sgn-diag"></div>
+    <div class="sgn-gold-bottom"></div>
+    <div class="sgn-wm">01</div>
+    <svg style="position:absolute;inset:0;width:1080px;height:1080px;pointer-events:none;z-index:10;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sgn-g2" x1="1080" y1="0" x2="0" y2="1080" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#c9a84c"/>
+          <stop offset="50%" stop-color="#1a5c3a"/>
+          <stop offset="100%" stop-color="#c9a84c"/>
+        </linearGradient>
+      </defs>
+      <rect x="4" y="4" width="1072" height="1072" rx="12" ry="12" fill="none" stroke="url(#sgn-g2)" stroke-width="8" opacity="0.75"/>
+    </svg>
+    <span class="sgn-num">02 / 07</span>
+    <span class="sgn-frmls">FRMLS</span>
+    <div class="sgn-content">
+      <div class="sgn-h">
+        your homepage doesn't<br>
+        say <span class="sgn-g">who you're for.</span>
+      </div>
+      <div class="sgn-body">
+        if anyone could be your customer,<br>
+        nobody feels like it's for them.
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 — SIGN 2 -->
+  <div id="cvs-signs3" data-w="1080" data-h="1080" style="width:1080px;height:1080px;overflow:hidden;position:relative;">
+    <div class="sgn-bg"></div>
+    <div class="sgn-glow"></div>
+    <div class="sgn-noise"></div>
+    <div class="sgn-diag"></div>
+    <div class="sgn-gold-bottom"></div>
+    <div class="sgn-wm">02</div>
+    <svg style="position:absolute;inset:0;width:1080px;height:1080px;pointer-events:none;z-index:10;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sgn-g3" x1="0" y1="1080" x2="1080" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#1a5c3a"/>
+          <stop offset="50%" stop-color="#c9a84c"/>
+          <stop offset="100%" stop-color="#1a5c3a"/>
+        </linearGradient>
+      </defs>
+      <rect x="4" y="4" width="1072" height="1072" rx="12" ry="12" fill="none" stroke="url(#sgn-g3)" stroke-width="8" opacity="0.75"/>
+    </svg>
+    <span class="sgn-num">03 / 07</span>
+    <span class="sgn-frmls">FRMLS</span>
+    <div class="sgn-content">
+      <div class="sgn-h">
+        your brand has<br>
+        <span class="sgn-g">no voice.</span>
+      </div>
+      <div class="sgn-body">
+        every caption sounds different.<br>
+        nothing feels consistent.<br>
+        customers can't tell what you stand for.
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 — SIGN 3 -->
+  <div id="cvs-signs4" data-w="1080" data-h="1080" style="width:1080px;height:1080px;overflow:hidden;position:relative;">
+    <div class="sgn-bg"></div>
+    <div class="sgn-glow"></div>
+    <div class="sgn-noise"></div>
+    <div class="sgn-diag"></div>
+    <div class="sgn-gold-bottom"></div>
+    <div class="sgn-wm">03</div>
+    <svg style="position:absolute;inset:0;width:1080px;height:1080px;pointer-events:none;z-index:10;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sgn-g4" x1="0" y1="0" x2="1080" y2="1080" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#c9a84c"/>
+          <stop offset="50%" stop-color="#1a5c3a"/>
+          <stop offset="100%" stop-color="#c9a84c"/>
+        </linearGradient>
+      </defs>
+      <rect x="4" y="4" width="1072" height="1072" rx="12" ry="12" fill="none" stroke="url(#sgn-g4)" stroke-width="8" opacity="0.75"/>
+    </svg>
+    <span class="sgn-num">04 / 07</span>
+    <span class="sgn-frmls">FRMLS</span>
+    <div class="sgn-content">
+      <div class="sgn-h">
+        you picked fonts because<br>
+        <span class="sgn-g">they looked nice.</span>
+      </div>
+      <div class="sgn-body">
+        not because they matched your brand.<br>
+        there's a difference —<br>
+        and people feel it.
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 — SIGN 4 -->
+  <div id="cvs-signs5" data-w="1080" data-h="1080" style="width:1080px;height:1080px;overflow:hidden;position:relative;">
+    <div class="sgn-bg"></div>
+    <div class="sgn-glow"></div>
+    <div class="sgn-noise"></div>
+    <div class="sgn-diag"></div>
+    <div class="sgn-gold-bottom"></div>
+    <div class="sgn-wm">04</div>
+    <svg style="position:absolute;inset:0;width:1080px;height:1080px;pointer-events:none;z-index:10;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sgn-g5" x1="1080" y1="1080" x2="0" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#1a5c3a"/>
+          <stop offset="50%" stop-color="#c9a84c"/>
+          <stop offset="100%" stop-color="#1a5c3a"/>
+        </linearGradient>
+      </defs>
+      <rect x="4" y="4" width="1072" height="1072" rx="12" ry="12" fill="none" stroke="url(#sgn-g5)" stroke-width="8" opacity="0.75"/>
+    </svg>
+    <span class="sgn-num">05 / 07</span>
+    <span class="sgn-frmls">FRMLS</span>
+    <div class="sgn-content">
+      <div class="sgn-h">
+        your store looks like<br>
+        the <span class="sgn-g">default theme.</span>
+      </div>
+      <div class="sgn-body">
+        if someone removed your logo<br>
+        nobody would know it was yours.
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 — SIGN 5 -->
+  <div id="cvs-signs6" data-w="1080" data-h="1080" style="width:1080px;height:1080px;overflow:hidden;position:relative;">
+    <div class="sgn-bg"></div>
+    <div class="sgn-glow"></div>
+    <div class="sgn-noise"></div>
+    <div class="sgn-diag"></div>
+    <div class="sgn-gold-bottom"></div>
+    <div class="sgn-wm">05</div>
+    <svg style="position:absolute;inset:0;width:1080px;height:1080px;pointer-events:none;z-index:10;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sgn-g6" x1="0" y1="0" x2="1080" y2="1080" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#1a5c3a"/>
+          <stop offset="50%" stop-color="#c9a84c"/>
+          <stop offset="100%" stop-color="#1a5c3a"/>
+        </linearGradient>
+      </defs>
+      <rect x="4" y="4" width="1072" height="1072" rx="12" ry="12" fill="none" stroke="url(#sgn-g6)" stroke-width="8" opacity="0.75"/>
+    </svg>
+    <span class="sgn-num">06 / 07</span>
+    <span class="sgn-frmls">FRMLS</span>
+    <div class="sgn-content">
+      <div class="sgn-h">
+        you launched without<br>
+        a <span class="sgn-g">brand identity.</span>
+      </div>
+      <div class="sgn-body">
+        you built the store before you<br>
+        knew what the brand actually was.
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 — CTA -->
+  <div id="cvs-signs7" data-w="1080" data-h="1080" style="width:1080px;height:1080px;overflow:hidden;position:relative;">
+    <div class="sgn-bg-cta"></div>
+    <div class="sgn-glow-cta"></div>
+    <div class="sgn-noise"></div>
+    <div class="sgn-diag"></div>
+    <div class="sgn-gold-bottom"></div>
+    <svg style="position:absolute;inset:0;width:1080px;height:1080px;pointer-events:none;z-index:10;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sgn-g7" x1="0" y1="0" x2="1080" y2="1080" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#1a5c3a"/>
+          <stop offset="50%" stop-color="#c9a84c"/>
+          <stop offset="100%" stop-color="#1a5c3a"/>
+        </linearGradient>
+      </defs>
+      <rect x="4" y="4" width="1072" height="1072" rx="12" ry="12" fill="none" stroke="url(#sgn-g7)" stroke-width="8" opacity="0.80"/>
+    </svg>
+    <span class="sgn-num" style="color:#1a5c3a;">07 / 07</span>
+    <span class="sgn-frmls">FRMLS</span>
+    <div class="sgn-cta-content">
+      <div class="sgn-cta-logo">FRMLS</div>
+      <div class="sgn-cta-tagline">
+        <span class="sgn-g">fix all 5</span>
+        <span style="color:#ffffff;"> at frmls.com</span>
+      </div>
+      <div class="sgn-cta-price">$37 one time. no subscription.</div>
+    </div>
+  </div>
+
 </div><!-- /canvas-pool -->
 
 
@@ -3176,7 +3571,14 @@ let BUILT_IN = [
   { key:'tip4', name:'Tip Slide 4 — Agitate 2',    w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:true },
   { key:'tip5', name:'Tip Slide 5 — Reframe',      w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:true },
   { key:'tip6', name:'Tip Slide 6 — Solve',        w:1080, h:1350, thumb:'linear-gradient(135deg,#f5f0e8 0%,#e8d5bc 100%)', deletable:true },
-  { key:'tip7', name:'Tip Slide 7 — CTA',          w:1080, h:1350, thumb:'linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%)', deletable:true }
+  { key:'tip7', name:'Tip Slide 7 — CTA',          w:1080, h:1350, thumb:'linear-gradient(135deg,#1a1a1a 0%,#2d2d2d 100%)', deletable:true },
+  { key:'signs1', name:'Signs Slide 1 — Hook',     w:1080, h:1080, thumb:'linear-gradient(135deg,#050f08 0%,#1a5c3a 100%)', deletable:true },
+  { key:'signs2', name:'Signs Slide 2 — Sign 1',   w:1080, h:1080, thumb:'linear-gradient(135deg,#050f08 0%,#1a5c3a 100%)', deletable:true },
+  { key:'signs3', name:'Signs Slide 3 — Sign 2',   w:1080, h:1080, thumb:'linear-gradient(135deg,#050f08 0%,#1a5c3a 100%)', deletable:true },
+  { key:'signs4', name:'Signs Slide 4 — Sign 3',   w:1080, h:1080, thumb:'linear-gradient(135deg,#050f08 0%,#1a5c3a 100%)', deletable:true },
+  { key:'signs5', name:'Signs Slide 5 — Sign 4',   w:1080, h:1080, thumb:'linear-gradient(135deg,#050f08 0%,#1a5c3a 100%)', deletable:true },
+  { key:'signs6', name:'Signs Slide 6 — Sign 5',   w:1080, h:1080, thumb:'linear-gradient(135deg,#050f08 0%,#1a5c3a 100%)', deletable:true },
+  { key:'signs7', name:'Signs Slide 7 — CTA',      w:1080, h:1080, thumb:'linear-gradient(135deg,#020a04 0%,#1a5c3a 100%)', deletable:true }
 ];
 
 let userCanvases    = [];
@@ -5908,6 +6310,78 @@ function closeMobileSidebar() {
   overlay.classList.remove('active');
   document.querySelectorAll('.mtab').forEach(function(b) { b.classList.remove('active'); });
   activeMobileTab = null;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  5 SIGNS CAROUSEL — EXPORT ALL 7 SLIDES
+// ══════════════════════════════════════════════════════════════
+
+async function exportSignsCarousel() {
+  var sidebarBtn = document.getElementById('signs-export-btn');
+
+  function setProgress(text) {
+    if (sidebarBtn) { sidebarBtn.textContent = text; sidebarBtn.disabled = true; }
+  }
+  function resetBtns() {
+    if (sidebarBtn) { sidebarBtn.textContent = '↓ Export All 7 Slides'; sidebarBtn.disabled = false; }
+  }
+
+  setProgress('Capturing…');
+
+  var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  var signsKeys = ['signs1','signs2','signs3','signs4','signs5','signs6','signs7']
+    .filter(function(k) { return !!document.getElementById('cvs-' + k); });
+
+  var slides = [];
+  for (var i = 0; i < signsKeys.length; i++) {
+    var key = signsKeys[i];
+    setProgress((i + 1) + ' / ' + signsKeys.length);
+    var dataUrl = await captureSlide(
+      document.getElementById('cvs-' + key), 1080, 1080,
+      key === 'signs7' ? '#020a04' : '#050f08'
+    );
+    slides.push({ dataUrl: dataUrl, num: i + 1 });
+    await new Promise(function(r) { setTimeout(r, 80); });
+  }
+
+  resetBtns();
+
+  var failed = slides.filter(function(s) { return !s.dataUrl; }).length;
+  if (failed === slides.length) { alert('Capture failed — try refreshing the page.'); return; }
+
+  if (isMobile) {
+    window.__frmlsSignsSlides = slides;
+    var modal = document.createElement('div');
+    modal.style.cssText = 'position:fixed;top:0;right:0;bottom:0;left:0;background:#020a04;z-index:99999;overflow-y:auto;padding:20px 16px 100px;font-family:system-ui,sans-serif;';
+    var closeBtn = document.createElement('button');
+    closeBtn.textContent = '✕ Close';
+    closeBtn.style.cssText = 'background:rgba(26,92,58,0.2);border:1px solid #1a5c3a;color:#c9a84c;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;margin-bottom:20px;';
+    closeBtn.onclick = function() { modal.remove(); };
+    modal.appendChild(closeBtn);
+    slides.forEach(function(s, idx) {
+      if (!s.dataUrl) return;
+      var btn = document.createElement('button');
+      btn.textContent = 'Save signs-slide-' + s.num + '.png';
+      btn.style.cssText = 'display:block;width:100%;margin-bottom:12px;padding:14px;background:rgba(26,92,58,0.15);border:1px solid rgba(201,168,76,0.35);color:#c9a84c;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;';
+      btn.onclick = function() {
+        var sl = (window.__frmlsSignsSlides || [])[idx];
+        if (!sl) return;
+        var a = document.createElement('a');
+        a.href = sl.dataUrl; a.download = 'signs-slide-' + sl.num + '.png';
+        a.click();
+      };
+      modal.appendChild(btn);
+    });
+    document.body.appendChild(modal);
+  } else {
+    for (var j = 0; j < slides.length; j++) {
+      if (slides[j].dataUrl) {
+        triggerDownload(slides[j].dataUrl, 'signs-slide-' + slides[j].num + '.png');
+        await new Promise(function(r) { setTimeout(r, 700); });
+      }
+    }
+  }
 }
 
 // ── Keyboard shortcuts ──

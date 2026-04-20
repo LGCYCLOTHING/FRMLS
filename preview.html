@@ -6531,5 +6531,254 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+
+<!-- ═══════════════════════════════════════════════════════════════
+     WHOP TIP POST BANNERS — 1500×500px landscape
+     ═══════════════════════════════════════════════════════════════ -->
+
+<style>
+/* ── Shared banner styles ── */
+.banner-section {
+  width: 100%;
+  padding: 60px 0 40px;
+  background: #07040f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.banner-section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.banner-wrap {
+  position: relative;
+  width: 1500px;
+  height: 500px;
+  overflow: hidden;
+  background: #07040f;
+  flex-shrink: 0;
+}
+/* Orbs */
+.b-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+}
+/* Gradient text utility */
+.g-text {
+  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+/* Gradient border card */
+.grad-border-card {
+  position: relative;
+  border-radius: 12px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(124,58,237,0.6), rgba(6,182,212,0.6));
+}
+.grad-border-card-inner {
+  background: #111;
+  border-radius: 11px;
+  padding: 16px 20px;
+}
+/* Gradient divider */
+.b-divider {
+  position: absolute;
+  top: 48px;
+  bottom: 48px;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(124,58,237,0.2), rgba(6,182,212,0.2));
+}
+/* FRMLS logo inline */
+.frmls-logo-inline {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+.frmls-logo-inline .frml { color: #ffffff; }
+.frmls-logo-inline .s-grad {
+  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+</style>
+
+<!-- ─────────────────────────────────────────────────────
+     Banner 1 - Brand Voice 1500x500
+     ───────────────────────────────────────────────────── -->
+<div class="banner-section">
+  <div class="banner-section-label">Banner 1 — Brand Voice · 1500×500</div>
+  <div class="banner-wrap" id="banner-brand-voice">
+
+    <!-- Background orbs -->
+    <div class="b-orb" style="width:600px;height:600px;background:rgba(124,58,237,0.20);left:-100px;top:-100px;"></div>
+    <div class="b-orb" style="width:500px;height:500px;background:rgba(6,182,212,0.15);right:-80px;top:-60px;"></div>
+
+    <!-- Left: copy comparison cards -->
+    <div style="position:absolute;left:60px;top:50%;transform:translateY(-50%);width:570px;display:flex;flex-direction:column;gap:10px;">
+
+      <!-- Top card: most stores -->
+      <div style="background:#111;border-radius:12px;padding:16px 20px;border:1px solid rgba(255,255,255,0.08);">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(180,60,60,0.85);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">most stores</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:rgba(255,255,255,0.38);line-height:1.55;">Black oversized hoodie. High quality materials. Available in S–XL.</div>
+      </div>
+
+      <!-- Bottom card: with frmls — gradient border -->
+      <div class="grad-border-card">
+        <div class="grad-border-card-inner">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;background:linear-gradient(90deg,#9d5cf5,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">with frmls</div>
+          <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:#ffffff;line-height:1.55;">The Everyday Heavy. Worn in. Never out.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Divider -->
+    <div class="b-divider" style="left:690px;"></div>
+
+    <!-- Right: brand message -->
+    <div style="position:absolute;right:60px;top:50%;transform:translateY(-50%);width:580px;display:flex;flex-direction:column;align-items:flex-start;">
+      <div class="frmls-logo-inline" style="font-size:36px;margin-bottom:12px;">
+        <span class="frml">FRML</span><span class="s-grad">S</span>
+      </div>
+      <div style="font-family:'Inter',sans-serif;font-size:15px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:20px;max-width:420px;">figure out what your brand is.<br>then build everything around it.</div>
+      <div class="frmls-logo-inline" style="font-size:18px;font-weight:600;background:linear-gradient(90deg,#9d5cf5,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.02em;">frmls.com</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────
+     Banner 2 - Dashboard 1500x500
+     ───────────────────────────────────────────────────── -->
+<div class="banner-section">
+  <div class="banner-section-label">Banner 2 — Dashboard · 1500×500</div>
+  <div class="banner-wrap" id="banner-dashboard">
+
+    <!-- Background orb centered top -->
+    <div class="b-orb" style="width:700px;height:700px;background:rgba(124,58,237,0.25);left:50%;top:-300px;transform:translateX(-50%);"></div>
+
+    <!-- Top-left mono label -->
+    <div style="position:absolute;top:48px;left:60px;font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.28);letter-spacing:0.12em;text-transform:uppercase;">brand identity system</div>
+
+    <!-- Dashboard mockup — centered -->
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:620px;background:#0d0d0d;border-radius:16px;border:1px solid #1e1e2a;padding:20px;box-shadow:0 0 60px rgba(124,58,237,0.15);">
+
+      <!-- FRMLS logo inside mockup -->
+      <div class="frmls-logo-inline" style="font-size:14px;margin-bottom:16px;">
+        <span class="frml">FRML</span><span class="s-grad">S</span>
+      </div>
+
+      <!-- 2×3 grid of dashboard boxes -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+
+        <div style="background:linear-gradient(135deg,rgba(124,58,237,0.18),rgba(124,58,237,0.06));border:1px solid rgba(124,58,237,0.25);border-radius:8px;padding:12px 14px;">
+          <div style="font-family:'Inter',sans-serif;font-size:11px;color:#fff;font-weight:500;">Brand Kit</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(6,182,212,0.18),rgba(6,182,212,0.06));border:1px solid rgba(6,182,212,0.25);border-radius:8px;padding:12px 14px;">
+          <div style="font-family:'Inter',sans-serif;font-size:11px;color:#fff;font-weight:500;">Prompt Pack</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(59,130,246,0.18),rgba(59,130,246,0.06));border:1px solid rgba(59,130,246,0.25);border-radius:8px;padding:12px 14px;">
+          <div style="font-family:'Inter',sans-serif;font-size:11px;color:#fff;font-weight:500;">Designer Prompts</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(249,115,22,0.18),rgba(249,115,22,0.06));border:1px solid rgba(249,115,22,0.25);border-radius:8px;padding:12px 14px;">
+          <div style="font-family:'Inter',sans-serif;font-size:11px;color:#fff;font-weight:500;">Store Inspiration</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(34,197,94,0.18),rgba(34,197,94,0.06));border:1px solid rgba(34,197,94,0.25);border-radius:8px;padding:12px 14px;">
+          <div style="font-family:'Inter',sans-serif;font-size:11px;color:#fff;font-weight:500;">Launch Checklist</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(167,139,250,0.18),rgba(167,139,250,0.06));border:1px solid rgba(167,139,250,0.25);border-radius:8px;padding:12px 14px;">
+          <div style="font-family:'Inter',sans-serif;font-size:11px;color:#fff;font-weight:500;">Store Roadmap</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom right: logo + frmls.com -->
+    <div style="position:absolute;bottom:48px;right:60px;display:flex;align-items:center;gap:12px;">
+      <div class="frmls-logo-inline" style="font-size:20px;">
+        <span class="frml">FRML</span><span class="s-grad">S</span>
+      </div>
+      <div style="font-family:'Inter',sans-serif;font-size:16px;font-weight:600;background:linear-gradient(90deg,#9d5cf5,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">frmls.com</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─────────────────────────────────────────────────────
+     Banner 3 - Launch Checklist 1500x500
+     ───────────────────────────────────────────────────── -->
+<div class="banner-section" style="margin-bottom:80px;">
+  <div class="banner-section-label">Banner 3 — Launch Checklist · 1500×500</div>
+  <div class="banner-wrap" id="banner-launch-checklist">
+
+    <!-- Background orb bottom right -->
+    <div class="b-orb" style="width:550px;height:550px;background:rgba(6,182,212,0.20);right:-80px;bottom:-120px;"></div>
+
+    <!-- Left: checklist -->
+    <div style="position:absolute;left:60px;top:50%;transform:translateY(-50%);width:640px;">
+
+      <!-- Gradient label -->
+      <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;background:linear-gradient(90deg,#9d5cf5,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:18px;">launch checklist</div>
+
+      <!-- Checklist items -->
+      <div style="display:flex;flex-direction:column;gap:8px;">
+
+        <div style="display:flex;align-items:center;gap:10px;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="url(#cg1)" stroke-width="1.5"/><path d="M4.5 8l2.5 2.5 4-5" stroke="url(#cg1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="cg1" x1="0" y1="0" x2="16" y2="16" gradientUnits="userSpaceOnUse"><stop stop-color="#9d5cf5"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs></svg>
+          <span style="font-family:'Inter',sans-serif;font-size:15px;color:#fff;">Define your brand identity</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="url(#cg2)" stroke-width="1.5"/><path d="M4.5 8l2.5 2.5 4-5" stroke="url(#cg2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="cg2" x1="0" y1="0" x2="16" y2="16" gradientUnits="userSpaceOnUse"><stop stop-color="#9d5cf5"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs></svg>
+          <span style="font-family:'Inter',sans-serif;font-size:15px;color:#fff;">Complete your homepage copy</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="url(#cg3)" stroke-width="1.5"/><path d="M4.5 8l2.5 2.5 4-5" stroke="url(#cg3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="cg3" x1="0" y1="0" x2="16" y2="16" gradientUnits="userSpaceOnUse"><stop stop-color="#9d5cf5"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs></svg>
+          <span style="font-family:'Inter',sans-serif;font-size:15px;color:#fff;">Set up your email welcome flow</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="url(#cg4)" stroke-width="1.5"/><path d="M4.5 8l2.5 2.5 4-5" stroke="url(#cg4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="cg4" x1="0" y1="0" x2="16" y2="16" gradientUnits="userSpaceOnUse"><stop stop-color="#9d5cf5"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs></svg>
+          <span style="font-family:'Inter',sans-serif;font-size:15px;color:#fff;">Add product descriptions with brand voice</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="url(#cg5)" stroke-width="1.5"/><path d="M4.5 8l2.5 2.5 4-5" stroke="url(#cg5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="cg5" x1="0" y1="0" x2="16" y2="16" gradientUnits="userSpaceOnUse"><stop stop-color="#9d5cf5"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs></svg>
+          <span style="font-family:'Inter',sans-serif;font-size:15px;color:#fff;">Connect your domain</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="url(#cg6)" stroke-width="1.5"/><path d="M4.5 8l2.5 2.5 4-5" stroke="url(#cg6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="cg6" x1="0" y1="0" x2="16" y2="16" gradientUnits="userSpaceOnUse"><stop stop-color="#9d5cf5"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs></svg>
+          <span style="font-family:'Inter',sans-serif;font-size:15px;color:rgba(255,255,255,0.35);">Test checkout on mobile</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="b-divider" style="left:755px;"></div>
+
+    <!-- Right: big number + text -->
+    <div style="position:absolute;right:60px;top:50%;transform:translateY(-50%);width:560px;display:flex;flex-direction:column;align-items:flex-start;">
+      <div style="font-family:'Inter',sans-serif;font-weight:900;font-size:96px;line-height:1;background:linear-gradient(90deg,#9d5cf5,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px;">20</div>
+      <div style="font-family:'Inter',sans-serif;font-size:16px;color:#fff;font-weight:500;margin-bottom:16px;">steps before you launch.</div>
+      <div style="font-family:'Inter',sans-serif;font-size:14px;color:rgba(255,255,255,0.45);margin-bottom:20px;">all inside FRMLS.</div>
+      <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;background:linear-gradient(90deg,#9d5cf5,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">frmls.com</div>
+    </div>
+
+  </div>
+</div>
+
 </body>
 </html>

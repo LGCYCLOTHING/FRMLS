@@ -4042,60 +4042,83 @@ body.eyedropper-mode * { cursor: crosshair !important; }
         <div class="nbt-h">every single day.</div>
         <div class="nbt-support" style="margin-top:24px;font-size:16px;">and most founders never fix this.</div>
       </div>
-      <!-- Visual: product page with generic copy -->
-      <div style="background:#111;border:1px solid #222;border-radius:10px;overflow:hidden;">
-        <div style="height:28px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 12px;gap:7px;">
-          <div style="width:7px;height:7px;border-radius:50%;background:#1e1e1e;"></div>
-          <div style="width:7px;height:7px;border-radius:50%;background:#1e1e1e;"></div>
-          <div style="width:7px;height:7px;border-radius:50%;background:#1e1e1e;"></div>
-          <div style="flex:1;height:13px;background:#1a1a1a;border-radius:3px;margin:0 10px;"></div>
+      <!-- Visual: Before/After product description comparison -->
+      <div style="width:100%;display:flex;flex-direction:column;gap:18px;">
+        <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.1em;color:#3a3a3a;text-transform:uppercase;">the gap most brands never see:</div>
+        <div style="display:flex;gap:16px;align-items:stretch;">
+          <!-- LEFT: Generic dead copy -->
+          <div style="flex:1;background:#0c0c0c;border:1px solid #1d1d1d;border-radius:10px;overflow:hidden;">
+            <div style="height:34px;background:#111;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;padding:0 14px;gap:8px;">
+              <div style="width:9px;height:9px;border-radius:50%;background:#1c1c1c;"></div>
+              <div style="width:9px;height:9px;border-radius:50%;background:#1c1c1c;"></div>
+              <div style="width:9px;height:9px;border-radius:50%;background:#1c1c1c;"></div>
+              <div style="flex:1;height:14px;background:#181818;border-radius:3px;margin:0 10px;"></div>
+              <div style="font-family:'Inter',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;color:#252525;text-transform:uppercase;">YOUR STORE NOW</div>
+            </div>
+            <div style="padding:20px;display:flex;gap:18px;">
+              <div style="width:110px;height:140px;background:#090909;border:1px solid #181818;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+                <div style="display:flex;flex-direction:column;align-items:center;">
+                  <div style="width:20px;height:10px;background:#1c1c1c;border-radius:2px 2px 0 0;"></div>
+                  <div style="width:14px;height:12px;background:#191919;"></div>
+                  <div style="width:46px;height:7px;background:#191919;clip-path:polygon(15% 0%,85% 0%,100% 100%,0% 100%);"></div>
+                  <div style="width:46px;height:58px;background:#191919;border-radius:0 0 5px 5px;"></div>
+                </div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:#282828;margin-bottom:5px;">Essential Serum</div>
+                <div style="font-family:'Inter',sans-serif;font-size:14px;color:#222;margin-bottom:14px;">$38.00</div>
+                <div style="font-family:'Inter',sans-serif;font-size:13px;color:#1e1e1e;line-height:2.1;">
+                  High quality product.<br>
+                  Fast shipping available.<br>
+                  Made with premium materials.<br>
+                  Great for everyday use.
+                </div>
+                <div style="height:32px;background:#151515;border:1px solid #1e1e1e;border-radius:5px;margin-top:14px;display:flex;align-items:center;justify-content:center;">
+                  <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:#252525;letter-spacing:0.08em;text-transform:uppercase;">Add to Cart</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- RIGHT: Converting copy -->
+          <div style="flex:1;background:#0e0e0e;border:1px solid #2e2e2e;border-radius:10px;overflow:hidden;">
+            <div style="height:34px;background:#131313;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 14px;gap:8px;">
+              <div style="width:9px;height:9px;border-radius:50%;background:#303030;"></div>
+              <div style="width:9px;height:9px;border-radius:50%;background:#303030;"></div>
+              <div style="width:9px;height:9px;border-radius:50%;background:#303030;"></div>
+              <div style="flex:1;height:14px;background:#1e1e1e;border-radius:3px;margin:0 10px;"></div>
+              <div style="font-family:'Inter',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;color:#666;text-transform:uppercase;">WHAT CONVERTS</div>
+            </div>
+            <div style="padding:20px;display:flex;gap:18px;">
+              <div style="width:110px;height:140px;background:#0d0d0d;border:1px solid #262626;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+                <div style="display:flex;flex-direction:column;align-items:center;">
+                  <div style="width:20px;height:10px;background:#444;border-radius:2px 2px 0 0;"></div>
+                  <div style="width:14px;height:12px;background:#3a3a3a;"></div>
+                  <div style="width:46px;height:7px;background:#3a3a3a;clip-path:polygon(15% 0%,85% 0%,100% 100%,0% 100%);"></div>
+                  <div style="width:46px;height:58px;background:#383838;border-radius:0 0 5px 5px;display:flex;align-items:center;justify-content:center;">
+                    <div style="font-family:'Inter',sans-serif;font-size:6px;color:#666;letter-spacing:0.12em;text-align:center;line-height:1.6;">ESSENTIAL<br>SERUM</div>
+                  </div>
+                </div>
+              </div>
+              <div style="flex:1;">
+                <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:#aaa;margin-bottom:5px;">Essential Serum</div>
+                <div style="font-family:'Inter',sans-serif;font-size:14px;color:#888;margin-bottom:14px;">$38.00</div>
+                <div style="font-family:'Inter',sans-serif;font-size:13px;color:#888;line-height:2.1;">
+                  Wake up to smoother skin —<br>
+                  or your money back. No questions.<br>
+                  Zero fillers. Zero compromise.<br>
+                  Results in 14 days, guaranteed.
+                </div>
+                <div style="height:32px;background:#2c2c2c;border:1px solid #3a3a3a;border-radius:5px;margin-top:14px;display:flex;align-items:center;justify-content:center;">
+                  <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:#999;letter-spacing:0.08em;text-transform:uppercase;">Add to Cart</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div style="display:flex;padding:18px;gap:18px;">
-          <!-- Product image placeholder -->
-          <!-- Product image: CSS-drawn bottle/product shape -->
-          <div style="width:155px;height:155px;background:#0d0d0d;border:1px solid #1a1a1a;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
-            <!-- Bottle shape using nested divs -->
-            <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
-              <!-- Cap -->
-              <div style="width:22px;height:10px;background:#1e1e1e;border-radius:2px 2px 0 0;"></div>
-              <!-- Neck -->
-              <div style="width:16px;height:14px;background:#1c1c1c;"></div>
-              <!-- Shoulder taper -->
-              <div style="width:52px;height:8px;background:#1c1c1c;clip-path:polygon(15% 0%,85% 0%,100% 100%,0% 100%);"></div>
-              <!-- Body -->
-              <div style="width:52px;height:58px;background:#1c1c1c;border-radius:0 0 5px 5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
-                <div style="width:34px;height:2px;background:#252525;border-radius:1px;"></div>
-                <div style="width:24px;height:2px;background:#222;border-radius:1px;"></div>
-              </div>
-            </div>
-          </div>
-          <!-- Product details with actual text -->
-          <div style="flex:1;">
-            <div style="font-family:'Inter',system-ui,sans-serif;font-size:13px;font-weight:700;color:#303030;margin-bottom:4px;line-height:1.2;">Essential Daily Serum</div>
-            <div style="font-family:'Inter',system-ui,sans-serif;font-size:12px;color:#252525;margin-bottom:16px;font-weight:500;">$38.00</div>
-            <!-- Generic, bland copy bullets -->
-            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:14px;">
-              <div style="display:flex;align-items:flex-start;gap:7px;">
-                <div style="width:4px;height:4px;border-radius:50%;background:#2a2a2a;flex-shrink:0;margin-top:3px;"></div>
-                <span style="font-family:'Inter',system-ui,sans-serif;font-size:10px;color:#2e2e2e;line-height:1.4;">High quality product</span>
-              </div>
-              <div style="display:flex;align-items:flex-start;gap:7px;">
-                <div style="width:4px;height:4px;border-radius:50%;background:#2a2a2a;flex-shrink:0;margin-top:3px;"></div>
-                <span style="font-family:'Inter',system-ui,sans-serif;font-size:10px;color:#2e2e2e;line-height:1.4;">Fast shipping available</span>
-              </div>
-              <div style="display:flex;align-items:flex-start;gap:7px;">
-                <div style="width:4px;height:4px;border-radius:50%;background:#2a2a2a;flex-shrink:0;margin-top:3px;"></div>
-                <span style="font-family:'Inter',system-ui,sans-serif;font-size:10px;color:#2e2e2e;line-height:1.4;">Made with premium materials</span>
-              </div>
-              <div style="display:flex;align-items:flex-start;gap:7px;">
-                <div style="width:4px;height:4px;border-radius:50%;background:#2a2a2a;flex-shrink:0;margin-top:3px;"></div>
-                <span style="font-family:'Inter',system-ui,sans-serif;font-size:10px;color:#2e2e2e;line-height:1.4;">Great for everyday use</span>
-              </div>
-            </div>
-            <div style="height:30px;background:#181818;border:1px solid #222;border-radius:4px;display:flex;align-items:center;justify-content:center;">
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:9px;font-weight:700;color:#2e2e2e;letter-spacing:0.08em;text-transform:uppercase;">Add to Cart</span>
-            </div>
-          </div>
+        <!-- Bottom labels -->
+        <div style="display:flex;gap:16px;">
+          <div style="flex:1;text-align:center;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.15em;color:#252525;text-transform:uppercase;">generic · dead · forgettable</div>
+          <div style="flex:1;text-align:center;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.15em;color:#555;text-transform:uppercase;">specific · human · converts</div>
         </div>
       </div>
     </div>

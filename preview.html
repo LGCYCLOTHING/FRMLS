@@ -3705,142 +3705,440 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   <!-- NBT SLIDE 1 — HOOK -->
   <div id="cvs-nbt1" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="nbt-bg"></div>
-    <!-- Large orb top center 45% -->
     <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-80px;left:240px;opacity:0.45;"></div>
-    <!-- Smaller orb bottom right 30% -->
     <div class="nbt-orb" style="width:400px;height:400px;background:radial-gradient(ellipse at center,#1a1a1a 0%,transparent 70%);bottom:-80px;right:-60px;opacity:0.30;"></div>
     <div class="nbt-noise"></div>
     <div class="nbt-grain"></div>
     <span class="nbt-logo">FRMLS</span>
-    <!-- Thin separator line 40px above bottom area -->
-    <div style="position:absolute;bottom:130px;left:50%;transform:translateX(-50%);width:80px;height:1px;background:#333333;z-index:10;"></div>
-    <!-- Counter + nav -->
     <div style="position:absolute;bottom:72px;right:72px;display:flex;align-items:center;gap:16px;z-index:20;">
-      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;letter-spacing:0.05em;">&#8592; &#8594;</span>
+      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;">&#8592; &#8594;</span>
       <span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#444444;">01 / 06</span>
     </div>
-    <div class="nbt-content" style="padding:140px 0 250px;">
-      <div class="nbt-label" style="margin-bottom:20px;">on building a brand</div>
-      <div class="nbt-h" style="font-size:54px;">things nobody tells you</div>
-      <div class="nbt-h nbt-h-dim" style="font-size:54px;">when you&#8217;re starting a brand.</div>
-      <div class="nbt-support" style="margin-top:28px;font-size:15px;">swipe if you&#8217;re building something &#8594;</div>
+    <div class="nbt-content" style="padding:130px 0 120px;justify-content:space-between;">
+      <!-- Text -->
+      <div>
+        <div class="nbt-label" style="margin-bottom:20px;">on building a brand</div>
+        <div class="nbt-h" style="font-size:54px;">things nobody tells you</div>
+        <div class="nbt-h nbt-h-dim" style="font-size:54px;">when you&#8217;re starting a brand.</div>
+        <div class="nbt-support" style="margin-top:28px;font-size:15px;">swipe if you&#8217;re building something &#8594;</div>
+      </div>
+      <!-- Visual: 3 identical store thumbnails = every store looks the same -->
+      <div>
+        <div style="font-family:'Inter',system-ui,sans-serif;font-size:10px;color:#272727;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;">every store looks the same</div>
+        <div style="display:flex;gap:14px;">
+          <!-- Card A -->
+          <div style="flex:1;background:#111;border:1px solid #222;border-radius:7px;overflow:hidden;">
+            <div style="height:22px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 10px;gap:5px;">
+              <div style="width:36px;height:5px;background:#1e1e1e;border-radius:1px;"></div>
+              <div style="flex:1;"></div>
+              <div style="width:14px;height:4px;background:#1a1a1a;border-radius:1px;"></div>
+              <div style="width:14px;height:4px;background:#1a1a1a;border-radius:1px;"></div>
+              <div style="width:14px;height:4px;background:#1a1a1a;border-radius:1px;"></div>
+            </div>
+            <div style="height:100px;background:#0d0d0d;"></div>
+            <div style="padding:7px;display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+              <div style="height:62px;background:#0e0e0e;border-radius:3px;"></div>
+              <div style="height:62px;background:#0e0e0e;border-radius:3px;"></div>
+              <div style="height:62px;background:#0e0e0e;border-radius:3px;"></div>
+              <div style="height:62px;background:#0e0e0e;border-radius:3px;"></div>
+            </div>
+          </div>
+          <!-- Card B (identical) -->
+          <div style="flex:1;background:#111;border:1px solid #222;border-radius:7px;overflow:hidden;">
+            <div style="height:22px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 10px;gap:5px;">
+              <div style="width:36px;height:5px;background:#1e1e1e;border-radius:1px;"></div>
+              <div style="flex:1;"></div>
+              <div style="width:14px;height:4px;background:#1a1a1a;border-radius:1px;"></div>
+              <div style="width:14px;height:4px;background:#1a1a1a;border-radius:1px;"></div>
+              <div style="width:14px;height:4px;background:#1a1a1a;border-radius:1px;"></div>
+            </div>
+            <div style="height:100px;background:#0d0d0d;"></div>
+            <div style="padding:7px;display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+              <div style="height:62px;background:#0e0e0e;border-radius:3px;"></div>
+              <div style="height:62px;background:#0e0e0e;border-radius:3px;"></div>
+              <div style="height:62px;background:#0e0e0e;border-radius:3px;"></div>
+              <div style="height:62px;background:#0e0e0e;border-radius:3px;"></div>
+            </div>
+          </div>
+          <!-- Card C (identical) -->
+          <div style="flex:1;background:#111;border:1px solid #222;border-radius:7px;overflow:hidden;">
+            <div style="height:22px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 10px;gap:5px;">
+              <div style="width:36px;height:5px;background:#1e1e1e;border-radius:1px;"></div>
+              <div style="flex:1;"></div>
+              <div style="width:14px;height:4px;background:#1a1a1a;border-radius:1px;"></div>
+              <div style="width:14px;height:4px;background:#1a1a1a;border-radius:1px;"></div>
+              <div style="width:14px;height:4px;background:#1a1a1a;border-radius:1px;"></div>
+            </div>
+            <div style="height:100px;background:#0d0d0d;"></div>
+            <div style="padding:7px;display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+              <div style="height:62px;background:#0e0e0e;border-radius:3px;"></div>
+              <div style="height:62px;background:#0e0e0e;border-radius:3px;"></div>
+              <div style="height:62px;background:#0e0e0e;border-radius:3px;"></div>
+              <div style="height:62px;background:#0e0e0e;border-radius:3px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- NBT SLIDE 2 — THEME -->
   <div id="cvs-nbt2" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="nbt-bg"></div>
-    <!-- Large orb top left -->
     <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-120px;left:-100px;opacity:0.45;"></div>
-    <!-- Smaller orb bottom right -->
     <div class="nbt-orb" style="width:400px;height:400px;background:radial-gradient(ellipse at center,#1a1a1a 0%,transparent 70%);bottom:-80px;right:-60px;opacity:0.40;"></div>
     <div class="nbt-noise"></div>
     <div class="nbt-grain"></div>
     <span class="nbt-logo">FRMLS</span>
     <div style="position:absolute;bottom:72px;right:72px;display:flex;align-items:center;gap:16px;z-index:20;">
-      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;letter-spacing:0.05em;">&#8592; &#8594;</span>
+      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;">&#8592; &#8594;</span>
       <span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#444444;">02 / 06</span>
     </div>
-    <div class="nbt-content">
-      <div class="nbt-label" style="color:#555555;margin-bottom:32px;">nobody tells you &#8212; 01</div>
-      <div class="nbt-h">picking a Shopify theme</div>
-      <div class="nbt-h">is the last thing</div>
-      <div class="nbt-h nbt-h-dim">you should do.</div>
-      <div class="nbt-divider" style="margin:24px 0;"></div>
-      <div class="nbt-h">not the first.</div>
+    <div class="nbt-content" style="padding:130px 0 120px;justify-content:space-between;">
+      <!-- Text -->
+      <div>
+        <div class="nbt-label" style="color:#555555;margin-bottom:32px;">nobody tells you &#8212; 01</div>
+        <div class="nbt-h">picking a Shopify theme</div>
+        <div class="nbt-h">is the last thing</div>
+        <div class="nbt-h nbt-h-dim">you should do.</div>
+        <div class="nbt-divider" style="margin:24px 0;"></div>
+        <div class="nbt-h">not the first.</div>
+      </div>
+      <!-- Visual: Shopify theme-picker browser frame -->
+      <div style="background:#111;border:1px solid #222;border-radius:10px;overflow:hidden;">
+        <div style="height:32px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 14px;gap:8px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#1e1e1e;"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#1e1e1e;"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#1e1e1e;"></div>
+          <div style="flex:1;height:15px;background:#1a1a1a;border-radius:3px;margin:0 12px;display:flex;align-items:center;justify-content:center;">
+            <span style="font-family:'DM Mono',monospace;font-size:9px;color:#282828;letter-spacing:0.03em;">themes.shopify.com</span>
+          </div>
+        </div>
+        <div style="padding:18px 16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <span style="font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:700;color:#303030;letter-spacing:0.06em;text-transform:uppercase;">Theme library</span>
+            <span style="font-family:'Inter',system-ui,sans-serif;font-size:9px;color:#222;background:#141414;border:1px solid #1c1c1c;padding:3px 9px;border-radius:4px;">Free only</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+            <!-- Dawn -->
+            <div style="background:#0e0e0e;border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;">
+              <div style="height:78px;background:#0b0b0b;overflow:hidden;">
+                <div style="height:9px;background:#131313;border-bottom:1px solid #181818;"></div>
+                <div style="margin:5px 7px;height:28px;background:#101010;border-radius:2px;"></div>
+                <div style="margin:4px 7px;display:flex;gap:4px;">
+                  <div style="flex:1;height:20px;background:#0d0d0d;border-radius:2px;"></div>
+                  <div style="flex:1;height:20px;background:#0d0d0d;border-radius:2px;"></div>
+                </div>
+              </div>
+              <div style="padding:7px 8px;">
+                <div style="font-family:'Inter',system-ui,sans-serif;font-size:10px;font-weight:700;color:#333;margin-bottom:2px;">Dawn</div>
+                <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#222;">Free · Most popular</div>
+              </div>
+            </div>
+            <!-- Refresh -->
+            <div style="background:#0e0e0e;border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;">
+              <div style="height:78px;background:#0b0b0b;overflow:hidden;">
+                <div style="height:9px;background:#131313;border-bottom:1px solid #181818;"></div>
+                <div style="margin:5px 7px;height:28px;background:#101010;border-radius:2px;"></div>
+                <div style="margin:4px 7px;display:flex;gap:4px;">
+                  <div style="flex:1;height:20px;background:#0d0d0d;border-radius:2px;"></div>
+                  <div style="flex:1;height:20px;background:#0d0d0d;border-radius:2px;"></div>
+                </div>
+              </div>
+              <div style="padding:7px 8px;">
+                <div style="font-family:'Inter',system-ui,sans-serif;font-size:10px;font-weight:700;color:#333;margin-bottom:2px;">Refresh</div>
+                <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#222;">Free · Clean</div>
+              </div>
+            </div>
+            <!-- Debut -->
+            <div style="background:#0e0e0e;border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;">
+              <div style="height:78px;background:#0b0b0b;overflow:hidden;">
+                <div style="height:9px;background:#131313;border-bottom:1px solid #181818;"></div>
+                <div style="margin:5px 7px;height:28px;background:#101010;border-radius:2px;"></div>
+                <div style="margin:4px 7px;display:flex;gap:4px;">
+                  <div style="flex:1;height:20px;background:#0d0d0d;border-radius:2px;"></div>
+                  <div style="flex:1;height:20px;background:#0d0d0d;border-radius:2px;"></div>
+                </div>
+              </div>
+              <div style="padding:7px 8px;">
+                <div style="font-family:'Inter',system-ui,sans-serif;font-size:10px;font-weight:700;color:#333;margin-bottom:2px;">Debut</div>
+                <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#222;">Free · Minimal</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- NBT SLIDE 3 — LOGO -->
   <div id="cvs-nbt3" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="nbt-bg"></div>
-    <!-- Single large orb top center -->
     <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-80px;left:240px;opacity:0.45;"></div>
     <div class="nbt-noise"></div>
     <div class="nbt-grain"></div>
     <span class="nbt-logo">FRMLS</span>
     <div style="position:absolute;bottom:72px;right:72px;display:flex;align-items:center;gap:16px;z-index:20;">
-      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;letter-spacing:0.05em;">&#8592; &#8594;</span>
+      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;">&#8592; &#8594;</span>
       <span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#444444;">03 / 06</span>
     </div>
-    <div class="nbt-content">
-      <div class="nbt-label" style="color:#555555;margin-bottom:28px;">nobody tells you &#8212; 02</div>
-      <div class="nbt-h">your logo means nothing</div>
-      <div class="nbt-h nbt-h-dim">if your brand has</div>
-      <div class="nbt-h">no feeling behind it.</div>
+    <div class="nbt-content" style="padding:130px 0 120px;justify-content:space-between;">
+      <!-- Text -->
+      <div>
+        <div class="nbt-label" style="color:#555555;margin-bottom:28px;">nobody tells you &#8212; 02</div>
+        <div class="nbt-h">your logo means nothing</div>
+        <div class="nbt-h nbt-h-dim">if your brand has</div>
+        <div class="nbt-h">no feeling behind it.</div>
+      </div>
+      <!-- Visual: hollow logo ring + brand identity cards -->
+      <div>
+        <!-- Hollow logo placeholder circle, centered -->
+        <div style="display:flex;justify-content:center;margin-bottom:22px;">
+          <div style="width:190px;height:190px;border:1.5px solid #1e1e1e;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+            <div style="text-align:center;">
+              <div style="font-family:'Inter',system-ui,sans-serif;font-size:40px;font-weight:900;color:#1c1c1c;letter-spacing:-0.05em;line-height:1;">AB</div>
+              <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#181818;letter-spacing:0.2em;text-transform:uppercase;margin-top:4px;">brand co.</div>
+            </div>
+          </div>
+        </div>
+        <!-- Three brand-element cards -->
+        <div style="display:flex;gap:12px;">
+          <!-- Colors -->
+          <div style="flex:1;background:#111;border:1px solid #222;border-radius:7px;padding:14px 12px;">
+            <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#2a2a2a;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">Colors</div>
+            <div style="display:flex;gap:6px;margin-bottom:8px;">
+              <div style="width:26px;height:26px;border-radius:50%;background:#1c1c1c;"></div>
+              <div style="width:26px;height:26px;border-radius:50%;background:#242424;"></div>
+              <div style="width:26px;height:26px;border-radius:50%;background:#2e2e2e;"></div>
+              <div style="width:26px;height:26px;border-radius:50%;border:1.5px dashed #1c1c1c;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:13px;color:#1c1c1c;">+</div>
+            </div>
+            <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#1e1e1e;">no defined palette</div>
+          </div>
+          <!-- Typography -->
+          <div style="flex:1;background:#111;border:1px solid #222;border-radius:7px;padding:14px 12px;">
+            <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#2a2a2a;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">Typography</div>
+            <div style="font-family:'Inter',system-ui,sans-serif;font-size:28px;font-weight:900;color:#1e1e1e;line-height:1;margin-bottom:5px;">Ag</div>
+            <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#1e1e1e;">no font system</div>
+          </div>
+          <!-- Voice -->
+          <div style="flex:1;background:#111;border:1px solid #222;border-radius:7px;padding:14px 12px;">
+            <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#2a2a2a;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">Voice</div>
+            <div style="height:5px;background:#191919;border-radius:2px;margin-bottom:5px;"></div>
+            <div style="width:75%;height:5px;background:#171717;border-radius:2px;margin-bottom:5px;"></div>
+            <div style="width:50%;height:5px;background:#151515;border-radius:2px;margin-bottom:8px;"></div>
+            <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#1e1e1e;">no defined tone</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- NBT SLIDE 4 — COPY -->
   <div id="cvs-nbt4" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="nbt-bg"></div>
-    <!-- Large orb top right -->
     <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-100px;right:-80px;opacity:0.45;"></div>
-    <!-- Smaller orb bottom left -->
     <div class="nbt-orb" style="width:400px;height:400px;background:radial-gradient(ellipse at center,#1a1a1a 0%,transparent 70%);bottom:-80px;left:-60px;opacity:0.40;"></div>
     <div class="nbt-noise"></div>
     <div class="nbt-grain"></div>
     <span class="nbt-logo">FRMLS</span>
     <div style="position:absolute;bottom:72px;right:72px;display:flex;align-items:center;gap:16px;z-index:20;">
-      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;letter-spacing:0.05em;">&#8592; &#8594;</span>
+      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;">&#8592; &#8594;</span>
       <span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#444444;">04 / 06</span>
     </div>
-    <div class="nbt-content">
-      <div class="nbt-label" style="color:#555555;margin-bottom:28px;">nobody tells you &#8212; 03</div>
-      <div class="nbt-h">your product descriptions</div>
-      <div class="nbt-h nbt-h-dim">are losing you sales</div>
-      <div class="nbt-h">every single day.</div>
-      <div class="nbt-support" style="margin-top:24px;font-size:16px;">and most founders never fix this.</div>
+    <div class="nbt-content" style="padding:130px 0 120px;justify-content:space-between;">
+      <!-- Text -->
+      <div>
+        <div class="nbt-label" style="color:#555555;margin-bottom:28px;">nobody tells you &#8212; 03</div>
+        <div class="nbt-h">your product descriptions</div>
+        <div class="nbt-h nbt-h-dim">are losing you sales</div>
+        <div class="nbt-h">every single day.</div>
+        <div class="nbt-support" style="margin-top:24px;font-size:16px;">and most founders never fix this.</div>
+      </div>
+      <!-- Visual: product page with generic copy -->
+      <div style="background:#111;border:1px solid #222;border-radius:10px;overflow:hidden;">
+        <div style="height:28px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 12px;gap:7px;">
+          <div style="width:7px;height:7px;border-radius:50%;background:#1e1e1e;"></div>
+          <div style="width:7px;height:7px;border-radius:50%;background:#1e1e1e;"></div>
+          <div style="width:7px;height:7px;border-radius:50%;background:#1e1e1e;"></div>
+          <div style="flex:1;height:13px;background:#1a1a1a;border-radius:3px;margin:0 10px;"></div>
+        </div>
+        <div style="display:flex;padding:18px;gap:18px;">
+          <!-- Product image placeholder -->
+          <div style="width:155px;height:155px;background:#0d0d0d;border:1px solid #1a1a1a;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+            <div style="width:40px;height:40px;border:1.5px solid #1c1c1c;border-radius:4px;"></div>
+          </div>
+          <!-- Product details -->
+          <div style="flex:1;">
+            <div style="height:13px;width:65%;background:#1e1e1e;border-radius:2px;margin-bottom:7px;"></div>
+            <div style="height:9px;width:28%;background:#191919;border-radius:2px;margin-bottom:18px;"></div>
+            <!-- Generic copy bullets -->
+            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:4px;height:4px;border-radius:50%;background:#252525;flex-shrink:0;"></div>
+                <span style="font-family:'Inter',system-ui,sans-serif;font-size:10px;color:#2e2e2e;">High quality product</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:4px;height:4px;border-radius:50%;background:#252525;flex-shrink:0;"></div>
+                <span style="font-family:'Inter',system-ui,sans-serif;font-size:10px;color:#2e2e2e;">Fast shipping available</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:4px;height:4px;border-radius:50%;background:#252525;flex-shrink:0;"></div>
+                <span style="font-family:'Inter',system-ui,sans-serif;font-size:10px;color:#2e2e2e;">Premium materials used</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:4px;height:4px;border-radius:50%;background:#252525;flex-shrink:0;"></div>
+                <span style="font-family:'Inter',system-ui,sans-serif;font-size:10px;color:#2e2e2e;">Great for everyday use</span>
+              </div>
+            </div>
+            <div style="height:30px;background:#141414;border:1px solid #1c1c1c;border-radius:4px;display:flex;align-items:center;justify-content:center;">
+              <span style="font-family:'Inter',system-ui,sans-serif;font-size:9px;font-weight:700;color:#252525;letter-spacing:0.08em;text-transform:uppercase;">Add to Cart</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- NBT SLIDE 5 — IDENTITY -->
   <div id="cvs-nbt5" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="nbt-bg"></div>
-    <!-- Smaller orb top left -->
     <div class="nbt-orb" style="width:400px;height:400px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-80px;left:-80px;opacity:0.40;"></div>
-    <!-- Large orb bottom center — upward glow -->
     <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);bottom:-120px;left:240px;opacity:0.45;"></div>
     <div class="nbt-noise"></div>
     <div class="nbt-grain"></div>
     <span class="nbt-logo">FRMLS</span>
     <div style="position:absolute;bottom:72px;right:72px;display:flex;align-items:center;gap:16px;z-index:20;">
-      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;letter-spacing:0.05em;">&#8592; &#8594;</span>
+      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;">&#8592; &#8594;</span>
       <span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#444444;">05 / 06</span>
     </div>
-    <div class="nbt-content">
-      <div class="nbt-label" style="color:#555555;margin-bottom:28px;">nobody tells you &#8212; 04</div>
-      <div class="nbt-h">most stores look the same</div>
-      <div class="nbt-h nbt-h-dim">because most founders</div>
-      <div class="nbt-h">skip brand identity entirely.</div>
-      <div class="nbt-support" style="margin-top:24px;font-size:18px;font-style:italic;color:#777777;">yours doesn&#8217;t have to.</div>
+    <div class="nbt-content" style="padding:130px 0 120px;justify-content:space-between;">
+      <!-- Text -->
+      <div>
+        <div class="nbt-label" style="color:#555555;margin-bottom:28px;">nobody tells you &#8212; 04</div>
+        <div class="nbt-h">most stores look the same</div>
+        <div class="nbt-h nbt-h-dim">because most founders</div>
+        <div class="nbt-h">skip brand identity entirely.</div>
+        <div class="nbt-support" style="margin-top:24px;font-size:18px;font-style:italic;color:#777777;">yours doesn&#8217;t have to.</div>
+      </div>
+      <!-- Visual: 2x2 grid of identical store cards -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <!-- Card (repeated 4 times, all identical) -->
+        <div style="background:#111;border:1px solid #222;border-radius:6px;overflow:hidden;">
+          <div style="height:20px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 8px;gap:4px;">
+            <div style="width:30px;height:4px;background:#1e1e1e;border-radius:1px;"></div>
+            <div style="flex:1;"></div>
+            <div style="width:12px;height:3px;background:#1a1a1a;border-radius:1px;"></div>
+            <div style="width:12px;height:3px;background:#1a1a1a;border-radius:1px;"></div>
+          </div>
+          <div style="height:72px;background:#0d0d0d;"></div>
+          <div style="padding:6px;display:flex;gap:5px;">
+            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;"></div>
+            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;"></div>
+            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;"></div>
+          </div>
+        </div>
+        <div style="background:#111;border:1px solid #222;border-radius:6px;overflow:hidden;">
+          <div style="height:20px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 8px;gap:4px;">
+            <div style="width:30px;height:4px;background:#1e1e1e;border-radius:1px;"></div>
+            <div style="flex:1;"></div>
+            <div style="width:12px;height:3px;background:#1a1a1a;border-radius:1px;"></div>
+            <div style="width:12px;height:3px;background:#1a1a1a;border-radius:1px;"></div>
+          </div>
+          <div style="height:72px;background:#0d0d0d;"></div>
+          <div style="padding:6px;display:flex;gap:5px;">
+            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;"></div>
+            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;"></div>
+            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;"></div>
+          </div>
+        </div>
+        <div style="background:#111;border:1px solid #222;border-radius:6px;overflow:hidden;">
+          <div style="height:20px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 8px;gap:4px;">
+            <div style="width:30px;height:4px;background:#1e1e1e;border-radius:1px;"></div>
+            <div style="flex:1;"></div>
+            <div style="width:12px;height:3px;background:#1a1a1a;border-radius:1px;"></div>
+            <div style="width:12px;height:3px;background:#1a1a1a;border-radius:1px;"></div>
+          </div>
+          <div style="height:72px;background:#0d0d0d;"></div>
+          <div style="padding:6px;display:flex;gap:5px;">
+            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;"></div>
+            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;"></div>
+            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;"></div>
+          </div>
+        </div>
+        <div style="background:#111;border:1px solid #222;border-radius:6px;overflow:hidden;">
+          <div style="height:20px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 8px;gap:4px;">
+            <div style="width:30px;height:4px;background:#1e1e1e;border-radius:1px;"></div>
+            <div style="flex:1;"></div>
+            <div style="width:12px;height:3px;background:#1a1a1a;border-radius:1px;"></div>
+            <div style="width:12px;height:3px;background:#1a1a1a;border-radius:1px;"></div>
+          </div>
+          <div style="height:72px;background:#0d0d0d;"></div>
+          <div style="padding:6px;display:flex;gap:5px;">
+            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;"></div>
+            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;"></div>
+            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- NBT SLIDE 6 — CTA -->
   <div id="cvs-nbt6" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="nbt-bg"></div>
-    <!-- Large orb top center (#2a2a2a) -->
     <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#2a2a2a 0%,#1e1e1e 50%,transparent 72%);top:-80px;left:240px;opacity:0.50;"></div>
-    <!-- Medium orb bottom right (#222222) -->
     <div class="nbt-orb" style="width:500px;height:500px;background:radial-gradient(ellipse at center,#222222 0%,#1a1a1a 50%,transparent 72%);bottom:-100px;right:-80px;opacity:0.45;"></div>
-    <!-- Small orb left center (#1e1e1e) -->
     <div class="nbt-orb" style="width:350px;height:350px;background:radial-gradient(ellipse at center,#1e1e1e 0%,transparent 70%);top:calc(50% - 175px);left:-80px;opacity:0.40;"></div>
     <div class="nbt-noise"></div>
     <div class="nbt-grain"></div>
     <span class="nbt-logo">FRMLS</span>
-    <!-- Only left arrow on last slide -->
     <div style="position:absolute;bottom:72px;right:72px;display:flex;align-items:center;gap:16px;z-index:20;">
-      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;letter-spacing:0.05em;">&#8592;</span>
+      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;">&#8592;</span>
       <span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#444444;">06 / 06</span>
     </div>
-    <div class="nbt-content" style="align-items:center;text-align:center;">
-      <div class="nbt-h" style="font-size:52px;">we tell you all of this.</div>
-      <div class="nbt-h" style="font-size:52px;color:#888888;margin-top:16px;">and then help you fix it.</div>
-      <div style="width:100px;height:1px;background:#333333;margin-top:40px;flex-shrink:0;"></div>
-      <div class="nbt-h" style="font-size:40px;margin-top:40px;">frmls.com</div>
-      <div class="nbt-support" style="font-size:14px;color:#444444;margin-top:12px;">$37 one time</div>
-      <div class="nbt-support" style="font-size:12px;color:#333333;letter-spacing:0.10em;text-transform:uppercase;margin-top:8px;">brand identity system</div>
+    <div class="nbt-content" style="padding:130px 0 120px;justify-content:space-between;align-items:center;text-align:center;">
+      <!-- Main CTA text -->
+      <div>
+        <div class="nbt-h" style="font-size:52px;">we tell you all of this.</div>
+        <div class="nbt-h" style="font-size:52px;color:#888888;margin-top:16px;">and then help you fix it.</div>
+        <div style="width:100px;height:1px;background:#333333;margin:32px auto;"></div>
+        <div class="nbt-h" style="font-size:40px;">frmls.com</div>
+        <div class="nbt-support" style="font-size:14px;color:#444444;margin-top:10px;">$37 one time</div>
+        <div class="nbt-support" style="font-size:11px;color:#2e2e2e;letter-spacing:0.10em;text-transform:uppercase;margin-top:6px;">brand identity system</div>
+      </div>
+      <!-- What's inside card -->
+      <div style="width:100%;background:#111;border:1px solid #222;border-radius:10px;padding:20px 22px;text-align:left;">
+        <div style="font-family:'Inter',system-ui,sans-serif;font-size:9px;color:#2a2a2a;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px;">what&#8217;s inside</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="display:flex;align-items:center;gap:14px;padding:10px 12px;background:#141414;border-radius:6px;">
+            <div style="width:28px;height:28px;background:#1a1a1a;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+              <span style="font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:900;color:#272727;">B</span>
+            </div>
+            <div>
+              <div style="font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:700;color:#323232;margin-bottom:2px;">Brand Identity Kit</div>
+              <div style="font-family:'Inter',system-ui,sans-serif;font-size:9px;color:#222;letter-spacing:0.03em;">voice · colors · fonts · tone · positioning</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;padding:10px 12px;background:#141414;border-radius:6px;">
+            <div style="width:28px;height:28px;background:#1a1a1a;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+              <span style="font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:900;color:#272727;">P</span>
+            </div>
+            <div>
+              <div style="font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:700;color:#323232;margin-bottom:2px;">AI Prompt Pack</div>
+              <div style="font-family:'Inter',system-ui,sans-serif;font-size:9px;color:#222;letter-spacing:0.03em;">product copy · captions · brand voice</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;padding:10px 12px;background:#141414;border-radius:6px;">
+            <div style="width:28px;height:28px;background:#1a1a1a;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+              <span style="font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:900;color:#272727;">S</span>
+            </div>
+            <div>
+              <div style="font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:700;color:#323232;margin-bottom:2px;">Store Strategy Guide</div>
+              <div style="font-family:'Inter',system-ui,sans-serif;font-size:9px;color:#222;letter-spacing:0.03em;">structure · hierarchy · conversion</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

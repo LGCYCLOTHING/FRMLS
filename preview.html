@@ -2287,6 +2287,85 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   transition: color 0.12s; flex-shrink: 0;
 }
 .brand-logo-del-btn:hover { color: #f87171; }
+
+/* ══════════════════════════════════════════════
+   NOBODY TELLS YOU SERIES (NBT) — Monochrome Dark
+   ══════════════════════════════════════════════ */
+.nbt-bg {
+  position: absolute; inset: 0;
+  background: #080808;
+}
+.nbt-noise {
+  position: absolute; inset: 0;
+  opacity: 0.08;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+}
+.nbt-grain {
+  position: absolute; inset: 0;
+  opacity: 0.10;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+.nbt-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(120px);
+}
+.nbt-logo {
+  position: absolute; top: 72px; left: 72px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px; font-weight: 900;
+  letter-spacing: -0.06em;
+  color: #ffffff;
+  line-height: 1;
+  z-index: 20;
+}
+.nbt-content {
+  position: absolute;
+  left: 72px; right: 72px;
+  top: 0; bottom: 0;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 140px 0 180px;
+  z-index: 10;
+}
+.nbt-label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px; font-weight: 400;
+  letter-spacing: 0.15em;
+  color: #666666;
+  text-transform: uppercase;
+  margin: 0;
+}
+.nbt-h {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 900; font-size: 50px;
+  color: #ffffff;
+  line-height: 1.05; letter-spacing: -0.05em;
+  margin: 0;
+}
+.nbt-h-dim { color: #aaaaaa; }
+.nbt-divider {
+  width: 80px; height: 1.5px;
+  background: rgba(255,255,255,0.20);
+  flex-shrink: 0; margin: 0;
+}
+.nbt-support {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  color: #555555;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+@media (max-width: 768px) {
+  .nbt-h { font-size: 36px; }
+  .nbt-content { left: 40px; right: 40px; padding: 120px 0 160px; }
+  .nbt-logo { top: 40px; left: 40px; }
+}
 </style>
 </head>
 <body>
@@ -2349,6 +2428,23 @@ body.eyedropper-mode * { cursor: crosshair !important; }
           <div class="carousel-slide-thumb" onclick="selectCanvas('signs5');closeMobileSidebar()" title="Slide 5 — Sign 4">05</div>
           <div class="carousel-slide-thumb" onclick="selectCanvas('signs6');closeMobileSidebar()" title="Slide 6 — Sign 5">06</div>
           <div class="carousel-slide-thumb tip-cta-thumb" onclick="selectCanvas('signs7');closeMobileSidebar()" title="Slide 7 — CTA">07</div>
+        </div>
+      </div>
+
+      <!-- NOBODY TELLS YOU CAROUSEL -->
+      <div class="sb-section" id="sb-nbt-carousel">
+        <div class="sb-section-header">
+          <span class="sb-section-title">Nobody Tells You</span>
+          <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">6 slides · 1080×1350</span>
+        </div>
+        <button class="carousel-export-btn" id="nbt-export-btn" onclick="exportNbtCarousel()">&#8595; Export All 6 Slides</button>
+        <div class="carousel-slide-row" id="nbt-carousel-thumbs">
+          <div class="carousel-slide-thumb" onclick="selectCanvas('nbt1');closeMobileSidebar()" title="Slide 1 — Hook">01</div>
+          <div class="carousel-slide-thumb" onclick="selectCanvas('nbt2');closeMobileSidebar()" title="Slide 2 — Theme">02</div>
+          <div class="carousel-slide-thumb" onclick="selectCanvas('nbt3');closeMobileSidebar()" title="Slide 3 — Logo">03</div>
+          <div class="carousel-slide-thumb" onclick="selectCanvas('nbt4');closeMobileSidebar()" title="Slide 4 — Copy">04</div>
+          <div class="carousel-slide-thumb" onclick="selectCanvas('nbt5');closeMobileSidebar()" title="Slide 5 — Identity">05</div>
+          <div class="carousel-slide-thumb tip-cta-thumb" onclick="selectCanvas('nbt6');closeMobileSidebar()" title="Slide 6 — CTA">06</div>
         </div>
       </div>
 
@@ -3601,6 +3697,153 @@ body.eyedropper-mode * { cursor: crosshair !important; }
     </div>
   </div>
 
+
+  <!-- ══════════════════════════════════════════════
+       NOBODY TELLS YOU SERIES — 6 slides 1080×1350
+  ══════════════════════════════════════════════ -->
+
+  <!-- NBT SLIDE 1 — HOOK -->
+  <div id="cvs-nbt1" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
+    <div class="nbt-bg"></div>
+    <!-- Large orb top center 45% -->
+    <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-80px;left:240px;opacity:0.45;"></div>
+    <!-- Smaller orb bottom right 30% -->
+    <div class="nbt-orb" style="width:400px;height:400px;background:radial-gradient(ellipse at center,#1a1a1a 0%,transparent 70%);bottom:-80px;right:-60px;opacity:0.30;"></div>
+    <div class="nbt-noise"></div>
+    <div class="nbt-grain"></div>
+    <span class="nbt-logo">FRMLS</span>
+    <!-- Thin separator line 40px above bottom area -->
+    <div style="position:absolute;bottom:130px;left:50%;transform:translateX(-50%);width:80px;height:1px;background:#333333;z-index:10;"></div>
+    <!-- Counter + nav -->
+    <div style="position:absolute;bottom:72px;right:72px;display:flex;align-items:center;gap:16px;z-index:20;">
+      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;letter-spacing:0.05em;">&#8592; &#8594;</span>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#444444;">01 / 06</span>
+    </div>
+    <div class="nbt-content" style="padding:140px 0 250px;">
+      <div class="nbt-label" style="margin-bottom:20px;">on building a brand</div>
+      <div class="nbt-h" style="font-size:54px;">things nobody tells you</div>
+      <div class="nbt-h nbt-h-dim" style="font-size:54px;">when you&#8217;re starting a brand.</div>
+      <div class="nbt-support" style="margin-top:28px;font-size:15px;">swipe if you&#8217;re building something &#8594;</div>
+    </div>
+  </div>
+
+  <!-- NBT SLIDE 2 — THEME -->
+  <div id="cvs-nbt2" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
+    <div class="nbt-bg"></div>
+    <!-- Large orb top left -->
+    <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-120px;left:-100px;opacity:0.45;"></div>
+    <!-- Smaller orb bottom right -->
+    <div class="nbt-orb" style="width:400px;height:400px;background:radial-gradient(ellipse at center,#1a1a1a 0%,transparent 70%);bottom:-80px;right:-60px;opacity:0.40;"></div>
+    <div class="nbt-noise"></div>
+    <div class="nbt-grain"></div>
+    <span class="nbt-logo">FRMLS</span>
+    <div style="position:absolute;bottom:72px;right:72px;display:flex;align-items:center;gap:16px;z-index:20;">
+      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;letter-spacing:0.05em;">&#8592; &#8594;</span>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#444444;">02 / 06</span>
+    </div>
+    <div class="nbt-content">
+      <div class="nbt-label" style="color:#555555;margin-bottom:32px;">nobody tells you &#8212; 01</div>
+      <div class="nbt-h">picking a Shopify theme</div>
+      <div class="nbt-h">is the last thing</div>
+      <div class="nbt-h nbt-h-dim">you should do.</div>
+      <div class="nbt-divider" style="margin:24px 0;"></div>
+      <div class="nbt-h">not the first.</div>
+    </div>
+  </div>
+
+  <!-- NBT SLIDE 3 — LOGO -->
+  <div id="cvs-nbt3" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
+    <div class="nbt-bg"></div>
+    <!-- Single large orb top center -->
+    <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-80px;left:240px;opacity:0.45;"></div>
+    <div class="nbt-noise"></div>
+    <div class="nbt-grain"></div>
+    <span class="nbt-logo">FRMLS</span>
+    <div style="position:absolute;bottom:72px;right:72px;display:flex;align-items:center;gap:16px;z-index:20;">
+      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;letter-spacing:0.05em;">&#8592; &#8594;</span>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#444444;">03 / 06</span>
+    </div>
+    <div class="nbt-content">
+      <div class="nbt-label" style="color:#555555;margin-bottom:28px;">nobody tells you &#8212; 02</div>
+      <div class="nbt-h">your logo means nothing</div>
+      <div class="nbt-h nbt-h-dim">if your brand has</div>
+      <div class="nbt-h">no feeling behind it.</div>
+    </div>
+  </div>
+
+  <!-- NBT SLIDE 4 — COPY -->
+  <div id="cvs-nbt4" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
+    <div class="nbt-bg"></div>
+    <!-- Large orb top right -->
+    <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-100px;right:-80px;opacity:0.45;"></div>
+    <!-- Smaller orb bottom left -->
+    <div class="nbt-orb" style="width:400px;height:400px;background:radial-gradient(ellipse at center,#1a1a1a 0%,transparent 70%);bottom:-80px;left:-60px;opacity:0.40;"></div>
+    <div class="nbt-noise"></div>
+    <div class="nbt-grain"></div>
+    <span class="nbt-logo">FRMLS</span>
+    <div style="position:absolute;bottom:72px;right:72px;display:flex;align-items:center;gap:16px;z-index:20;">
+      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;letter-spacing:0.05em;">&#8592; &#8594;</span>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#444444;">04 / 06</span>
+    </div>
+    <div class="nbt-content">
+      <div class="nbt-label" style="color:#555555;margin-bottom:28px;">nobody tells you &#8212; 03</div>
+      <div class="nbt-h">your product descriptions</div>
+      <div class="nbt-h nbt-h-dim">are losing you sales</div>
+      <div class="nbt-h">every single day.</div>
+      <div class="nbt-support" style="margin-top:24px;font-size:16px;">and most founders never fix this.</div>
+    </div>
+  </div>
+
+  <!-- NBT SLIDE 5 — IDENTITY -->
+  <div id="cvs-nbt5" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
+    <div class="nbt-bg"></div>
+    <!-- Smaller orb top left -->
+    <div class="nbt-orb" style="width:400px;height:400px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-80px;left:-80px;opacity:0.40;"></div>
+    <!-- Large orb bottom center — upward glow -->
+    <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);bottom:-120px;left:240px;opacity:0.45;"></div>
+    <div class="nbt-noise"></div>
+    <div class="nbt-grain"></div>
+    <span class="nbt-logo">FRMLS</span>
+    <div style="position:absolute;bottom:72px;right:72px;display:flex;align-items:center;gap:16px;z-index:20;">
+      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;letter-spacing:0.05em;">&#8592; &#8594;</span>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#444444;">05 / 06</span>
+    </div>
+    <div class="nbt-content">
+      <div class="nbt-label" style="color:#555555;margin-bottom:28px;">nobody tells you &#8212; 04</div>
+      <div class="nbt-h">most stores look the same</div>
+      <div class="nbt-h nbt-h-dim">because most founders</div>
+      <div class="nbt-h">skip brand identity entirely.</div>
+      <div class="nbt-support" style="margin-top:24px;font-size:18px;font-style:italic;color:#777777;">yours doesn&#8217;t have to.</div>
+    </div>
+  </div>
+
+  <!-- NBT SLIDE 6 — CTA -->
+  <div id="cvs-nbt6" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
+    <div class="nbt-bg"></div>
+    <!-- Large orb top center (#2a2a2a) -->
+    <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#2a2a2a 0%,#1e1e1e 50%,transparent 72%);top:-80px;left:240px;opacity:0.50;"></div>
+    <!-- Medium orb bottom right (#222222) -->
+    <div class="nbt-orb" style="width:500px;height:500px;background:radial-gradient(ellipse at center,#222222 0%,#1a1a1a 50%,transparent 72%);bottom:-100px;right:-80px;opacity:0.45;"></div>
+    <!-- Small orb left center (#1e1e1e) -->
+    <div class="nbt-orb" style="width:350px;height:350px;background:radial-gradient(ellipse at center,#1e1e1e 0%,transparent 70%);top:calc(50% - 175px);left:-80px;opacity:0.40;"></div>
+    <div class="nbt-noise"></div>
+    <div class="nbt-grain"></div>
+    <span class="nbt-logo">FRMLS</span>
+    <!-- Only left arrow on last slide -->
+    <div style="position:absolute;bottom:72px;right:72px;display:flex;align-items:center;gap:16px;z-index:20;">
+      <span style="font-family:'Inter',system-ui,sans-serif;font-size:13px;color:#2a2a2a;letter-spacing:0.05em;">&#8592;</span>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#444444;">06 / 06</span>
+    </div>
+    <div class="nbt-content" style="align-items:center;text-align:center;">
+      <div class="nbt-h" style="font-size:52px;">we tell you all of this.</div>
+      <div class="nbt-h" style="font-size:52px;color:#888888;margin-top:16px;">and then help you fix it.</div>
+      <div style="width:100px;height:1px;background:#333333;margin-top:40px;flex-shrink:0;"></div>
+      <div class="nbt-h" style="font-size:40px;margin-top:40px;">frmls.com</div>
+      <div class="nbt-support" style="font-size:14px;color:#444444;margin-top:12px;">$37 one time</div>
+      <div class="nbt-support" style="font-size:12px;color:#333333;letter-spacing:0.10em;text-transform:uppercase;margin-top:8px;">brand identity system</div>
+    </div>
+  </div>
+
 </div><!-- /canvas-pool -->
 
 
@@ -3679,7 +3922,13 @@ let BUILT_IN = [
   { key:'signs4', name:'Signs Slide 4 — Sign 3',   w:1080, h:1080, thumb:'linear-gradient(135deg,#050f08 0%,#1a5c3a 100%)', deletable:true },
   { key:'signs5', name:'Signs Slide 5 — Sign 4',   w:1080, h:1080, thumb:'linear-gradient(135deg,#050f08 0%,#1a5c3a 100%)', deletable:true },
   { key:'signs6', name:'Signs Slide 6 — Sign 5',   w:1080, h:1080, thumb:'linear-gradient(135deg,#050f08 0%,#1a5c3a 100%)', deletable:true },
-  { key:'signs7', name:'Signs Slide 7 — CTA',      w:1080, h:1080, thumb:'linear-gradient(135deg,#020a04 0%,#1a5c3a 100%)', deletable:true }
+  { key:'signs7', name:'Signs Slide 7 — CTA',      w:1080, h:1080, thumb:'linear-gradient(135deg,#020a04 0%,#1a5c3a 100%)', deletable:true },
+  { key:'nbt1',   name:'NBT Slide 1 — Hook',       w:1080, h:1350, thumb:'linear-gradient(135deg,#080808 0%,#1a1a1a 100%)', deletable:true },
+  { key:'nbt2',   name:'NBT Slide 2 — Theme',      w:1080, h:1350, thumb:'linear-gradient(135deg,#0a0a0a 0%,#252525 100%)', deletable:true },
+  { key:'nbt3',   name:'NBT Slide 3 — Logo',       w:1080, h:1350, thumb:'linear-gradient(135deg,#080808 0%,#1a1a1a 100%)', deletable:true },
+  { key:'nbt4',   name:'NBT Slide 4 — Copy',       w:1080, h:1350, thumb:'linear-gradient(135deg,#0a0a0a 0%,#252525 100%)', deletable:true },
+  { key:'nbt5',   name:'NBT Slide 5 — Identity',   w:1080, h:1350, thumb:'linear-gradient(135deg,#080808 0%,#1a1a1a 100%)', deletable:true },
+  { key:'nbt6',   name:'NBT Slide 6 — CTA',        w:1080, h:1350, thumb:'linear-gradient(135deg,#080808 0%,#2a2a2a 100%)', deletable:true }
 ];
 
 let userCanvases    = [];
@@ -6479,6 +6728,65 @@ async function exportSignsCarousel() {
     for (var j = 0; j < slides.length; j++) {
       if (slides[j].dataUrl) {
         triggerDownload(slides[j].dataUrl, 'signs-slide-' + slides[j].num + '.png');
+        await new Promise(function(r) { setTimeout(r, 700); });
+      }
+    }
+  }
+}
+
+async function exportNbtCarousel() {
+  var sidebarBtn = document.getElementById('nbt-export-btn');
+  function setProgress(text) {
+    if (sidebarBtn) { sidebarBtn.textContent = text; sidebarBtn.disabled = true; }
+  }
+  function resetBtns() {
+    if (sidebarBtn) { sidebarBtn.textContent = '↓ Export All 6 Slides'; sidebarBtn.disabled = false; }
+  }
+  setProgress('Capturing…');
+  var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  var nbtKeys = ['nbt1','nbt2','nbt3','nbt4','nbt5','nbt6']
+    .filter(function(k) { return !!document.getElementById('cvs-' + k); });
+  var slides = [];
+  for (var i = 0; i < nbtKeys.length; i++) {
+    var key = nbtKeys[i];
+    setProgress((i + 1) + ' / ' + nbtKeys.length);
+    var dataUrl = await captureSlide(
+      document.getElementById('cvs-' + key), 1080, 1350, '#080808'
+    );
+    slides.push({ dataUrl: dataUrl, num: i + 1 });
+    await new Promise(function(r) { setTimeout(r, 80); });
+  }
+  resetBtns();
+  var failed = slides.filter(function(s) { return !s.dataUrl; }).length;
+  if (failed === slides.length) { alert('Capture failed — try refreshing the page.'); return; }
+  if (isMobile) {
+    window.__frmlsNbtSlides = slides;
+    var modal = document.createElement('div');
+    modal.style.cssText = 'position:fixed;top:0;right:0;bottom:0;left:0;background:#080808;z-index:99999;overflow-y:auto;padding:20px 16px 100px;font-family:system-ui,sans-serif;';
+    var closeBtn = document.createElement('button');
+    closeBtn.textContent = '✕ Close';
+    closeBtn.style.cssText = 'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#aaaaaa;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;margin-bottom:20px;';
+    closeBtn.onclick = function() { modal.remove(); };
+    modal.appendChild(closeBtn);
+    slides.forEach(function(s, idx) {
+      if (!s.dataUrl) return;
+      var btn = document.createElement('button');
+      btn.textContent = 'Save nbt-slide-' + s.num + '.png';
+      btn.style.cssText = 'display:block;width:100%;margin-bottom:12px;padding:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.10);color:#aaaaaa;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;';
+      btn.onclick = function() {
+        var sl = (window.__frmlsNbtSlides || [])[idx];
+        if (!sl) return;
+        var a = document.createElement('a');
+        a.href = sl.dataUrl; a.download = 'nbt-slide-' + sl.num + '.png';
+        a.click();
+      };
+      modal.appendChild(btn);
+    });
+    document.body.appendChild(modal);
+  } else {
+    for (var j = 0; j < slides.length; j++) {
+      if (slides[j].dataUrl) {
+        triggerDownload(slides[j].dataUrl, 'nbt-slide-' + slides[j].num + '.png');
         await new Promise(function(r) { setTimeout(r, 700); });
       }
     }

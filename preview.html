@@ -2348,10 +2348,16 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   line-height: 1.05; letter-spacing: -0.05em;
   margin: 0;
 }
-.nbt-h-dim { color: #aaaaaa; }
+.nbt-h-dim {
+  background: linear-gradient(100deg, #e879f9 0%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
 .nbt-divider {
   width: 80px; height: 1.5px;
-  background: rgba(255,255,255,0.20);
+  background: linear-gradient(90deg, #e879f9 0%, #818cf8 100%);
   flex-shrink: 0; margin: 0;
 }
 .nbt-support {
@@ -3705,6 +3711,7 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   <!-- NBT SLIDE 1 — HOOK -->
   <div id="cvs-nbt1" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="nbt-bg"></div>
+    <div class="nbt-orb" style="width:900px;height:900px;background:radial-gradient(ellipse at center,#7c3aed 0%,#4c1d95 35%,transparent 70%);top:-320px;right:-250px;opacity:0.16;"></div>
     <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-80px;left:240px;opacity:0.45;"></div>
     <div class="nbt-orb" style="width:400px;height:400px;background:radial-gradient(ellipse at center,#1a1a1a 0%,transparent 70%);bottom:-80px;right:-60px;opacity:0.30;"></div>
     <div class="nbt-noise"></div>
@@ -3851,6 +3858,7 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   <!-- NBT SLIDE 2 — THEME -->
   <div id="cvs-nbt2" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="nbt-bg"></div>
+    <div class="nbt-orb" style="width:850px;height:850px;background:radial-gradient(ellipse at center,#6d28d9 0%,#4c1d95 35%,transparent 70%);bottom:-280px;left:-200px;opacity:0.18;"></div>
     <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-120px;left:-100px;opacity:0.45;"></div>
     <div class="nbt-orb" style="width:400px;height:400px;background:radial-gradient(ellipse at center,#1a1a1a 0%,transparent 70%);bottom:-80px;right:-60px;opacity:0.40;"></div>
     <div class="nbt-noise"></div>
@@ -3959,6 +3967,8 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   <!-- NBT SLIDE 3 — LOGO -->
   <div id="cvs-nbt3" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="nbt-bg"></div>
+    <div class="nbt-orb" style="width:750px;height:750px;background:radial-gradient(ellipse at center,#7c3aed 0%,#4c1d95 35%,transparent 70%);top:-200px;left:-180px;opacity:0.16;"></div>
+    <div class="nbt-orb" style="width:500px;height:500px;background:radial-gradient(ellipse at center,#a855f7 0%,#7c3aed 35%,transparent 70%);bottom:-150px;right:-120px;opacity:0.12;"></div>
     <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-80px;left:240px;opacity:0.45;"></div>
     <div class="nbt-noise"></div>
     <div class="nbt-grain"></div>
@@ -4024,6 +4034,7 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   <!-- NBT SLIDE 4 — COPY -->
   <div id="cvs-nbt4" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="nbt-bg"></div>
+    <div class="nbt-orb" style="width:1000px;height:1000px;background:radial-gradient(ellipse at center,#6d28d9 0%,#4c1d95 30%,transparent 68%);bottom:-400px;right:-300px;opacity:0.20;"></div>
     <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-100px;right:-80px;opacity:0.45;"></div>
     <div class="nbt-orb" style="width:400px;height:400px;background:radial-gradient(ellipse at center,#1a1a1a 0%,transparent 70%);bottom:-80px;left:-60px;opacity:0.40;"></div>
     <div class="nbt-noise"></div>
@@ -4127,6 +4138,7 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   <!-- NBT SLIDE 5 — IDENTITY -->
   <div id="cvs-nbt5" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="nbt-bg"></div>
+    <div class="nbt-orb" style="width:950px;height:950px;background:radial-gradient(ellipse at center,#7c3aed 0%,#4c1d95 35%,transparent 70%);top:-380px;right:-300px;opacity:0.17;"></div>
     <div class="nbt-orb" style="width:400px;height:400px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);top:-80px;left:-80px;opacity:0.40;"></div>
     <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#252525 0%,#1a1a1a 50%,transparent 72%);bottom:-120px;left:240px;opacity:0.45;"></div>
     <div class="nbt-noise"></div>
@@ -4260,6 +4272,7 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   <!-- NBT SLIDE 6 — CTA -->
   <div id="cvs-nbt6" data-w="1080" data-h="1350" style="width:1080px;height:1350px;overflow:hidden;position:relative;">
     <div class="nbt-bg"></div>
+    <div class="nbt-orb" style="width:1100px;height:1100px;background:radial-gradient(ellipse at center,#7c3aed 0%,#4c1d95 30%,transparent 65%);top:50%;left:50%;transform:translate(-50%,-55%);opacity:0.18;"></div>
     <div class="nbt-orb" style="width:600px;height:600px;background:radial-gradient(ellipse at center,#2a2a2a 0%,#1e1e1e 50%,transparent 72%);top:-80px;left:240px;opacity:0.50;"></div>
     <div class="nbt-orb" style="width:500px;height:500px;background:radial-gradient(ellipse at center,#222222 0%,#1a1a1a 50%,transparent 72%);bottom:-100px;right:-80px;opacity:0.45;"></div>
     <div class="nbt-orb" style="width:350px;height:350px;background:radial-gradient(ellipse at center,#1e1e1e 0%,transparent 70%);top:calc(50% - 175px);left:-80px;opacity:0.40;"></div>

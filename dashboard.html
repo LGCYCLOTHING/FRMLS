@@ -6205,6 +6205,10 @@ function enterArrangeMode() {
       x.className = 'dash-arrange-x';
       x.setAttribute('aria-label', 'Hide box');
       x.textContent = '×';
+      x.draggable = false;
+      x.addEventListener('mousedown',  (ev) => ev.stopPropagation());
+      x.addEventListener('pointerdown',(ev) => ev.stopPropagation());
+      x.addEventListener('dragstart',  (ev) => { ev.preventDefault(); ev.stopPropagation(); });
       x.addEventListener('click', (ev) => {
         ev.stopPropagation();
         ev.preventDefault();
@@ -6263,14 +6267,19 @@ function arrangeOnDragOver(e) {
   e.dataTransfer.dropEffect = 'move';
   const target = e.currentTarget;
   if (!arrangeDragSrc || target === arrangeDragSrc) return;
-  target.classList.add('arrange-drop-target');
 
-  const rect = target.getBoundingClientRect();
-  const before = (e.clientY - rect.top) < (rect.height / 2);
-  if (before) {
-    target.parentNode.insertBefore(arrangeDragSrc, target);
+  // iPhone-style: hovering a box immediately slides the source INTO that box's
+  // slot. No top/bottom half heuristics — the whole target IS the drop zone.
+  const parent   = target.parentNode;
+  const children = [...parent.children];
+  const srcIdx   = children.indexOf(arrangeDragSrc);
+  const tgtIdx   = children.indexOf(target);
+  if (srcIdx === -1 || tgtIdx === -1) return;
+
+  if (srcIdx < tgtIdx) {
+    parent.insertBefore(arrangeDragSrc, target.nextSibling);
   } else {
-    target.parentNode.insertBefore(arrangeDragSrc, target.nextSibling);
+    parent.insertBefore(arrangeDragSrc, target);
   }
 }
 

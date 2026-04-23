@@ -2343,9 +2343,9 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 }
 .nbt-h {
   font-family: 'Inter', system-ui, sans-serif;
-  font-weight: 900; font-size: 50px;
+  font-weight: 900; font-size: 68px;
   color: #ffffff;
-  line-height: 1.05; letter-spacing: -0.05em;
+  line-height: 1.03; letter-spacing: -0.05em;
   margin: 0;
 }
 .nbt-h-dim {
@@ -2356,16 +2356,24 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   color: transparent;
 }
 .nbt-divider {
-  width: 80px; height: 1.5px;
+  width: 80px; height: 2px;
   background: linear-gradient(90deg, #e879f9 0%, #818cf8 100%);
   flex-shrink: 0; margin: 0;
 }
 .nbt-support {
   font-family: 'Inter', system-ui, sans-serif;
   font-weight: 400;
-  color: #555555;
+  color: #999999;
   margin: 0;
   letter-spacing: 0.05em;
+}
+.nbt-label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.15em;
+  color: #888888;
+  text-transform: uppercase;
+  margin: 0;
 }
 @media (max-width: 768px) {
   .nbt-h { font-size: 36px; }
@@ -3729,125 +3737,77 @@ body.eyedropper-mode * { cursor: crosshair !important; }
         <div class="nbt-h nbt-h-dim" style="font-size:54px;">when you&#8217;re starting a brand.</div>
         <div class="nbt-support" style="margin-top:28px;font-size:15px;">swipe if you&#8217;re building something &#8594;</div>
       </div>
-      <!-- Visual: 3 identical store thumbnails = every store looks the same -->
+      <!-- Visual: 3 identical store cards with visible colors -->
       <div>
-        <div style="font-family:'Inter',system-ui,sans-serif;font-size:10px;color:#272727;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;">every store looks the same</div>
+        <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.12em;color:#666;text-transform:uppercase;margin-bottom:14px;">every store looks the same</div>
         <div style="display:flex;gap:14px;">
-          <!-- Card A — identical content x3 to prove the point -->
-          <div style="flex:1;background:#111;border:1px solid #222;border-radius:7px;overflow:hidden;">
-            <div style="height:22px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 8px;">
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:7px;font-weight:900;color:#222;letter-spacing:-0.02em;">NOVA</span>
+          <!-- Card A -->
+          <div style="flex:1;background:#111;border:1px solid #2a2a2a;border-radius:8px;overflow:hidden;">
+            <div style="height:4px;background:linear-gradient(90deg,#7c3aed,#a855f7);"></div>
+            <div style="height:32px;background:#141414;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 10px;">
+              <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:900;color:#999;letter-spacing:-0.02em;">NOVA</span>
               <div style="flex:1;"></div>
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:5.5px;color:#1c1c1c;margin-right:5px;">Shop</span>
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:5.5px;color:#1a1a1a;margin-right:5px;">About</span>
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:5.5px;color:#1a1a1a;">Contact</span>
+              <span style="font-family:'Inter',sans-serif;font-size:8px;color:#555;margin-right:6px;">Shop</span>
+              <span style="font-family:'Inter',sans-serif;font-size:8px;color:#555;">About</span>
             </div>
-            <div style="height:100px;background:#0d0d0d;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;">
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:17px;font-weight:900;color:#1d1d1d;letter-spacing:-0.04em;line-height:1;">AUTUMN 24</div>
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:6.5px;color:#161616;letter-spacing:0.1em;">NEW ARRIVALS</div>
-              <div style="margin-top:3px;padding:2px 8px;border:1px solid #191919;border-radius:2px;">
-                <span style="font-family:'Inter',system-ui,sans-serif;font-size:5.5px;font-weight:600;color:#1a1a1a;letter-spacing:0.06em;">SHOP NOW</span>
+            <div style="padding:16px 8px;background:linear-gradient(160deg,#100d1a,#0d0b13);display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <div style="font-family:'Inter',sans-serif;font-size:21px;font-weight:900;color:#777;letter-spacing:-0.04em;line-height:1;">AUTUMN 24</div>
+              <div style="font-family:'Inter',sans-serif;font-size:8px;color:#555;letter-spacing:0.12em;">NEW ARRIVALS</div>
+              <div style="padding:4px 12px;border:1px solid #444;border-radius:3px;margin-top:4px;">
+                <span style="font-family:'Inter',sans-serif;font-size:8px;font-weight:700;color:#666;letter-spacing:0.1em;">SHOP NOW</span>
               </div>
             </div>
-            <div style="padding:7px;display:grid;grid-template-columns:1fr 1fr;gap:5px;">
-              <div style="height:62px;background:#0e0e0e;border-radius:3px;display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:3px;">
-                <div style="width:22px;height:22px;background:#141414;border-radius:50%;"></div>
-                <div style="width:70%;height:3px;background:#141414;border-radius:1px;"></div>
-                <div style="width:40%;height:3px;background:#121212;border-radius:1px;"></div>
-              </div>
-              <div style="height:62px;background:#0e0e0e;border-radius:3px;display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:3px;">
-                <div style="width:22px;height:22px;background:#141414;border-radius:50%;"></div>
-                <div style="width:70%;height:3px;background:#141414;border-radius:1px;"></div>
-                <div style="width:40%;height:3px;background:#121212;border-radius:1px;"></div>
-              </div>
-              <div style="height:62px;background:#0e0e0e;border-radius:3px;display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:3px;">
-                <div style="width:22px;height:22px;background:#141414;border-radius:50%;"></div>
-                <div style="width:70%;height:3px;background:#141414;border-radius:1px;"></div>
-                <div style="width:40%;height:3px;background:#121212;border-radius:1px;"></div>
-              </div>
-              <div style="height:62px;background:#0e0e0e;border-radius:3px;display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:3px;">
-                <div style="width:22px;height:22px;background:#141414;border-radius:50%;"></div>
-                <div style="width:70%;height:3px;background:#141414;border-radius:1px;"></div>
-                <div style="width:40%;height:3px;background:#121212;border-radius:1px;"></div>
-              </div>
+            <div style="padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+              <div style="height:72px;background:#0d0d0d;border-radius:4px;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:5px;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div><div style="width:40%;height:3px;background:#252525;border-radius:2px;"></div></div>
+              <div style="height:72px;background:#0d0d0d;border-radius:4px;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:5px;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div><div style="width:40%;height:3px;background:#252525;border-radius:2px;"></div></div>
+              <div style="height:72px;background:#0d0d0d;border-radius:4px;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:5px;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div><div style="width:40%;height:3px;background:#252525;border-radius:2px;"></div></div>
+              <div style="height:72px;background:#0d0d0d;border-radius:4px;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:5px;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div><div style="width:40%;height:3px;background:#252525;border-radius:2px;"></div></div>
             </div>
           </div>
           <!-- Card B — identical -->
-          <div style="flex:1;background:#111;border:1px solid #222;border-radius:7px;overflow:hidden;">
-            <div style="height:22px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 8px;">
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:7px;font-weight:900;color:#222;letter-spacing:-0.02em;">NOVA</span>
+          <div style="flex:1;background:#111;border:1px solid #2a2a2a;border-radius:8px;overflow:hidden;">
+            <div style="height:4px;background:linear-gradient(90deg,#7c3aed,#a855f7);"></div>
+            <div style="height:32px;background:#141414;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 10px;">
+              <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:900;color:#999;letter-spacing:-0.02em;">NOVA</span>
               <div style="flex:1;"></div>
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:5.5px;color:#1c1c1c;margin-right:5px;">Shop</span>
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:5.5px;color:#1a1a1a;margin-right:5px;">About</span>
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:5.5px;color:#1a1a1a;">Contact</span>
+              <span style="font-family:'Inter',sans-serif;font-size:8px;color:#555;margin-right:6px;">Shop</span>
+              <span style="font-family:'Inter',sans-serif;font-size:8px;color:#555;">About</span>
             </div>
-            <div style="height:100px;background:#0d0d0d;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;">
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:17px;font-weight:900;color:#1d1d1d;letter-spacing:-0.04em;line-height:1;">AUTUMN 24</div>
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:6.5px;color:#161616;letter-spacing:0.1em;">NEW ARRIVALS</div>
-              <div style="margin-top:3px;padding:2px 8px;border:1px solid #191919;border-radius:2px;">
-                <span style="font-family:'Inter',system-ui,sans-serif;font-size:5.5px;font-weight:600;color:#1a1a1a;letter-spacing:0.06em;">SHOP NOW</span>
+            <div style="padding:16px 8px;background:linear-gradient(160deg,#100d1a,#0d0b13);display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <div style="font-family:'Inter',sans-serif;font-size:21px;font-weight:900;color:#777;letter-spacing:-0.04em;line-height:1;">AUTUMN 24</div>
+              <div style="font-family:'Inter',sans-serif;font-size:8px;color:#555;letter-spacing:0.12em;">NEW ARRIVALS</div>
+              <div style="padding:4px 12px;border:1px solid #444;border-radius:3px;margin-top:4px;">
+                <span style="font-family:'Inter',sans-serif;font-size:8px;font-weight:700;color:#666;letter-spacing:0.1em;">SHOP NOW</span>
               </div>
             </div>
-            <div style="padding:7px;display:grid;grid-template-columns:1fr 1fr;gap:5px;">
-              <div style="height:62px;background:#0e0e0e;border-radius:3px;display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:3px;">
-                <div style="width:22px;height:22px;background:#141414;border-radius:50%;"></div>
-                <div style="width:70%;height:3px;background:#141414;border-radius:1px;"></div>
-                <div style="width:40%;height:3px;background:#121212;border-radius:1px;"></div>
-              </div>
-              <div style="height:62px;background:#0e0e0e;border-radius:3px;display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:3px;">
-                <div style="width:22px;height:22px;background:#141414;border-radius:50%;"></div>
-                <div style="width:70%;height:3px;background:#141414;border-radius:1px;"></div>
-                <div style="width:40%;height:3px;background:#121212;border-radius:1px;"></div>
-              </div>
-              <div style="height:62px;background:#0e0e0e;border-radius:3px;display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:3px;">
-                <div style="width:22px;height:22px;background:#141414;border-radius:50%;"></div>
-                <div style="width:70%;height:3px;background:#141414;border-radius:1px;"></div>
-                <div style="width:40%;height:3px;background:#121212;border-radius:1px;"></div>
-              </div>
-              <div style="height:62px;background:#0e0e0e;border-radius:3px;display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:3px;">
-                <div style="width:22px;height:22px;background:#141414;border-radius:50%;"></div>
-                <div style="width:70%;height:3px;background:#141414;border-radius:1px;"></div>
-                <div style="width:40%;height:3px;background:#121212;border-radius:1px;"></div>
-              </div>
+            <div style="padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+              <div style="height:72px;background:#0d0d0d;border-radius:4px;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:5px;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div><div style="width:40%;height:3px;background:#252525;border-radius:2px;"></div></div>
+              <div style="height:72px;background:#0d0d0d;border-radius:4px;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:5px;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div><div style="width:40%;height:3px;background:#252525;border-radius:2px;"></div></div>
+              <div style="height:72px;background:#0d0d0d;border-radius:4px;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:5px;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div><div style="width:40%;height:3px;background:#252525;border-radius:2px;"></div></div>
+              <div style="height:72px;background:#0d0d0d;border-radius:4px;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:5px;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div><div style="width:40%;height:3px;background:#252525;border-radius:2px;"></div></div>
             </div>
           </div>
           <!-- Card C — identical -->
-          <div style="flex:1;background:#111;border:1px solid #222;border-radius:7px;overflow:hidden;">
-            <div style="height:22px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 8px;">
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:7px;font-weight:900;color:#222;letter-spacing:-0.02em;">NOVA</span>
+          <div style="flex:1;background:#111;border:1px solid #2a2a2a;border-radius:8px;overflow:hidden;">
+            <div style="height:4px;background:linear-gradient(90deg,#7c3aed,#a855f7);"></div>
+            <div style="height:32px;background:#141414;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 10px;">
+              <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:900;color:#999;letter-spacing:-0.02em;">NOVA</span>
               <div style="flex:1;"></div>
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:5.5px;color:#1c1c1c;margin-right:5px;">Shop</span>
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:5.5px;color:#1a1a1a;margin-right:5px;">About</span>
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:5.5px;color:#1a1a1a;">Contact</span>
+              <span style="font-family:'Inter',sans-serif;font-size:8px;color:#555;margin-right:6px;">Shop</span>
+              <span style="font-family:'Inter',sans-serif;font-size:8px;color:#555;">About</span>
             </div>
-            <div style="height:100px;background:#0d0d0d;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;">
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:17px;font-weight:900;color:#1d1d1d;letter-spacing:-0.04em;line-height:1;">AUTUMN 24</div>
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:6.5px;color:#161616;letter-spacing:0.1em;">NEW ARRIVALS</div>
-              <div style="margin-top:3px;padding:2px 8px;border:1px solid #191919;border-radius:2px;">
-                <span style="font-family:'Inter',system-ui,sans-serif;font-size:5.5px;font-weight:600;color:#1a1a1a;letter-spacing:0.06em;">SHOP NOW</span>
+            <div style="padding:16px 8px;background:linear-gradient(160deg,#100d1a,#0d0b13);display:flex;flex-direction:column;align-items:center;gap:6px;">
+              <div style="font-family:'Inter',sans-serif;font-size:21px;font-weight:900;color:#777;letter-spacing:-0.04em;line-height:1;">AUTUMN 24</div>
+              <div style="font-family:'Inter',sans-serif;font-size:8px;color:#555;letter-spacing:0.12em;">NEW ARRIVALS</div>
+              <div style="padding:4px 12px;border:1px solid #444;border-radius:3px;margin-top:4px;">
+                <span style="font-family:'Inter',sans-serif;font-size:8px;font-weight:700;color:#666;letter-spacing:0.1em;">SHOP NOW</span>
               </div>
             </div>
-            <div style="padding:7px;display:grid;grid-template-columns:1fr 1fr;gap:5px;">
-              <div style="height:62px;background:#0e0e0e;border-radius:3px;display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:3px;">
-                <div style="width:22px;height:22px;background:#141414;border-radius:50%;"></div>
-                <div style="width:70%;height:3px;background:#141414;border-radius:1px;"></div>
-                <div style="width:40%;height:3px;background:#121212;border-radius:1px;"></div>
-              </div>
-              <div style="height:62px;background:#0e0e0e;border-radius:3px;display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:3px;">
-                <div style="width:22px;height:22px;background:#141414;border-radius:50%;"></div>
-                <div style="width:70%;height:3px;background:#141414;border-radius:1px;"></div>
-                <div style="width:40%;height:3px;background:#121212;border-radius:1px;"></div>
-              </div>
-              <div style="height:62px;background:#0e0e0e;border-radius:3px;display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:3px;">
-                <div style="width:22px;height:22px;background:#141414;border-radius:50%;"></div>
-                <div style="width:70%;height:3px;background:#141414;border-radius:1px;"></div>
-                <div style="width:40%;height:3px;background:#121212;border-radius:1px;"></div>
-              </div>
-              <div style="height:62px;background:#0e0e0e;border-radius:3px;display:flex;flex-direction:column;align-items:center;padding-top:8px;gap:3px;">
-                <div style="width:22px;height:22px;background:#141414;border-radius:50%;"></div>
-                <div style="width:70%;height:3px;background:#141414;border-radius:1px;"></div>
-                <div style="width:40%;height:3px;background:#121212;border-radius:1px;"></div>
-              </div>
+            <div style="padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+              <div style="height:72px;background:#0d0d0d;border-radius:4px;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:5px;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div><div style="width:40%;height:3px;background:#252525;border-radius:2px;"></div></div>
+              <div style="height:72px;background:#0d0d0d;border-radius:4px;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:5px;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div><div style="width:40%;height:3px;background:#252525;border-radius:2px;"></div></div>
+              <div style="height:72px;background:#0d0d0d;border-radius:4px;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:5px;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div><div style="width:40%;height:3px;background:#252525;border-radius:2px;"></div></div>
+              <div style="height:72px;background:#0d0d0d;border-radius:4px;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:5px;"><div style="width:28px;height:28px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div><div style="width:40%;height:3px;background:#252525;border-radius:2px;"></div></div>
             </div>
           </div>
         </div>
@@ -3878,84 +3838,89 @@ body.eyedropper-mode * { cursor: crosshair !important; }
         <div class="nbt-divider" style="margin:24px 0;"></div>
         <div class="nbt-h">not the first.</div>
       </div>
-      <!-- Visual: Shopify theme-picker browser frame -->
-      <div style="background:#111;border:1px solid #222;border-radius:10px;overflow:hidden;">
-        <div style="height:32px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 14px;gap:8px;">
-          <div style="width:8px;height:8px;border-radius:50%;background:#1e1e1e;"></div>
-          <div style="width:8px;height:8px;border-radius:50%;background:#1e1e1e;"></div>
-          <div style="width:8px;height:8px;border-radius:50%;background:#1e1e1e;"></div>
+      <!-- Visual: Shopify theme-picker with colored accents -->
+      <div style="background:#111;border:1px solid #2a2a2a;border-radius:10px;overflow:hidden;">
+        <div style="height:34px;background:#141414;border-bottom:1px solid #1e1e1e;display:flex;align-items:center;padding:0 14px;gap:8px;">
+          <div style="width:9px;height:9px;border-radius:50%;background:#2a2a2a;"></div>
+          <div style="width:9px;height:9px;border-radius:50%;background:#2a2a2a;"></div>
+          <div style="width:9px;height:9px;border-radius:50%;background:#2a2a2a;"></div>
           <div style="flex:1;height:15px;background:#1a1a1a;border-radius:3px;margin:0 12px;display:flex;align-items:center;justify-content:center;">
-            <span style="font-family:'DM Mono',monospace;font-size:9px;color:#323232;letter-spacing:0.03em;">themes.shopify.com/free-themes</span>
+            <span style="font-family:'DM Mono',monospace;font-size:10px;color:#555;letter-spacing:0.03em;">themes.shopify.com/free-themes</span>
           </div>
         </div>
-        <div style="padding:18px 16px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-            <span style="font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:700;color:#383838;letter-spacing:0.06em;text-transform:uppercase;">Theme library</span>
-            <span style="font-family:'Inter',system-ui,sans-serif;font-size:9px;color:#2a2a2a;background:#141414;border:1px solid #1c1c1c;padding:3px 9px;border-radius:4px;">Free only</span>
+        <div style="padding:20px 18px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <span style="font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#777;letter-spacing:0.06em;text-transform:uppercase;">Theme library</span>
+            <span style="font-family:'Inter',sans-serif;font-size:10px;color:#555;background:#141414;border:1px solid #2a2a2a;padding:4px 10px;border-radius:4px;">Free only</span>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
-            <!-- Dawn -->
-            <div style="background:#0e0e0e;border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;">
-              <div style="height:90px;background:#0b0b0b;overflow:hidden;display:flex;flex-direction:column;">
-                <div style="height:10px;background:#131313;border-bottom:1px solid #181818;display:flex;align-items:center;padding:0 5px;justify-content:space-between;">
-                  <span style="font-family:'Inter',sans-serif;font-size:4px;font-weight:700;color:#1e1e1e;">BRAND</span>
-                  <div style="display:flex;gap:3px;"><span style="font-family:'Inter',sans-serif;font-size:4px;color:#181818;">Shop</span><span style="font-family:'Inter',sans-serif;font-size:4px;color:#181818;">About</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+            <!-- Dawn — purple -->
+            <div style="background:#0e0e0e;border:1px solid #222;border-radius:8px;overflow:hidden;">
+              <div style="height:5px;background:linear-gradient(90deg,#7c3aed,#a855f7);"></div>
+              <div style="height:110px;background:#0b0b0b;display:flex;flex-direction:column;">
+                <div style="height:14px;background:#131313;border-bottom:1px solid #1e1e1e;display:flex;align-items:center;padding:0 7px;justify-content:space-between;">
+                  <span style="font-family:'Inter',sans-serif;font-size:6px;font-weight:700;color:#666;">BRAND</span>
+                  <div style="display:flex;gap:5px;"><span style="font-family:'Inter',sans-serif;font-size:5px;color:#444;">Shop</span><span style="font-family:'Inter',sans-serif;font-size:5px;color:#444;">About</span></div>
                 </div>
-                <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px;">
-                  <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:900;color:#1a1a1a;letter-spacing:-0.03em;line-height:1;">New In</div>
-                  <div style="font-family:'Inter',sans-serif;font-size:4px;color:#161616;letter-spacing:0.06em;">SUMMER COLLECTION</div>
-                  <div style="margin-top:3px;padding:1px 6px;border:1px solid #1a1a1a;border-radius:1px;">
-                    <span style="font-family:'Inter',sans-serif;font-size:3.5px;color:#1a1a1a;">Shop Now</span>
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px;background:linear-gradient(135deg,#0f0c18,#0a090f);">
+                  <div style="font-family:'Inter',sans-serif;font-size:15px;font-weight:900;color:#6d4a9e;letter-spacing:-0.03em;line-height:1;">New In</div>
+                  <div style="font-family:'Inter',sans-serif;font-size:5px;color:#4a3570;letter-spacing:0.08em;">SUMMER COLLECTION</div>
+                  <div style="padding:2px 8px;border:1px solid #4a3570;border-radius:2px;">
+                    <span style="font-family:'Inter',sans-serif;font-size:5px;color:#6d4a9e;">Shop Now</span>
                   </div>
                 </div>
               </div>
-              <div style="padding:7px 8px;">
-                <div style="font-family:'Inter',system-ui,sans-serif;font-size:10px;font-weight:700;color:#3a3a3a;margin-bottom:2px;">Dawn</div>
-                <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#282828;">Free · Most popular</div>
+              <div style="padding:10px 10px;">
+                <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#999;margin-bottom:3px;">Dawn</div>
+                <div style="font-family:'Inter',sans-serif;font-size:10px;color:#555;">Free · Most popular</div>
               </div>
             </div>
-            <!-- Refresh -->
-            <div style="background:#0e0e0e;border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;">
-              <div style="height:90px;background:#0b0b0b;overflow:hidden;display:flex;flex-direction:column;">
-                <div style="height:10px;background:#131313;border-bottom:1px solid #181818;display:flex;align-items:center;padding:0 5px;justify-content:space-between;">
-                  <span style="font-family:'Inter',sans-serif;font-size:4px;font-weight:700;color:#1e1e1e;">BRAND</span>
-                  <div style="display:flex;gap:3px;"><span style="font-family:'Inter',sans-serif;font-size:4px;color:#181818;">Shop</span><span style="font-family:'Inter',sans-serif;font-size:4px;color:#181818;">About</span></div>
+            <!-- Refresh — blue -->
+            <div style="background:#0e0e0e;border:1px solid #222;border-radius:8px;overflow:hidden;">
+              <div style="height:5px;background:linear-gradient(90deg,#2563eb,#60a5fa);"></div>
+              <div style="height:110px;background:#0b0b0b;display:flex;flex-direction:column;">
+                <div style="height:14px;background:#131313;border-bottom:1px solid #1e1e1e;display:flex;align-items:center;padding:0 7px;justify-content:space-between;">
+                  <span style="font-family:'Inter',sans-serif;font-size:6px;font-weight:700;color:#666;">BRAND</span>
+                  <div style="display:flex;gap:5px;"><span style="font-family:'Inter',sans-serif;font-size:5px;color:#444;">Shop</span><span style="font-family:'Inter',sans-serif;font-size:5px;color:#444;">About</span></div>
                 </div>
-                <div style="flex:1;display:flex;gap:4px;padding:6px;">
-                  <div style="flex:1;background:#101010;border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
-                    <div style="width:16px;height:16px;background:#141414;border-radius:50%;"></div>
-                    <div style="width:80%;height:2px;background:#141414;border-radius:1px;"></div>
+                <div style="flex:1;display:flex;gap:5px;padding:8px;background:linear-gradient(135deg,#080d1a,#090b12);">
+                  <div style="flex:1;background:#0a1020;border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;">
+                    <div style="width:22px;height:22px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);border-radius:50%;opacity:0.8;"></div>
+                    <div style="width:75%;height:3px;background:#1e3a8a;border-radius:2px;opacity:0.6;"></div>
                   </div>
-                  <div style="flex:1;background:#101010;border-radius:2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
-                    <div style="width:16px;height:16px;background:#141414;border-radius:50%;"></div>
-                    <div style="width:80%;height:2px;background:#141414;border-radius:1px;"></div>
+                  <div style="flex:1;background:#0a1020;border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;">
+                    <div style="width:22px;height:22px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);border-radius:50%;opacity:0.8;"></div>
+                    <div style="width:75%;height:3px;background:#1e3a8a;border-radius:2px;opacity:0.6;"></div>
                   </div>
                 </div>
               </div>
-              <div style="padding:7px 8px;">
-                <div style="font-family:'Inter',system-ui,sans-serif;font-size:10px;font-weight:700;color:#3a3a3a;margin-bottom:2px;">Refresh</div>
-                <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#282828;">Free · Grid layout</div>
+              <div style="padding:10px 10px;">
+                <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#999;margin-bottom:3px;">Refresh</div>
+                <div style="font-family:'Inter',sans-serif;font-size:10px;color:#555;">Free · Grid layout</div>
               </div>
             </div>
-            <!-- Debut -->
-            <div style="background:#0e0e0e;border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;">
-              <div style="height:90px;background:#0b0b0b;overflow:hidden;display:flex;flex-direction:column;">
-                <div style="height:10px;background:#131313;border-bottom:1px solid #181818;display:flex;align-items:center;padding:0 5px;justify-content:space-between;">
-                  <span style="font-family:'Inter',sans-serif;font-size:4px;font-weight:700;color:#1e1e1e;">BRAND</span>
-                  <div style="display:flex;gap:3px;"><span style="font-family:'Inter',sans-serif;font-size:4px;color:#181818;">Shop</span><span style="font-family:'Inter',sans-serif;font-size:4px;color:#181818;">About</span></div>
+            <!-- Debut — teal -->
+            <div style="background:#0e0e0e;border:1px solid #222;border-radius:8px;overflow:hidden;">
+              <div style="height:5px;background:linear-gradient(90deg,#0d9488,#34d399);"></div>
+              <div style="height:110px;background:#0b0b0b;display:flex;flex-direction:column;">
+                <div style="height:14px;background:#131313;border-bottom:1px solid #1e1e1e;display:flex;align-items:center;padding:0 7px;justify-content:space-between;">
+                  <span style="font-family:'Inter',sans-serif;font-size:6px;font-weight:700;color:#666;">BRAND</span>
+                  <div style="display:flex;gap:5px;"><span style="font-family:'Inter',sans-serif;font-size:5px;color:#444;">Shop</span><span style="font-family:'Inter',sans-serif;font-size:5px;color:#444;">About</span></div>
                 </div>
-                <div style="flex:1;display:flex;flex-direction:column;padding:6px;gap:3px;">
-                  <div style="height:30px;background:#101010;border-radius:2px;"></div>
-                  <div style="display:flex;gap:3px;flex:1;">
-                    <div style="flex:1;background:#0e0e0e;border-radius:2px;"></div>
-                    <div style="flex:1;background:#0e0e0e;border-radius:2px;"></div>
-                    <div style="flex:1;background:#0e0e0e;border-radius:2px;"></div>
+                <div style="flex:1;display:flex;flex-direction:column;padding:8px;gap:5px;background:linear-gradient(135deg,#071210,#080d0c);">
+                  <div style="height:40px;background:#0a1e1a;border-radius:3px;display:flex;align-items:center;justify-content:center;">
+                    <span style="font-family:'Inter',sans-serif;font-size:9px;font-weight:700;color:#136d5e;">DEBUT STUDIO</span>
+                  </div>
+                  <div style="display:flex;gap:4px;flex:1;">
+                    <div style="flex:1;background:#0a1e1a;border-radius:3px;"></div>
+                    <div style="flex:1;background:#0a1e1a;border-radius:3px;"></div>
+                    <div style="flex:1;background:#0a1e1a;border-radius:3px;"></div>
                   </div>
                 </div>
               </div>
-              <div style="padding:7px 8px;">
-                <div style="font-family:'Inter',system-ui,sans-serif;font-size:10px;font-weight:700;color:#3a3a3a;margin-bottom:2px;">Debut</div>
-                <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#282828;">Free · Minimal</div>
+              <div style="padding:10px 10px;">
+                <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#999;margin-bottom:3px;">Debut</div>
+                <div style="font-family:'Inter',sans-serif;font-size:10px;color:#555;">Free · Minimal</div>
               </div>
             </div>
           </div>
@@ -3985,46 +3950,46 @@ body.eyedropper-mode * { cursor: crosshair !important; }
         <div class="nbt-h nbt-h-dim">if your brand has</div>
         <div class="nbt-h">no feeling behind it.</div>
       </div>
-      <!-- Visual: hollow logo ring + brand identity cards -->
+      <!-- Visual: Brand board with colors -->
       <div>
-        <!-- Hollow logo placeholder circle, centered -->
         <div style="display:flex;justify-content:center;margin-bottom:22px;">
-          <div style="width:190px;height:190px;border:1.5px solid #222;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;">
-            <!-- dashed inner ring -->
-            <div style="position:absolute;inset:12px;border-radius:50%;border:1px dashed #1a1a1a;"></div>
+          <div style="width:210px;height:210px;border:2px solid #2a2a2a;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;background:radial-gradient(ellipse at center,#110d1a 0%,#080808 70%);">
+            <div style="position:absolute;inset:14px;border-radius:50%;border:1.5px dashed #333;"></div>
             <div style="text-align:center;z-index:1;">
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:42px;font-weight:900;color:#222;letter-spacing:-0.05em;line-height:1;">AB</div>
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#1c1c1c;letter-spacing:0.2em;text-transform:uppercase;margin-top:5px;">brand co.</div>
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:7px;color:#181818;letter-spacing:0.08em;margin-top:3px;">™</div>
+              <div style="font-family:'Inter',sans-serif;font-size:52px;font-weight:900;letter-spacing:-0.05em;line-height:1;background:linear-gradient(135deg,#e879f9,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">AB</div>
+              <div style="font-family:'Inter',sans-serif;font-size:9px;color:#555;letter-spacing:0.2em;text-transform:uppercase;margin-top:6px;">brand co.</div>
+              <div style="font-family:'Inter',sans-serif;font-size:8px;color:#444;letter-spacing:0.08em;margin-top:3px;">™</div>
             </div>
           </div>
         </div>
-        <!-- Three brand-element cards -->
         <div style="display:flex;gap:12px;">
-          <!-- Colors -->
-          <div style="flex:1;background:#111;border:1px solid #222;border-radius:7px;padding:14px 12px;">
-            <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#353535;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">Colors</div>
-            <div style="display:flex;gap:5px;margin-bottom:8px;">
-              <div style="width:26px;height:26px;border-radius:4px;background:#1c1c1c;"></div>
-              <div style="width:26px;height:26px;border-radius:4px;background:#282828;"></div>
-              <div style="width:26px;height:26px;border-radius:4px;background:#333;"></div>
-              <div style="width:26px;height:26px;border-radius:4px;border:1.5px dashed #222;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:12px;color:#222;">?</div>
+          <!-- Colors card -->
+          <div style="flex:1;background:#111;border:1px solid #252525;border-radius:8px;padding:16px 14px;">
+            <div style="height:3px;background:linear-gradient(90deg,#7c3aed,#818cf8);border-radius:2px;margin-bottom:14px;"></div>
+            <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:#666;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;">Colors</div>
+            <div style="display:flex;gap:6px;margin-bottom:10px;">
+              <div style="width:30px;height:30px;border-radius:5px;background:linear-gradient(135deg,#7c3aed,#4c1d95);"></div>
+              <div style="width:30px;height:30px;border-radius:5px;background:#f5f5f5;"></div>
+              <div style="width:30px;height:30px;border-radius:5px;background:#1e1e1e;border:1px solid #333;"></div>
+              <div style="width:30px;height:30px;border-radius:5px;border:1.5px dashed #333;display:flex;align-items:center;justify-content:center;"><span style="font-family:'Inter',sans-serif;font-size:14px;color:#444;">?</span></div>
             </div>
-            <div style="font-family:'Inter',system-ui,sans-serif;font-size:7px;color:#222;letter-spacing:0.04em;">#1c1c1c · #282828 · ???</div>
+            <div style="font-family:'Inter',sans-serif;font-size:8px;color:#444;letter-spacing:0.04em;">#7c3aed · #f5f5f5 · ???</div>
           </div>
-          <!-- Typography -->
-          <div style="flex:1;background:#111;border:1px solid #222;border-radius:7px;padding:14px 12px;">
-            <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#353535;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">Typography</div>
-            <div style="font-family:'Inter',system-ui,sans-serif;font-size:26px;font-weight:900;color:#252525;line-height:1;margin-bottom:3px;">Aa</div>
-            <div style="font-family:'Inter',system-ui,sans-serif;font-size:9px;font-weight:400;color:#1e1e1e;letter-spacing:0.04em;margin-bottom:4px;">Aa Bb Cc Dd</div>
-            <div style="font-family:'Inter',system-ui,sans-serif;font-size:7px;color:#1e1e1e;">font: undefined</div>
+          <!-- Typography card -->
+          <div style="flex:1;background:#111;border:1px solid #252525;border-radius:8px;padding:16px 14px;">
+            <div style="height:3px;background:linear-gradient(90deg,#2563eb,#60a5fa);border-radius:2px;margin-bottom:14px;"></div>
+            <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:#666;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;">Typography</div>
+            <div style="font-family:'Inter',sans-serif;font-size:34px;font-weight:900;color:#666;line-height:1;margin-bottom:5px;">Aa</div>
+            <div style="font-family:'Inter',sans-serif;font-size:10px;color:#444;letter-spacing:0.04em;margin-bottom:5px;">Aa Bb Cc Dd Ee</div>
+            <div style="font-family:'Inter',sans-serif;font-size:8px;color:#333;font-style:italic;">font: undefined</div>
           </div>
-          <!-- Voice -->
-          <div style="flex:1;background:#111;border:1px solid #222;border-radius:7px;padding:14px 12px;">
-            <div style="font-family:'Inter',system-ui,sans-serif;font-size:8px;color:#353535;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;">Voice</div>
-            <div style="font-family:'Inter',system-ui,sans-serif;font-size:9px;color:#252525;margin-bottom:5px;font-style:italic;">"We are a brand<br>that sells things."</div>
-            <div style="height:1px;background:#1a1a1a;margin-bottom:5px;"></div>
-            <div style="font-family:'Inter',system-ui,sans-serif;font-size:7px;color:#1e1e1e;">tone: undefined</div>
+          <!-- Voice card -->
+          <div style="flex:1;background:#111;border:1px solid #252525;border-radius:8px;padding:16px 14px;">
+            <div style="height:3px;background:linear-gradient(90deg,#0d9488,#34d399);border-radius:2px;margin-bottom:14px;"></div>
+            <div style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:#666;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;">Voice</div>
+            <div style="font-family:'Inter',sans-serif;font-size:10px;color:#444;margin-bottom:8px;font-style:italic;line-height:1.6;">"We are a brand<br>that sells things."</div>
+            <div style="height:1px;background:#222;margin-bottom:8px;"></div>
+            <div style="font-family:'Inter',sans-serif;font-size:8px;color:#333;font-style:italic;">tone: undefined</div>
           </div>
         </div>
       </div>
@@ -4057,14 +4022,15 @@ body.eyedropper-mode * { cursor: crosshair !important; }
       <div style="width:100%;display:flex;flex-direction:column;gap:18px;">
         <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:600;letter-spacing:0.1em;color:#3a3a3a;text-transform:uppercase;">the gap most brands never see:</div>
         <div style="display:flex;gap:16px;align-items:stretch;">
-          <!-- LEFT: Generic dead copy -->
-          <div style="flex:1;background:#0c0c0c;border:1px solid #1d1d1d;border-radius:10px;overflow:hidden;">
-            <div style="height:34px;background:#111;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;padding:0 14px;gap:8px;">
-              <div style="width:9px;height:9px;border-radius:50%;background:#1c1c1c;"></div>
-              <div style="width:9px;height:9px;border-radius:50%;background:#1c1c1c;"></div>
-              <div style="width:9px;height:9px;border-radius:50%;background:#1c1c1c;"></div>
-              <div style="flex:1;height:14px;background:#181818;border-radius:3px;margin:0 10px;"></div>
-              <div style="font-family:'Inter',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;color:#252525;text-transform:uppercase;">YOUR STORE NOW</div>
+          <!-- LEFT: Generic dead copy — amber accent -->
+          <div style="flex:1;background:#0c0c0c;border:1px solid #2a1a00;border-radius:10px;overflow:hidden;">
+            <div style="height:5px;background:linear-gradient(90deg,#d97706,#f59e0b);"></div>
+            <div style="height:34px;background:#111;border-bottom:1px solid #1e1200;display:flex;align-items:center;padding:0 14px;gap:8px;">
+              <div style="width:9px;height:9px;border-radius:50%;background:#2a1800;"></div>
+              <div style="width:9px;height:9px;border-radius:50%;background:#2a1800;"></div>
+              <div style="width:9px;height:9px;border-radius:50%;background:#2a1800;"></div>
+              <div style="flex:1;height:14px;background:#181000;border-radius:3px;margin:0 10px;"></div>
+              <div style="font-family:'Inter',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;color:#b45309;text-transform:uppercase;">YOUR STORE NOW</div>
             </div>
             <div style="padding:20px;display:flex;gap:18px;">
               <div style="width:110px;height:140px;background:#090909;border:1px solid #181818;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
@@ -4076,28 +4042,29 @@ body.eyedropper-mode * { cursor: crosshair !important; }
                 </div>
               </div>
               <div style="flex:1;">
-                <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:#282828;margin-bottom:5px;">Essential Serum</div>
-                <div style="font-family:'Inter',sans-serif;font-size:14px;color:#222;margin-bottom:14px;">$38.00</div>
-                <div style="font-family:'Inter',sans-serif;font-size:13px;color:#1e1e1e;line-height:2.1;">
+                <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:#777;margin-bottom:5px;">Essential Serum</div>
+                <div style="font-family:'Inter',sans-serif;font-size:14px;color:#555;margin-bottom:14px;">$38.00</div>
+                <div style="font-family:'Inter',sans-serif;font-size:13px;color:#444;line-height:2.1;">
                   High quality product.<br>
                   Fast shipping available.<br>
                   Made with premium materials.<br>
                   Great for everyday use.
                 </div>
-                <div style="height:32px;background:#151515;border:1px solid #1e1e1e;border-radius:5px;margin-top:14px;display:flex;align-items:center;justify-content:center;">
-                  <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:#252525;letter-spacing:0.08em;text-transform:uppercase;">Add to Cart</span>
+                <div style="height:32px;background:#1a1000;border:1px solid #d97706;border-radius:5px;margin-top:14px;display:flex;align-items:center;justify-content:center;">
+                  <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:#b45309;letter-spacing:0.08em;text-transform:uppercase;">Add to Cart</span>
                 </div>
               </div>
             </div>
           </div>
-          <!-- RIGHT: Converting copy -->
-          <div style="flex:1;background:#0e0e0e;border:1px solid #2e2e2e;border-radius:10px;overflow:hidden;">
-            <div style="height:34px;background:#131313;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 14px;gap:8px;">
-              <div style="width:9px;height:9px;border-radius:50%;background:#303030;"></div>
-              <div style="width:9px;height:9px;border-radius:50%;background:#303030;"></div>
-              <div style="width:9px;height:9px;border-radius:50%;background:#303030;"></div>
-              <div style="flex:1;height:14px;background:#1e1e1e;border-radius:3px;margin:0 10px;"></div>
-              <div style="font-family:'Inter',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;color:#666;text-transform:uppercase;">WHAT CONVERTS</div>
+          <!-- RIGHT: Converting copy — purple accent -->
+          <div style="flex:1;background:#0e0e0e;border:1px solid #2a1a4a;border-radius:10px;overflow:hidden;">
+            <div style="height:5px;background:linear-gradient(90deg,#7c3aed,#a855f7);"></div>
+            <div style="height:34px;background:#131313;border-bottom:1px solid #1e1030;display:flex;align-items:center;padding:0 14px;gap:8px;">
+              <div style="width:9px;height:9px;border-radius:50%;background:#3d1f6e;"></div>
+              <div style="width:9px;height:9px;border-radius:50%;background:#3d1f6e;"></div>
+              <div style="width:9px;height:9px;border-radius:50%;background:#3d1f6e;"></div>
+              <div style="flex:1;height:14px;background:#1a0e2e;border-radius:3px;margin:0 10px;"></div>
+              <div style="font-family:'Inter',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;color:#a855f7;text-transform:uppercase;">WHAT CONVERTS</div>
             </div>
             <div style="padding:20px;display:flex;gap:18px;">
               <div style="width:110px;height:140px;background:#0d0d0d;border:1px solid #262626;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
@@ -4111,16 +4078,16 @@ body.eyedropper-mode * { cursor: crosshair !important; }
                 </div>
               </div>
               <div style="flex:1;">
-                <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:#aaa;margin-bottom:5px;">Essential Serum</div>
-                <div style="font-family:'Inter',sans-serif;font-size:14px;color:#888;margin-bottom:14px;">$38.00</div>
-                <div style="font-family:'Inter',sans-serif;font-size:13px;color:#888;line-height:2.1;">
+                <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:700;color:#ddd;margin-bottom:5px;">Essential Serum</div>
+                <div style="font-family:'Inter',sans-serif;font-size:14px;color:#bbb;margin-bottom:14px;">$38.00</div>
+                <div style="font-family:'Inter',sans-serif;font-size:13px;color:#ccc;line-height:2.1;">
                   Wake up to smoother skin —<br>
                   or your money back. No questions.<br>
                   Zero fillers. Zero compromise.<br>
                   Results in 14 days, guaranteed.
                 </div>
-                <div style="height:32px;background:#2c2c2c;border:1px solid #3a3a3a;border-radius:5px;margin-top:14px;display:flex;align-items:center;justify-content:center;">
-                  <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:#999;letter-spacing:0.08em;text-transform:uppercase;">Add to Cart</span>
+                <div style="height:32px;background:#1e0a3a;border:1px solid #7c3aed;border-radius:5px;margin-top:14px;display:flex;align-items:center;justify-content:center;">
+                  <span style="font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:#a855f7;letter-spacing:0.08em;text-transform:uppercase;">Add to Cart</span>
                 </div>
               </div>
             </div>
@@ -4158,112 +4125,93 @@ body.eyedropper-mode * { cursor: crosshair !important; }
         <div class="nbt-support" style="margin-top:24px;font-size:18px;font-style:italic;color:#777777;">yours doesn&#8217;t have to.</div>
       </div>
       <!-- Visual: 2x2 grid of identical store cards -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <!-- Card (repeated 4 times, all identical) -->
-        <!-- All 4 cards identical — same name, same layout, same everything -->
-        <div style="background:#111;border:1px solid #222;border-radius:6px;overflow:hidden;">
-          <div style="height:20px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 8px;">
-            <span style="font-family:'Inter',sans-serif;font-size:6px;font-weight:900;color:#222;letter-spacing:-0.02em;">NOVA</span>
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.12em;color:#666;text-transform:uppercase;margin-bottom:14px;">look familiar? they&#8217;re all the same.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div style="background:#111;border:1px solid #2a2a2a;border-radius:8px;overflow:hidden;">
+          <div style="height:4px;background:linear-gradient(90deg,#7c3aed,#a855f7);"></div>
+          <div style="height:34px;background:#141414;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 12px;">
+            <span style="font-family:'Inter',sans-serif;font-size:11px;font-weight:900;color:#999;letter-spacing:-0.02em;">NOVA</span>
             <div style="flex:1;"></div>
-            <span style="font-family:'Inter',sans-serif;font-size:5px;color:#1a1a1a;margin-right:4px;">Shop</span>
-            <span style="font-family:'Inter',sans-serif;font-size:5px;color:#1a1a1a;">About</span>
+            <span style="font-family:'Inter',sans-serif;font-size:9px;color:#555;margin-right:7px;">Shop</span>
+            <span style="font-family:'Inter',sans-serif;font-size:9px;color:#555;">About</span>
           </div>
-          <div style="height:72px;background:#0d0d0d;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
-            <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:900;color:#1d1d1d;letter-spacing:-0.03em;">AUTUMN 24</div>
-            <div style="font-family:'Inter',sans-serif;font-size:5px;color:#171717;letter-spacing:0.08em;">NEW ARRIVALS</div>
+          <div style="padding:16px 8px;background:linear-gradient(160deg,#100d1a,#0d0b13);display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div style="font-family:'Inter',sans-serif;font-size:24px;font-weight:900;color:#777;letter-spacing:-0.04em;line-height:1;">AUTUMN 24</div>
+            <div style="font-family:'Inter',sans-serif;font-size:9px;color:#555;letter-spacing:0.12em;">NEW ARRIVALS</div>
+            <div style="padding:4px 14px;border:1px solid #444;border-radius:3px;">
+              <span style="font-family:'Inter',sans-serif;font-size:8px;font-weight:700;color:#666;letter-spacing:0.1em;">SHOP NOW</span>
+            </div>
           </div>
-          <div style="padding:6px;display:flex;gap:5px;">
-            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;display:flex;flex-direction:column;align-items:center;padding-top:6px;gap:2px;">
-              <div style="width:14px;height:14px;background:#141414;border-radius:50%;"></div>
-              <div style="width:65%;height:2px;background:#131313;border-radius:1px;"></div>
-            </div>
-            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;display:flex;flex-direction:column;align-items:center;padding-top:6px;gap:2px;">
-              <div style="width:14px;height:14px;background:#141414;border-radius:50%;"></div>
-              <div style="width:65%;height:2px;background:#131313;border-radius:1px;"></div>
-            </div>
-            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;display:flex;flex-direction:column;align-items:center;padding-top:6px;gap:2px;">
-              <div style="width:14px;height:14px;background:#141414;border-radius:50%;"></div>
-              <div style="width:65%;height:2px;background:#131313;border-radius:1px;"></div>
-            </div>
+          <div style="padding:10px;display:flex;gap:7px;">
+            <div style="flex:1;height:68px;background:#0d0d0d;border-radius:5px;display:flex;flex-direction:column;align-items:center;padding-top:11px;gap:6px;"><div style="width:26px;height:26px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div></div>
+            <div style="flex:1;height:68px;background:#0d0d0d;border-radius:5px;display:flex;flex-direction:column;align-items:center;padding-top:11px;gap:6px;"><div style="width:26px;height:26px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div></div>
+            <div style="flex:1;height:68px;background:#0d0d0d;border-radius:5px;display:flex;flex-direction:column;align-items:center;padding-top:11px;gap:6px;"><div style="width:26px;height:26px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div></div>
           </div>
         </div>
-        <div style="background:#111;border:1px solid #222;border-radius:6px;overflow:hidden;">
-          <div style="height:20px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 8px;">
-            <span style="font-family:'Inter',sans-serif;font-size:6px;font-weight:900;color:#222;letter-spacing:-0.02em;">NOVA</span>
+        <div style="background:#111;border:1px solid #2a2a2a;border-radius:8px;overflow:hidden;">
+          <div style="height:4px;background:linear-gradient(90deg,#7c3aed,#a855f7);"></div>
+          <div style="height:34px;background:#141414;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 12px;">
+            <span style="font-family:'Inter',sans-serif;font-size:11px;font-weight:900;color:#999;letter-spacing:-0.02em;">NOVA</span>
             <div style="flex:1;"></div>
-            <span style="font-family:'Inter',sans-serif;font-size:5px;color:#1a1a1a;margin-right:4px;">Shop</span>
-            <span style="font-family:'Inter',sans-serif;font-size:5px;color:#1a1a1a;">About</span>
+            <span style="font-family:'Inter',sans-serif;font-size:9px;color:#555;margin-right:7px;">Shop</span>
+            <span style="font-family:'Inter',sans-serif;font-size:9px;color:#555;">About</span>
           </div>
-          <div style="height:72px;background:#0d0d0d;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
-            <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:900;color:#1d1d1d;letter-spacing:-0.03em;">AUTUMN 24</div>
-            <div style="font-family:'Inter',sans-serif;font-size:5px;color:#171717;letter-spacing:0.08em;">NEW ARRIVALS</div>
+          <div style="padding:16px 8px;background:linear-gradient(160deg,#100d1a,#0d0b13);display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div style="font-family:'Inter',sans-serif;font-size:24px;font-weight:900;color:#777;letter-spacing:-0.04em;line-height:1;">AUTUMN 24</div>
+            <div style="font-family:'Inter',sans-serif;font-size:9px;color:#555;letter-spacing:0.12em;">NEW ARRIVALS</div>
+            <div style="padding:4px 14px;border:1px solid #444;border-radius:3px;">
+              <span style="font-family:'Inter',sans-serif;font-size:8px;font-weight:700;color:#666;letter-spacing:0.1em;">SHOP NOW</span>
+            </div>
           </div>
-          <div style="padding:6px;display:flex;gap:5px;">
-            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;display:flex;flex-direction:column;align-items:center;padding-top:6px;gap:2px;">
-              <div style="width:14px;height:14px;background:#141414;border-radius:50%;"></div>
-              <div style="width:65%;height:2px;background:#131313;border-radius:1px;"></div>
-            </div>
-            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;display:flex;flex-direction:column;align-items:center;padding-top:6px;gap:2px;">
-              <div style="width:14px;height:14px;background:#141414;border-radius:50%;"></div>
-              <div style="width:65%;height:2px;background:#131313;border-radius:1px;"></div>
-            </div>
-            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;display:flex;flex-direction:column;align-items:center;padding-top:6px;gap:2px;">
-              <div style="width:14px;height:14px;background:#141414;border-radius:50%;"></div>
-              <div style="width:65%;height:2px;background:#131313;border-radius:1px;"></div>
-            </div>
+          <div style="padding:10px;display:flex;gap:7px;">
+            <div style="flex:1;height:68px;background:#0d0d0d;border-radius:5px;display:flex;flex-direction:column;align-items:center;padding-top:11px;gap:6px;"><div style="width:26px;height:26px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div></div>
+            <div style="flex:1;height:68px;background:#0d0d0d;border-radius:5px;display:flex;flex-direction:column;align-items:center;padding-top:11px;gap:6px;"><div style="width:26px;height:26px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div></div>
+            <div style="flex:1;height:68px;background:#0d0d0d;border-radius:5px;display:flex;flex-direction:column;align-items:center;padding-top:11px;gap:6px;"><div style="width:26px;height:26px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div></div>
           </div>
         </div>
-        <div style="background:#111;border:1px solid #222;border-radius:6px;overflow:hidden;">
-          <div style="height:20px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 8px;">
-            <span style="font-family:'Inter',sans-serif;font-size:6px;font-weight:900;color:#222;letter-spacing:-0.02em;">NOVA</span>
+        <div style="background:#111;border:1px solid #2a2a2a;border-radius:8px;overflow:hidden;">
+          <div style="height:4px;background:linear-gradient(90deg,#7c3aed,#a855f7);"></div>
+          <div style="height:34px;background:#141414;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 12px;">
+            <span style="font-family:'Inter',sans-serif;font-size:11px;font-weight:900;color:#999;letter-spacing:-0.02em;">NOVA</span>
             <div style="flex:1;"></div>
-            <span style="font-family:'Inter',sans-serif;font-size:5px;color:#1a1a1a;margin-right:4px;">Shop</span>
-            <span style="font-family:'Inter',sans-serif;font-size:5px;color:#1a1a1a;">About</span>
+            <span style="font-family:'Inter',sans-serif;font-size:9px;color:#555;margin-right:7px;">Shop</span>
+            <span style="font-family:'Inter',sans-serif;font-size:9px;color:#555;">About</span>
           </div>
-          <div style="height:72px;background:#0d0d0d;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
-            <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:900;color:#1d1d1d;letter-spacing:-0.03em;">AUTUMN 24</div>
-            <div style="font-family:'Inter',sans-serif;font-size:5px;color:#171717;letter-spacing:0.08em;">NEW ARRIVALS</div>
+          <div style="padding:16px 8px;background:linear-gradient(160deg,#100d1a,#0d0b13);display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div style="font-family:'Inter',sans-serif;font-size:24px;font-weight:900;color:#777;letter-spacing:-0.04em;line-height:1;">AUTUMN 24</div>
+            <div style="font-family:'Inter',sans-serif;font-size:9px;color:#555;letter-spacing:0.12em;">NEW ARRIVALS</div>
+            <div style="padding:4px 14px;border:1px solid #444;border-radius:3px;">
+              <span style="font-family:'Inter',sans-serif;font-size:8px;font-weight:700;color:#666;letter-spacing:0.1em;">SHOP NOW</span>
+            </div>
           </div>
-          <div style="padding:6px;display:flex;gap:5px;">
-            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;display:flex;flex-direction:column;align-items:center;padding-top:6px;gap:2px;">
-              <div style="width:14px;height:14px;background:#141414;border-radius:50%;"></div>
-              <div style="width:65%;height:2px;background:#131313;border-radius:1px;"></div>
-            </div>
-            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;display:flex;flex-direction:column;align-items:center;padding-top:6px;gap:2px;">
-              <div style="width:14px;height:14px;background:#141414;border-radius:50%;"></div>
-              <div style="width:65%;height:2px;background:#131313;border-radius:1px;"></div>
-            </div>
-            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;display:flex;flex-direction:column;align-items:center;padding-top:6px;gap:2px;">
-              <div style="width:14px;height:14px;background:#141414;border-radius:50%;"></div>
-              <div style="width:65%;height:2px;background:#131313;border-radius:1px;"></div>
-            </div>
+          <div style="padding:10px;display:flex;gap:7px;">
+            <div style="flex:1;height:68px;background:#0d0d0d;border-radius:5px;display:flex;flex-direction:column;align-items:center;padding-top:11px;gap:6px;"><div style="width:26px;height:26px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div></div>
+            <div style="flex:1;height:68px;background:#0d0d0d;border-radius:5px;display:flex;flex-direction:column;align-items:center;padding-top:11px;gap:6px;"><div style="width:26px;height:26px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div></div>
+            <div style="flex:1;height:68px;background:#0d0d0d;border-radius:5px;display:flex;flex-direction:column;align-items:center;padding-top:11px;gap:6px;"><div style="width:26px;height:26px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div></div>
           </div>
         </div>
-        <div style="background:#111;border:1px solid #222;border-radius:6px;overflow:hidden;">
-          <div style="height:20px;background:#141414;border-bottom:1px solid #1c1c1c;display:flex;align-items:center;padding:0 8px;">
-            <span style="font-family:'Inter',sans-serif;font-size:6px;font-weight:900;color:#222;letter-spacing:-0.02em;">NOVA</span>
+        <div style="background:#111;border:1px solid #2a2a2a;border-radius:8px;overflow:hidden;">
+          <div style="height:4px;background:linear-gradient(90deg,#7c3aed,#a855f7);"></div>
+          <div style="height:34px;background:#141414;border-bottom:1px solid #222;display:flex;align-items:center;padding:0 12px;">
+            <span style="font-family:'Inter',sans-serif;font-size:11px;font-weight:900;color:#999;letter-spacing:-0.02em;">NOVA</span>
             <div style="flex:1;"></div>
-            <span style="font-family:'Inter',sans-serif;font-size:5px;color:#1a1a1a;margin-right:4px;">Shop</span>
-            <span style="font-family:'Inter',sans-serif;font-size:5px;color:#1a1a1a;">About</span>
+            <span style="font-family:'Inter',sans-serif;font-size:9px;color:#555;margin-right:7px;">Shop</span>
+            <span style="font-family:'Inter',sans-serif;font-size:9px;color:#555;">About</span>
           </div>
-          <div style="height:72px;background:#0d0d0d;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
-            <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:900;color:#1d1d1d;letter-spacing:-0.03em;">AUTUMN 24</div>
-            <div style="font-family:'Inter',sans-serif;font-size:5px;color:#171717;letter-spacing:0.08em;">NEW ARRIVALS</div>
-          </div>
-          <div style="padding:6px;display:flex;gap:5px;">
-            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;display:flex;flex-direction:column;align-items:center;padding-top:6px;gap:2px;">
-              <div style="width:14px;height:14px;background:#141414;border-radius:50%;"></div>
-              <div style="width:65%;height:2px;background:#131313;border-radius:1px;"></div>
-            </div>
-            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;display:flex;flex-direction:column;align-items:center;padding-top:6px;gap:2px;">
-              <div style="width:14px;height:14px;background:#141414;border-radius:50%;"></div>
-              <div style="width:65%;height:2px;background:#131313;border-radius:1px;"></div>
-            </div>
-            <div style="flex:1;height:46px;background:#0e0e0e;border-radius:2px;display:flex;flex-direction:column;align-items:center;padding-top:6px;gap:2px;">
-              <div style="width:14px;height:14px;background:#141414;border-radius:50%;"></div>
-              <div style="width:65%;height:2px;background:#131313;border-radius:1px;"></div>
+          <div style="padding:16px 8px;background:linear-gradient(160deg,#100d1a,#0d0b13);display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <div style="font-family:'Inter',sans-serif;font-size:24px;font-weight:900;color:#777;letter-spacing:-0.04em;line-height:1;">AUTUMN 24</div>
+            <div style="font-family:'Inter',sans-serif;font-size:9px;color:#555;letter-spacing:0.12em;">NEW ARRIVALS</div>
+            <div style="padding:4px 14px;border:1px solid #444;border-radius:3px;">
+              <span style="font-family:'Inter',sans-serif;font-size:8px;font-weight:700;color:#666;letter-spacing:0.1em;">SHOP NOW</span>
             </div>
           </div>
+          <div style="padding:10px;display:flex;gap:7px;">
+            <div style="flex:1;height:68px;background:#0d0d0d;border-radius:5px;display:flex;flex-direction:column;align-items:center;padding-top:11px;gap:6px;"><div style="width:26px;height:26px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div></div>
+            <div style="flex:1;height:68px;background:#0d0d0d;border-radius:5px;display:flex;flex-direction:column;align-items:center;padding-top:11px;gap:6px;"><div style="width:26px;height:26px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div></div>
+            <div style="flex:1;height:68px;background:#0d0d0d;border-radius:5px;display:flex;flex-direction:column;align-items:center;padding-top:11px;gap:6px;"><div style="width:26px;height:26px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:50%;opacity:0.7;"></div><div style="width:65%;height:3px;background:#2e2e2e;border-radius:2px;"></div></div>
+          </div>
+        </div>
         </div>
       </div>
     </div>
@@ -4286,42 +4234,41 @@ body.eyedropper-mode * { cursor: crosshair !important; }
     <div class="nbt-content" style="padding:130px 0 120px;justify-content:space-between;align-items:center;text-align:center;">
       <!-- Main CTA text -->
       <div>
-        <div class="nbt-h" style="font-size:52px;">we tell you all of this.</div>
-        <div class="nbt-h" style="font-size:52px;color:#888888;margin-top:16px;">and then help you fix it.</div>
-        <div style="width:100px;height:1px;background:#333333;margin:32px auto;"></div>
-        <div class="nbt-h" style="font-size:40px;">frmls.com</div>
-        <div class="nbt-support" style="font-size:14px;color:#444444;margin-top:10px;">$37 one time</div>
-        <div class="nbt-support" style="font-size:11px;color:#2e2e2e;letter-spacing:0.10em;text-transform:uppercase;margin-top:6px;">brand identity system</div>
+        <div class="nbt-h" style="font-size:58px;">we tell you all of this.</div>
+        <div class="nbt-h nbt-h-dim" style="font-size:58px;margin-top:16px;">and then help you fix it.</div>
+        <div style="width:100px;height:2px;background:linear-gradient(90deg,#7c3aed,#a855f7);margin:32px auto;border-radius:2px;"></div>
+        <div class="nbt-h" style="font-size:46px;">frmls.com</div>
+        <div class="nbt-support" style="font-size:16px;color:#888;margin-top:10px;">$37 one time · brand identity system</div>
       </div>
       <!-- What's inside card -->
-      <div style="width:100%;background:#111;border:1px solid #222;border-radius:10px;padding:20px 22px;text-align:left;">
-        <div style="font-family:'Inter',system-ui,sans-serif;font-size:9px;color:#2a2a2a;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px;">what&#8217;s inside</div>
-        <div style="display:flex;flex-direction:column;gap:9px;">
-          <div style="display:flex;align-items:center;gap:14px;padding:10px 12px;background:#141414;border-radius:6px;">
-            <div style="width:28px;height:28px;background:#1a1a1a;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:900;color:#272727;">B</span>
+      <div style="width:100%;background:#111;border:1px solid #2a2a2a;border-radius:10px;padding:20px 22px;text-align:left;box-shadow:0 0 40px rgba(124,58,237,0.15);">
+        <div style="font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:#666;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:16px;">what&#8217;s inside</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 14px;background:#141414;border-radius:8px;border-left:3px solid #7c3aed;">
+            <div style="width:32px;height:32px;background:linear-gradient(135deg,#4c1d95,#7c3aed);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+              <span style="font-family:'Inter',sans-serif;font-size:13px;font-weight:900;color:#e9d5ff;">B</span>
             </div>
             <div>
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:700;color:#323232;margin-bottom:2px;">Brand Identity Kit</div>
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:9px;color:#222;letter-spacing:0.03em;">voice · colors · fonts · tone · positioning</div>
+              <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#ccc;margin-bottom:3px;">Brand Identity Kit</div>
+              <div style="font-family:'Inter',sans-serif;font-size:10px;color:#666;letter-spacing:0.03em;">voice · colors · fonts · tone · positioning</div>
             </div>
           </div>
-          <div style="display:flex;align-items:center;gap:14px;padding:10px 12px;background:#141414;border-radius:6px;">
-            <div style="width:28px;height:28px;background:#1a1a1a;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:900;color:#272727;">P</span>
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 14px;background:#141414;border-radius:8px;border-left:3px solid #2563eb;">
+            <div style="width:32px;height:32px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+              <span style="font-family:'Inter',sans-serif;font-size:13px;font-weight:900;color:#bfdbfe;">P</span>
             </div>
             <div>
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:700;color:#323232;margin-bottom:2px;">AI Prompt Pack</div>
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:9px;color:#222;letter-spacing:0.03em;">product copy · captions · brand voice</div>
+              <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#ccc;margin-bottom:3px;">AI Prompt Pack</div>
+              <div style="font-family:'Inter',sans-serif;font-size:10px;color:#666;letter-spacing:0.03em;">product copy · captions · brand voice</div>
             </div>
           </div>
-          <div style="display:flex;align-items:center;gap:14px;padding:10px 12px;background:#141414;border-radius:6px;">
-            <div style="width:28px;height:28px;background:#1a1a1a;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
-              <span style="font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:900;color:#272727;">S</span>
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 14px;background:#141414;border-radius:8px;border-left:3px solid #0d9488;">
+            <div style="width:32px;height:32px;background:linear-gradient(135deg,#065f46,#0d9488);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+              <span style="font-family:'Inter',sans-serif;font-size:13px;font-weight:900;color:#a7f3d0;">S</span>
             </div>
             <div>
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:11px;font-weight:700;color:#323232;margin-bottom:2px;">Store Strategy Guide</div>
-              <div style="font-family:'Inter',system-ui,sans-serif;font-size:9px;color:#222;letter-spacing:0.03em;">structure · hierarchy · conversion</div>
+              <div style="font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#ccc;margin-bottom:3px;">Store Strategy Guide</div>
+              <div style="font-family:'Inter',sans-serif;font-size:10px;color:#666;letter-spacing:0.03em;">structure · hierarchy · conversion</div>
             </div>
           </div>
         </div>

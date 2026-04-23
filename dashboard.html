@@ -133,6 +133,7 @@ body::before {
   -webkit-backdrop-filter:blur(20px) saturate(180%);
   align-items:center; justify-content:center;
   padding:20px;
+  overscroll-behavior:contain; overflow:hidden;
 }
 #identity-modal-backdrop.idm-open { display:flex; animation:idmBackdropIn 0.3s ease both; }
 @keyframes idmBackdropIn { from{opacity:0} to{opacity:1} }
@@ -169,6 +170,7 @@ body::before {
 .idm-body {
   flex:1; overflow-y:auto; padding:32px; display:flex; flex-direction:column; gap:32px;
   position:relative; z-index:1; scrollbar-width:none;
+  overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
 }
 .idm-body::-webkit-scrollbar { display:none; }
 
@@ -257,6 +259,45 @@ body::before {
 }
 .idm-btn-save:hover { opacity:0.88; }
 .idm-btn-save.saved { background:linear-gradient(135deg,#059669,#10b981); }
+
+/* ===== BRAND NAME MODAL ===== */
+#brandname-modal-backdrop {
+  display:none; position:fixed; inset:0; z-index:5000;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  align-items:center; justify-content:center;
+  padding:20px;
+  overscroll-behavior:contain; overflow:hidden;
+}
+#brandname-modal-backdrop.bnm-open { display:flex; animation:idmBackdropIn 0.3s ease both; }
+#brandname-modal {
+  position:relative; width:90%; max-width:520px; max-height:88vh;
+  background:#0e0e12; border-radius:24px;
+  border:1px solid #1e1e2a;
+  box-shadow:0 32px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(124,58,237,0.15);
+  display:flex; flex-direction:column; overflow:hidden;
+  animation:idmModalIn 0.4s cubic-bezier(0.22,1,0.36,1) both;
+}
+.bnm-input {
+  width:100%; padding:14px 16px; border-radius:12px;
+  background:#1a1a24; border:1px solid #252530; color:#ffffff;
+  font-family:'Inter',sans-serif; font-size:16px; font-weight:600;
+  letter-spacing:-0.01em; outline:none; transition:border-color 0.2s,background 0.2s;
+  box-sizing:border-box;
+}
+.bnm-input:focus { border-color:rgba(124,58,237,0.5); background:#1f1f2a; box-shadow:0 0 0 1px rgba(6,182,212,0.2) inset; }
+.bnm-input::placeholder { color:rgba(255,255,255,0.25); font-weight:500; }
+.bnm-preview-label {
+  font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em;
+  text-transform:uppercase; color:rgba(255,255,255,0.35); margin:20px 0 8px;
+}
+.bnm-preview {
+  font-size:32px; font-weight:900; letter-spacing:-0.04em;
+  background:linear-gradient(90deg,#9d5cf5,#22d3ee);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text; line-height:1.1; word-break:break-word;
+}
 
 /* ===== SIDEBAR TODO WIDGET ===== */
 .sb-todo-widget { width:100%; margin-top:16px; padding-top:16px; border-top:1px solid var(--border-subtle); }
@@ -2720,6 +2761,13 @@ body::before {
         <div class="dash-box-status" id="dash-identity-status">—</div>
         <div class="dash-box-arrow">Open →</div>
       </div>
+      <div class="dash-box" id="box-brandname" onclick="openBrandNameModal()">
+        <div class="dash-box-icon">✎</div>
+        <div class="dash-box-title">Brand Name</div>
+        <div class="dash-box-desc">Rename your clothing brand anytime.</div>
+        <div class="dash-box-status" id="dash-brandname-status">—</div>
+        <div class="dash-box-arrow">Edit →</div>
+      </div>
       <div class="dash-box" id="box-brandkit" data-panel="panel-brandkit" onclick="openPanel('panel-brandkit')">
         <div class="dash-box-icon">◆</div>
         <div class="dash-box-title">Brand Kit</div>
@@ -3066,6 +3114,37 @@ body::before {
     <div class="idm-footer">
       <button class="idm-btn-reset" onclick="idmReset()">Reset</button>
       <button class="idm-btn-save" id="idm-save-btn" onclick="idmSave()">Save Identity</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BRAND NAME MODAL ===== -->
+<div id="brandname-modal-backdrop" onclick="closeBrandNameModal()">
+  <div id="brandname-modal" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Brand Name">
+    <div class="idm-orb idm-orb-1"></div>
+    <div class="idm-orb idm-orb-2"></div>
+    <div class="idm-header">
+      <span class="idm-title">Brand Name</span>
+      <button class="idm-close" onclick="closeBrandNameModal()" aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="idm-body">
+      <div class="idm-step">
+        <span class="idm-step-num">Rename</span>
+        <div class="idm-step-head">
+          <div class="idm-step-title">What's your brand called?</div>
+        </div>
+        <p class="idm-step-desc">this appears on your dashboard and every prompt.</p>
+        <input id="bnm-input" class="bnm-input" type="text" placeholder="e.g. MNML CLUB" maxlength="40"
+          oninput="bnmUpdatePreview()" onkeydown="if(event.key==='Enter')bnmSave()" />
+        <div class="bnm-preview-label">preview</div>
+        <div class="bnm-preview" id="bnm-preview">YOUR BRAND</div>
+      </div>
+    </div>
+    <div class="idm-footer">
+      <button class="idm-btn-reset" onclick="bnmClear()">Clear</button>
+      <button class="idm-btn-save" id="bnm-save-btn" onclick="bnmSave()">Save Name</button>
     </div>
   </div>
 </div>
@@ -4590,6 +4669,7 @@ function buildDashboard() {
   updateDashProgress();
   refreshLastOpenedLabels();
   refreshIdentityStatus();
+  refreshBrandNameStatus();
   fnLoadNotes();
   loadStoreUrl();
   loadSocials();
@@ -4878,12 +4958,14 @@ function openIdentityModal() {
   buildIdentityModal();
   bd.classList.add('idm-open');
   document.body.style.overflow = 'hidden';
+  document.documentElement.style.overflow = 'hidden';
 }
 function closeIdentityModal() {
   const bd = document.getElementById('identity-modal-backdrop');
   if (!bd) return;
   bd.classList.remove('idm-open');
   document.body.style.overflow = '';
+  document.documentElement.style.overflow = '';
   refreshIdentityStatus();
 }
 function buildIdentityModal() {
@@ -5001,6 +5083,71 @@ function idmSave() {
   btn.textContent = 'Saved ✓';
   btn.classList.add('saved');
   setTimeout(() => { btn.textContent = 'Save Identity'; btn.classList.remove('saved'); }, 1500);
+}
+
+/* ===== BRAND NAME MODAL ===== */
+function openBrandNameModal() {
+  const bd = document.getElementById('brandname-modal-backdrop');
+  const input = document.getElementById('bnm-input');
+  if (!bd || !input) return;
+  input.value = state.brandName || '';
+  bnmUpdatePreview();
+  bd.classList.add('bnm-open');
+  document.body.style.overflow = 'hidden';
+  document.documentElement.style.overflow = 'hidden';
+  setTimeout(() => input.focus(), 120);
+}
+function closeBrandNameModal() {
+  const bd = document.getElementById('brandname-modal-backdrop');
+  if (!bd) return;
+  bd.classList.remove('bnm-open');
+  document.body.style.overflow = '';
+  document.documentElement.style.overflow = '';
+  refreshBrandNameStatus();
+}
+function bnmUpdatePreview() {
+  const input = document.getElementById('bnm-input');
+  const prev  = document.getElementById('bnm-preview');
+  if (!input || !prev) return;
+  const v = (input.value || '').trim();
+  prev.textContent = (v || 'YOUR BRAND').toUpperCase();
+}
+function bnmClear() {
+  const input = document.getElementById('bnm-input');
+  if (input) { input.value = ''; input.focus(); }
+  bnmUpdatePreview();
+}
+function bnmSave() {
+  const input = document.getElementById('bnm-input');
+  if (!input) return;
+  const newName = (input.value || '').trim();
+  state.brandName = newName;
+  saveState();
+
+  const bnField = document.getElementById('brandName');
+  if (bnField) bnField.value = newName;
+  const dashName = document.getElementById('dash-brand-name');
+  if (dashName) dashName.textContent = (newName || 'YOUR BRAND').toUpperCase();
+
+  if (typeof updateSnapshot === 'function')       updateSnapshot();
+  if (typeof updateFontPreviews === 'function')   updateFontPreviews();
+  if (typeof buildBrandKitPanel === 'function')   buildBrandKitPanel();
+
+  refreshBrandNameStatus();
+  const btn = document.getElementById('bnm-save-btn');
+  if (btn) {
+    btn.textContent = 'Saved ✓';
+    btn.classList.add('saved');
+    setTimeout(() => { btn.textContent = 'Save Name'; btn.classList.remove('saved'); }, 1200);
+  }
+  setTimeout(closeBrandNameModal, 700);
+}
+function refreshBrandNameStatus() {
+  const el = document.getElementById('dash-brandname-status');
+  if (!el) return;
+  const v = (state.brandName || '').trim();
+  el.textContent = v ? v.toUpperCase() : 'not set';
+  el.style.color = v ? '#34d399' : '#a78bfa';
 }
 
 /* Panel: Brand Kit */
@@ -5757,6 +5904,7 @@ const LAYOUT_LS  = 'frmls_layout_hidden';
 const ORDER_LS   = 'frmls_layout_order';
 
 const DASH_BOXES = [
+  { id:'box-brandname', label:'Brand Name' },
   { id:'box-brandkit',  label:'Brand Kit' },
   { id:'box-prompts',   label:'Prompt Pack' },
   { id:'box-designer',  label:'Designer Prompts' },

@@ -4695,16 +4695,34 @@ body.eyedropper-mode * { cursor: crosshair !important; }
        All-dark monochrome — each slide has unique orb composition
   ════════════════════════════════════════════════════════════════ -->
 
-  <!-- BG SLIDE 1 — HOOK — center halo glow -->
-  <div id="cvs-bg1" data-w="1080" data-h="1080" class="bg-canvas">
-    <div class="bg-orb bg-orb-c-large"></div>
+  <!-- BG SLIDE 1 — HOOK — magazine cover, asymmetric, atmospheric -->
+  <div id="cvs-bg1" data-w="1080" data-h="1080" class="bg-canvas" style="background:#000000;">
+    <!-- Atmospheric orbs — subtle warm/cool tints add depth without breaking monochrome -->
+    <div class="bg-orb" style="top:-240px;left:-220px;width:820px;height:820px;background:radial-gradient(circle,rgba(255,225,190,0.10) 0%,transparent 65%);filter:blur(120px);"></div>
+    <div class="bg-orb" style="bottom:-260px;right:-220px;width:820px;height:820px;background:radial-gradient(circle,rgba(180,205,255,0.09) 0%,transparent 65%);filter:blur(120px);"></div>
+    <div class="bg-orb" style="top:50%;left:50%;width:540px;height:540px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,255,255,0.10) 0%,transparent 60%);filter:blur(110px);"></div>
+    <!-- Cinematic vertical light streak -->
+    <div style="position:absolute;top:0;bottom:0;left:50%;width:1px;background:linear-gradient(180deg,transparent 0%,rgba(255,255,255,0.10) 50%,transparent 100%);transform:translateX(-50%);z-index:2;pointer-events:none;"></div>
     <div class="bg-noise"></div>
     <div class="bg-counter">01 / 11</div>
     <div class="bg-frmls-logo">FRML<span class="bg-frmls-s">S</span></div>
-    <div class="bg-content center">
-      <div class="bg-mono" style="margin-bottom:34px;">a guide nobody wrote</div>
-      <h1 class="bg-h" style="font-size:118px;">how to start<br>a clothing brand.</h1>
-      <div class="bg-italic" style="font-size:60px;margin-top:50px;">what nobody actually tells you.</div>
+
+    <!-- Top left badge: small horizontal line + label -->
+    <div style="position:absolute;top:64px;left:90px;display:flex;align-items:center;gap:16px;z-index:5;">
+      <div style="width:36px;height:1px;background:rgba(255,255,255,0.45);"></div>
+      <div class="bg-mono" style="color:rgba(255,255,255,0.70);">a guide nobody wrote</div>
+    </div>
+
+    <!-- Asymmetric left-aligned hook headline -->
+    <div class="bg-content" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;text-align:left;padding:170px 110px;">
+      <h1 class="bg-h" style="font-size:142px;letter-spacing:-0.065em;line-height:0.95;">how to start<br>a <span style="background:linear-gradient(135deg,#ffffff 0%,#9a9a9a 55%,#5e5e5e 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:transparent;">clothing</span><br>brand.</h1>
+      <div class="bg-italic" style="font-size:54px;margin-top:46px;color:rgba(255,255,255,0.92);">what nobody actually tells you.</div>
+    </div>
+
+    <!-- Bottom left swipe indicator -->
+    <div style="position:absolute;bottom:54px;left:90px;display:flex;align-items:center;gap:12px;z-index:7;">
+      <div class="bg-mono" style="font-size:14px;color:rgba(255,255,255,0.55);letter-spacing:0.20em;">swipe to read</div>
+      <div style="font-family:'Inter',sans-serif;font-size:18px;font-weight:600;color:rgba(255,255,255,0.55);">→</div>
     </div>
   </div>
 
@@ -4757,9 +4775,9 @@ body.eyedropper-mode * { cursor: crosshair !important; }
     <div class="bg-content" style="display:flex;flex-direction:column;justify-content:space-between;align-items:stretch;text-align:left;">
       <div class="bg-mono" style="text-align:right;">proof</div>
       <div style="display:flex;flex-direction:column;gap:34px;align-self:flex-start;">
-        <div class="bg-body" style="font-size:42px;line-height:1.25;font-weight:600;color:rgba(255,255,255,0.92);"><span style="font-weight:900;">Nike</span> doesn't sell<br>the best sportswear.</div>
-        <div class="bg-body" style="font-size:42px;line-height:1.25;font-weight:600;color:rgba(255,255,255,0.92);"><span style="font-weight:900;">Supreme</span> doesn't sell<br>the best hoodies.</div>
-        <div class="bg-body" style="font-size:42px;line-height:1.25;font-weight:600;color:rgba(255,255,255,0.92);"><span style="font-weight:900;">Gucci</span> doesn't sell<br>the most comfortable clothes.</div>
+        <div class="bg-body" style="font-size:42px;line-height:1.25;font-weight:600;color:rgba(255,255,255,0.92);"><span style="font-weight:900;color:#fa5400;">Nike</span> doesn't sell<br>the best sportswear.</div>
+        <div class="bg-body" style="font-size:42px;line-height:1.25;font-weight:600;color:rgba(255,255,255,0.92);"><span style="font-weight:900;color:#e3192f;">Supreme</span> doesn't sell<br>the best hoodies.</div>
+        <div class="bg-body" style="font-size:42px;line-height:1.25;font-weight:600;color:rgba(255,255,255,0.92);"><span style="font-weight:900;color:#c9a455;">Gucci</span> doesn't sell<br>the most comfortable clothes.</div>
       </div>
       <div style="align-self:flex-start;">
         <div class="bg-h" style="font-size:84px;">they sell a feeling.</div>
@@ -4920,7 +4938,7 @@ body.eyedropper-mode * { cursor: crosshair !important; }
       <div class="bg-h" style="font-size:220px;letter-spacing:-0.07em;">FRML<span class="bg-frmls-s" style="display:inline-block;padding:0 0.06em 0 0.02em;margin:0 -0.06em 0 -0.02em;background:linear-gradient(135deg,#ffffff 0%,#888888 55%,#555555 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:transparent;">S</span></div>
       <div class="bg-italic" style="font-size:54px;margin-top:42px;">build a store that feels<br>like something.</div>
       <div class="bg-body" style="font-size:24px;margin-top:50px;letter-spacing:0.04em;color:rgba(255,255,255,0.65);">brand kit · prompt pack · launch checklist</div>
-      <div class="bg-h bg-cta-grad" style="font-size:54px;margin-top:54px;">frmls.com — $37 one time</div>
+      <div class="bg-h bg-cta-grad" style="font-size:60px;margin-top:54px;">frmls.com</div>
     </div>
   </div>
 

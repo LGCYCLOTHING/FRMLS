@@ -2447,6 +2447,185 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   .nbt-content { left: 40px; right: 40px; padding: 120px 0 160px; }
   .nbt-logo { top: 40px; left: 40px; }
 }
+
+/* ══════════════════════════════════════════════
+   CLOTHING BRAND GUIDE — 11-slide carousel (1080×1080)
+   Editorial monochrome — alternating black/white
+   ══════════════════════════════════════════════ */
+.bg-canvas {
+  width: 1080px; height: 1080px;
+  position: relative; overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.bg-canvas.dark  { background: #000000; color: #ffffff; }
+.bg-canvas.light { background: #ffffff; color: #000000; }
+
+.bg-noise {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 280px 280px;
+  opacity: 0.04;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  z-index: 6;
+}
+.bg-border {
+  position: absolute; top: 20px; right: 20px; bottom: 20px; left: 20px;
+  pointer-events: none; z-index: 5;
+}
+.bg-canvas.dark  .bg-border { border: 1px solid rgba(255,255,255,0.15); }
+.bg-canvas.light .bg-border { border: 1px solid rgba(0,0,0,0.15); }
+
+.bg-counter {
+  position: absolute; top: 52px; right: 64px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px; font-weight: 400;
+  letter-spacing: 0.10em; z-index: 7;
+}
+.bg-canvas.dark  .bg-counter { color: rgba(255,255,255,0.55); }
+.bg-canvas.light .bg-counter { color: rgba(0,0,0,0.55); }
+
+.bg-frmls {
+  position: absolute; bottom: 52px; right: 64px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.02em; z-index: 7;
+}
+.bg-canvas.dark  .bg-frmls { color: rgba(255,255,255,0.78); }
+.bg-canvas.light .bg-frmls { color: rgba(0,0,0,0.78); }
+
+.bg-watermark {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Inter', sans-serif;
+  font-weight: 900; font-size: 360px;
+  letter-spacing: -0.07em; line-height: 0.9;
+  opacity: 0.04; pointer-events: none;
+  white-space: nowrap; z-index: 1;
+}
+.bg-canvas.dark  .bg-watermark { color: #ffffff; }
+.bg-canvas.light .bg-watermark { color: #000000; }
+
+.bg-content {
+  position: absolute; inset: 0;
+  padding: 110px;
+  z-index: 4;
+  display: flex; flex-direction: column;
+}
+.bg-content.center { align-items: center; justify-content: center; text-align: center; }
+.bg-content.left   { align-items: flex-start; justify-content: center; text-align: left; }
+.bg-content.right  { align-items: flex-end; justify-content: center; text-align: right; }
+.bg-content.bottom { justify-content: flex-end; }
+
+.bg-mono {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px; font-weight: 400;
+  letter-spacing: 0.18em; text-transform: uppercase;
+}
+.bg-canvas.dark  .bg-mono { color: rgba(255,255,255,0.55); }
+.bg-canvas.light .bg-mono { color: rgba(0,0,0,0.55); }
+
+.bg-h {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900; line-height: 1.0;
+  letter-spacing: -0.045em; margin: 0;
+}
+.bg-italic {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 400;
+  line-height: 1.10; letter-spacing: -0.005em; margin: 0;
+}
+.bg-body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400; line-height: 1.55;
+  letter-spacing: -0.005em; margin: 0;
+}
+.bg-canvas.dark  .bg-body { color: rgba(255,255,255,0.78); }
+.bg-canvas.light .bg-body { color: rgba(0,0,0,0.78); }
+
+.bg-glow-white {
+  position: absolute; top: 50%; left: 50%;
+  width: 880px; height: 880px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 35%, transparent 70%);
+  filter: blur(30px); pointer-events: none; z-index: 1;
+}
+
+.bg-step-num {
+  position: absolute;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900; font-size: 380px;
+  line-height: 0.85; letter-spacing: -0.05em;
+  opacity: 0.30; pointer-events: none; z-index: 2;
+}
+.bg-canvas.dark  .bg-step-num { color: #ffffff; opacity: 0.18; }
+.bg-canvas.light .bg-step-num { color: #000000; opacity: 0.10; }
+
+.bg-browser {
+  width: 400px; height: 360px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.20), 0 0 0 1px rgba(0,0,0,0.06);
+  overflow: hidden;
+  transform: rotate(3deg);
+}
+.bg-browser-bar {
+  height: 36px; background: #f4f4f4;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  display: flex; align-items: center; padding: 0 12px; gap: 10px;
+}
+.bg-browser-dots { display: flex; gap: 6px; }
+.bg-browser-dot { width: 11px; height: 11px; border-radius: 50%; }
+.bg-browser-url {
+  flex: 1; height: 22px; background: #ffffff;
+  border-radius: 6px; border: 1px solid rgba(0,0,0,0.05);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: rgba(0,0,0,0.55); letter-spacing: 0.04em;
+}
+.bg-browser-body {
+  background: #0a0a0a; padding: 18px;
+  height: calc(100% - 36px); position: relative;
+}
+.bg-browser-logo {
+  font-family: 'Inter', sans-serif; font-weight: 900;
+  font-size: 13px; color: #ffffff;
+  letter-spacing: -0.04em; margin-bottom: 14px;
+}
+.bg-browser-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+.bg-browser-card {
+  height: 90px; border-radius: 8px;
+  padding: 10px;
+  display: flex; align-items: flex-end;
+  font-family: 'Inter', sans-serif; font-size: 9.5px;
+  font-weight: 600; color: #ffffff;
+  letter-spacing: 0.01em;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.bg-cta-grad {
+  background: linear-gradient(90deg, #ffffff 0%, #999999 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text; color: transparent;
+}
+
+.carousel-slide-thumb.bg-thumb-dark {
+  background: #000000;
+  color: #e8e8e8;
+  border: 1px solid rgba(255,255,255,0.15);
+  font-weight: 700;
+}
+.carousel-slide-thumb.bg-thumb-light {
+  background: #ffffff;
+  color: #1a1a1a;
+  border: 1px solid rgba(0,0,0,0.18);
+  font-weight: 700;
+}
 </style>
 </head>
 <body>
@@ -2538,6 +2717,28 @@ body.eyedropper-mode * { cursor: crosshair !important; }
         <button class="carousel-export-btn" id="final-export-btn" onclick="exportFinalSlide()">&#8595; Export Final Slide</button>
         <div class="carousel-slide-row" id="final-slide-thumbs">
           <div class="carousel-slide-thumb final-thumb" onclick="selectCanvas('final');closeMobileSidebar()" title="Final Slide — Monochrome">F</div>
+        </div>
+      </div>
+
+      <!-- CLOTHING BRAND GUIDE CAROUSEL -->
+      <div class="sb-section" id="sb-brand-guide-carousel">
+        <div class="sb-section-header">
+          <span class="sb-section-title">Clothing Brand Guide</span>
+          <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">11 slides · 1080×1080</span>
+        </div>
+        <button class="carousel-export-btn" id="bg-export-btn" onclick="exportBrandGuideCarousel()">&#8595; Export All 11 Slides</button>
+        <div class="carousel-slide-row" id="bg-carousel-thumbs">
+          <div class="carousel-slide-thumb bg-thumb-dark"  onclick="selectCanvas('bg1');closeMobileSidebar()"  title="Slide 1 — Hook">01</div>
+          <div class="carousel-slide-thumb bg-thumb-light" onclick="selectCanvas('bg2');closeMobileSidebar()"  title="Slide 2 — Wrong">02</div>
+          <div class="carousel-slide-thumb bg-thumb-dark"  onclick="selectCanvas('bg3');closeMobileSidebar()"  title="Slide 3 — The Feeling">03</div>
+          <div class="carousel-slide-thumb bg-thumb-light" onclick="selectCanvas('bg4');closeMobileSidebar()"  title="Slide 4 — Proof">04</div>
+          <div class="carousel-slide-thumb bg-thumb-dark"  onclick="selectCanvas('bg5');closeMobileSidebar()"  title="Slide 5 — Niche Down">05</div>
+          <div class="carousel-slide-thumb bg-thumb-light" onclick="selectCanvas('bg6');closeMobileSidebar()"  title="Slide 6 — Reframe">06</div>
+          <div class="carousel-slide-thumb bg-thumb-dark"  onclick="selectCanvas('bg7');closeMobileSidebar()"  title="Slide 7 — Step 1">07</div>
+          <div class="carousel-slide-thumb bg-thumb-light" onclick="selectCanvas('bg8');closeMobileSidebar()"  title="Slide 8 — Step 2">08</div>
+          <div class="carousel-slide-thumb bg-thumb-dark"  onclick="selectCanvas('bg9');closeMobileSidebar()"  title="Slide 9 — Steps 3-5">09</div>
+          <div class="carousel-slide-thumb bg-thumb-light" onclick="selectCanvas('bg10');closeMobileSidebar()" title="Slide 10 — FRMLS Reveal">10</div>
+          <div class="carousel-slide-thumb bg-thumb-dark"  onclick="selectCanvas('bg11');closeMobileSidebar()" title="Slide 11 — CTA">11</div>
         </div>
       </div>
 
@@ -4365,6 +4566,230 @@ body.eyedropper-mode * { cursor: crosshair !important; }
     <div class="final-wordmark">FRML<span class="final-s">S</span></div>
   </div>
 
+  <!-- ════════════════════════════════════════════════════════════════
+       CLOTHING BRAND GUIDE — 11 SLIDES (1080×1080)
+       Editorial monochrome — alternating black / white backgrounds
+  ════════════════════════════════════════════════════════════════ -->
+
+  <!-- BG SLIDE 1 — HOOK (black, full bleed, no border) -->
+  <div id="cvs-bg1" data-w="1080" data-h="1080" class="bg-canvas dark">
+    <div class="bg-glow-white"></div>
+    <div class="bg-noise"></div>
+    <div class="bg-counter">01 / 11</div>
+    <div class="bg-frmls">FRMLS</div>
+    <div class="bg-content center">
+      <div class="bg-mono" style="margin-bottom:30px;">a guide nobody wrote</div>
+      <h1 class="bg-h" style="font-size:108px;">how to start<br>a clothing brand.</h1>
+      <div class="bg-italic" style="font-size:54px;margin-top:46px;color:rgba(255,255,255,0.88);">what nobody actually tells you.</div>
+    </div>
+  </div>
+
+  <!-- BG SLIDE 2 — WHAT EVERYONE DOES WRONG (white) -->
+  <div id="cvs-bg2" data-w="1080" data-h="1080" class="bg-canvas light">
+    <div class="bg-watermark">WRONG</div>
+    <div class="bg-noise"></div>
+    <div class="bg-border"></div>
+    <div class="bg-counter">02 / 11</div>
+    <div class="bg-frmls">FRMLS</div>
+    <div class="bg-content" style="display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;text-align:left;">
+      <div style="width:100%;">
+        <div class="bg-mono" style="margin-bottom:38px;">the mistake</div>
+        <h2 class="bg-h" style="font-size:96px;">most people<br>start here.</h2>
+        <div style="margin-top:46px;display:flex;flex-direction:column;gap:14px;">
+          <div class="bg-body" style="font-size:30px;">find a supplier.</div>
+          <div class="bg-body" style="font-size:30px;">pick a Shopify theme.</div>
+          <div class="bg-body" style="font-size:30px;">upload some products.</div>
+          <div class="bg-body" style="font-size:30px;">wonder why nothing sells.</div>
+        </div>
+      </div>
+      <div class="bg-h" style="font-size:62px;">that's backwards.</div>
+    </div>
+  </div>
+
+  <!-- BG SLIDE 3 — THE FEELING (black) -->
+  <div id="cvs-bg3" data-w="1080" data-h="1080" class="bg-canvas dark">
+    <div class="bg-watermark">FEELING</div>
+    <div class="bg-noise"></div>
+    <div class="bg-border"></div>
+    <div class="bg-counter">03 / 11</div>
+    <div class="bg-frmls">FRMLS</div>
+    <div class="bg-content center">
+      <div class="bg-italic" style="font-size:74px;max-width:920px;color:rgba(255,255,255,0.94);">the product isn't what<br>gets you sales.</div>
+      <h2 class="bg-h" style="font-size:88px;margin-top:54px;">THE FEELING IS.</h2>
+      <div class="bg-body" style="font-size:24px;margin-top:50px;letter-spacing:0.02em;">nobody teaches you this.</div>
+    </div>
+  </div>
+
+  <!-- BG SLIDE 4 — NIKE / SUPREME / GUCCI (white) -->
+  <div id="cvs-bg4" data-w="1080" data-h="1080" class="bg-canvas light">
+    <div class="bg-noise"></div>
+    <div class="bg-border"></div>
+    <div class="bg-counter">04 / 11</div>
+    <div class="bg-frmls">FRMLS</div>
+    <div class="bg-content" style="display:flex;flex-direction:column;justify-content:space-between;align-items:stretch;text-align:left;">
+      <div class="bg-mono" style="text-align:right;">proof</div>
+      <div style="display:flex;flex-direction:column;gap:34px;align-self:flex-start;">
+        <div class="bg-body" style="font-size:36px;line-height:1.30;">Nike doesn't sell<br>the best sportswear.</div>
+        <div class="bg-body" style="font-size:36px;line-height:1.30;">Supreme doesn't sell<br>the best hoodies.</div>
+        <div class="bg-body" style="font-size:36px;line-height:1.30;">Gucci doesn't sell<br>the most comfortable clothes.</div>
+      </div>
+      <div style="align-self:flex-start;">
+        <div class="bg-h" style="font-size:78px;">they sell a feeling.</div>
+        <div class="bg-italic" style="font-size:42px;margin-top:18px;color:rgba(0,0,0,0.74);">the clothing is just proof<br>you belong.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BG SLIDE 5 — NICHE DOWN (black) -->
+  <div id="cvs-bg5" data-w="1080" data-h="1080" class="bg-canvas dark">
+    <div class="bg-watermark">EVERYONE</div>
+    <div class="bg-noise"></div>
+    <div class="bg-border"></div>
+    <div class="bg-counter">05 / 11</div>
+    <div class="bg-frmls">FRMLS</div>
+    <div class="bg-mono" style="position:absolute;top:128px;left:110px;z-index:5;">the rule</div>
+    <div class="bg-content" style="display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;text-align:left;">
+      <div class="bg-h" style="font-size:84px;">stop trying to sell<br>to everyone.</div>
+      <div class="bg-body" style="font-size:28px;margin-top:32px;max-width:780px;">the moment you appeal to everyone<br>you appeal to nobody.</div>
+      <div class="bg-italic" style="font-size:48px;margin-top:36px;color:rgba(255,255,255,0.88);">speak to one person.<br>ignore the rest.</div>
+    </div>
+  </div>
+
+  <!-- BG SLIDE 6 — THE REFRAME (white) -->
+  <div id="cvs-bg6" data-w="1080" data-h="1080" class="bg-canvas light">
+    <div class="bg-noise"></div>
+    <div class="bg-border"></div>
+    <div class="bg-counter">06 / 11</div>
+    <div class="bg-frmls">FRMLS</div>
+    <div class="bg-content center">
+      <div class="bg-italic" style="font-size:60px;max-width:900px;color:rgba(0,0,0,0.85);">so before you touch Shopify.<br>before you find a supplier.</div>
+      <h2 class="bg-h" style="font-size:80px;margin-top:54px;">FIGURE OUT WHAT YOUR<br>BRAND FEELS LIKE.</h2>
+      <div class="bg-body" style="font-size:26px;margin-top:46px;">who it's for. what it stands for.<br>what it sounds like.</div>
+    </div>
+  </div>
+
+  <!-- BG SLIDE 7 — STEP 1 (black) -->
+  <div id="cvs-bg7" data-w="1080" data-h="1080" class="bg-canvas dark">
+    <div class="bg-step-num" style="top:30px;left:80px;">01</div>
+    <div class="bg-noise"></div>
+    <div class="bg-border"></div>
+    <div class="bg-counter">07 / 11</div>
+    <div class="bg-frmls">FRMLS</div>
+    <div class="bg-content" style="display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;text-align:left;">
+      <div class="bg-mono" style="margin-bottom:28px;">step one</div>
+      <h2 class="bg-h" style="font-size:78px;">identity before everything.</h2>
+      <div style="display:flex;flex-direction:column;gap:18px;margin-top:46px;">
+        <div class="bg-body" style="font-size:30px;">who is this brand for?</div>
+        <div class="bg-body" style="font-size:30px;">what should people feel<br>when they see it?</div>
+        <div class="bg-body" style="font-size:30px;">answer this before anything else.</div>
+      </div>
+      <div class="bg-italic" style="font-size:46px;margin-top:42px;color:rgba(255,255,255,0.88);">this is your foundation.</div>
+    </div>
+  </div>
+
+  <!-- BG SLIDE 8 — STEP 2 (white) -->
+  <div id="cvs-bg8" data-w="1080" data-h="1080" class="bg-canvas light">
+    <div class="bg-step-num" style="top:60px;right:80px;">02</div>
+    <div class="bg-noise"></div>
+    <div class="bg-border"></div>
+    <div class="bg-counter" style="left:64px;right:auto;">08 / 11</div>
+    <div class="bg-frmls">FRMLS</div>
+    <div class="bg-content" style="display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-end;text-align:right;">
+      <div class="bg-mono" style="margin-bottom:28px;">step two</div>
+      <h2 class="bg-h" style="font-size:74px;">define your visual language.</h2>
+      <div style="display:flex;flex-direction:column;gap:18px;margin-top:42px;align-items:flex-end;">
+        <div class="bg-body" style="font-size:30px;">colors. fonts. the vibe.</div>
+        <div class="bg-body" style="font-size:30px;">this is what people see<br>before they read a word.</div>
+        <div class="bg-body" style="font-size:30px;">it communicates your brand<br>before you say anything.</div>
+      </div>
+      <div class="bg-italic" style="font-size:46px;margin-top:42px;color:rgba(0,0,0,0.78);">design with intention.</div>
+    </div>
+  </div>
+
+  <!-- BG SLIDE 9 — STEPS 3 + 4 + 5 (black) -->
+  <div id="cvs-bg9" data-w="1080" data-h="1080" class="bg-canvas dark">
+    <div class="bg-noise"></div>
+    <div class="bg-border"></div>
+    <div class="bg-counter">09 / 11</div>
+    <div class="bg-frmls">FRMLS</div>
+    <div class="bg-content" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;text-align:left;">
+      <div class="bg-mono" style="margin-bottom:54px;">the rest</div>
+      <div style="display:flex;flex-direction:column;gap:48px;width:100%;">
+        <div style="display:flex;align-items:flex-start;gap:32px;">
+          <div class="bg-mono" style="font-size:14px;color:rgba(255,255,255,0.40);min-width:36px;padding-top:6px;">03</div>
+          <div class="bg-h" style="font-size:54px;">build the store<br>around the brand.</div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:32px;">
+          <div class="bg-mono" style="font-size:14px;color:rgba(255,255,255,0.40);min-width:36px;padding-top:6px;">04</div>
+          <div class="bg-body" style="font-size:30px;">write copy that sounds<br>like your brand. not everyone else's.</div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:32px;">
+          <div class="bg-mono" style="font-size:14px;color:rgba(255,255,255,0.40);min-width:36px;padding-top:6px;">05</div>
+          <div class="bg-body" style="font-size:30px;">launch with a checklist.<br>not a guess.</div>
+        </div>
+      </div>
+      <div class="bg-italic" style="font-size:48px;margin-top:64px;color:rgba(255,255,255,0.88);">in that order. always.</div>
+    </div>
+  </div>
+
+  <!-- BG SLIDE 10 — FRMLS REVEAL (white, split layout) -->
+  <div id="cvs-bg10" data-w="1080" data-h="1080" class="bg-canvas light">
+    <div class="bg-noise"></div>
+    <div class="bg-border"></div>
+    <div class="bg-counter">10 / 11</div>
+    <div class="bg-frmls">FRMLS</div>
+    <div class="bg-content" style="padding:110px;display:flex;flex-direction:row;align-items:center;gap:50px;">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:flex-start;text-align:left;">
+        <div class="bg-mono" style="margin-bottom:30px;">the tool</div>
+        <h2 class="bg-h" style="font-size:60px;">we built something<br>that does all of this.</h2>
+        <div style="margin-top:36px;display:flex;flex-direction:column;gap:14px;">
+          <div class="bg-body" style="font-size:24px;">brand identity. store copy.<br>design direction. launch checklist.</div>
+          <div class="bg-body" style="font-size:24px;">all in one place.</div>
+        </div>
+        <div class="bg-italic" style="font-size:42px;margin-top:42px;color:rgba(0,0,0,0.78);">one tool. one time.</div>
+      </div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+        <div class="bg-browser">
+          <div class="bg-browser-bar">
+            <div class="bg-browser-dots">
+              <div class="bg-browser-dot" style="background:#ff5f57;"></div>
+              <div class="bg-browser-dot" style="background:#febc2e;"></div>
+              <div class="bg-browser-dot" style="background:#28c840;"></div>
+            </div>
+            <div class="bg-browser-url">frmls.com</div>
+          </div>
+          <div class="bg-browser-body">
+            <div class="bg-browser-logo">FRMLS</div>
+            <div class="bg-browser-grid">
+              <div class="bg-browser-card" style="background:linear-gradient(135deg,#7c3aed 0%,#3b1f7a 100%);">Brand Kit</div>
+              <div class="bg-browser-card" style="background:linear-gradient(135deg,#06b6d4 0%,#1e4f5c 100%);">Prompt Pack</div>
+              <div class="bg-browser-card" style="background:linear-gradient(135deg,#ec4899 0%,#6b1f3e 100%);">Designer Prompts</div>
+              <div class="bg-browser-card" style="background:linear-gradient(135deg,#f59e0b 0%,#7a4f0a 100%);">Store Inspiration</div>
+              <div class="bg-browser-card" style="background:linear-gradient(135deg,#10b981 0%,#1f5c45 100%);">Launch Checklist</div>
+              <div class="bg-browser-card" style="background:linear-gradient(135deg,#8b5cf6 0%,#3a2466 100%);">Resources</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BG SLIDE 11 — CTA (black) -->
+  <div id="cvs-bg11" data-w="1080" data-h="1080" class="bg-canvas dark">
+    <div class="bg-glow-white" style="width:760px;height:760px;background:radial-gradient(circle at 50% 50%, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.06) 35%, transparent 70%);"></div>
+    <div class="bg-noise"></div>
+    <div class="bg-border"></div>
+    <div class="bg-counter">11 / 11</div>
+    <div class="bg-frmls">FRMLS</div>
+    <div class="bg-content center">
+      <div class="bg-mono" style="margin-bottom:42px;">start here</div>
+      <div class="bg-h" style="font-size:200px;letter-spacing:-0.06em;">FRMLS</div>
+      <div class="bg-italic" style="font-size:48px;margin-top:36px;color:rgba(255,255,255,0.92);">build a store that feels<br>like something.</div>
+      <div class="bg-body" style="font-size:22px;margin-top:46px;letter-spacing:0.04em;color:rgba(255,255,255,0.62);">brand kit · prompt pack · launch checklist</div>
+      <div class="bg-h bg-cta-grad" style="font-size:46px;margin-top:50px;">frmls.com — $37 one time</div>
+    </div>
+  </div>
+
 </div><!-- /canvas-pool -->
 
 
@@ -4450,7 +4875,18 @@ let BUILT_IN = [
   { key:'nbt4',   name:'NBT Slide 4 — Copy',       w:1080, h:1350, thumb:'linear-gradient(135deg,#0a0a0a 0%,#252525 100%)', deletable:true },
   { key:'nbt5',   name:'NBT Slide 5 — Identity',   w:1080, h:1350, thumb:'linear-gradient(135deg,#080808 0%,#1a1a1a 100%)', deletable:true },
   { key:'nbt6',   name:'NBT Slide 6 — CTA',        w:1080, h:1350, thumb:'linear-gradient(135deg,#080808 0%,#2a2a2a 100%)', deletable:true },
-  { key:'final',  name:'Final Slide — Monochrome', w:1080, h:1080, thumb:'linear-gradient(135deg,#0a0a0a 0%,#000000 100%)', deletable:true }
+  { key:'final',  name:'Final Slide — Monochrome', w:1080, h:1080, thumb:'linear-gradient(135deg,#0a0a0a 0%,#000000 100%)', deletable:true },
+  { key:'bg1',  name:'Brand Guide 1 — Hook',         w:1080, h:1080, thumb:'#000000', deletable:true },
+  { key:'bg2',  name:'Brand Guide 2 — Wrong',        w:1080, h:1080, thumb:'#ffffff', deletable:true },
+  { key:'bg3',  name:'Brand Guide 3 — The Feeling',  w:1080, h:1080, thumb:'#000000', deletable:true },
+  { key:'bg4',  name:'Brand Guide 4 — Proof',        w:1080, h:1080, thumb:'#ffffff', deletable:true },
+  { key:'bg5',  name:'Brand Guide 5 — Niche Down',   w:1080, h:1080, thumb:'#000000', deletable:true },
+  { key:'bg6',  name:'Brand Guide 6 — Reframe',      w:1080, h:1080, thumb:'#ffffff', deletable:true },
+  { key:'bg7',  name:'Brand Guide 7 — Step 1',       w:1080, h:1080, thumb:'#000000', deletable:true },
+  { key:'bg8',  name:'Brand Guide 8 — Step 2',       w:1080, h:1080, thumb:'#ffffff', deletable:true },
+  { key:'bg9',  name:'Brand Guide 9 — Steps 3-5',    w:1080, h:1080, thumb:'#000000', deletable:true },
+  { key:'bg10', name:'Brand Guide 10 — FRMLS Reveal',w:1080, h:1080, thumb:'#ffffff', deletable:true },
+  { key:'bg11', name:'Brand Guide 11 — CTA',         w:1080, h:1080, thumb:'#000000', deletable:true }
 ];
 
 let userCanvases    = [];
@@ -7353,6 +7789,79 @@ async function exportFinalSlide() {
     document.body.appendChild(modal);
   } else {
     triggerDownload(dataUrl, 'frmls-final-slide.png');
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  CLOTHING BRAND GUIDE CAROUSEL — EXPORT ALL 11 SLIDES
+// ══════════════════════════════════════════════════════════════
+
+async function exportBrandGuideCarousel() {
+  var sidebarBtn = document.getElementById('bg-export-btn');
+  function setProgress(text) {
+    if (sidebarBtn) { sidebarBtn.textContent = text; sidebarBtn.disabled = true; }
+  }
+  function resetBtns() {
+    if (sidebarBtn) { sidebarBtn.textContent = '↓ Export All 11 Slides'; sidebarBtn.disabled = false; }
+  }
+
+  setProgress('Capturing…');
+
+  var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  var bgKeys = ['bg1','bg2','bg3','bg4','bg5','bg6','bg7','bg8','bg9','bg10','bg11']
+    .filter(function(k) { return !!document.getElementById('cvs-' + k); });
+
+  var slides = [];
+  for (var i = 0; i < bgKeys.length; i++) {
+    var key = bgKeys[i];
+    var oneBased = i + 1;
+    setProgress(oneBased + ' / ' + bgKeys.length);
+    var isLight = (oneBased % 2 === 0); // 2,4,6,8,10 are white
+    var bg = isLight ? '#ffffff' : '#000000';
+    var dataUrl = await captureSlide(
+      document.getElementById('cvs-' + key), 1080, 1080, bg
+    );
+    var num = oneBased < 10 ? '0' + oneBased : '' + oneBased;
+    slides.push({ dataUrl: dataUrl, num: num });
+    await new Promise(function(r) { setTimeout(r, 80); });
+  }
+
+  resetBtns();
+
+  var failed = slides.filter(function(s) { return !s.dataUrl; }).length;
+  if (failed === slides.length) { alert('Capture failed — try refreshing the page.'); return; }
+
+  if (isMobile) {
+    window.__frmlsBgSlides = slides;
+    var modal = document.createElement('div');
+    modal.style.cssText = 'position:fixed;top:0;right:0;bottom:0;left:0;background:#0a0a0a;z-index:99999;overflow-y:auto;padding:20px 16px 100px;font-family:system-ui,sans-serif;';
+    var closeBtn = document.createElement('button');
+    closeBtn.textContent = '✕ Close';
+    closeBtn.style.cssText = 'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#aaaaaa;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;margin-bottom:20px;';
+    closeBtn.onclick = function() { modal.remove(); };
+    modal.appendChild(closeBtn);
+    slides.forEach(function(s, idx) {
+      if (!s.dataUrl) return;
+      var btn = document.createElement('button');
+      btn.textContent = 'Save brand-guide-slide-' + s.num + '.png';
+      btn.style.cssText = 'display:block;width:100%;margin-bottom:12px;padding:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);color:#e8e8e8;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;';
+      btn.onclick = function() {
+        var sl = (window.__frmlsBgSlides || [])[idx];
+        if (!sl) return;
+        var a = document.createElement('a');
+        a.href = sl.dataUrl; a.download = 'brand-guide-slide-' + sl.num + '.png';
+        a.click();
+      };
+      modal.appendChild(btn);
+    });
+    document.body.appendChild(modal);
+  } else {
+    for (var j = 0; j < slides.length; j++) {
+      if (slides[j].dataUrl) {
+        triggerDownload(slides[j].dataUrl, 'brand-guide-slide-' + slides[j].num + '.png');
+        await new Promise(function(r) { setTimeout(r, 700); });
+      }
+    }
   }
 }
 

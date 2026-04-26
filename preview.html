@@ -3021,6 +3021,69 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   pointer-events: none;
   z-index: 3;
 }
+
+/* ── Punchy decorative orbs for light slides — discrete blobs vs atmospheric blooms ── */
+.nk-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(50px);
+}
+.nk-orb-gold-sm  { width: 200px; height: 200px; background: radial-gradient(circle, rgba(201,168,76,0.78) 0%, rgba(201,168,76,0.22) 50%, transparent 72%); }
+.nk-orb-gold-md  { width: 320px; height: 320px; background: radial-gradient(circle, rgba(201,168,76,0.70) 0%, rgba(201,168,76,0.18) 50%, transparent 72%); }
+.nk-orb-gold-lg  { width: 480px; height: 480px; background: radial-gradient(circle, rgba(201,168,76,0.58) 0%, rgba(201,168,76,0.14) 50%, transparent 72%); }
+.nk-orb-brown-sm { width: 200px; height: 200px; background: radial-gradient(circle, rgba(139,69,19,0.62) 0%, rgba(139,69,19,0.18) 50%, transparent 72%); }
+.nk-orb-brown-md { width: 320px; height: 320px; background: radial-gradient(circle, rgba(139,69,19,0.55) 0%, rgba(139,69,19,0.15) 50%, transparent 72%); }
+
+/* ── Sidebar carousel section hide button + restore pill ── */
+.sb-section-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sb-section-remove {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.40);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+.sb-section-remove:hover {
+  background: rgba(244,63,94,0.14);
+  border-color: rgba(244,63,94,0.45);
+  color: rgba(255,160,170,0.95);
+}
+.sb-show-hidden {
+  display: none;
+  margin: 0 22px 14px;
+  padding: 8px 14px;
+  width: calc(100% - 44px);
+  background: rgba(124,58,237,0.10);
+  border: 1px solid rgba(124,58,237,0.35);
+  color: rgba(196,160,255,0.95);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.sb-show-hidden:hover {
+  background: rgba(124,58,237,0.18);
+  border-color: rgba(124,58,237,0.55);
+}
 </style>
 </head>
 <body>
@@ -3039,6 +3102,8 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 
     <div class="sb-scroll">
 
+      <button class="sb-show-hidden" id="sb-show-hidden-btn" onclick="restoreHiddenSections()">Show hidden sections</button>
+
       <!-- TEMPLATES -->
       <div class="sb-section" id="sb-templates">
         <div class="sb-section-header">
@@ -3054,7 +3119,10 @@ body.eyedropper-mode * { cursor: crosshair !important; }
       <div class="sb-section" id="sb-tip-carousel">
         <div class="sb-section-header">
           <span class="sb-section-title">Tip Post Carousel</span>
-          <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">7 slides · 1080×1350</span>
+          <div class="sb-section-meta">
+            <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">7 slides · 1080×1350</span>
+            <button class="sb-section-remove" onclick="hideCarouselSection('sb-tip-carousel')" title="Hide section" aria-label="Hide section">×</button>
+          </div>
         </div>
         <button class="carousel-export-btn" id="tip-export-btn" onclick="exportTipCarousel()">↓ Export All 7 Slides</button>
         <div class="carousel-slide-row" id="carousel-thumbs">
@@ -3072,7 +3140,10 @@ body.eyedropper-mode * { cursor: crosshair !important; }
       <div class="sb-section" id="sb-signs-carousel">
         <div class="sb-section-header">
           <span class="sb-section-title">5 Signs Carousel</span>
-          <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">7 slides · 1080×1080</span>
+          <div class="sb-section-meta">
+            <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">7 slides · 1080×1080</span>
+            <button class="sb-section-remove" onclick="hideCarouselSection('sb-signs-carousel')" title="Hide section" aria-label="Hide section">×</button>
+          </div>
         </div>
         <button class="carousel-export-btn" id="signs-export-btn" onclick="exportSignsCarousel()">↓ Export All 7 Slides</button>
         <div class="carousel-slide-row" id="signs-carousel-thumbs">
@@ -3090,7 +3161,10 @@ body.eyedropper-mode * { cursor: crosshair !important; }
       <div class="sb-section" id="sb-nbt-carousel">
         <div class="sb-section-header">
           <span class="sb-section-title">Nobody Tells You</span>
-          <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">6 slides · 1080×1350</span>
+          <div class="sb-section-meta">
+            <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">6 slides · 1080×1350</span>
+            <button class="sb-section-remove" onclick="hideCarouselSection('sb-nbt-carousel')" title="Hide section" aria-label="Hide section">×</button>
+          </div>
         </div>
         <button class="carousel-export-btn" id="nbt-export-btn" onclick="exportNbtCarousel()">&#8595; Export All 6 Slides</button>
         <div class="carousel-slide-row" id="nbt-carousel-thumbs">
@@ -3107,7 +3181,10 @@ body.eyedropper-mode * { cursor: crosshair !important; }
       <div class="sb-section" id="sb-final-slide">
         <div class="sb-section-header">
           <span class="sb-section-title">Final Slide — Monochrome</span>
-          <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">1 slide · 1080×1080</span>
+          <div class="sb-section-meta">
+            <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">1 slide · 1080×1080</span>
+            <button class="sb-section-remove" onclick="hideCarouselSection('sb-final-slide')" title="Hide section" aria-label="Hide section">×</button>
+          </div>
         </div>
         <button class="carousel-export-btn" id="final-export-btn" onclick="exportFinalSlide()">&#8595; Export Final Slide</button>
         <div class="carousel-slide-row" id="final-slide-thumbs">
@@ -3119,7 +3196,10 @@ body.eyedropper-mode * { cursor: crosshair !important; }
       <div class="sb-section" id="sb-brand-guide-carousel">
         <div class="sb-section-header">
           <span class="sb-section-title">Clothing Brand Guide</span>
-          <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">11 slides · 1080×1080</span>
+          <div class="sb-section-meta">
+            <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">11 slides · 1080×1080</span>
+            <button class="sb-section-remove" onclick="hideCarouselSection('sb-brand-guide-carousel')" title="Hide section" aria-label="Hide section">×</button>
+          </div>
         </div>
         <button class="carousel-export-btn" id="bg-export-btn" onclick="exportBrandGuideCarousel()">&#8595; Export All 11 Slides</button>
         <div class="carousel-slide-row" id="bg-carousel-thumbs">
@@ -3141,7 +3221,10 @@ body.eyedropper-mode * { cursor: crosshair !important; }
       <div class="sb-section" id="sb-nike-guide-carousel">
         <div class="sb-section-header">
           <span class="sb-section-title">Nike Brand Guide</span>
-          <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">9 slides · 1080×1080</span>
+          <div class="sb-section-meta">
+            <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">9 slides · 1080×1080</span>
+            <button class="sb-section-remove" onclick="hideCarouselSection('sb-nike-guide-carousel')" title="Hide section" aria-label="Hide section">×</button>
+          </div>
         </div>
         <button class="carousel-export-btn" id="nk-export-btn" onclick="exportNikeGuideCarousel()">&#8595; Export All 9 Slides</button>
         <div class="carousel-slide-row" id="nk-carousel-thumbs">
@@ -5262,6 +5345,10 @@ body.eyedropper-mode * { cursor: crosshair !important; }
     <div class="nk-bloom nk-bloom-tr"></div>
     <div class="nk-bloom nk-bloom-bl" style="opacity:0.7;"></div>
     <div class="nk-wash nk-wash-down"></div>
+    <div class="nk-orb nk-orb-gold-md" style="top:140px;right:80px;"></div>
+    <div class="nk-orb nk-orb-brown-sm" style="top:520px;right:300px;"></div>
+    <div class="nk-orb nk-orb-gold-sm" style="top:660px;right:140px;"></div>
+    <div class="nk-orb nk-orb-brown-md" style="bottom:80px;right:-40px;opacity:0.85;"></div>
     <div class="nk-noise"></div>
     <div class="nk-tint nk-tint-yellowed"></div>
     <div class="nk-grain nk-grain-5"></div>
@@ -5308,6 +5395,10 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   <div id="cvs-nk4" data-w="1080" data-h="1080" class="nk-canvas nk-canvas-light nk-fx-4">
     <div class="nk-bloom nk-bloom-l"></div>
     <div class="nk-wash nk-wash-cross"></div>
+    <div class="nk-orb nk-orb-gold-md" style="top:160px;left:60px;"></div>
+    <div class="nk-orb nk-orb-brown-md" style="top:520px;left:-60px;opacity:0.9;"></div>
+    <div class="nk-orb nk-orb-gold-sm" style="bottom:200px;left:300px;"></div>
+    <div class="nk-orb nk-orb-brown-sm" style="bottom:60px;left:140px;opacity:0.85;"></div>
     <div class="nk-noise"></div>
     <div class="nk-tint nk-tint-cream"></div>
     <div class="nk-grain nk-grain-3"></div>
@@ -5352,6 +5443,10 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   <div id="cvs-nk6" data-w="1080" data-h="1080" class="nk-canvas nk-canvas-light nk-fx-6">
     <div class="nk-bloom nk-bloom-top" style="opacity:0.85;"></div>
     <div class="nk-bloom nk-bloom-bottom" style="opacity:0.55;"></div>
+    <div class="nk-orb nk-orb-gold-sm" style="top:90px;left:80px;opacity:0.9;"></div>
+    <div class="nk-orb nk-orb-brown-sm" style="top:120px;right:90px;opacity:0.7;"></div>
+    <div class="nk-orb nk-orb-gold-sm" style="bottom:140px;left:160px;opacity:0.8;"></div>
+    <div class="nk-orb nk-orb-brown-sm" style="bottom:90px;right:80px;opacity:0.75;"></div>
     <div class="nk-noise"></div>
     <div class="nk-grain nk-grain-2"></div>
     <div class="nk-border nk-border-light"></div>
@@ -5394,6 +5489,10 @@ body.eyedropper-mode * { cursor: crosshair !important; }
     <div class="nk-bloom nk-bloom-tr" style="opacity:0.55;"></div>
     <div class="nk-bloom nk-bloom-bl" style="opacity:0.55;"></div>
     <div class="nk-glow-soft-gold"></div>
+    <div class="nk-orb nk-orb-gold-sm" style="top:130px;left:140px;opacity:0.7;"></div>
+    <div class="nk-orb nk-orb-brown-sm" style="top:160px;right:160px;opacity:0.55;"></div>
+    <div class="nk-orb nk-orb-gold-sm" style="bottom:150px;right:130px;opacity:0.7;"></div>
+    <div class="nk-orb nk-orb-brown-sm" style="bottom:170px;left:170px;opacity:0.55;"></div>
     <div class="nk-rule-gold" style="top:240px;left:50%;width:160px;transform:translateX(-50%);"></div>
     <div class="nk-rule-gold" style="bottom:240px;left:50%;width:160px;transform:translateX(-50%);"></div>
     <div class="nk-noise"></div>
@@ -8587,6 +8686,73 @@ async function exportNikeGuideCarousel() {
     }
   }
 }
+
+// ══════════════════════════════════════════════════════════════
+//  SIDEBAR — HIDE / RESTORE CAROUSEL SECTIONS
+// ══════════════════════════════════════════════════════════════
+var SB_HIDDEN_KEY = 'frmls.hiddenSections';
+
+function getHiddenSections() {
+  try {
+    var raw = localStorage.getItem(SB_HIDDEN_KEY);
+    var arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr : [];
+  } catch (e) { return []; }
+}
+function setHiddenSections(arr) {
+  try { localStorage.setItem(SB_HIDDEN_KEY, JSON.stringify(arr)); } catch (e) {}
+}
+
+function hideCarouselSection(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = 'none';
+  var hidden = getHiddenSections();
+  if (hidden.indexOf(id) === -1) {
+    hidden.push(id);
+    setHiddenSections(hidden);
+  }
+  updateShowHiddenBtn();
+}
+
+function restoreHiddenSections() {
+  var hidden = getHiddenSections();
+  hidden.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = '';
+  });
+  setHiddenSections([]);
+  updateShowHiddenBtn();
+}
+
+function updateShowHiddenBtn() {
+  var btn = document.getElementById('sb-show-hidden-btn');
+  if (!btn) return;
+  var hidden = getHiddenSections();
+  if (hidden.length > 0) {
+    btn.style.display = 'block';
+    btn.textContent = 'Show hidden sections (' + hidden.length + ')';
+  } else {
+    btn.style.display = 'none';
+  }
+}
+
+// On load — apply previously hidden state
+(function applyHiddenSectionsOnLoad() {
+  var apply = function() {
+    var hidden = getHiddenSections();
+    hidden.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    updateShowHiddenBtn();
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', apply);
+  } else {
+    apply();
+  }
+})();
 
 // ── Keyboard shortcuts ──
 document.addEventListener('keydown', function(e) {

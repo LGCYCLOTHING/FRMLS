@@ -2793,14 +2793,14 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 }
 .nk-counter-light { color: rgba(139,69,19,0.80); }
 .nk-frmls-logo {
-  position: absolute; bottom: 50px; right: 60px;
+  position: absolute; bottom: 48px; right: 60px;
   font-family: 'Inter', sans-serif;
-  font-size: 22px; font-weight: 900;
+  font-size: 38px; font-weight: 900;
   letter-spacing: -0.05em;
   color: #f5ede0;
   line-height: 1;
   z-index: 7;
-  opacity: 0.85;
+  opacity: 0.92;
 }
 .nk-frmls-logo-light { color: #1a0f0a; }
 .nk-frmls-logo .nk-frmls-s {
@@ -2958,6 +2958,68 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   z-index: 1;
   filter: blur(120px);
   background: radial-gradient(circle, rgba(201,168,76,0.22) 0%, rgba(201,168,76,0.08) 40%, transparent 70%);
+}
+
+/* ── Warm blurred blooms for light slides (gold-on-cream depth) ── */
+.nk-bloom {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(140px);
+}
+.nk-bloom-tr {
+  top: -200px; right: -180px;
+  width: 760px; height: 760px;
+  background: radial-gradient(circle, rgba(201,168,76,0.55) 0%, rgba(139,69,19,0.20) 35%, transparent 70%);
+}
+.nk-bloom-bl {
+  bottom: -200px; left: -180px;
+  width: 720px; height: 720px;
+  background: radial-gradient(circle, rgba(201,168,76,0.45) 0%, rgba(139,69,19,0.18) 35%, transparent 70%);
+}
+.nk-bloom-l {
+  top: 50%; left: -260px;
+  width: 600px; height: 880px;
+  transform: translateY(-50%);
+  background: radial-gradient(circle, rgba(201,168,76,0.50) 0%, rgba(139,69,19,0.18) 40%, transparent 70%);
+}
+.nk-bloom-r {
+  top: 50%; right: -260px;
+  width: 600px; height: 880px;
+  transform: translateY(-50%);
+  background: radial-gradient(circle, rgba(201,168,76,0.50) 0%, rgba(139,69,19,0.18) 40%, transparent 70%);
+}
+.nk-bloom-top {
+  top: -320px; left: 50%;
+  width: 1180px; height: 640px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(201,168,76,0.45) 0%, rgba(139,69,19,0.14) 40%, transparent 70%);
+}
+.nk-bloom-bottom {
+  bottom: -320px; left: 50%;
+  width: 1180px; height: 640px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(139,69,19,0.30) 0%, rgba(139,69,19,0.10) 45%, transparent 70%);
+}
+
+/* Subtle gradient washes (zero-blur, full slide) */
+.nk-wash {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.nk-wash-down  { background: linear-gradient(180deg, rgba(245,237,224,0) 0%, rgba(139,69,19,0.08) 100%); }
+.nk-wash-diag  { background: linear-gradient(135deg, rgba(201,168,76,0.10) 0%, transparent 55%); }
+.nk-wash-cross { background: linear-gradient(225deg, rgba(201,168,76,0.10) 0%, transparent 50%); }
+
+/* Hairline divider — gold horizontal accent for the most-important slide */
+.nk-rule-gold {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(201,168,76,0.55) 30%, rgba(139,69,19,0.55) 70%, transparent 100%);
+  pointer-events: none;
+  z-index: 3;
 }
 </style>
 </head>
@@ -5197,6 +5259,9 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 
   <!-- NK SLIDE 2 — THINK ABOUT IT (light) — aged paper -->
   <div id="cvs-nk2" data-w="1080" data-h="1080" class="nk-canvas nk-canvas-light nk-fx-2">
+    <div class="nk-bloom nk-bloom-tr"></div>
+    <div class="nk-bloom nk-bloom-bl" style="opacity:0.7;"></div>
+    <div class="nk-wash nk-wash-down"></div>
     <div class="nk-noise"></div>
     <div class="nk-tint nk-tint-yellowed"></div>
     <div class="nk-grain nk-grain-5"></div>
@@ -5241,6 +5306,8 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 
   <!-- NK SLIDE 4 — JORDAN (light) — luxury magazine clean -->
   <div id="cvs-nk4" data-w="1080" data-h="1080" class="nk-canvas nk-canvas-light nk-fx-4">
+    <div class="nk-bloom nk-bloom-l"></div>
+    <div class="nk-wash nk-wash-cross"></div>
     <div class="nk-noise"></div>
     <div class="nk-tint nk-tint-cream"></div>
     <div class="nk-grain nk-grain-3"></div>
@@ -5283,6 +5350,8 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 
   <!-- NK SLIDE 6 — THE PRICE (light) — overexposed minimal -->
   <div id="cvs-nk6" data-w="1080" data-h="1080" class="nk-canvas nk-canvas-light nk-fx-6">
+    <div class="nk-bloom nk-bloom-top" style="opacity:0.85;"></div>
+    <div class="nk-bloom nk-bloom-bottom" style="opacity:0.55;"></div>
     <div class="nk-noise"></div>
     <div class="nk-grain nk-grain-2"></div>
     <div class="nk-border nk-border-light"></div>
@@ -5322,7 +5391,11 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 
   <!-- NK SLIDE 8 — THE QUESTION (light) — most important, kept clean -->
   <div id="cvs-nk8" data-w="1080" data-h="1080" class="nk-canvas nk-canvas-light nk-fx-8">
+    <div class="nk-bloom nk-bloom-tr" style="opacity:0.55;"></div>
+    <div class="nk-bloom nk-bloom-bl" style="opacity:0.55;"></div>
     <div class="nk-glow-soft-gold"></div>
+    <div class="nk-rule-gold" style="top:240px;left:50%;width:160px;transform:translateX(-50%);"></div>
+    <div class="nk-rule-gold" style="bottom:240px;left:50%;width:160px;transform:translateX(-50%);"></div>
     <div class="nk-noise"></div>
     <div class="nk-grain nk-grain-3"></div>
     <div class="nk-border nk-border-light"></div>

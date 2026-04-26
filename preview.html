@@ -2750,6 +2750,150 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   border: 1px solid rgba(255,255,255,0.18);
   font-weight: 700;
 }
+
+/* ─────────────────────────────────────────────────────
+   NIKE BRAND GUIDE — 9 SLIDES (1080×1080)
+   Warm-brown editorial palette: dark espresso + cream
+───────────────────────────────────────────────────── */
+.nk-canvas {
+  width: 1080px; height: 1080px;
+  position: relative; overflow: hidden;
+  background: #1a0f0a;
+  color: #f5ede0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.nk-canvas-light {
+  background: #f5ede0;
+  color: #1a0f0a;
+}
+.nk-noise {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 280px 280px;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 6;
+  mix-blend-mode: overlay;
+}
+.nk-border {
+  position: absolute; top: 20px; right: 20px; bottom: 20px; left: 20px;
+  pointer-events: none; z-index: 5;
+  border: 1px solid rgba(201,168,76,0.20);
+}
+.nk-border-light {
+  border-color: rgba(139,69,19,0.20);
+}
+.nk-counter {
+  position: absolute; top: 52px; right: 64px;
+  font-family: 'DM Mono', monospace;
+  font-size: 16px; font-weight: 500;
+  letter-spacing: 0.20em; text-transform: uppercase;
+  color: rgba(201,168,76,0.85);
+  z-index: 7;
+}
+.nk-counter-light { color: rgba(139,69,19,0.80); }
+.nk-frmls-logo {
+  position: absolute; bottom: 50px; right: 60px;
+  font-family: 'Inter', sans-serif;
+  font-size: 22px; font-weight: 900;
+  letter-spacing: -0.05em;
+  color: #f5ede0;
+  line-height: 1;
+  z-index: 7;
+  opacity: 0.85;
+}
+.nk-frmls-logo-light { color: #1a0f0a; }
+.nk-frmls-logo .nk-frmls-s {
+  display: inline-block;
+  padding: 0 0.06em 0 0.02em;
+  margin: 0 -0.06em 0 -0.02em;
+  background: linear-gradient(135deg, #c9a84c 0%, #8B4513 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+.nk-content {
+  position: absolute; inset: 0;
+  padding: 130px 110px;
+  z-index: 4;
+  display: flex; flex-direction: column;
+}
+.nk-mono {
+  font-family: 'DM Mono', monospace;
+  font-size: 16px; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: #c9a84c;
+}
+.nk-mono-brown { color: #8B4513; }
+.nk-h {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900; line-height: 1.0;
+  letter-spacing: -0.045em; margin: 0;
+  color: #f5ede0;
+}
+.nk-h-dark { color: #1a0f0a; }
+.nk-h-gold { color: #c9a84c; }
+.nk-italic {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 400;
+  line-height: 1.10; letter-spacing: -0.005em; margin: 0;
+  color: #f5ede0;
+}
+.nk-italic-dark { color: #1a0f0a; }
+.nk-italic-gold { color: #c9a84c; }
+.nk-body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400; line-height: 1.55;
+  letter-spacing: -0.005em; margin: 0;
+  color: rgba(245,237,224,0.82);
+}
+.nk-body-dark { color: rgba(26,15,10,0.78); }
+.nk-watermark {
+  position: absolute;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  line-height: 0.80;
+  letter-spacing: -0.06em;
+  color: rgba(201,168,76,0.04);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+  user-select: none;
+  text-transform: uppercase;
+}
+.nk-watermark-brown { color: rgba(139,69,19,0.05); }
+.nk-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(110px);
+  background: radial-gradient(circle, rgba(201,168,76,0.22) 0%, rgba(139,69,19,0.08) 40%, transparent 70%);
+}
+.nk-accent-line {
+  display: inline-block;
+  width: 36px; height: 1px;
+  background: rgba(201,168,76,0.70);
+  vertical-align: middle;
+  margin-right: 16px;
+}
+.nk-accent-line-brown {
+  background: rgba(139,69,19,0.70);
+}
+.carousel-slide-thumb.nk-thumb-dark {
+  background: #1a0f0a;
+  color: #c9a84c;
+  border: 1px solid rgba(201,168,76,0.30);
+  font-weight: 700;
+}
+.carousel-slide-thumb.nk-thumb-light {
+  background: #f5ede0;
+  color: #8B4513;
+  border: 1px solid rgba(139,69,19,0.30);
+  font-weight: 700;
+}
 </style>
 </head>
 <body>
@@ -2863,6 +3007,26 @@ body.eyedropper-mode * { cursor: crosshair !important; }
           <div class="carousel-slide-thumb bg-thumb-dark" onclick="selectCanvas('bg9');closeMobileSidebar()"  title="Slide 9 — Steps 3-5">09</div>
           <div class="carousel-slide-thumb bg-thumb-soft" onclick="selectCanvas('bg10');closeMobileSidebar()" title="Slide 10 — FRMLS Reveal">10</div>
           <div class="carousel-slide-thumb bg-thumb-dark" onclick="selectCanvas('bg11');closeMobileSidebar()" title="Slide 11 — CTA">11</div>
+        </div>
+      </div>
+
+      <!-- NIKE BRAND GUIDE CAROUSEL -->
+      <div class="sb-section" id="sb-nike-guide-carousel">
+        <div class="sb-section-header">
+          <span class="sb-section-title">Nike Brand Guide</span>
+          <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">9 slides · 1080×1080</span>
+        </div>
+        <button class="carousel-export-btn" id="nk-export-btn" onclick="exportNikeGuideCarousel()">&#8595; Export All 9 Slides</button>
+        <div class="carousel-slide-row" id="nk-carousel-thumbs">
+          <div class="carousel-slide-thumb nk-thumb-dark"  onclick="selectCanvas('nk1');closeMobileSidebar()" title="Slide 1 — Hook">01</div>
+          <div class="carousel-slide-thumb nk-thumb-light" onclick="selectCanvas('nk2');closeMobileSidebar()" title="Slide 2 — The Ad">02</div>
+          <div class="carousel-slide-thumb nk-thumb-dark"  onclick="selectCanvas('nk3');closeMobileSidebar()" title="Slide 3 — Identity">03</div>
+          <div class="carousel-slide-thumb nk-thumb-light" onclick="selectCanvas('nk4');closeMobileSidebar()" title="Slide 4 — Jordan">04</div>
+          <div class="carousel-slide-thumb nk-thumb-dark"  onclick="selectCanvas('nk5');closeMobileSidebar()" title="Slide 5 — Emotion">05</div>
+          <div class="carousel-slide-thumb nk-thumb-light" onclick="selectCanvas('nk6');closeMobileSidebar()" title="Slide 6 — The Price">06</div>
+          <div class="carousel-slide-thumb nk-thumb-dark"  onclick="selectCanvas('nk7');closeMobileSidebar()" title="Slide 7 — Pattern">07</div>
+          <div class="carousel-slide-thumb nk-thumb-light" onclick="selectCanvas('nk8');closeMobileSidebar()" title="Slide 8 — Question">08</div>
+          <div class="carousel-slide-thumb nk-thumb-dark"  onclick="selectCanvas('nk9');closeMobileSidebar()" title="Slide 9 — Close">09</div>
         </div>
       </div>
 
@@ -4942,6 +5106,173 @@ body.eyedropper-mode * { cursor: crosshair !important; }
     </div>
   </div>
 
+  <!-- ════════════════════════════════════════════════════════════════
+       NIKE BRAND GUIDE — 9 SLIDES (1080×1080)
+       Warm-brown editorial palette, alternating dark/light rhythm
+  ════════════════════════════════════════════════════════════════ -->
+
+  <!-- NK SLIDE 1 — HOOK (dark) -->
+  <div id="cvs-nk1" data-w="1080" data-h="1080" class="nk-canvas">
+    <div class="nk-watermark" style="top:50%;left:50%;transform:translate(-50%,-50%);font-size:360px;">NIKE</div>
+    <div class="nk-glow" style="top:50%;left:50%;width:920px;height:920px;transform:translate(-50%,-50%);"></div>
+    <div class="nk-noise"></div>
+    <div class="nk-border"></div>
+    <div class="nk-counter">01 / 09</div>
+    <div class="nk-frmls-logo">FRML<span class="nk-frmls-s">S</span></div>
+
+    <div class="nk-content" style="align-items:center;justify-content:center;text-align:center;">
+      <div class="nk-mono" style="margin-bottom:38px;">a guide nobody wrote</div>
+      <h1 class="nk-h" style="font-size:86px;">why Nike is worth<br><span class="nk-h-gold">$50 billion</span></h1>
+      <div class="nk-italic" style="font-size:50px;margin-top:46px;">and it has nothing to do<br>with shoes.</div>
+    </div>
+  </div>
+
+  <!-- NK SLIDE 2 — THINK ABOUT IT (light) -->
+  <div id="cvs-nk2" data-w="1080" data-h="1080" class="nk-canvas nk-canvas-light">
+    <div class="nk-noise"></div>
+    <div class="nk-border nk-border-light"></div>
+    <div class="nk-counter nk-counter-light">02 / 09</div>
+    <div class="nk-frmls-logo nk-frmls-logo-light">FRML<span class="nk-frmls-s">S</span></div>
+
+    <div class="nk-content" style="align-items:flex-start;justify-content:space-between;text-align:left;">
+      <div style="width:100%;">
+        <div class="nk-mono nk-mono-brown" style="margin-bottom:46px;">think about it</div>
+        <h2 class="nk-h nk-h-dark" style="font-size:74px;">think about the last<br>Nike ad you saw.</h2>
+        <div style="margin-top:50px;display:flex;flex-direction:column;gap:18px;">
+          <div class="nk-body nk-body-dark" style="font-size:30px;">was there a shoe in it?</div>
+          <div class="nk-body nk-body-dark" style="font-size:30px;">probably not.</div>
+          <div class="nk-body nk-body-dark" style="font-size:30px;">there was a person.<br>a moment. a feeling.</div>
+        </div>
+      </div>
+      <div class="nk-italic nk-italic-gold" style="font-size:54px;">that's not an accident.</div>
+    </div>
+  </div>
+
+  <!-- NK SLIDE 3 — IDENTITY (dark) -->
+  <div id="cvs-nk3" data-w="1080" data-h="1080" class="nk-canvas">
+    <div class="nk-watermark" style="top:50%;left:50%;transform:translate(-50%,-50%);font-size:200px;">IDENTITY</div>
+    <div class="nk-glow" style="top:50%;left:50%;width:780px;height:780px;transform:translate(-50%,-50%);opacity:0.55;"></div>
+    <div class="nk-noise"></div>
+    <div class="nk-border"></div>
+    <div class="nk-counter">03 / 09</div>
+    <div class="nk-frmls-logo">FRML<span class="nk-frmls-s">S</span></div>
+
+    <div class="nk-content" style="align-items:center;justify-content:center;text-align:center;">
+      <div class="nk-italic" style="font-size:64px;">Nike doesn't sell shoes.</div>
+      <h2 class="nk-h nk-h-gold" style="font-size:54px;margin-top:50px;letter-spacing:-0.035em;">THEY SELL THE BELIEF<br>THAT YOU ARE AN ATHLETE.</h2>
+      <div style="margin-top:50px;display:flex;flex-direction:column;gap:10px;">
+        <div class="nk-body" style="font-size:24px;letter-spacing:0.02em;">Just Do It isn't about a shoe.</div>
+        <div class="nk-body" style="font-size:24px;letter-spacing:0.02em;">it's a philosophy. it's an identity.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NK SLIDE 4 — JORDAN (light) -->
+  <div id="cvs-nk4" data-w="1080" data-h="1080" class="nk-canvas nk-canvas-light">
+    <div class="nk-noise"></div>
+    <div class="nk-border nk-border-light"></div>
+    <div class="nk-counter nk-counter-light">04 / 09</div>
+    <div class="nk-frmls-logo nk-frmls-logo-light">FRML<span class="nk-frmls-s">S</span></div>
+
+    <div class="nk-content" style="align-items:flex-end;justify-content:space-between;text-align:right;">
+      <div class="nk-mono nk-mono-brown">proof</div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;width:100%;">
+        <h2 class="nk-h nk-h-dark" style="font-size:54px;">Michael Jordan didn't make<br>the Air Jordan valuable.</h2>
+        <div style="margin-top:42px;display:flex;flex-direction:column;gap:14px;align-items:flex-end;">
+          <div class="nk-body nk-body-dark" style="font-size:28px;">what he represented did.</div>
+          <div class="nk-body nk-body-dark" style="font-size:28px;">discipline. excellence. winning.</div>
+        </div>
+        <div class="nk-italic nk-italic-gold" style="font-size:46px;margin-top:46px;">the shoe was just proof<br>you believed in that too.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NK SLIDE 5 — EMOTION (dark) -->
+  <div id="cvs-nk5" data-w="1080" data-h="1080" class="nk-canvas">
+    <div class="nk-watermark" style="bottom:-30px;left:-20px;font-size:240px;">EMOTION</div>
+    <div class="nk-noise"></div>
+    <div class="nk-border"></div>
+    <div class="nk-counter">05 / 09</div>
+    <div class="nk-frmls-logo">FRML<span class="nk-frmls-s">S</span></div>
+
+    <div class="nk-mono" style="position:absolute;top:128px;left:110px;z-index:5;">the formula</div>
+
+    <div class="nk-content" style="align-items:flex-start;justify-content:flex-end;text-align:left;">
+      <h2 class="nk-h" style="font-size:56px;">their most iconic campaigns<br>barely show the product.</h2>
+      <div class="nk-body" style="font-size:28px;margin-top:32px;">no specs. no price. no features.</div>
+      <div class="nk-italic nk-italic-gold" style="font-size:50px;margin-top:34px;">just emotion. just feeling.<br>just identity.</div>
+    </div>
+  </div>
+
+  <!-- NK SLIDE 6 — THE PRICE (light) -->
+  <div id="cvs-nk6" data-w="1080" data-h="1080" class="nk-canvas nk-canvas-light">
+    <div class="nk-noise"></div>
+    <div class="nk-border nk-border-light"></div>
+    <div class="nk-counter nk-counter-light">06 / 09</div>
+    <div class="nk-frmls-logo nk-frmls-logo-light">FRML<span class="nk-frmls-s">S</span></div>
+
+    <div class="nk-content" style="align-items:center;justify-content:center;text-align:center;">
+      <h2 class="nk-h nk-h-dark" style="font-size:60px;">that's why people pay $200<br>for a shoe that costs<br>$30 to make.</h2>
+      <div class="nk-italic nk-italic-gold" style="font-size:56px;margin-top:54px;">they're not paying for the shoe.</div>
+      <div class="nk-body nk-body-dark" style="font-size:28px;margin-top:30px;">they're paying to feel like<br>they belong to something.</div>
+    </div>
+  </div>
+
+  <!-- NK SLIDE 7 — THE PATTERN (dark) -->
+  <div id="cvs-nk7" data-w="1080" data-h="1080" class="nk-canvas">
+    <div class="nk-watermark" style="top:50%;left:50%;transform:translate(-50%,-50%);font-size:280px;">BRANDS</div>
+    <div class="nk-noise"></div>
+    <div class="nk-border"></div>
+    <div class="nk-counter">07 / 09</div>
+    <div class="nk-frmls-logo">FRML<span class="nk-frmls-s">S</span></div>
+
+    <div class="nk-content" style="align-items:flex-start;justify-content:center;text-align:left;">
+      <div class="nk-mono" style="margin-bottom:40px;">the pattern</div>
+      <h2 class="nk-h" style="font-size:52px;">every brand worth remembering<br>does this.</h2>
+      <div style="margin-top:42px;display:flex;flex-wrap:wrap;gap:0 22px;font-family:'Inter',sans-serif;font-size:34px;font-weight:700;letter-spacing:-0.02em;">
+        <span class="nk-h-gold">Apple.</span>
+        <span class="nk-h-gold">Supreme.</span>
+        <span class="nk-h-gold">Rolex.</span>
+        <span class="nk-h-gold">Porsche.</span>
+      </div>
+      <div class="nk-italic nk-italic-gold" style="font-size:48px;margin-top:42px;">they all sell a feeling first.</div>
+      <div class="nk-body" style="font-size:28px;margin-top:18px;">the product just delivers<br>on the promise.</div>
+    </div>
+  </div>
+
+  <!-- NK SLIDE 8 — THE QUESTION (light) — most important -->
+  <div id="cvs-nk8" data-w="1080" data-h="1080" class="nk-canvas nk-canvas-light">
+    <div class="nk-noise"></div>
+    <div class="nk-border nk-border-light"></div>
+    <div class="nk-counter nk-counter-light">08 / 09</div>
+    <div class="nk-frmls-logo nk-frmls-logo-light">FRML<span class="nk-frmls-s">S</span></div>
+
+    <div class="nk-content" style="align-items:center;justify-content:center;text-align:center;">
+      <div class="nk-italic nk-italic-dark" style="font-size:88px;">so what feeling<br>does your brand sell?</div>
+      <div style="margin-top:54px;display:flex;flex-direction:column;gap:12px;">
+        <div class="nk-body nk-body-dark" style="font-size:26px;">not what do you sell.</div>
+        <div class="nk-body nk-body-dark" style="font-size:26px;">what do people feel when<br>they wear it. use it. own it.</div>
+      </div>
+      <div class="nk-h nk-h-gold" style="font-size:48px;margin-top:54px;letter-spacing:-0.035em;">that's the only question<br>that actually matters.</div>
+    </div>
+  </div>
+
+  <!-- NK SLIDE 9 — CLOSE (dark) -->
+  <div id="cvs-nk9" data-w="1080" data-h="1080" class="nk-canvas">
+    <div class="nk-glow" style="top:50%;left:50%;width:760px;height:760px;transform:translate(-50%,-50%);opacity:0.50;"></div>
+    <div class="nk-noise"></div>
+    <div class="nk-border"></div>
+    <div class="nk-counter">09 / 09</div>
+    <div class="nk-frmls-logo">FRML<span class="nk-frmls-s">S</span></div>
+
+    <div class="nk-content" style="align-items:center;justify-content:center;text-align:center;">
+      <div class="nk-mono" style="margin-bottom:42px;">remember this</div>
+      <h2 class="nk-h" style="font-size:52px;">this is what separates brands<br>people love</h2>
+      <div class="nk-italic nk-italic-gold" style="font-size:72px;margin-top:42px;">from stores people forget.</div>
+      <div class="nk-body" style="font-size:24px;margin-top:62px;letter-spacing:0.02em;">follow for more on<br>building brands that last.</div>
+    </div>
+  </div>
+
 </div><!-- /canvas-pool -->
 
 
@@ -5038,7 +5369,16 @@ let BUILT_IN = [
   { key:'bg8',  name:'Brand Guide 8 — Step 2',       w:1080, h:1080, thumb:'linear-gradient(270deg,#1a1a1a 0%,#000 70%)', deletable:true },
   { key:'bg9',  name:'Brand Guide 9 — Steps 3-5',    w:1080, h:1080, thumb:'linear-gradient(135deg,#0a0a0a 0%,#1f1f1f 50%,#0a0a0a 100%)', deletable:true },
   { key:'bg10', name:'Brand Guide 10 — FRMLS Reveal',w:1080, h:1080, thumb:'radial-gradient(ellipse at 70% 50%,#222 0%,#000 70%)', deletable:true },
-  { key:'bg11', name:'Brand Guide 11 — CTA',         w:1080, h:1080, thumb:'radial-gradient(circle at 50% 50%,#2a2a2a 0%,#000 60%)', deletable:true }
+  { key:'bg11', name:'Brand Guide 11 — CTA',         w:1080, h:1080, thumb:'radial-gradient(circle at 50% 50%,#2a2a2a 0%,#000 60%)', deletable:true },
+  { key:'nk1',  name:'Nike Guide 1 — Hook',          w:1080, h:1080, thumb:'radial-gradient(circle at 50% 50%,#3a2418 0%,#1a0f0a 70%)', deletable:true },
+  { key:'nk2',  name:'Nike Guide 2 — The Ad',        w:1080, h:1080, thumb:'linear-gradient(135deg,#f5ede0 0%,#e6d8bd 100%)',           deletable:true },
+  { key:'nk3',  name:'Nike Guide 3 — Identity',      w:1080, h:1080, thumb:'radial-gradient(circle at 50% 50%,#3a2418 0%,#1a0f0a 70%)', deletable:true },
+  { key:'nk4',  name:'Nike Guide 4 — Jordan',        w:1080, h:1080, thumb:'linear-gradient(225deg,#f5ede0 0%,#e6d8bd 100%)',           deletable:true },
+  { key:'nk5',  name:'Nike Guide 5 — Emotion',       w:1080, h:1080, thumb:'linear-gradient(0deg,#3a2418 0%,#1a0f0a 80%)',              deletable:true },
+  { key:'nk6',  name:'Nike Guide 6 — The Price',     w:1080, h:1080, thumb:'linear-gradient(135deg,#f5ede0 0%,#e6d8bd 100%)',           deletable:true },
+  { key:'nk7',  name:'Nike Guide 7 — Pattern',       w:1080, h:1080, thumb:'linear-gradient(90deg,#1a0f0a 0%,#3a2418 100%)',            deletable:true },
+  { key:'nk8',  name:'Nike Guide 8 — Question',      w:1080, h:1080, thumb:'linear-gradient(135deg,#f5ede0 0%,#e6d8bd 100%)',           deletable:true },
+  { key:'nk9',  name:'Nike Guide 9 — Close',         w:1080, h:1080, thumb:'radial-gradient(circle at 50% 50%,#3a2418 0%,#1a0f0a 60%)', deletable:true }
 ];
 
 let userCanvases    = [];
@@ -8012,6 +8352,79 @@ async function exportBrandGuideCarousel() {
     for (var j = 0; j < slides.length; j++) {
       if (slides[j].dataUrl) {
         triggerDownload(slides[j].dataUrl, 'brand-guide-slide-' + slides[j].num + '.png');
+        await new Promise(function(r) { setTimeout(r, 700); });
+      }
+    }
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  NIKE BRAND GUIDE — EXPORT ALL 9 SLIDES
+// ══════════════════════════════════════════════════════════════
+async function exportNikeGuideCarousel() {
+  var sidebarBtn = document.getElementById('nk-export-btn');
+  function setProgress(text) {
+    if (sidebarBtn) { sidebarBtn.textContent = text; sidebarBtn.disabled = true; }
+  }
+  function resetBtns() {
+    if (sidebarBtn) { sidebarBtn.textContent = '↓ Export All 9 Slides'; sidebarBtn.disabled = false; }
+  }
+
+  setProgress('Capturing…');
+
+  var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  var nkKeys = ['nk1','nk2','nk3','nk4','nk5','nk6','nk7','nk8','nk9']
+    .filter(function(k) { return !!document.getElementById('cvs-' + k); });
+
+  // Alternating dark / light backgrounds — match each slide's true bg color
+  var bgColors = ['#1a0f0a','#f5ede0','#1a0f0a','#f5ede0','#1a0f0a','#f5ede0','#1a0f0a','#f5ede0','#1a0f0a'];
+
+  var slides = [];
+  for (var i = 0; i < nkKeys.length; i++) {
+    var key = nkKeys[i];
+    var oneBased = i + 1;
+    setProgress(oneBased + ' / ' + nkKeys.length);
+    var dataUrl = await captureSlide(
+      document.getElementById('cvs-' + key), 1080, 1080, bgColors[i] || '#1a0f0a'
+    );
+    var num = oneBased < 10 ? '0' + oneBased : '' + oneBased;
+    slides.push({ dataUrl: dataUrl, num: num });
+    await new Promise(function(r) { setTimeout(r, 80); });
+  }
+
+  resetBtns();
+
+  var failed = slides.filter(function(s) { return !s.dataUrl; }).length;
+  if (failed === slides.length) { alert('Capture failed — try refreshing the page.'); return; }
+
+  if (isMobile) {
+    window.__frmlsNkSlides = slides;
+    var modal = document.createElement('div');
+    modal.style.cssText = 'position:fixed;top:0;right:0;bottom:0;left:0;background:#1a0f0a;z-index:99999;overflow-y:auto;padding:20px 16px 100px;font-family:system-ui,sans-serif;';
+    var closeBtn = document.createElement('button');
+    closeBtn.textContent = '✕ Close';
+    closeBtn.style.cssText = 'background:rgba(245,237,224,0.05);border:1px solid rgba(201,168,76,0.25);color:#c9a84c;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;margin-bottom:20px;';
+    closeBtn.onclick = function() { modal.remove(); };
+    modal.appendChild(closeBtn);
+    slides.forEach(function(s, idx) {
+      if (!s.dataUrl) return;
+      var btn = document.createElement('button');
+      btn.textContent = 'Save nike-guide-slide-' + s.num + '.png';
+      btn.style.cssText = 'display:block;width:100%;margin-bottom:12px;padding:14px;background:rgba(245,237,224,0.04);border:1px solid rgba(201,168,76,0.20);color:#f5ede0;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;';
+      btn.onclick = function() {
+        var sl = (window.__frmlsNkSlides || [])[idx];
+        if (!sl) return;
+        var a = document.createElement('a');
+        a.href = sl.dataUrl; a.download = 'nike-guide-slide-' + sl.num + '.png';
+        a.click();
+      };
+      modal.appendChild(btn);
+    });
+    document.body.appendChild(modal);
+  } else {
+    for (var j = 0; j < slides.length; j++) {
+      if (slides[j].dataUrl) {
+        triggerDownload(slides[j].dataUrl, 'nike-guide-slide-' + slides[j].num + '.png');
         await new Promise(function(r) { setTimeout(r, 700); });
       }
     }

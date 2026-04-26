@@ -3085,54 +3085,53 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   border-color: rgba(124,58,237,0.55);
 }
 
-/* ───────────── STATEMENT POST (1080×1080) ───────────── */
+/* ───────────── STATEMENT POST (1080×1080) — luxury editorial redesign ───────────── */
 .statement-canvas {
   width: 1080px;
   height: 1080px;
   overflow: hidden;
   position: relative;
-  background: #1a1a1a;
+  background:
+    radial-gradient(ellipse at 50% 50%, #2a1f1a 0%, #1a1410 35%, #0f0f0f 100%),
+    #1a1a1a;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
-/* Warm tone wash — barely there, lifts the grey from cold to warm charcoal */
-.statement-warmth {
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 50% 50%,
-    rgba(70, 55, 45, 0.18) 0%,
-    rgba(40, 32, 28, 0.10) 45%,
-    transparent 80%);
-  pointer-events: none;
-  z-index: 1;
-}
-/* Subtle vignette — dark edges fading toward the warm centre */
+/* Vignette — gentle dark edges */
 .statement-vignette {
   position: absolute; inset: 0;
   background: radial-gradient(ellipse at 50% 50%,
-    transparent 35%,
-    rgba(0, 0, 0, 0.18) 75%,
-    rgba(0, 0, 0, 0.42) 100%);
+    transparent 40%,
+    rgba(0,0,0,0.22) 78%,
+    rgba(0,0,0,0.55) 100%);
   pointer-events: none;
   z-index: 2;
 }
-/* Film grain — SVG fractalNoise, applied via CSS filter-url to the whole frame */
+/* Film grain — single SVG fractalNoise layer at 6% */
 .statement-grain {
   position: absolute; inset: 0;
   pointer-events: none;
   z-index: 3;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch' seed='7'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.52  0 0 0 0 0.48  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch' seed='9'/><feColorMatrix values='0 0 0 0 0.85  0 0 0 0 0.78  0 0 0 0 0.65  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   background-size: 320px 320px;
-  opacity: 0.32;
+  opacity: 0.06;
   mix-blend-mode: overlay;
 }
-/* Second grain layer — finer, lower opacity, soft-light blend → 35mm depth */
-.statement-grain-fine {
-  position: absolute; inset: 0;
-  pointer-events: none;
+/* Background watermark "IDENTITY" — Inter Black, 4% opacity, dead centre */
+.statement-watermark {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 4;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.6' numOctaves='1' stitchTiles='stitch' seed='3'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.7 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  background-size: 180px 180px;
-  opacity: 0.14;
-  mix-blend-mode: soft-light;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  font-size: 360px;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  opacity: 0.04;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
 }
 .statement-content {
   position: absolute; inset: 0;
@@ -3142,25 +3141,92 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0 140px;
+  padding: 110px 110px;
 }
-.statement-line {
+/* Thin gold-gradient divider — 80px wide, centered */
+.statement-divider {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #c9a84c 50%, transparent 100%);
+  margin: 0 auto;
+}
+/* Line 1 — Inter Light small-medium, wide tracking */
+.statement-l1 {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-weight: 300;
+  font-size: 30px;
+  letter-spacing: 0.10em;
   color: #ffffff;
-  font-size: 56px;
-  letter-spacing: -0.01em;
-  line-height: 1.55;
+  line-height: 1.4;
+  margin-top: 38px;
 }
-.statement-italic {
+/* Line 2 — Cormorant italic huge, gold→cream gradient */
+.statement-l2 {
   font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
   font-style: italic;
-  font-weight: 400;
+  font-weight: 500;
+  font-size: 168px;
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+  margin-top: 28px;
+  background: linear-gradient(135deg, #c9a84c 0%, #e8d59c 45%, #f5ede0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+/* Line 3 — Inter Black medium-large, tight tracking */
+.statement-l3 {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  font-size: 78px;
+  letter-spacing: -0.03em;
   color: #ffffff;
-  font-size: 44px;
-  letter-spacing: 0.005em;
-  line-height: 1.45;
-  margin-top: 130px;
+  line-height: 1.0;
+  margin-top: 28px;
+}
+/* Big breathing gap before the closing couplet */
+.statement-gap {
+  height: 90px;
+}
+/* Line 4 — Inter Light small, wide tracking, white 60% */
+.statement-l4 {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 300;
+  font-size: 22px;
+  letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.60);
+  line-height: 1.4;
+}
+/* Line 5 — Cormorant italic large, gold→white gradient */
+.statement-l5 {
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 92px;
+  line-height: 1.0;
+  letter-spacing: -0.005em;
+  margin-top: 18px;
+  background: linear-gradient(135deg, #c9a84c 0%, #e8d59c 50%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+/* FRMLS wordmark — bottom centre, white-ish, 70% */
+.statement-logo {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  opacity: 0.70;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  line-height: 1;
 }
 </style>
 </head>
@@ -5622,18 +5688,22 @@ body.eyedropper-mode * { cursor: crosshair !important; }
     </div>
   </div>
 
-  <!-- CANVAS: Statement Post (1080×1080) — editorial quote card, warm charcoal + 35mm grain -->
+  <!-- CANVAS: Statement Post (1080×1080) — luxury editorial, mixed type, gold accents -->
   <div id="cvs-statement" data-w="1080" data-h="1080" class="statement-canvas">
-    <div class="statement-warmth"></div>
     <div class="statement-vignette"></div>
     <div class="statement-grain"></div>
-    <div class="statement-grain-fine"></div>
+    <div class="statement-watermark">IDENTITY</div>
     <div class="statement-content">
-      <div class="statement-line">your store can make you</div>
-      <div class="statement-line">really proud or really</div>
-      <div class="statement-line">embarrassed.</div>
-      <div class="statement-italic">the difference is identity.</div>
+      <div class="statement-divider"></div>
+      <div class="statement-l1">your store can make you</div>
+      <div class="statement-l2">really proud</div>
+      <div class="statement-l3">or really embarrassed.</div>
+      <div class="statement-gap"></div>
+      <div class="statement-l4">the difference is</div>
+      <div class="statement-l5">identity.</div>
+      <div class="statement-divider" style="margin-top:38px;"></div>
     </div>
+    <div class="statement-logo">FRML<span style="background:linear-gradient(90deg,#c9a84c,#f5ede0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:transparent;">S</span></div>
   </div>
 
 </div><!-- /canvas-pool -->

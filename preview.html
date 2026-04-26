@@ -3116,23 +3116,6 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   opacity: 0.06;
   mix-blend-mode: overlay;
 }
-/* Background watermark "IDENTITY" — Inter Black, 4% opacity, dead centre */
-.statement-watermark {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 4;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-weight: 900;
-  font-size: 360px;
-  letter-spacing: -0.04em;
-  color: #ffffff;
-  opacity: 0.04;
-  white-space: nowrap;
-  pointer-events: none;
-  user-select: none;
-  line-height: 1;
-}
 .statement-content {
   position: absolute; inset: 0;
   z-index: 5;
@@ -5692,7 +5675,6 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   <div id="cvs-statement" data-w="1080" data-h="1080" class="statement-canvas">
     <div class="statement-vignette"></div>
     <div class="statement-grain"></div>
-    <div class="statement-watermark">IDENTITY</div>
     <div class="statement-content">
       <div class="statement-divider"></div>
       <div class="statement-l1">your store can make you</div>

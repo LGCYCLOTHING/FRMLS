@@ -3281,18 +3281,8 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   bottom: 56px; left: 50%;
   transform: translateX(-50%);
   z-index: 5;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 26px;
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  color: #2d1f12;
-  line-height: 1;
-}
-.sat-logo-s {
-  background: linear-gradient(90deg, #3a2a1c 0%, #a87c4f 55%, #c9a06a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  display: block;
+  pointer-events: none;
 }
 .carousel-slide-thumb.sat-thumb {
   background: #f5f0e8;
@@ -5834,8 +5824,19 @@ body.eyedropper-mode * { cursor: crosshair !important; }
       <div class="sat-serif" style="font-size:108px;letter-spacing:-0.045em;line-height:1;color:#2d1f12;white-space:nowrap;">BUILD IT ANYWAY.</div>
     </div>
 
-    <!-- Logo — inline FRMLS wordmark, Inter 900, gradient S -->
-    <div class="sat-logo">FRML<span class="sat-logo-s">S</span></div>
+    <!-- Logo — inline-SVG wordmark so the gradient on S clips correctly
+         when html2canvas captures the slide (CSS background-clip:text is
+         not supported by html2canvas v1 and would render as a rectangle). -->
+    <svg class="sat-logo" xmlns="http://www.w3.org/2000/svg" width="92" height="26" viewBox="0 0 92 26">
+      <defs>
+        <linearGradient id="sat-logo-s-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#3a2a1c"/>
+          <stop offset="55%" stop-color="#a87c4f"/>
+          <stop offset="100%" stop-color="#c9a06a"/>
+        </linearGradient>
+      </defs>
+      <text x="0" y="20" font-family="Inter, system-ui, -apple-system, sans-serif" font-size="26" font-weight="900" letter-spacing="-1.04" fill="#2d1f12">FRML<tspan fill="url(#sat-logo-s-grad)">S</tspan></text>
+    </svg>
   </div>
 
 </div><!-- /canvas-pool -->

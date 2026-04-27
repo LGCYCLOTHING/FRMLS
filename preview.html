@@ -3207,18 +3207,18 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 }
 .sat-light {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   color: #2d2117;
   line-height: 1.45;
   letter-spacing: 0.005em;
 }
 .sat-muted {
-  color: rgba(45,33,23,0.55);
+  color: rgba(45,33,23,0.70);
 }
 .sat-eyebrow {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-weight: 300;
-  color: rgba(45,33,23,0.50);
+  font-weight: 500;
+  color: rgba(45,33,23,0.65);
   font-size: 18px;
   letter-spacing: 0.20em;
   text-transform: uppercase;
@@ -3276,16 +3276,23 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   color: #ffffff;
   line-height: 1;
 }
-.sat-logo-img {
+.sat-logo {
   position: absolute;
   bottom: 56px; left: 50%;
   transform: translateX(-50%);
-  width: 138px;
-  height: auto;
-  filter: brightness(0);
-  opacity: 0.85;
   z-index: 5;
-  pointer-events: none;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: #2d1f12;
+  line-height: 1;
+}
+.sat-logo-s {
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .carousel-slide-thumb.sat-thumb {
   background: #f5f0e8;
@@ -5822,12 +5829,12 @@ body.eyedropper-mode * { cursor: crosshair !important; }
     </div>
 
     <!-- Band E — bottom centered headline (very large) -->
-    <div style="position:absolute;bottom:172px;left:50%;transform:translateX(-50%);text-align:center;z-index:5;">
-      <div class="sat-serif" style="font-size:124px;letter-spacing:-0.015em;line-height:1;color:#2d1f12;">BUILD IT ANYWAY.</div>
+    <div style="position:absolute;bottom:172px;left:50%;transform:translateX(-50%);text-align:center;z-index:5;white-space:nowrap;">
+      <div class="sat-serif" style="font-size:108px;letter-spacing:-0.045em;line-height:1;color:#2d1f12;white-space:nowrap;">BUILD IT ANYWAY.</div>
     </div>
 
-    <!-- Logo — small black wordmark, bottom centered -->
-    <img class="sat-logo-img" src="logo-wordmark.svg" alt="FRMLS" />
+    <!-- Logo — inline FRMLS wordmark, Inter 900, gradient S -->
+    <div class="sat-logo">FRML<span class="sat-logo-s">S</span></div>
   </div>
 
 </div><!-- /canvas-pool -->

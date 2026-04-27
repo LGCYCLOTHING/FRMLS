@@ -3158,6 +3158,90 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   background-clip: text;
   color: transparent;
 }
+
+/* ─────────────────────────────────────────────────────
+   SATURATED POST — single canvas (1080×1080)
+   Editorial fashion magazine: black on white, Bebas + Playfair
+───────────────────────────────────────────────────── */
+.sat-canvas {
+  width: 1080px; height: 1080px;
+  position: relative; overflow: hidden;
+  background: #ffffff;
+  color: #000000;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.sat-radial {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdfcfa 45%, #ffffff 85%);
+  pointer-events: none;
+  z-index: 1;
+}
+.sat-grain {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 260px 260px;
+  opacity: 0.03;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 6;
+}
+.sat-border {
+  position: absolute; top: 24px; right: 24px; bottom: 24px; left: 24px;
+  border: 1px solid #000000;
+  pointer-events: none;
+  z-index: 7;
+}
+.sat-watermark {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 480px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 0.85;
+  color: #000000;
+  opacity: 0.03;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
+}
+.sat-content {
+  position: absolute; inset: 0;
+  z-index: 8;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 80px 80px 120px;
+}
+.sat-bebas {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 400;
+  color: #000000;
+  letter-spacing: 0.005em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+.sat-italic {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #000000;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+}
+.sat-rule {
+  width: 120px; height: 1px;
+  background: linear-gradient(90deg, transparent 0%, #000000 50%, transparent 100%);
+  margin: 0 auto;
+}
+.sat-real-grad {
+  background: linear-gradient(180deg, #000000 0%, #4a4a4a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
 /* Line 3 — Inter Black medium-large, tight tracking */
 .statement-l3 {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -3210,6 +3294,30 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   letter-spacing: -0.03em;
   color: #ffffff;
   line-height: 1;
+}
+.sat-logo {
+  position: absolute;
+  bottom: 50px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 9;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: #000000;
+  line-height: 1;
+}
+.sat-logo-s {
+  background: linear-gradient(135deg, #000000 0%, #555555 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.carousel-slide-thumb.sat-thumb {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid rgba(0,0,0,0.45);
+  font-weight: 800;
 }
 </style>
 </head>
@@ -3379,6 +3487,21 @@ body.eyedropper-mode * { cursor: crosshair !important; }
           <div class="carousel-slide-thumb nk-thumb-dark"  onclick="selectCanvas('nk7');closeMobileSidebar()" title="Slide 7 — Pattern">07</div>
           <div class="carousel-slide-thumb nk-thumb-light" onclick="selectCanvas('nk8');closeMobileSidebar()" title="Slide 8 — Question">08</div>
           <div class="carousel-slide-thumb nk-thumb-dark"  onclick="selectCanvas('nk9');closeMobileSidebar()" title="Slide 9 — Close">09</div>
+        </div>
+      </div>
+
+      <!-- SATURATED POST — single canvas -->
+      <div class="sb-section" id="sb-saturated-post">
+        <div class="sb-section-header">
+          <span class="sb-section-title">Saturated Post</span>
+          <div class="sb-section-meta">
+            <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.22);letter-spacing:0.04em;">1 slide · 1080×1080</span>
+            <button class="sb-section-remove" onclick="hideCarouselSection('sb-saturated-post')" title="Hide section" aria-label="Hide section">×</button>
+          </div>
+        </div>
+        <button class="carousel-export-btn" id="sat-export-btn" onclick="exportSaturatedPost()">&#8595; Export Saturated Post</button>
+        <div class="carousel-slide-row" id="sat-slide-thumbs">
+          <div class="carousel-slide-thumb sat-thumb" onclick="selectCanvas('sat');closeMobileSidebar()" title="Saturated Post">S</div>
         </div>
       </div>
 
@@ -5688,6 +5811,51 @@ body.eyedropper-mode * { cursor: crosshair !important; }
     <div class="statement-logo">FRML<span style="background:linear-gradient(90deg,#c9a84c,#f5ede0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:transparent;">S</span></div>
   </div>
 
+  <!-- ════════════════════════════════════════════════════════════════
+       SATURATED POST — single canvas (1080×1080)
+       Editorial fashion magazine: Bebas + Playfair, black on white
+  ════════════════════════════════════════════════════════════════ -->
+  <div id="cvs-sat" data-w="1080" data-h="1080" class="sat-canvas">
+    <div class="sat-radial"></div>
+    <div class="sat-watermark">SATURATED</div>
+    <div class="sat-grain"></div>
+    <div class="sat-border"></div>
+
+    <div class="sat-content">
+      <!-- Line 1 -->
+      <div class="sat-bebas" style="font-size:72px;">THEY'LL TELL YOU</div>
+      <!-- Line 2 -->
+      <div class="sat-italic" style="font-size:30px;color:rgba(0,0,0,0.60);margin-top:14px;">the clothing market is too saturated.</div>
+
+      <!-- decorative rule above THEY'RE RIGHT -->
+      <div class="sat-rule" style="margin-top:50px;"></div>
+
+      <!-- Line 3 -->
+      <div class="sat-bebas" style="font-size:118px;margin-top:26px;">THEY'RE RIGHT.</div>
+
+      <!-- Line 4 — three italic lines -->
+      <div class="sat-italic" style="font-size:24px;color:rgba(0,0,0,0.50);margin-top:50px;line-height:1.45;">
+        it's saturated with brands that have<br>
+        no identity. no voice.<br>
+        no reason to exist.
+      </div>
+
+      <!-- Line 5 -->
+      <div class="sat-bebas" style="font-size:72px;margin-top:50px;">THERE'S ALWAYS ROOM</div>
+      <!-- Line 6 — gradient italic -->
+      <div class="sat-italic sat-real-grad" style="font-size:48px;margin-top:12px;">for something real.</div>
+
+      <!-- Line 7 — largest -->
+      <div class="sat-bebas" style="font-size:144px;margin-top:48px;letter-spacing:-0.005em;">BUILD IT ANYWAY.</div>
+
+      <!-- decorative rule below BUILD IT ANYWAY -->
+      <div class="sat-rule" style="margin-top:28px;"></div>
+    </div>
+
+    <!-- bottom-center logo (text-based black wordmark) -->
+    <div class="sat-logo">FRML<span class="sat-logo-s">S</span></div>
+  </div>
+
 </div><!-- /canvas-pool -->
 
 
@@ -5794,7 +5962,8 @@ let BUILT_IN = [
   { key:'nk7',  name:'Nike Guide 7 — Pattern',       w:1080, h:1080, thumb:'linear-gradient(90deg,#1a0f0a 0%,#3a2418 100%)',            deletable:true },
   { key:'nk8',  name:'Nike Guide 8 — Question',      w:1080, h:1080, thumb:'linear-gradient(135deg,#f5ede0 0%,#e6d8bd 100%)',           deletable:true },
   { key:'nk9',  name:'Nike Guide 9 — Close',         w:1080, h:1080, thumb:'radial-gradient(circle at 50% 50%,#3a2418 0%,#1a0f0a 60%)', deletable:true },
-  { key:'statement', name:'Statement Post',          w:1080, h:1080, thumb:'radial-gradient(circle at 50% 50%,#222 0%,#101010 80%)',    deletable:true }
+  { key:'statement', name:'Statement Post',          w:1080, h:1080, thumb:'radial-gradient(circle at 50% 50%,#222 0%,#101010 80%)',    deletable:true },
+  { key:'sat',  name:'Saturated Post',                w:1080, h:1080, thumb:'radial-gradient(circle at 50% 50%,#fafaf8 0%,#ffffff 80%)', deletable:true }
 ];
 
 let userCanvases    = [];
@@ -8734,6 +8903,47 @@ async function exportFinalSlide() {
     document.body.appendChild(modal);
   } else {
     triggerDownload(dataUrl, 'frmls-final-slide.png');
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  SATURATED POST — single canvas — EXPORT
+// ══════════════════════════════════════════════════════════════
+
+async function exportSaturatedPost() {
+  var btn = document.getElementById('sat-export-btn');
+  var origLabel = '↓ Export Saturated Post';
+  if (btn) { btn.textContent = 'Capturing…'; btn.disabled = true; }
+
+  var el = document.getElementById('cvs-sat');
+  if (!el) {
+    if (btn) { btn.textContent = origLabel; btn.disabled = false; }
+    alert('Saturated Post canvas not found.');
+    return;
+  }
+
+  var dataUrl = await captureSlide(el, 1080, 1080, '#ffffff');
+  if (btn) { btn.textContent = origLabel; btn.disabled = false; }
+
+  if (!dataUrl) { alert('Capture failed — try refreshing the page.'); return; }
+
+  var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if (isMobile) {
+    var modal = document.createElement('div');
+    modal.style.cssText = 'position:fixed;inset:0;background:#0a0a0a;z-index:99999;overflow-y:auto;padding:20px 16px 100px;font-family:system-ui,sans-serif;';
+    var closeBtn = document.createElement('button');
+    closeBtn.textContent = '✕ Close';
+    closeBtn.style.cssText = 'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#aaaaaa;padding:10px 20px;border-radius:8px;font-size:14px;cursor:pointer;margin-bottom:20px;';
+    closeBtn.onclick = function() { modal.remove(); };
+    modal.appendChild(closeBtn);
+    var save = document.createElement('button');
+    save.textContent = 'Save frmls-saturated-post.png';
+    save.style.cssText = 'display:block;width:100%;padding:14px;background:#ffffff;color:#000;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;';
+    save.onclick = function() { triggerDownload(dataUrl, 'frmls-saturated-post.png'); };
+    modal.appendChild(save);
+    document.body.appendChild(modal);
+  } else {
+    triggerDownload(dataUrl, 'frmls-saturated-post.png');
   }
 }
 

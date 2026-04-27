@@ -8452,11 +8452,12 @@ function copyColor(hex, el) {
 //  SHARED CAPTURE HELPER
 // ══════════════════════════════════════════════════════════════
 
-async function captureSlide(el, w, h, bg) {
+async function captureSlide(el, w, h, bg, scale) {
   // Clone approach: cloneNode so the original stays in canvas-pool undisturbed.
   // Clone is placed on-screen at top:0 left:0 z-index:99999 — iOS fully paints it.
   // This is the approach that previously caused a visible "zoom" flash, confirming
   // html2canvas can capture it. The save mechanism now uses navigator.share.
+  scale = scale || 1;
   var clone = el.cloneNode(true);
   clone.removeAttribute('id');
   clone.style.cssText = 'position:fixed!important;top:0!important;left:0!important;' +
@@ -8471,7 +8472,7 @@ async function captureSlide(el, w, h, bg) {
   var result = null;
   try {
     var canvas = await html2canvas(clone, {
-      width: w, height: h, scale: 1,
+      width: w, height: h, scale: scale,
       useCORS: true,
       backgroundColor: bg,
       logging: false,
@@ -8864,7 +8865,14 @@ async function exportSaturatedPost() {
     return;
   }
 
-  var dataUrl = await captureSlide(el, 1080, 1080, '#f5f0e8');
+  // 4× scale → 4320×4320 PNG (over 4K UHD). iOS Safari's max canvas
+  // area is 16M pixels on older devices; 4320×4320 = 18.66M which can
+  // fail there. Drop to 3× (3240×3240, ~10.5M) on those.
+  var hiRes = 4;
+  var ua = navigator.userAgent;
+  var isOldIos = /iPhone OS (\d+)_/.test(ua) && parseInt(RegExp.$1, 10) < 16;
+  if (isOldIos) hiRes = 3;
+  var dataUrl = await captureSlide(el, 1080, 1080, '#f5f0e8', hiRes);
   if (btn) { btn.textContent = origLabel; btn.disabled = false; }
 
   if (!dataUrl) { alert('Capture failed — try refreshing the page.'); return; }
@@ -9089,7 +9097,10 @@ function buildFrmlsLogoDataUrl(opts) {
   opts = opts || {};
   var fontPx          = opts.fontPx          || 26;
   var letterSpacingPx = (opts.letterSpacing != null) ? opts.letterSpacing : -1.04;
-  var ratio           = Math.max(2, window.devicePixelRatio || 1);
+  // Render at high DPR so the logo stays crisp when html2canvas scales
+  // the whole slide up to 4× for 4K export. 8× source = ~3 effective
+  // pixels per output pixel even at 4× export scale.
+  var ratio           = 8;
   var fontDecl        = '900 ' + fontPx + 'px Inter, system-ui, -apple-system, sans-serif';
 
   var measure = document.createElement('canvas').getContext('2d');

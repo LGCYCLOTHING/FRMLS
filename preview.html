@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>FRMLS — Content Studio</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700;1,900&family=Bebas+Neue&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Serif+Display:ital,wght@0,400;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700;1,900&family=Bebas+Neue&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
@@ -3161,86 +3161,67 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 
 /* ─────────────────────────────────────────────────────
    SATURATED POST — single canvas (1080×1080)
-   Editorial fashion magazine: black on white, Bebas + Playfair
+   Warm-cream editorial: DM Serif Display + Inter Light, broken grid
 ───────────────────────────────────────────────────── */
 .sat-canvas {
   width: 1080px; height: 1080px;
   position: relative; overflow: hidden;
-  background: #ffffff;
-  color: #000000;
+  background: #f5f0e8;
+  color: #2d2117;
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
-.sat-radial {
-  position: absolute; inset: 0;
-  background: radial-gradient(circle at 50% 50%, #fafaf8 0%, #fdfcfa 45%, #ffffff 85%);
+.sat-glow-tl {
+  position: absolute;
+  top: -160px; left: -160px;
+  width: 620px; height: 620px;
+  background: radial-gradient(circle at center, #e8c9a0 0%, rgba(232,201,160,0.55) 35%, transparent 72%);
+  opacity: 0.15;
   pointer-events: none;
   z-index: 1;
 }
-.sat-grain {
-  position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  background-size: 260px 260px;
-  opacity: 0.03;
-  mix-blend-mode: multiply;
+.sat-glow-br {
+  position: absolute;
+  bottom: -130px; right: -130px;
+  width: 510px; height: 510px;
+  background: radial-gradient(circle at center, #c8cdd4 0%, rgba(200,205,212,0.55) 35%, transparent 72%);
+  opacity: 0.12;
   pointer-events: none;
-  z-index: 6;
+  z-index: 1;
 }
 .sat-border {
-  position: absolute; top: 24px; right: 24px; bottom: 24px; left: 24px;
-  border: 1px solid #000000;
+  position: absolute; top: 32px; right: 32px; bottom: 32px; left: 32px;
+  border: 1px solid #d4c9b8;
   pointer-events: none;
-  z-index: 7;
+  z-index: 3;
 }
-.sat-watermark {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 480px;
+.sat-serif {
+  font-family: 'DM Serif Display', 'Playfair Display', Georgia, serif;
   font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 0.85;
-  color: #000000;
-  opacity: 0.03;
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: 2;
-}
-.sat-content {
-  position: absolute; inset: 0;
-  z-index: 8;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  padding: 80px 80px 120px;
-}
-.sat-bebas {
-  font-family: 'Bebas Neue', sans-serif;
-  font-weight: 400;
-  color: #000000;
-  letter-spacing: 0.005em;
-  line-height: 0.92;
-  text-transform: uppercase;
-}
-.sat-italic {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-weight: 400;
-  color: #000000;
-  line-height: 1.2;
+  color: #3a2a1c;
+  line-height: 1.04;
   letter-spacing: -0.005em;
 }
-.sat-rule {
-  width: 120px; height: 1px;
-  background: linear-gradient(90deg, transparent 0%, #000000 50%, transparent 100%);
-  margin: 0 auto;
+.sat-serif-italic {
+  font-style: italic;
 }
-.sat-real-grad {
-  background: linear-gradient(180deg, #000000 0%, #4a4a4a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+.sat-light {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 300;
+  color: #2d2117;
+  line-height: 1.45;
+  letter-spacing: 0.005em;
+}
+.sat-muted {
+  color: rgba(45,33,23,0.55);
+}
+.sat-eyebrow {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 300;
+  color: rgba(45,33,23,0.50);
+  font-size: 18px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
 }
 /* Line 3 — Inter Black medium-large, tight tracking */
 .statement-l3 {
@@ -3295,29 +3276,23 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   color: #ffffff;
   line-height: 1;
 }
-.sat-logo {
+.sat-logo-img {
   position: absolute;
-  bottom: 50px; left: 50%;
+  bottom: 56px; left: 50%;
   transform: translateX(-50%);
-  z-index: 9;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 22px;
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  color: #000000;
-  line-height: 1;
-}
-.sat-logo-s {
-  background: linear-gradient(135deg, #000000 0%, #555555 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  width: 138px;
+  height: auto;
+  filter: brightness(0);
+  opacity: 0.85;
+  z-index: 5;
+  pointer-events: none;
 }
 .carousel-slide-thumb.sat-thumb {
-  background: #ffffff;
-  color: #000000;
-  border: 1px solid rgba(0,0,0,0.45);
-  font-weight: 800;
+  background: #f5f0e8;
+  color: #3a2a1c;
+  border: 1px solid #d4c9b8;
+  font-weight: 700;
+  font-family: 'DM Serif Display', Georgia, serif;
 }
 </style>
 </head>
@@ -5813,47 +5788,46 @@ body.eyedropper-mode * { cursor: crosshair !important; }
 
   <!-- ════════════════════════════════════════════════════════════════
        SATURATED POST — single canvas (1080×1080)
-       Editorial fashion magazine: Bebas + Playfair, black on white
+       Warm-cream editorial: DM Serif Display + Inter Light, broken grid
   ════════════════════════════════════════════════════════════════ -->
   <div id="cvs-sat" data-w="1080" data-h="1080" class="sat-canvas">
-    <div class="sat-radial"></div>
-    <div class="sat-watermark">SATURATED</div>
-    <div class="sat-grain"></div>
+    <div class="sat-glow-tl"></div>
+    <div class="sat-glow-br"></div>
     <div class="sat-border"></div>
 
-    <div class="sat-content">
-      <!-- Line 1 -->
-      <div class="sat-bebas" style="font-size:72px;">THEY'LL TELL YOU</div>
-      <!-- Line 2 -->
-      <div class="sat-italic" style="font-size:30px;color:rgba(0,0,0,0.60);margin-top:14px;">the clothing market is too saturated.</div>
-
-      <!-- decorative rule above THEY'RE RIGHT -->
-      <div class="sat-rule" style="margin-top:50px;"></div>
-
-      <!-- Line 3 -->
-      <div class="sat-bebas" style="font-size:118px;margin-top:26px;">THEY'RE RIGHT.</div>
-
-      <!-- Line 4 — three italic lines -->
-      <div class="sat-italic" style="font-size:24px;color:rgba(0,0,0,0.50);margin-top:50px;line-height:1.45;">
-        it's saturated with brands that have<br>
-        no identity. no voice.<br>
-        no reason to exist.
-      </div>
-
-      <!-- Line 5 -->
-      <div class="sat-bebas" style="font-size:72px;margin-top:50px;">THERE'S ALWAYS ROOM</div>
-      <!-- Line 6 — gradient italic -->
-      <div class="sat-italic sat-real-grad" style="font-size:48px;margin-top:12px;">for something real.</div>
-
-      <!-- Line 7 — largest -->
-      <div class="sat-bebas" style="font-size:144px;margin-top:48px;letter-spacing:-0.005em;">BUILD IT ANYWAY.</div>
-
-      <!-- decorative rule below BUILD IT ANYWAY -->
-      <div class="sat-rule" style="margin-top:28px;"></div>
+    <!-- Band A — top-left aligned, 64px from inner edge of border -->
+    <div style="position:absolute;top:124px;left:96px;max-width:780px;z-index:5;">
+      <div class="sat-eyebrow">they'll tell you</div>
+      <div class="sat-serif sat-serif-italic" style="font-size:80px;margin-top:24px;color:#3a2a1c;">the clothing market<br>is too saturated.</div>
     </div>
 
-    <!-- bottom-center logo (text-based black wordmark) -->
-    <div class="sat-logo">FRML<span class="sat-logo-s">S</span></div>
+    <!-- Band B — centered "they're right." -->
+    <div style="position:absolute;top:392px;left:50%;transform:translateX(-50%);z-index:5;">
+      <div class="sat-light" style="font-size:34px;letter-spacing:0.04em;color:#3a2a1c;">they're right.</div>
+    </div>
+
+    <!-- Band C — left-aligned 3-line body -->
+    <div style="position:absolute;top:482px;left:96px;max-width:560px;z-index:5;">
+      <div class="sat-light sat-muted" style="font-size:24px;line-height:1.55;">
+        it's saturated with brands<br>
+        that have no identity.<br>
+        no voice. no reason to exist.
+      </div>
+    </div>
+
+    <!-- Band D — right-aligned -->
+    <div style="position:absolute;top:640px;right:96px;text-align:right;z-index:5;">
+      <div class="sat-serif" style="font-size:64px;color:#3a2a1c;">there's always room</div>
+      <div class="sat-light" style="font-size:30px;font-style:italic;margin-top:14px;color:rgba(58,42,28,0.70);">for something real.</div>
+    </div>
+
+    <!-- Band E — bottom centered headline (very large) -->
+    <div style="position:absolute;bottom:172px;left:50%;transform:translateX(-50%);text-align:center;z-index:5;">
+      <div class="sat-serif" style="font-size:124px;letter-spacing:-0.015em;line-height:1;color:#2d1f12;">BUILD IT ANYWAY.</div>
+    </div>
+
+    <!-- Logo — small black wordmark, bottom centered -->
+    <img class="sat-logo-img" src="logo-wordmark.svg" alt="FRMLS" />
   </div>
 
 </div><!-- /canvas-pool -->
@@ -8922,7 +8896,7 @@ async function exportSaturatedPost() {
     return;
   }
 
-  var dataUrl = await captureSlide(el, 1080, 1080, '#ffffff');
+  var dataUrl = await captureSlide(el, 1080, 1080, '#f5f0e8');
   if (btn) { btn.textContent = origLabel; btn.disabled = false; }
 
   if (!dataUrl) { alert('Capture failed — try refreshing the page.'); return; }

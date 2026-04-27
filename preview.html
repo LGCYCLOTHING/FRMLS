@@ -3276,13 +3276,17 @@ body.eyedropper-mode * { cursor: crosshair !important; }
   color: #ffffff;
   line-height: 1;
 }
-.sat-logo {
+.sat-logo-wrap {
   position: absolute;
-  bottom: 56px; left: 50%;
-  transform: translateX(-50%);
+  bottom: 56px; left: 0; right: 0;
   z-index: 5;
-  display: block;
+  text-align: center;
   pointer-events: none;
+  line-height: 0;
+}
+.sat-logo {
+  display: inline-block;
+  vertical-align: baseline;
 }
 .carousel-slide-thumb.sat-thumb {
   background: #f5f0e8;
@@ -5824,19 +5828,10 @@ body.eyedropper-mode * { cursor: crosshair !important; }
       <div class="sat-serif" style="font-size:108px;letter-spacing:-0.045em;line-height:1;color:#2d1f12;white-space:nowrap;">BUILD IT ANYWAY.</div>
     </div>
 
-    <!-- Logo — inline-SVG wordmark so the gradient on S clips correctly
-         when html2canvas captures the slide (CSS background-clip:text is
-         not supported by html2canvas v1 and would render as a rectangle). -->
-    <svg class="sat-logo" xmlns="http://www.w3.org/2000/svg" width="92" height="26" viewBox="0 0 92 26">
-      <defs>
-        <linearGradient id="sat-logo-s-grad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stop-color="#3a2a1c"/>
-          <stop offset="55%" stop-color="#a87c4f"/>
-          <stop offset="100%" stop-color="#c9a06a"/>
-        </linearGradient>
-      </defs>
-      <text x="0" y="20" font-family="Inter, system-ui, -apple-system, sans-serif" font-size="26" font-weight="900" letter-spacing="-1.04" fill="#2d1f12">FRML<tspan fill="url(#sat-logo-s-grad)">S</tspan></text>
-    </svg>
+    <!-- Logo — empty <img> populated at runtime by paintFrmlsLogos() with a
+         Canvas-2D rendered PNG data URL. Avoids both the html2canvas
+         background-clip:text bug AND the SVG <text> font-rendering bug. -->
+    <span class="sat-logo-wrap"><img class="sat-logo" alt="FRMLS" /></span>
   </div>
 
 </div><!-- /canvas-pool -->
@@ -9084,6 +9079,68 @@ window.addEventListener('resize', function() {
   if (showRuler) drawRulers();
 });
 
+// ── FRMLS wordmark painter ──
+// html2canvas v1 can't render SVG <text> with web fonts and can't clip
+// CSS gradients to text glyphs — both produce a missing or boxed logo.
+// Solution: render the wordmark to a PNG data URL via Canvas 2D using
+// the page's already-loaded Inter font, then point img.sat-logo at it.
+// html2canvas captures img elements faithfully.
+function buildFrmlsLogoDataUrl(opts) {
+  opts = opts || {};
+  var fontPx          = opts.fontPx          || 26;
+  var letterSpacingPx = (opts.letterSpacing != null) ? opts.letterSpacing : -1.04;
+  var ratio           = Math.max(2, window.devicePixelRatio || 1);
+  var fontDecl        = '900 ' + fontPx + 'px Inter, system-ui, -apple-system, sans-serif';
+
+  var measure = document.createElement('canvas').getContext('2d');
+  measure.font = fontDecl;
+  if ('letterSpacing' in measure) measure.letterSpacing = letterSpacingPx + 'px';
+  var fullW = Math.ceil(measure.measureText('FRMLS').width);
+  var frmlW = Math.ceil(measure.measureText('FRML').width);
+  // Fudge a little extra for letter-spacing on browsers without canvas
+  // letterSpacing — the visual letters are slightly wider.
+  var width  = fullW + 4;
+  var height = Math.ceil(fontPx * 1.15);
+
+  var c = document.createElement('canvas');
+  c.width  = width  * ratio;
+  c.height = height * ratio;
+  var ctx = c.getContext('2d');
+  ctx.scale(ratio, ratio);
+  ctx.font = fontDecl;
+  if ('letterSpacing' in ctx) ctx.letterSpacing = letterSpacingPx + 'px';
+  ctx.textBaseline = 'alphabetic';
+
+  var baseY = Math.round(fontPx * 0.85);
+
+  // FRML — solid dark brown
+  ctx.fillStyle = '#2d1f12';
+  ctx.fillText('FRML', 0, baseY);
+
+  // S — warm brown gradient (left→right)
+  var sX = frmlW;
+  var sW = Math.ceil(measure.measureText('S').width);
+  var grad = ctx.createLinearGradient(sX, 0, sX + sW, 0);
+  grad.addColorStop(0,    '#3a2a1c');
+  grad.addColorStop(0.55, '#a87c4f');
+  grad.addColorStop(1,    '#c9a06a');
+  ctx.fillStyle = grad;
+  ctx.fillText('S', sX, baseY);
+
+  return { dataUrl: c.toDataURL('image/png'), width: width, height: height };
+}
+
+function paintFrmlsLogos() {
+  var imgs = document.querySelectorAll('img.sat-logo');
+  if (!imgs.length) return;
+  var built = buildFrmlsLogoDataUrl({ fontPx: 26, letterSpacing: -1.04 });
+  imgs.forEach(function(img) {
+    img.src = built.dataUrl;
+    img.style.width  = built.width  + 'px';
+    img.style.height = built.height + 'px';
+  });
+}
+
 // ── Init ──
 document.addEventListener('DOMContentLoaded', function() {
   loadBrand();
@@ -9095,6 +9152,14 @@ document.addEventListener('DOMContentLoaded', function() {
   initCanvasDrop();
   initVideoUpload();
   selectCanvas('grid');
+  // Immediate paint so img.src is never empty if the user exports fast,
+  // then repaint once Inter is loaded so the wordmark uses the real font.
+  paintFrmlsLogos();
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(paintFrmlsLogos);
+  } else {
+    setTimeout(paintFrmlsLogos, 400);
+  }
 });
 </script>
 

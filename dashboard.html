@@ -2761,7 +2761,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
           <span class="logo-mark">FRML<span class="accent">S</span></span>
           <span class="logo-tag">your store. built right.</span>
         </div>
-        <button class="dt-skip" onclick="goTo(1)">Skip this →</button>
+        <button class="dt-skip" onclick="goTo(7)">Skip this →</button>
       </div>
       <div class="progress-bar">
         <div class="progress-dot active"></div>
@@ -2779,204 +2779,6 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div id="dtFlow"></div>
   </div>
 
-  <!-- ========== SCREEN 1: Category ========== -->
-  <div class="screen" id="screen-1">
-    <div class="screen-hero">
-      <div class="logo">
-        <span class="logo-mark">FRML<span class="accent">S</span></span>
-        <span class="logo-tag">your store. built right.</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-dot done"></div>
-        <div class="progress-dot active"></div>
-        <div class="progress-dot"></div>
-        <div class="progress-dot"></div>
-        <div class="progress-dot"></div>
-        <div class="progress-dot"></div>
-        <div class="progress-dot"></div>
-      </div>
-      <div class="step-label">step 01 — brand identity</div>
-      <div class="heading">What are you selling?</div>
-      <div class="subhead">Pick the category that fits your brand. This shapes every prompt you get.</div>
-    </div>
-    <div class="cat-grid" id="grid-0">
-      <div class="option-card" onclick="selectOpt(this,'cat','streetwear')"><span class="opt-icon">◼</span><span class="opt-label">Streetwear</span><span class="opt-sub">drops, graphics, culture</span></div>
-      <div class="option-card" onclick="selectOpt(this,'cat','minimalist')"><span class="opt-icon">◻</span><span class="opt-label">Minimalist</span><span class="opt-sub">clean, quiet luxury</span></div>
-      <div class="option-card" onclick="selectOpt(this,'cat','athletic')"><span class="opt-icon">◈</span><span class="opt-label">Athletic</span><span class="opt-sub">performance, lifestyle</span></div>
-      <div class="option-card" onclick="selectOpt(this,'cat','accessories')"><span class="opt-icon">◇</span><span class="opt-label">Accessories</span><span class="opt-sub">eyewear, bags, jewelry</span></div>
-      <div class="option-card" onclick="selectOpt(this,'cat','luxury')"><span class="opt-icon">◆</span><span class="opt-label">Luxury / Premium</span><span class="opt-sub">high-end, elevated</span></div>
-      <div class="option-card" onclick="selectOpt(this,'cat','vintage')"><span class="opt-icon">◉</span><span class="opt-label">Vintage / Thrift</span><span class="opt-sub">retro, curated finds</span></div>
-      <div class="option-card" onclick="selectOpt(this,'cat','sportswear')"><span class="opt-icon">◐</span><span class="opt-label">Sportswear</span><span class="opt-sub">performance, court</span></div>
-      <div class="option-card" onclick="selectOpt(this,'cat','workwear')"><span class="opt-icon">▣</span><span class="opt-label">Workwear / Utility</span><span class="opt-sub">functional, durable</span></div>
-      <div class="option-card" onclick="selectOpt(this,'cat','unisex')"><span class="opt-icon">○</span><span class="opt-label">Unisex Basics</span><span class="opt-sub">essentials, everyday</span></div>
-      <div class="option-card" onclick="selectOpt(this,'cat','swimwear')"><span class="opt-icon">◎</span><span class="opt-label">Swimwear / Resort</span><span class="opt-sub">beach, vacation</span></div>
-    </div>
-    <div class="input-row">
-      <label>brand name</label>
-      <input id="brandName" placeholder="e.g. MNML CLUB" oninput="updateSnapshot();updateFontPreviews()" />
-    </div>
-    <div class="btn-row">
-      <button class="btn" onclick="goTo(0)">← Back</button>
-      <button class="btn primary" onclick="goTo(2)">Next →</button>
-    </div>
-  </div>
-
-  <!-- ========== SCREEN 2: Aesthetic ========== -->
-  <div class="screen" id="screen-2">
-    <div class="screen-hero">
-      <div class="logo">
-        <span class="logo-mark">FRML<span class="accent">S</span></span>
-        <span class="logo-tag">your store. built right.</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-dot done"></div>
-        <div class="progress-dot done"></div>
-        <div class="progress-dot active"></div>
-        <div class="progress-dot"></div>
-        <div class="progress-dot"></div>
-        <div class="progress-dot"></div>
-        <div class="progress-dot"></div>
-      </div>
-      <div class="step-label">step 02 — aesthetic</div>
-      <div class="heading">Pick your vibe</div>
-      <div class="subhead">Set the tone for your copy, visuals, and overall store feel.</div>
-    </div>
-    <div class="option-grid" id="grid-1">
-      <div class="option-card" onclick="selectOpt(this,'vibe','dark & editorial')"><span class="opt-icon">◼</span><span class="opt-label">Dark & editorial</span><span class="opt-sub">moody, high-contrast</span></div>
-      <div class="option-card" onclick="selectOpt(this,'vibe','clean & minimal')"><span class="opt-icon">◻</span><span class="opt-label">Clean & minimal</span><span class="opt-sub">white space, refined</span></div>
-      <div class="option-card" onclick="selectOpt(this,'vibe','raw & bold')"><span class="opt-icon">◈</span><span class="opt-label">Raw & bold</span><span class="opt-sub">graphic, loud, direct</span></div>
-      <div class="option-card" onclick="selectOpt(this,'vibe','soft & neutral')"><span class="opt-icon">◇</span><span class="opt-label">Soft & neutral</span><span class="opt-sub">earthy, wearable</span></div>
-    </div>
-    <div class="input-row">
-      <label>target audience</label>
-      <input id="audience" placeholder="e.g. 18-25 year olds into streetwear" oninput="updateSnapshot()" />
-    </div>
-    <div class="picker-label">typography</div>
-    <div class="picker-heading">Pick your font direction</div>
-    <div class="picker-sub">Shapes the typography in your brand kit and store.</div>
-    <div class="picker-grid" id="fontGrid">
-      <div class="font-card" onclick="selectFont(this,'Sharp Serif')">
-        <span class="font-preview" style="font-family:'Playfair Display',serif;font-weight:700">YOUR BRAND</span>
-        <span class="font-card-label">Sharp Serif</span>
-      </div>
-      <div class="font-card" onclick="selectFont(this,'Clean Sans')">
-        <span class="font-preview" style="font-family:'DM Sans',sans-serif;font-weight:700">YOUR BRAND</span>
-        <span class="font-card-label">Clean Sans</span>
-      </div>
-      <div class="font-card" onclick="selectFont(this,'Bold Grotesque')">
-        <span class="font-preview" style="font-family:'Bebas Neue',sans-serif;font-weight:400;letter-spacing:0.05em">YOUR BRAND</span>
-        <span class="font-card-label">Bold Grotesque</span>
-      </div>
-      <div class="font-card" onclick="selectFont(this,'Mono Tech')">
-        <span class="font-preview" style="font-family:'DM Mono',monospace;font-size:22px;font-weight:500">YOUR BRAND</span>
-        <span class="font-card-label">Mono Tech</span>
-      </div>
-      <div class="font-card" onclick="selectFont(this,'Elegant Thin')">
-        <span class="font-preview" style="font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic">YOUR BRAND</span>
-        <span class="font-card-label">Elegant Thin</span>
-      </div>
-      <div class="font-card" onclick="selectFont(this,'Raw Condensed')">
-        <span class="font-preview" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;letter-spacing:0.02em">YOUR BRAND</span>
-        <span class="font-card-label">Raw Condensed</span>
-      </div>
-    </div>
-    <div class="picker-label">color mood</div>
-    <div class="picker-heading">Pick your color mood</div>
-    <div class="picker-sub">This palette appears in your brand kit and prompt outputs.</div>
-    <div class="picker-grid" id="colorGrid">
-      <div class="color-card" onclick="selectColorMood(this,'Quiet Luxury')">
-        <div class="swatch-strip"><div style="background:#F5F0E8"></div><div style="background:#C9A96E"></div><div style="background:#2C2C2C"></div><div style="background:#0A0A0A"></div></div>
-        <div class="color-card-info">
-          <span class="color-card-name">Quiet Luxury</span>
-          <span class="color-card-vibe">elevated, timeless, minimal.</span>
-          <span class="color-card-ref">Toteme · The Row</span>
-        </div>
-      </div>
-      <div class="color-card" onclick="selectColorMood(this,'Street Editorial')">
-        <div class="swatch-strip"><div style="background:#0A0A0A"></div><div style="background:#F0EDE6"></div><div style="background:#6B6B6B"></div><div style="background:#CC2200"></div></div>
-        <div class="color-card-info">
-          <span class="color-card-name">Street Editorial</span>
-          <span class="color-card-vibe">dark, raw, high contrast.</span>
-          <span class="color-card-ref">Represent · A-Cold-Wall</span>
-        </div>
-      </div>
-      <div class="color-card" onclick="selectColorMood(this,'Clean Modern')">
-        <div class="swatch-strip"><div style="background:#FFFFFF"></div><div style="background:#E8E8E8"></div><div style="background:#888888"></div><div style="background:#111111"></div></div>
-        <div class="color-card-info">
-          <span class="color-card-name">Clean Modern</span>
-          <span class="color-card-vibe">minimal, product forward, no distractions.</span>
-          <span class="color-card-ref">COS · Arket</span>
-        </div>
-      </div>
-      <div class="color-card" onclick="selectColorMood(this,'Warm Earth')">
-        <div class="swatch-strip"><div style="background:#F2EBD9"></div><div style="background:#D4B896"></div><div style="background:#C4714A"></div><div style="background:#3D2314"></div></div>
-        <div class="color-card-info">
-          <span class="color-card-name">Warm Earth</span>
-          <span class="color-card-vibe">organic, natural, approachable.</span>
-          <span class="color-card-ref">Aritzia · outdoor lifestyle</span>
-        </div>
-      </div>
-      <div class="color-card" onclick="selectColorMood(this,'Dark Matte')">
-        <div class="swatch-strip"><div style="background:#0D0D0D"></div><div style="background:#1E1E1E"></div><div style="background:#2E2E2E"></div><div style="background:#F5F5F5"></div></div>
-        <div class="color-card-info">
-          <span class="color-card-name">Dark Matte</span>
-          <span class="color-card-vibe">serious, premium, technical.</span>
-          <span class="color-card-ref">Applied Art Forms · Acronym</span>
-        </div>
-      </div>
-      <div class="color-card" onclick="selectColorMood(this,'Soft Neutral')">
-        <div class="swatch-strip"><div style="background:#F5EEE6"></div><div style="background:#E0D5CC"></div><div style="background:#C4A99A"></div><div style="background:#2C2C2C"></div></div>
-        <div class="color-card-info">
-          <span class="color-card-name">Soft Neutral</span>
-          <span class="color-card-vibe">soft, wearable, modern feminine.</span>
-          <span class="color-card-ref">Skims · soft aesthetic</span>
-        </div>
-      </div>
-      <div class="color-card" onclick="selectColorMood(this,'Bold Mono')">
-        <div class="swatch-strip"><div style="background:#000000"></div><div style="background:#FFFFFF"></div><div style="background:#111111"></div><div style="background:#EEEEEE"></div></div>
-        <div class="color-card-info">
-          <span class="color-card-name">Bold Mono</span>
-          <span class="color-card-vibe">high contrast, graphic heavy, no distraction.</span>
-          <span class="color-card-ref">Supreme · classic streetwear</span>
-        </div>
-      </div>
-      <div class="color-card" onclick="selectColorMood(this,'Vintage Washed')">
-        <div class="swatch-strip"><div style="background:#1A1A1A"></div><div style="background:#888880"></div><div style="background:#F0EBD8"></div><div style="background:#6B5744"></div></div>
-        <div class="color-card-info">
-          <span class="color-card-name">Vintage Washed</span>
-          <span class="color-card-vibe">retro, authentic, lived in.</span>
-          <span class="color-card-ref">vintage inspired · thrift aesthetic</span>
-        </div>
-      </div>
-    </div>
-    <div class="btn-row">
-      <button class="btn" onclick="goTo(1)">← Back</button>
-      <button class="btn primary" onclick="goTo(3)">Next →</button>
-    </div>
-  </div>
-
-  <!-- ========== SCREEN 3: Identity Card ========== -->
-  <div class="screen" id="screen-3">
-    <div class="screen-hero">
-      <div class="logo">
-        <span class="logo-mark">FRML<span class="accent">S</span></span>
-        <span class="logo-tag">your store. built right.</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-dot done"></div><div class="progress-dot done"></div><div class="progress-dot done"></div>
-        <div class="progress-dot active"></div>
-        <div class="progress-dot"></div><div class="progress-dot"></div><div class="progress-dot"></div>
-      </div>
-      <div class="step-label">step 03 — your identity</div>
-      <div class="heading">Your brand identity</div>
-      <div class="subhead">Here's your brand foundation. Your full kit is generated from this on the next screen.</div>
-    </div>
-    <div class="identity-card" id="identityCard"></div>
-    <div class="btn-row">
-      <button class="btn" onclick="goTo(2)">← Edit</button>
-      <button class="btn primary" onclick="goTo(4)">Generate brand kit →</button>
-    </div>
-  </div>
 
   <!-- ========== SCREEN 4: Brand Kit ========== -->
   <div class="screen" id="screen-4">
@@ -3009,7 +2811,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <div class="kit-section"><div class="kit-section-title">Tone of Voice</div><div class="kit-tone-text" id="kit-tone"></div></div>
     </div>
     <div class="btn-row">
-      <button class="btn" onclick="goTo(3)">← Back</button>
+      <button class="btn" onclick="goTo(7)">← Dashboard</button>
       <button class="btn primary" onclick="goTo(5)">Start building →</button>
     </div>
   </div>
@@ -4296,23 +4098,23 @@ const dtOutcomes = {
   1: {
     step: 'Start at Step 1',
     name: 'Build your brand identity',
-    text: 'Before anything else you need to know what you are selling and who you are selling to. The first two steps of this system will get you completely clear on your niche, brand name, and direction. Everything else builds from there.',
-    btn:  'Start at Step 1 →',
-    action: () => goTo(1)
+    text: "Before anything else you need to know what you are selling and who you are selling to. The Brand Foundation walks you through six questions that lock in your why, look, audience, and voice. Everything else builds from there.",
+    btn:  'Start your Brand Foundation →',
+    action: () => { goTo(7); setTimeout(() => openBrandFoundation(), 300); }
   },
   2: {
-    step: 'Start at Step 1',
+    step: 'Start with Brand Foundation',
     name: 'Set up your store foundation',
-    text: 'You know what you want to build — now you need the foundation. Work through Steps 1 to 4 to lock in your brand identity, get your visuals sorted, and get your Shopify store set up properly before adding any products.',
-    btn:  'Start at Step 1 →',
-    action: () => goTo(1)
+    text: "You know what you want to build — now you need the foundation. Work through the Brand Foundation first to lock in identity, then move into the Brand Kit and store setup from your dashboard.",
+    btn:  'Start your Brand Foundation →',
+    action: () => { goTo(7); setTimeout(() => openBrandFoundation(), 300); }
   },
   3: {
-    step: 'Start at Step 1 — Brand Name Generator',
+    step: 'Start with Brand Foundation',
     name: 'Find your brand name first',
-    text: 'You have a product direction which is a great start. Use the brand name generator and identity flow first, then come back to build your store once your brand feels solid. Steps 1 and 2 are your priority.',
-    btn:  'Start with Brand Identity →',
-    action: () => goTo(1)
+    text: "You have a product direction which is a great start. Run the Brand Foundation first so the brand has a real point of view, then circle back to your store once it feels solid.",
+    btn:  'Start your Brand Foundation →',
+    action: () => { goTo(7); setTimeout(() => openBrandFoundation(), 300); }
   },
   4: {
     step: 'Start at Step 3',
@@ -4464,15 +4266,11 @@ function dtRenderOutcome(outcomeNum) {
 
 /* ===== NAVIGATION ===== */
 function goTo(n) {
+  // Legacy onboarding screens 1, 2, 3 were replaced by the Brand Foundation
+  // overlay. Any stale reference (saved screen state, link, button) lands
+  // on the dashboard so the foundation kicks in if it hasn't already.
+  if (n === 1 || n === 2 || n === 3) n = 7;
   localStorage.setItem(SCREEN_LS, n);
-  if (n === 3) {
-    const bnVal  = document.getElementById('brandName').value;
-    const audVal = document.getElementById('audience').value;
-    state.brandName = bnVal  || state.brandName || 'your brand';
-    state.audience  = audVal || state.audience  || 'your audience';
-    saveState();
-    buildIdentityCard();
-  }
   if (n === 4) buildBrandKit();
   if (n === 5) buildStepList();
   if (n === 6) buildLaunchChecklist();
@@ -4486,8 +4284,6 @@ function goTo(n) {
 
   function activateNext() {
     if (nextEl) nextEl.classList.add('active');
-    if (n === 1) animateCards('grid-0');
-    if (n === 2) animateCards('grid-1');
     window.scrollTo(0, 0);
   }
 
@@ -4570,50 +4366,7 @@ function animateCards(gridId) {
   });
 }
 
-function selectOpt(el, key, val) {
-  el.closest('.cat-grid, .option-grid').querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state[key] = val;
-  updateSnapshot();
-  saveState();
-}
-
-function selectFont(el, fontStyle) {
-  document.querySelectorAll('.font-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.fontStyle = fontStyle;
-  updateSnapshot();
-  saveState();
-}
-
-function selectColorMood(el, colorMood) {
-  document.querySelectorAll('.color-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.colorMood = colorMood;
-  updateSnapshot();
-  saveState();
-}
-
-
-/* ===== IDENTITY CARD ===== */
-function buildIdentityCard() {
-  const rows = [
-    ['brand name',    state.brandName  || '—'],
-    ['category',      state.cat        || '—'],
-    ['aesthetic',     state.vibe       || '—'],
-    ['font style',    state.fontStyle  || '—'],
-    ['color mood',    state.colorMood  || '—'],
-    ['audience',      state.audience   || '—'],
-    ['tone direction', getTone()]
-  ];
-  document.getElementById('identityCard').innerHTML =
-    rows.map(([k,v]) => `<div class="identity-row"><span class="identity-key">${k}</span><span class="identity-val">${v}</span></div>`).join('');
-}
-
-function getTone() {
-  const tones = { 'dark & editorial':'confident, minimal, no fluff', 'clean & minimal':'refined, quiet, understated', 'raw & bold':'direct, loud, no apologies', 'soft & neutral':'warm, wearable, approachable' };
-  return tones[state.vibe] || 'clean and direct';
-}
+/* ===== IDENTITY CARD legacy helpers removed ===== */
 
 /* ===== BRAND KIT DATA ===== */
 const brandKitData = {
@@ -5738,10 +5491,10 @@ function buildRoadmap() {
 
   // Node definitions: [id, label, x%, y(px), stepIndex(-1=special), colKey]
   const nodes = [
-    { id:'n-brandid',  label:'Brand Identity',        xp:50, y:30,  stepIdx:-1,  action:()=>goTo(1) },
-    { id:'n-name',     label:'Brand Name',             xp:18, y:110, stepIdx:-1,  action:()=>goTo(1) },
+    { id:'n-brandid',  label:'Brand Identity',        xp:50, y:30,  stepIdx:-1,  action:()=>openIdentityModal() },
+    { id:'n-name',     label:'Brand Name',             xp:18, y:110, stepIdx:-1,  action:()=>openBrandNameModal() },
     { id:'n-visuals',  label:'Brand Visuals',          xp:50, y:110, stepIdx:1,   action:()=>openStep(1) },
-    { id:'n-niche',    label:'Niche & Audience',       xp:82, y:110, stepIdx:-1,  action:()=>goTo(2) },
+    { id:'n-niche',    label:'Niche & Audience',       xp:82, y:110, stepIdx:-1,  action:()=>openBrandFoundation() },
     { id:'n-shopify',  label:'Shopify Setup',          xp:50, y:210, stepIdx:0,   action:()=>openStep(0) },
     { id:'n-theme',    label:'Theme & Design',         xp:22, y:300, stepIdx:1,   action:()=>openStep(1) },
     { id:'n-product',  label:'Product Ready',          xp:78, y:300, stepIdx:3,   action:()=>openStep(3) },

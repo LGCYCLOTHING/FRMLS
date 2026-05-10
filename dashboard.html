@@ -648,28 +648,31 @@ body::before {
 .ob-nav-bar {
   position:sticky; top:0; z-index:10; display:flex; align-items:center;
   gap:16px; padding:20px 32px 16px;
-  background:linear-gradient(to bottom,#07040f 80%,transparent);
+  background:transparent;
   flex-shrink:0;
 }
 .ob-back-btn {
-  width:36px; height:36px; border-radius:50%; border:1.5px solid rgba(255,255,255,0.14);
-  background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.7);
+  width:42px; height:42px; border-radius:50%; border:1.5px solid rgba(255,255,255,0.32);
+  background:rgba(255,255,255,0.08); color:#ffffff;
   display:flex; align-items:center; justify-content:center;
-  cursor:pointer; flex-shrink:0; transition:background 0.2s,border-color 0.2s;
+  cursor:pointer; flex-shrink:0;
+  transition:background 0.2s,border-color 0.2s,transform 0.15s;
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
 }
-.ob-back-btn:disabled { opacity:0.2; cursor:not-allowed; }
-.ob-back-btn:not(:disabled):hover { background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.28); }
-.ob-back-spacer { width:36px; flex-shrink:0; }
-.ob-nav-center { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; }
+.ob-back-btn svg path { stroke:#ffffff; }
+.ob-back-btn:disabled { visibility:hidden; }
+.ob-back-btn:not(:disabled):hover { background:rgba(255,255,255,0.16); border-color:rgba(255,255,255,0.5); transform:translateX(-2px); }
+.ob-back-spacer { width:42px; flex-shrink:0; }
+.ob-nav-center { flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; }
 .ob-phase-dots { display:flex; align-items:center; gap:8px; }
 .ob-phase-dot {
   height:6px; border-radius:3px; transition:all 0.45s cubic-bezier(0.16,1,0.3,1);
 }
-.ob-phase-dot.done { width:16px; background:rgba(255,255,255,0.3); }
+.ob-phase-dot.done { width:16px; background:rgba(255,255,255,0.45); }
 .ob-phase-dot.active { width:28px; background:linear-gradient(90deg,#7c3aed,#06b6d4); }
-.ob-phase-dot.upcoming { width:6px; background:rgba(255,255,255,0.12); }
-.ob-phase-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.35); }
-.ob-phase-step-sub { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; color:rgba(255,255,255,0.22); }
+.ob-phase-dot.upcoming { width:6px; background:rgba(255,255,255,0.18); }
+.ob-phase-label { font-family:'Inter',sans-serif; font-size:14px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:#ffffff; }
+.ob-phase-step-sub { font-family:'Inter',sans-serif; font-size:12px; font-weight:600; letter-spacing:0.08em; color:rgba(255,255,255,0.7); text-transform:lowercase; }
 
 /* Screen base */
 .ob-screen { display:none; padding:48px 32px 100px; max-width:660px; margin:0 auto; position:relative; z-index:1; }
@@ -2165,7 +2168,8 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   text-align: center; width: 100%; margin-bottom: 14px;
 }
 .bf-subline {
-  font-size: 16px; color: rgba(255,255,255,0.45);
+  font-size: 17px; color: rgba(255,255,255,0.78);
+  font-weight: 500;
   text-align: center; width: 100%; margin-bottom: 36px; line-height: 1.6;
 }
 .bf-checkbox-grid {
@@ -2173,10 +2177,11 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   width: 100%; margin-bottom: 20px;
 }
 .bf-checkbox-card {
-  background: #111111; border: 1px solid #222222; border-radius: 16px;
-  padding: 16px; cursor: pointer; font-size: 15px; color: #ffffff; line-height: 1.45;
+  background: rgba(20,20,28,0.85); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px;
+  padding: 16px; cursor: pointer; font-size: 15px; font-weight: 500; color: #ffffff; line-height: 1.45;
   transition: all 0.2s cubic-bezier(0.16,1,0.3,1);
   position: relative; z-index: 1; user-select: none;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
 .bf-checkbox-card::before {
   content: ''; position: absolute; inset: -1px; border-radius: 17px;
@@ -2187,14 +2192,15 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 .bf-checkbox-card.selected { border-color: transparent; background: rgba(124,58,237,0.14); }
 .bf-checkbox-card.selected::before { opacity: 1; }
 .bf-textarea {
-  width: 100%; background: #111111; border: 1px solid #222222;
+  width: 100%; background: rgba(20,20,28,0.85); border: 1px solid rgba(255,255,255,0.14);
   border-radius: 16px; padding: 14px 18px;
-  font-size: 15px; font-family: 'Inter', sans-serif; font-weight: 400;
+  font-size: 15px; font-family: 'Inter', sans-serif; font-weight: 500;
   color: #ffffff; line-height: 1.65; resize: none; outline: none;
   min-height: 80px; margin-bottom: 28px;
   transition: border-color 0.2s;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
-.bf-textarea::placeholder { color: rgba(255,255,255,0.18); }
+.bf-textarea::placeholder { color: rgba(255,255,255,0.45); }
 .bf-textarea:focus { border-color: rgba(124,58,237,0.45); }
 .bf-pill-grid {
   display: flex; flex-wrap: wrap; gap: 9px; width: 100%; margin-bottom: 24px;
@@ -2261,12 +2267,16 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 .bf-promise-area { min-height: 140px; font-size: 16px; margin-bottom: 32px; }
 .bf-skip-btn {
   position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-  background: none; border: none; cursor: pointer;
-  font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.22); transition: color 0.2s; z-index: 10;
-  white-space: nowrap;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 100px; padding: 10px 22px; cursor: pointer;
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(255,255,255,0.78);
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+  z-index: 10; white-space: nowrap;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
 }
-.bf-skip-btn:hover { color: rgba(255,255,255,0.6); }
+.bf-skip-btn:hover { color: #ffffff; background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.32); }
 /* Completion screen */
 .bf-completion-screen {
   align-items: center; justify-content: flex-start; text-align: center;

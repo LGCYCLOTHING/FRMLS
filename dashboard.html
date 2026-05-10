@@ -7779,11 +7779,12 @@ function bfNavBack() {
 }
 
 function bfSkip() {
-  localStorage.setItem(BF_COMPLETE_KEY, 'true');
-  localStorage.setItem(OB_COMPLETE_KEY, 'true');
-  document.documentElement.classList.remove('onboarding-active');
-  bfHideOverlay();
-  goTo(7);
+  if (bfIsAnimating) return;
+  if (bfCurrentStep < BF_TOTAL_STEPS - 1) {
+    bfGoTo(bfCurrentStep + 1, true);
+  } else if (bfCurrentStep === BF_TOTAL_STEPS - 1) {
+    bfComplete();
+  }
 }
 
 function bfComplete() {

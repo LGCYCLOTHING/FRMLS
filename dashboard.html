@@ -650,10 +650,17 @@ body::before {
 /* FRMLS logo, top-right corner */
 .bf-logo {
   position:fixed; top:22px; right:32px; z-index:11;
-  width:108px; height:auto; opacity:0.9; pointer-events:none;
-  filter:drop-shadow(0 0 12px rgba(6,182,212,0.18));
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:26px; font-weight:900; letter-spacing:-0.025em;
+  color:#ffffff; line-height:1;
+  pointer-events:none; user-select:none;
 }
-@media(max-width:1100px) { .bf-logo { width:84px; top:18px; right:18px; opacity:0.75; } }
+.bf-logo-s {
+  background:linear-gradient(90deg,#7c3aed,#06b6d4);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  padding-right:2px;
+}
+@media(max-width:1100px) { .bf-logo { font-size:22px; top:18px; right:18px; } }
 
 /* Atmospheric orbs (shared) */
 .ob-orb {
@@ -754,7 +761,8 @@ body::before {
 .ob-nav-bar {
   position:sticky; top:0; z-index:10; display:flex; align-items:center;
   gap:16px; padding:20px 32px 16px;
-  background:transparent;
+  background:rgba(6,2,15,0.55);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
   flex-shrink:0;
 }
 .ob-back-btn {
@@ -2479,16 +2487,44 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   margin-bottom: 48px; max-width: 420px; position: relative; z-index: 1;
 }
 .bf-enter-btn {
-  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  background: linear-gradient(120deg, #7c3aed 0%, #06b6d4 25%, #9d5cf5 50%, #06b6d4 75%, #7c3aed 100%);
+  background-size: 220% 100%;
+  animation: bfEnterFlow 7s linear infinite;
   border: none; border-radius: 16px; padding: 16px 44px;
   font-size: 17px; font-weight: 700; color: #ffffff;
   font-family: 'Inter', sans-serif; cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+  transition: transform 0.25s cubic-bezier(0.16,1,0.3,1), box-shadow 0.25s ease;
   letter-spacing: -0.01em; position: relative; z-index: 1;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 18px 36px -16px rgba(124,58,237,0.55);
+  overflow: hidden; isolation: isolate;
+}
+.bf-enter-btn::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(115deg, transparent 0%, transparent 38%, rgba(255,255,255,0.22) 50%, transparent 62%, transparent 100%);
+  background-size: 220% 100%;
+  animation: bfEnterShine 4.5s linear infinite;
+  mix-blend-mode: overlay;
+  z-index: -1;
+}
+.bf-enter-btn::after {
+  content: ''; position: absolute; inset: -2px; border-radius: 18px; pointer-events: none;
+  background: linear-gradient(120deg, rgba(124,58,237,0.55), rgba(6,182,212,0.55), rgba(124,58,237,0.55));
+  background-size: 200% 100%;
+  animation: bfEnterFlow 7s linear infinite;
+  filter: blur(18px); opacity: 0.6;
+  z-index: -2;
 }
 .bf-enter-btn:hover {
-  box-shadow: 0 0 55px rgba(124,58,237,0.65), 0 8px 32px rgba(124,58,237,0.3);
   transform: translateY(-2px);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 24px 48px -16px rgba(6,182,212,0.6);
+}
+@keyframes bfEnterFlow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 220% 50%; }
+}
+@keyframes bfEnterShine {
+  0%   { background-position: -120% 0%; }
+  100% { background-position: 220% 0%; }
 }
 /* Brand output card (completion screen) */
 .bf-output-card {
@@ -2539,6 +2575,20 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 .bf-output-word-dot {
   font-size: 20px; font-weight: 300; opacity: 0.35; color: #9d5cf5;
   -webkit-text-fill-color: initial;
+}
+.bf-output-foundation { display: flex; flex-direction: column; gap: 10px; }
+.bf-output-foundation-row {
+  display: grid; grid-template-columns: 80px 1fr; gap: 14px;
+  align-items: baseline; text-align: left;
+}
+.bf-output-foundation-key {
+  font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: #06b6d4;
+}
+.bf-output-foundation-val {
+  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;
+  color: rgba(255,255,255,0.88); line-height: 1.55;
 }
 .bf-output-voice-list { display: flex; flex-direction: column; gap: 14px; }
 .bf-output-voice-line {
@@ -3153,7 +3203,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   <div class="ob-particles" id="bf-particles"></div>
 
   <!-- FRMLS logo (anchored top-right, persistent across steps) -->
-  <img class="bf-logo" src="logo-wordmark.svg" alt="FRMLS" aria-hidden="true"/>
+  <div class="bf-logo" aria-label="FRMLS">FRML<span class="bf-logo-s">S</span></div>
 
   <!-- Side accent decorations (desktop only) -->
   <div class="bf-side-rail bf-side-left"></div>
@@ -3372,7 +3422,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <p class="ob-subline">this personalizes everything in your dashboard.</p>
     <input class="ob-name-input" id="obBrandNameInput" type="text" placeholder="your brand name..." oninput="obCheckBrandName()" autocomplete="off" />
     <span class="ob-input-hint">you can update this anytime in your dashboard.</span>
-    <button class="ob-continue-btn" id="ob-continue-brandname" disabled onclick="obGoTo('completion')">continue →</button>
+    <button class="ob-continue-btn" id="ob-continue-brandname" disabled onclick="obComplete()">continue →</button>
   </div>
 
   <!-- Screen: Completion -->
@@ -7456,12 +7506,38 @@ function bfRenderOutputCard(output) {
     .map(ex => `<div class="bf-output-voice-line">"${ex}"</div>`)
     .join('');
 
+  /* Pull the user's actual foundation answers for a compact summary */
+  const ctx = (typeof getBrandContext === 'function') ? getBrandContext() : {};
+  const foundationRows = [
+    ['why',     ctx.brandWhy],
+    ['look',    ctx.brandLook],
+    ['feeling', ctx.moodWords],
+    ['for',     ctx.brandAudience],
+    ['promise', ctx.brandPromise]
+  ].filter(([, val]) =>
+    val && !/^\[.*\]$/.test(String(val).trim())
+  );
+
+  const foundationHTML = foundationRows.length
+    ? `<div class="bf-output-section-label">your foundation</div>` +
+      `<div class="bf-output-foundation">` +
+        foundationRows.map(([k, v]) =>
+          `<div class="bf-output-foundation-row">` +
+            `<span class="bf-output-foundation-key">${k}</span>` +
+            `<span class="bf-output-foundation-val">${v}</span>` +
+          `</div>`
+        ).join('') +
+      `</div>` +
+      `<div class="bf-output-divider"></div>`
+    : '';
+
   card.innerHTML =
     `<div class="bf-output-label">your brand identity</div>` +
     `<div class="bf-output-archetype">${output.archetypeName}</div>` +
     `<div class="bf-output-divider"></div>` +
     `<p class="bf-output-summary">${output.summary}</p>` +
     `<div class="bf-output-divider"></div>` +
+    foundationHTML +
     `<div class="bf-output-section-label">your three words</div>` +
     `<div class="bf-output-words">` +
       `<span class="bf-output-word">${output.threeWords[0]}</span>` +
@@ -7549,8 +7625,9 @@ function obGetArchetype() {
 function obShowOverlay() {
   const overlay = document.getElementById('ob-overlay');
   if (!overlay) return;
-  const saved = localStorage.getItem(OB_STEP_KEY);
-  const startScreen = OB_SCREENS.includes(saved) ? saved : 'brandname';
+  // Always start at brandname — the completion celebration is no longer used
+  // (BF completion now goes directly to dashboard).
+  const startScreen = 'brandname';
 
   // Restore saved brand name
   const inp = document.getElementById('obBrandNameInput');
@@ -8043,7 +8120,23 @@ function bfComplete() {
 function bfEnterDashboard() {
   bfHideOverlay();
   bfRefreshDashThreeWords();
-  obShowOverlay(); // continue to brand detail steps
+  // If the brand name has already been collected, skip the duplicate ob-overlay
+  // celebration screen and go straight to the dashboard.
+  if (state.brandName && state.brandName.trim()) {
+    localStorage.setItem(OB_COMPLETE_KEY, 'true');
+    document.documentElement.classList.remove('onboarding-active');
+    const appEl = document.querySelector('.app');
+    if (appEl) {
+      appEl.classList.add('dashboard-entering');
+      setTimeout(() => appEl.classList.remove('dashboard-entering'), 700);
+    }
+    goTo(7);
+  } else {
+    // Brand name not set yet — collect it via ob-overlay's brandname screen.
+    // The brandname continue button calls obComplete() directly, skipping the
+    // ob-completion celebration screen.
+    obShowOverlay();
+  }
 }
 
 /* Toggle a checkbox card */

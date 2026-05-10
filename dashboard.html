@@ -629,9 +629,31 @@ body::before {
   -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
   opacity:0; pointer-events:none; transition:opacity 0.4s ease;
 }
-#bf-overlay { z-index:9999; }
+#bf-overlay {
+  z-index:9999;
+  background:
+    radial-gradient(ellipse 90% 80% at -10% -10%, rgba(59,7,100,0.7) 0%, rgba(59,7,100,0) 55%),
+    radial-gradient(ellipse 80% 70% at 110% 110%, rgba(6,182,212,0.22) 0%, rgba(6,182,212,0) 55%),
+    #06020f;
+}
+
+/* Film grain overlay — adds material feel over the gradient */
+.bf-grain {
+  position:fixed; inset:0; pointer-events:none; z-index:1;
+  opacity:0.15; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size:240px 240px;
+}
 #bf-overlay.bf-visible { opacity:1; pointer-events:auto; }
 #ob-overlay.ob-visible { opacity:1; pointer-events:auto; }
+
+/* FRMLS logo, top-right corner */
+.bf-logo {
+  position:fixed; top:22px; right:32px; z-index:11;
+  width:108px; height:auto; opacity:0.9; pointer-events:none;
+  filter:drop-shadow(0 0 12px rgba(6,182,212,0.18));
+}
+@media(max-width:1100px) { .bf-logo { width:84px; top:18px; right:18px; opacity:0.75; } }
 
 /* Atmospheric orbs (shared) */
 .ob-orb {
@@ -747,7 +769,7 @@ body::before {
 .ob-back-btn:disabled { visibility:hidden; }
 .ob-back-btn:not(:disabled):hover { background:rgba(255,255,255,0.16); border-color:rgba(255,255,255,0.5); transform:translateX(-2px); }
 .ob-back-spacer { width:42px; flex-shrink:0; }
-.ob-nav-center { flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; }
+.ob-nav-center { flex:1; display:flex; flex-direction:column; align-items:center; gap:10px; }
 .ob-phase-dots { display:flex; align-items:center; gap:8px; }
 .ob-phase-dot {
   height:6px; border-radius:3px; transition:all 0.45s cubic-bezier(0.16,1,0.3,1);
@@ -755,8 +777,23 @@ body::before {
 .ob-phase-dot.done { width:16px; background:rgba(255,255,255,0.45); }
 .ob-phase-dot.active { width:28px; background:linear-gradient(90deg,#7c3aed,#06b6d4); }
 .ob-phase-dot.upcoming { width:6px; background:rgba(255,255,255,0.18); }
-.ob-phase-label { font-family:'Inter',sans-serif; font-size:14px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:#ffffff; }
+.ob-phase-label { font-family:'DM Mono',monospace; font-size:11px; font-weight:600; letter-spacing:0.28em; text-transform:uppercase; color:#06b6d4; }
 .ob-phase-step-sub { font-family:'Inter',sans-serif; font-size:12px; font-weight:600; letter-spacing:0.08em; color:rgba(255,255,255,0.7); text-transform:lowercase; }
+
+/* Phase progress bar (replaces the 3 phase dots in BF nav) */
+.bf-phase-bar {
+  width:240px; height:2px; border-radius:2px;
+  background:rgba(124,58,237,0.30);
+  overflow:hidden; position:relative;
+}
+.bf-phase-bar-fill {
+  position:absolute; left:0; top:0; bottom:0;
+  width:0%;
+  background:#06b6d4;
+  box-shadow:0 0 10px rgba(6,182,212,0.55);
+  transition:width 0.45s cubic-bezier(0.16,1,0.3,1);
+}
+@media(max-width:640px) { .bf-phase-bar { width:160px; } }
 
 /* Clickable step track (foundation questions 1–6) */
 .bf-step-track { display:flex; align-items:center; gap:4px; margin-top:2px; }
@@ -2287,87 +2324,84 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   display: flex;
 }
 .bf-label {
-  font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.18em;
-  text-transform: uppercase; text-align: center; width: 100%; margin-bottom: 24px;
-  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.22em;
+  text-transform: uppercase; text-align: center; width: 100%; margin-bottom: 22px;
+  color: #06b6d4;
 }
 .bf-headline {
-  font-size: 48px; font-weight: 800; color: #ffffff;
-  letter-spacing: -0.03em; line-height: 1.1;
-  text-align: center; width: 100%; margin-bottom: 14px;
+  font-family: 'Bebas Neue', 'Barlow Condensed', 'Inter', sans-serif;
+  font-size: 72px; font-weight: 400; color: #ffffff;
+  letter-spacing: 0.005em; line-height: 0.95;
+  text-align: center; width: 100%; margin-bottom: 16px;
 }
 .bf-subline {
-  font-size: 17px; color: rgba(255,255,255,0.78);
-  font-weight: 500;
-  text-align: center; width: 100%; margin-bottom: 36px; line-height: 1.6;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px; color: rgba(255,255,255,0.6);
+  font-weight: 500; letter-spacing: 0.06em;
+  text-align: center; width: 100%; margin-bottom: 36px; line-height: 1.55;
 }
 .bf-checkbox-grid {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
   width: 100%; margin-bottom: 20px;
 }
 .bf-checkbox-card {
-  background: rgba(20,20,28,0.85); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px;
   padding: 16px; cursor: pointer; font-size: 15px; font-weight: 500; color: #ffffff; line-height: 1.45;
-  transition: all 0.2s cubic-bezier(0.16,1,0.3,1);
+  transition: border-color 0.2s, background 0.2s, transform 0.18s;
   position: relative; z-index: 1; user-select: none;
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
-.bf-checkbox-card::before {
-  content: ''; position: absolute; inset: -1px; border-radius: 17px;
-  background: linear-gradient(135deg, #7c3aed, #06b6d4); z-index: -1;
-  opacity: 0; transition: opacity 0.2s;
+.bf-checkbox-card:hover {
+  border-color: rgba(124,58,237,0.6);
+  background: rgba(124,58,237,0.06);
 }
-.bf-checkbox-card:hover { background: rgba(124,58,237,0.07); border-color: #333; }
-.bf-checkbox-card.selected { border-color: transparent; background: rgba(124,58,237,0.14); }
-.bf-checkbox-card.selected::before { opacity: 1; }
+.bf-checkbox-card.selected {
+  border-color: #06b6d4;
+  background: rgba(6,182,212,0.10);
+  box-shadow: 0 0 0 1px rgba(6,182,212,0.15);
+}
 .bf-textarea {
-  width: 100%; background: rgba(20,20,28,0.85); border: 1px solid rgba(255,255,255,0.14);
-  border-radius: 16px; padding: 14px 18px;
+  width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px; padding: 14px 18px;
   font-size: 15px; font-family: 'Inter', sans-serif; font-weight: 500;
   color: #ffffff; line-height: 1.65; resize: none; outline: none;
   min-height: 80px; margin-bottom: 28px;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background 0.2s;
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
-.bf-textarea::placeholder { color: rgba(255,255,255,0.45); }
-.bf-textarea:focus { border-color: rgba(124,58,237,0.45); }
+.bf-textarea::placeholder { color: rgba(255,255,255,0.4); }
+.bf-textarea:focus { border-color: #06b6d4; background: rgba(6,182,212,0.05); }
 .bf-pill-grid {
   display: flex; flex-wrap: wrap; gap: 9px; width: 100%; margin-bottom: 24px;
 }
 .bf-pill {
-  background: #111111; border: 1px solid #222222; border-radius: 100px;
-  padding: 8px 18px; font-size: 14px; color: #ffffff; cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16,1,0.3,1); user-select: none; line-height: 1;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 100px;
+  padding: 8px 18px; font-size: 14px; font-weight: 500; color: #ffffff; cursor: pointer;
+  transition: border-color 0.2s, background 0.2s; user-select: none; line-height: 1;
 }
-.bf-pill:hover { border-color: #444; background: rgba(255,255,255,0.05); }
+.bf-pill:hover { border-color: rgba(124,58,237,0.6); background: rgba(124,58,237,0.06); }
 .bf-pill.selected {
-  background: linear-gradient(135deg, #7c3aed, #06b6d4);
-  border-color: transparent;
+  background: rgba(6,182,212,0.12);
+  border-color: #06b6d4;
+  color: #ffffff;
 }
 .bf-continue-btn {
   background: linear-gradient(135deg, #7c3aed, #06b6d4);
-  border: none; border-radius: 16px; padding: 14px 40px;
-  font-size: 16px; font-weight: 600; color: #ffffff;
-  font-family: 'Inter', sans-serif; cursor: pointer;
+  border: 1px solid transparent; border-radius: 14px; padding: 14px 40px;
+  font-size: 14px; font-weight: 700; color: #ffffff;
+  font-family: 'DM Mono', monospace; letter-spacing: 0.16em; text-transform: uppercase;
+  cursor: pointer;
   transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
-  position: relative; overflow: hidden; align-self: center;
-  min-width: 200px; letter-spacing: 0.01em;
-}
-.bf-continue-btn::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.13), transparent);
-  opacity: 0; transition: opacity 0.2s;
+  position: relative; align-self: center;
+  min-width: 220px;
 }
 .bf-continue-btn:hover:not(:disabled) {
-  box-shadow: 0 0 40px rgba(124,58,237,0.55), 0 4px 20px rgba(124,58,237,0.25);
+  background: rgba(6,182,212,0.10);
+  border-color: #06b6d4;
+  color: #06b6d4;
   transform: translateY(-1px);
 }
-.bf-continue-btn:hover:not(:disabled)::after { opacity: 1; }
 .bf-continue-btn:disabled { opacity: 0.28; cursor: default; }
-.bf-continue-btn:not(:disabled) {
-  box-shadow: 0 0 20px rgba(124,58,237,0.3);
-}
 .bf-complete-btn { font-size: 17px; padding: 16px 44px; }
 .bf-refs-label {
   font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.14em;
@@ -2550,8 +2584,8 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 @media (max-width: 767px) {
   .bf-top-bar { padding: 16px 20px 12px; }
   .bf-screen { padding: 32px 20px 100px; }
-  .bf-headline { font-size: 32px; }
-  .bf-subline { font-size: 14px; margin-bottom: 24px; }
+  .bf-headline { font-size: 44px; }
+  .bf-subline { font-size: 12px; margin-bottom: 24px; }
   .bf-checkbox-grid { grid-template-columns: 1fr; }
   .bf-promise-lead { font-size: 26px; }
   .bf-completion-logo { font-size: 52px; }
@@ -3115,12 +3149,11 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 <!-- ===== BRAND FOUNDATION FLOW ===== -->
 <div id="bf-overlay" role="dialog" aria-modal="true" aria-label="Brand Foundation">
   <!-- Atmospheric background -->
-  <div class="ob-orb ob-orb-1"></div>
-  <div class="ob-orb ob-orb-2"></div>
-  <div class="ob-orb ob-orb-3"></div>
-  <div class="ob-orb ob-orb-4"></div>
-  <div class="ob-orb ob-orb-5"></div>
+  <div class="bf-grain" aria-hidden="true"></div>
   <div class="ob-particles" id="bf-particles"></div>
+
+  <!-- FRMLS logo (anchored top-right, persistent across steps) -->
+  <img class="bf-logo" src="logo-wordmark.svg" alt="FRMLS" aria-hidden="true"/>
 
   <!-- Side accent decorations (desktop only) -->
   <div class="bf-side-rail bf-side-left"></div>
@@ -3144,10 +3177,8 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div class="ob-nav-center">
-      <div class="ob-phase-dots">
-        <div class="ob-phase-dot active" id="bf-dot-1"></div>
-        <div class="ob-phase-dot upcoming" id="bf-dot-2"></div>
-        <div class="ob-phase-dot upcoming" id="bf-dot-3"></div>
+      <div class="bf-phase-bar" aria-hidden="true">
+        <div class="bf-phase-bar-fill" id="bf-phase-bar-fill"></div>
       </div>
       <div class="ob-phase-label">BRAND FOUNDATION</div>
       <div class="bf-step-track" id="bf-step-track" role="tablist" aria-label="Foundation steps">
@@ -3191,19 +3222,19 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <!-- Screen 1: The Person -->
     <div class="bf-screen" id="bf-screen-1">
       <div class="bf-label">brand foundation — 02</div>
-      <h2 class="bf-headline">if your brand was a person — who are they?</h2>
-      <p class="bf-subline">describe their energy. how they carry themselves.</p>
+      <h2 class="bf-headline">what does your brand actually look like?</h2>
+      <p class="bf-subline">the visual energy — before any product.</p>
       <div class="bf-checkbox-grid">
-        <div class="bf-checkbox-card" data-value="quiet-confident" onclick="bfToggleCard(this,1,'quiet-confident');bfCheckContinue(1)">Quiet and confident — doesn't need attention but gets it</div>
-        <div class="bf-checkbox-card" data-value="bold-loud" onclick="bfToggleCard(this,1,'bold-loud');bfCheckContinue(1)">Bold and loud — walks in and owns the room</div>
-        <div class="bf-checkbox-card" data-value="warm-approachable" onclick="bfToggleCard(this,1,'warm-approachable');bfCheckContinue(1)">Warm and approachable — feels like a friend not a brand</div>
-        <div class="bf-checkbox-card" data-value="cold-editorial" onclick="bfToggleCard(this,1,'cold-editorial');bfCheckContinue(1)">Cold and editorial — lets the work speak</div>
-        <div class="bf-checkbox-card" data-value="rebellious-raw" onclick="bfToggleCard(this,1,'rebellious-raw');bfCheckContinue(1)">Rebellious and raw — rejects the mainstream</div>
-        <div class="bf-checkbox-card" data-value="elevated-refined" onclick="bfToggleCard(this,1,'elevated-refined');bfCheckContinue(1)">Elevated and refined — everything considered nothing wasted</div>
-        <div class="bf-checkbox-card" data-value="grounded-real" onclick="bfToggleCard(this,1,'grounded-real');bfCheckContinue(1)">Grounded and real — no performance just substance</div>
-        <div class="bf-checkbox-card" data-value="mysterious" onclick="bfToggleCard(this,1,'mysterious');bfCheckContinue(1)">Mysterious and understated — less is always more</div>
+        <div class="bf-checkbox-card" data-value="minimal-clean" onclick="bfToggleCard(this,1,'minimal-clean');bfCheckContinue(1)">Minimal and clean — nothing wasted</div>
+        <div class="bf-checkbox-card" data-value="raw-textural" onclick="bfToggleCard(this,1,'raw-textural');bfCheckContinue(1)">Raw and textural — grit, edges, imperfect</div>
+        <div class="bf-checkbox-card" data-value="editorial-considered" onclick="bfToggleCard(this,1,'editorial-considered');bfCheckContinue(1)">Editorial and considered — magazine-feel</div>
+        <div class="bf-checkbox-card" data-value="loud-graphic" onclick="bfToggleCard(this,1,'loud-graphic');bfCheckContinue(1)">Loud and graphic — high contrast, bold</div>
+        <div class="bf-checkbox-card" data-value="soft-atmospheric" onclick="bfToggleCard(this,1,'soft-atmospheric');bfCheckContinue(1)">Soft and atmospheric — hazy, dreamlike</div>
+        <div class="bf-checkbox-card" data-value="tech-precise" onclick="bfToggleCard(this,1,'tech-precise');bfCheckContinue(1)">Tech and precise — sharp, mechanical</div>
+        <div class="bf-checkbox-card" data-value="vintage-archival" onclick="bfToggleCard(this,1,'vintage-archival');bfCheckContinue(1)">Vintage / archival — found, faded</div>
+        <div class="bf-checkbox-card" data-value="industrial" onclick="bfToggleCard(this,1,'industrial');bfCheckContinue(1)">Industrial — hardware, materials, weight</div>
       </div>
-      <textarea class="bf-textarea" data-screen="1" data-key="text" placeholder="describe them in your own words..." oninput="bfSaveTextarea(this,1,'text');bfCheckContinue(1)"></textarea>
+      <textarea class="bf-textarea" data-screen="1" data-key="text" placeholder="describe the look in your own words..." oninput="bfSaveTextarea(this,1,'text');bfCheckContinue(1)"></textarea>
       <button class="bf-continue-btn" id="bf-continue-1" disabled onclick="bfNextStep()">continue →</button>
     </div>
 
@@ -4624,15 +4655,15 @@ function getBrandContext() {
     'money':'make money and do it with something real',
     'legacy':'leave something behind that matters'
   };
-  const personalityLabels = {
-    'quiet-confident':'quiet and confident',
-    'bold-loud':'bold and loud',
-    'warm-approachable':'warm and approachable',
-    'cold-editorial':'cold and editorial',
-    'rebellious-raw':'rebellious and raw',
-    'elevated-refined':'elevated and refined',
-    'grounded-real':'grounded and real',
-    'mysterious':'mysterious and understated'
+  const lookLabels = {
+    'minimal-clean':'minimal and clean',
+    'raw-textural':'raw and textural',
+    'editorial-considered':'editorial and considered',
+    'loud-graphic':'loud and graphic',
+    'soft-atmospheric':'soft and atmospheric',
+    'tech-precise':'tech and precise',
+    'vintage-archival':'vintage and archival',
+    'industrial':'industrial'
   };
   const audienceLabels = {
     'quality-over-hype':'someone who values quality over hype',
@@ -4670,14 +4701,14 @@ function getBrandContext() {
   } catch(e) {}
 
   let brandPromise = '[your brand promise]', moodWords = '[your mood words]';
-  let brandPersonality = '[your brand personality]', brandWhy = '[why you built this]';
+  let brandLook = '[your brand look]', brandWhy = '[why you built this]';
   let brandAudience = '[who this is for]', brandReferences = '[your brand references]';
   try {
     const ans = JSON.parse(localStorage.getItem('frmls_foundation_answers') || '{}');
     if (ans[5] && ans[5].promise) brandPromise = ans[5].promise;
     if (ans[2] && ans[2].moods && ans[2].moods.length) moodWords = ans[2].moods.join(', ');
     if (ans[1] && ans[1].selections && ans[1].selections.length)
-      brandPersonality = ans[1].selections.map(v => personalityLabels[v] || v).join(', ');
+      brandLook = ans[1].selections.map(v => lookLabels[v] || v).join(', ');
     const whySels = (ans[0] && ans[0].selections) ? ans[0].selections.map(v => whyLabels[v] || v) : [];
     const whyText = (ans[0] && ans[0].text) ? ans[0].text.trim() : '';
     const whyParts = [...whySels]; if (whyText) whyParts.push(whyText);
@@ -4690,7 +4721,7 @@ function getBrandContext() {
     }
   } catch(e) {}
 
-  return { brandName, threeWords, archetype, personalitySummary, voiceExample1, voiceExample2, voiceExample3, whatToAvoid, brandPromise, moodWords, brandPersonality, brandWhy, brandAudience, brandReferences };
+  return { brandName, threeWords, archetype, personalitySummary, voiceExample1, voiceExample2, voiceExample3, whatToAvoid, brandPromise, moodWords, brandLook, brandWhy, brandAudience, brandReferences };
 }
 
 function buildPrompt(template) {
@@ -4703,7 +4734,7 @@ function buildPrompt(template) {
     .replace(/\{\{brandPromise\}\}/g, c.brandPromise)
     .replace(/\{\{voiceExample\}\}/g, c.voiceExample1)
     .replace(/\{\{whatToAvoid\}\}/g, c.whatToAvoid)
-    .replace(/\{\{brandPersonality\}\}/g, c.brandPersonality)
+    .replace(/\{\{brandLook\}\}/g, c.brandLook)
     .replace(/\{\{brandWhy\}\}/g, c.brandWhy);
 }
 
@@ -4711,7 +4742,7 @@ const brandPackSteps = [
   {
     title: 'Brand Identity',
     label: 'Define Your Brand Identity',
-    prompt: 'My brand is called {{brandName}}. It exists because {{brandPromise}}. The feeling it gives people is: {{moodWords}}. The brand personality is: {{brandPersonality}}. Three words that define everything: {{threeWords}}. Write a complete brand identity statement that captures all of this in 3-4 sentences. It should sound like {{voiceExample}} — that is the voice and tone to match throughout everything.'
+    prompt: 'My brand is called {{brandName}}. It exists because {{brandPromise}}. The feeling it gives people is: {{moodWords}}. The visual energy is: {{brandLook}}. Three words that define everything: {{threeWords}}. Write a complete brand identity statement that captures all of this in 3-4 sentences. It should sound like {{voiceExample}} — that is the voice and tone to match throughout everything.'
   },
   {
     title: 'Homepage Headline',
@@ -4731,7 +4762,7 @@ const brandPackSteps = [
   {
     title: 'About Page',
     label: 'About Page',
-    prompt: 'Write the about page for {{brandName}}. The brand exists because: {{brandPromise}}. Brand personality: {{brandPersonality}}. The feeling it gives: {{moodWords}}. What it stands against: {{whatToAvoid}}. Write it in first person, honest, no corporate language. It should answer three things: why this brand exists, who it is for, and what it stands for. Voice matches: {{voiceExample}}. Under 150 words.'
+    prompt: 'Write the about page for {{brandName}}. The brand exists because: {{brandPromise}}. Visual energy: {{brandLook}}. The feeling it gives: {{moodWords}}. What it stands against: {{whatToAvoid}}. Write it in first person, honest, no corporate language. It should answer three things: why this brand exists, who it is for, and what it stands for. Voice matches: {{voiceExample}}. Under 150 words.'
   },
   {
     title: 'Brand Story',
@@ -7320,7 +7351,7 @@ const BF_ARCHETYPES = [
     id: 1,
     name: 'The Quiet Luxury Brand',
     moodTriggers: ['Quiet','Calm','Minimal','Refined','Elevated','Intentional','Mysterious'],
-    personTriggers: ['quiet-confident','elevated-refined'],
+    lookTriggers: ['minimal-clean','editorial-considered'],
     summary: "Your brand doesn't announce itself. It doesn't need to. The person who gets it — gets it immediately. Everything is considered, nothing is decoration, and the silence between elements speaks as loud as anything else. This is a brand for people who are already arrived. Not getting there. Already there.",
     threeWords: ['Considered','Silent','Inevitable'],
     voiceExamples: ['nothing loud. nothing wasted.','for the ones who already know.','wear it like you were born in it.'],
@@ -7330,7 +7361,7 @@ const BF_ARCHETYPES = [
     id: 2,
     name: 'The Bold Statement Brand',
     moodTriggers: ['Powerful','Bold','Fearless','Unstoppable','Loud'],
-    personTriggers: ['bold-loud','rebellious-raw'],
+    lookTriggers: ['loud-graphic','industrial'],
     summary: "This brand hits first and apologizes never. It has a point of view and it is not interested in your opinion of it. Not aggressive for the sake of aggression — bold because it has something to say and the conviction to say it without flinching. The customer does not browse this brand. They find it and feel found.",
     threeWords: ['Convicted','Loud','Unfiltered'],
     voiceExamples: ['not for everyone. never was.','we said what we said.','built for the ones who go first.'],
@@ -7340,7 +7371,7 @@ const BF_ARCHETYPES = [
     id: 3,
     name: 'The Authentic Raw Brand',
     moodTriggers: ['Raw','Honest','Grounded','Free'],
-    personTriggers: ['grounded-real'],
+    lookTriggers: ['raw-textural','vintage-archival'],
     summary: "No filter. No performance. No version of itself built for an audience. This brand exists because something real needed to exist — and that realness is the entire product. Customers do not follow this brand. They recognise it. Like finding something they lost.",
     threeWords: ['Unfiltered','Grounded','Earned'],
     voiceExamples: ['built from something real.','you will feel the difference.','no story. just truth.'],
@@ -7350,7 +7381,7 @@ const BF_ARCHETYPES = [
     id: 4,
     name: 'The Editorial Cold Brand',
     moodTriggers: ['Cold','Sharp','Pure','Mysterious'],
-    personTriggers: ['cold-editorial','mysterious'],
+    lookTriggers: ['editorial-considered','tech-precise'],
     summary: "Precise. Intentional. Cold in the way that expensive things are cold — not unfriendly, just unbothered. This brand operates like a closed room that everyone wants to be let into. It does not explain the references. It does not hold your hand. The right customer walks in and immediately understands everything without being told anything.",
     threeWords: ['Precise','Closed','Sharp'],
     voiceExamples: ['the work speaks. we do not.','you either understand or you do not.','cold on purpose.'],
@@ -7360,7 +7391,7 @@ const BF_ARCHETYPES = [
     id: 5,
     name: 'The Warm Human Brand',
     moodTriggers: ['Warm','Soft'],
-    personTriggers: ['warm-approachable'],
+    lookTriggers: ['soft-atmospheric','vintage-archival'],
     summary: "This brand remembers your name. Not because it has to — because it actually cares. In a world of cold editorial brands and calculated aesthetics this brand feels like a person. Not a company. Not a strategy. A real human who built something because they genuinely wanted to make something good for other real humans.",
     threeWords: ['Warm','Honest','Present'],
     voiceExamples: ['made with actual people in mind.','we mean it when we say welcome.','good things. made carefully. for you.'],
@@ -7370,7 +7401,7 @@ const BF_ARCHETYPES = [
     id: 6,
     name: 'The Rebellious Cultural Brand',
     moodTriggers: ['Rebellious'],
-    personTriggers: ['rebellious-raw'],
+    lookTriggers: ['raw-textural','loud-graphic'],
     summary: "This brand comes from somewhere specific and it never lets you forget it. Not rebellion as a pose — rebellion as a position. It exists inside a culture, not outside looking in. The references are earned. The credibility is real. Customers do not buy into this brand. They recognise themselves in it — and that recognition is the entire point.",
     threeWords: ['Cultural','Rooted','Uncompromising'],
     voiceExamples: ['not inspired by culture. inside it.','you already know if this is for you.','built from the inside. worn the same way.'],
@@ -7379,13 +7410,13 @@ const BF_ARCHETYPES = [
 ];
 
 function bfMatchArchetype(answers) {
-  const moods           = (answers[2] && answers[2].moods)      || [];
-  const personSelections = (answers[1] && answers[1].selections) || [];
+  const moods         = (answers[2] && answers[2].moods)      || [];
+  const lookSelections = (answers[1] && answers[1].selections) || [];
 
   const scores = BF_ARCHETYPES.map(arch => {
     let s = 0;
-    moods.forEach(m           => { if (arch.moodTriggers.includes(m))   s++; });
-    personSelections.forEach(p => { if (arch.personTriggers.includes(p)) s++; });
+    moods.forEach(m         => { if (arch.moodTriggers.includes(m))  s++; });
+    lookSelections.forEach(p => { if (arch.lookTriggers.includes(p)) s++; });
     return s;
   });
 
@@ -7705,9 +7736,9 @@ const BF_CONTEXT = [
     body: "Every strong brand starts here. Without a real reason behind it, the rest is just decoration that won't hold up under pressure."
   },
   {
-    eyebrow: 'step 02 · the soul',
-    title: 'give it a person',
-    body: "If your brand was a real person, you'd recognize them in a crowd. That recognition is the seed of every loyal customer you'll ever earn."
+    eyebrow: 'step 02 · the look',
+    title: 'find your visual energy',
+    body: "Before words, before product, before logos — your brand has a feel. Lock it down now and every visual decision after this gets simpler."
   },
   {
     eyebrow: 'step 03 · the feeling',
@@ -7843,18 +7874,12 @@ function bfGoTo(step, animate) {
     // Update clickable step track
     bfUpdateStepTrack(step);
 
-    // Update phase dots for BF (phase 1 is always active during BF)
-    const dot1 = document.getElementById('bf-dot-1');
-    const dot2 = document.getElementById('bf-dot-2');
-    const dot3 = document.getElementById('bf-dot-3');
-    if (step < BF_TOTAL_STEPS) {
-      if (dot1) dot1.className = 'ob-phase-dot active';
-      if (dot2) dot2.className = 'ob-phase-dot upcoming';
-      if (dot3) dot3.className = 'ob-phase-dot upcoming';
-    } else {
-      if (dot1) dot1.className = 'ob-phase-dot done';
-      if (dot2) dot2.className = 'ob-phase-dot upcoming';
-      if (dot3) dot3.className = 'ob-phase-dot upcoming';
+    // Update progress bar fill (cyan over purple track)
+    const fill = document.getElementById('bf-phase-bar-fill');
+    if (fill) {
+      const denom = Math.max(1, BF_TOTAL_STEPS - 1);
+      const pct = step >= BF_TOTAL_STEPS ? 100 : Math.min(100, Math.max(0, (step / denom) * 100));
+      fill.style.width = pct + '%';
     }
 
     // Update phase label

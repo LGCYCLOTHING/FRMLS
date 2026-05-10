@@ -9,7 +9,7 @@
 <meta property="og:description" content="Anyone can build a store. Not everyone builds a brand. $37 one-time.">
 <meta name="theme-color" content="#07040f">
 <script>if(location.protocol!=='https:'&&location.hostname!=='localhost'){location.replace('https:'+window.location.href.substring(window.location.protocol.length));}</script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Caveat:wght@700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Italianno&display=swap" rel="stylesheet" />
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-V9T01KTX3V"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-V9T01KTX3V');</script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
@@ -351,21 +351,34 @@ a{text-decoration:none;color:inherit;}
   margin-bottom:18px;
   text-transform:uppercase;
 }
-/* Curvy accent words inside the H1 — keep their original case, override the
-   uppercase transform of the parent line */
+/* Curvy accent words inside the H1 — calligraphic Italianno, gradient-filled.
+   Override the parent line's uppercase + bold so the script reads as written. */
 .h1-script{
-  font-family:'Caveat', cursive;
-  font-weight:700;
-  font-size:1.18em;
-  letter-spacing:0;
+  font-family:'Italianno', cursive;
+  font-weight:400;
+  font-size:1.55em;
+  letter-spacing:0.005em;
+  line-height:0.85;
   text-transform:none;
-  -webkit-text-fill-color:initial;
-  margin-left:0.06em;
+  margin-left:0.10em;
+  margin-right:0.04em;
   display:inline-block;
-  transform:translateY(0.06em); /* nudge so the script baseline aligns */
+  transform:translateY(0.20em);
+  /* Gradient text fill */
+  -webkit-background-clip:text;
+          background-clip:text;
+  -webkit-text-fill-color:transparent;
+          color:transparent;
+  filter:drop-shadow(0 2px 14px rgba(0,0,0,0.35));
 }
-.h1-script.s-store{ color:#fb923c; }   /* coral */
-.h1-script.s-brand{ color:#22d3ee; }   /* cyan */
+/* warm champagne sunset for 'store' */
+.h1-script.s-store{
+  background-image:linear-gradient(100deg, #fde68a 0%, #fbbf24 35%, #f97316 75%, #ec4899 100%);
+}
+/* iridescent cyan→lavender for 'brand' (matches the brand palette) */
+.h1-script.s-brand{
+  background-image:linear-gradient(100deg, #67e8f9 0%, #22d3ee 30%, #9d5cf5 70%, #7c3aed 100%);
+}
 .sub{font-size:18px;font-weight:400;color:rgba(255,255,255,0.7);letter-spacing:.01em;line-height:1.5;margin-bottom:28px;}
 .cta-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;}
 .btn-prim{

@@ -686,6 +686,48 @@ body::before {
   .bf-side-rail, .bf-side-rail-cap, .bf-side-mark { display:none; }
 }
 
+/* Per-step context panel (left side, desktop only) */
+.bf-context {
+  position:fixed; left:48px; top:50%; transform:translateY(-50%);
+  width:268px; z-index:2;
+  padding:22px 24px; border-radius:18px;
+  background:linear-gradient(135deg, rgba(124,58,237,0.10), rgba(6,182,212,0.05));
+  border:1px solid rgba(255,255,255,0.10);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  display:none;
+  transition:opacity 0.35s ease;
+}
+.bf-context::before {
+  content:''; position:absolute; left:-1px; top:18px; bottom:18px; width:2px;
+  border-radius:2px;
+  background:linear-gradient(to bottom,#9d5cf5,#22d3ee);
+}
+.bf-context-eyebrow {
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:600;
+  letter-spacing:0.22em; text-transform:uppercase;
+  background:linear-gradient(90deg,#9d5cf5,#22d3ee);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  margin-bottom:10px;
+}
+.bf-context-title {
+  font-family:'Inter',sans-serif; font-size:18px; font-weight:700;
+  color:#ffffff; letter-spacing:-0.01em; line-height:1.25;
+  margin-bottom:12px;
+}
+.bf-context-body {
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:500;
+  color:rgba(255,255,255,0.74); line-height:1.55;
+}
+
+@media (min-width:1280px) {
+  .bf-context { display:block; }
+  /* Free up left side so the context panel has clean room */
+  .bf-side-rail.bf-side-left,
+  .bf-side-rail-cap.bf-cap-tl,
+  .bf-side-rail-cap.bf-cap-bl,
+  .bf-side-mark.bf-mark-left { display:none; }
+}
+
 /* Shared nav bar (both overlays use this) */
 .ob-nav-bar {
   position:sticky; top:0; z-index:10; display:flex; align-items:center;
@@ -3044,6 +3086,13 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   <div class="bf-side-rail-cap bf-cap-br"></div>
   <div class="bf-side-mark bf-mark-left">FRMLS <span class="bf-mark-accent">·</span> BRAND FOUNDATION</div>
   <div class="bf-side-mark bf-mark-right">DEFINE <span class="bf-mark-accent">·</span> REFINE <span class="bf-mark-accent">·</span> BUILD</div>
+
+  <!-- Per-step context panel -->
+  <aside class="bf-context" aria-live="polite">
+    <div class="bf-context-eyebrow" id="bf-context-eyebrow">step 01</div>
+    <div class="bf-context-title" id="bf-context-title"></div>
+    <div class="bf-context-body" id="bf-context-body"></div>
+  </aside>
 
   <div class="ob-nav-bar">
     <button id="bf-back-btn" class="ob-back-btn" onclick="bfNavBack()" disabled aria-label="Back">
@@ -7591,6 +7640,39 @@ const BF_STEP_KEY     = 'frmls_foundation_step';
 const BF_ANSWERS_KEY  = 'frmls_foundation_answers';
 const BF_TOTAL_STEPS  = 6;
 
+const BF_CONTEXT = [
+  {
+    eyebrow: 'step 01 · the why',
+    title: 'find your why',
+    body: "Every strong brand starts here. Without a real reason behind it, the rest is just decoration that won't hold up under pressure."
+  },
+  {
+    eyebrow: 'step 02 · the soul',
+    title: 'give it a person',
+    body: "If your brand was a real person, you'd recognize them in a crowd. That recognition is the seed of every loyal customer you'll ever earn."
+  },
+  {
+    eyebrow: 'step 03 · the feeling',
+    title: 'the first beat',
+    body: "People feel before they think. Get the emotion right and the rest of the brand — colors, words, voice — falls into place around it."
+  },
+  {
+    eyebrow: 'step 04 · the line',
+    title: 'what you reject',
+    body: "Brands that try to be for everyone end up forgettable. Knowing what you stand against sharpens what you actually stand for."
+  },
+  {
+    eyebrow: 'step 05 · the taste',
+    title: 'name your standard',
+    body: "The brands you respect reveal the bar you're aiming for — even if your output looks nothing like theirs. Taste is the thing."
+  },
+  {
+    eyebrow: 'step 06 · the promise',
+    title: 'one line that lands',
+    body: "If a stranger asked what you're building in five seconds, this is your answer. Get this right and the whole brand has a spine."
+  }
+];
+
 let bfCurrentStep = 0;
 let bfAnswers     = {};
 let bfIsAnimating = false;
@@ -7709,6 +7791,25 @@ function bfGoTo(step, animate) {
     // Update phase label
     const phaseLabel = document.querySelector('#bf-overlay .ob-phase-label');
     if (phaseLabel) phaseLabel.textContent = step >= BF_TOTAL_STEPS ? 'BRAND FOUNDATION' : 'BRAND FOUNDATION';
+
+    // Update per-step context panel
+    const ctxPanel    = document.querySelector('.bf-context');
+    const ctxEyebrow  = document.getElementById('bf-context-eyebrow');
+    const ctxTitle    = document.getElementById('bf-context-title');
+    const ctxBody     = document.getElementById('bf-context-body');
+    if (ctxPanel) {
+      const ctx = BF_CONTEXT[step];
+      if (ctx && step < BF_TOTAL_STEPS) {
+        if (ctxEyebrow) ctxEyebrow.textContent = ctx.eyebrow;
+        if (ctxTitle)   ctxTitle.textContent   = ctx.title;
+        if (ctxBody)    ctxBody.textContent    = ctx.body;
+        ctxPanel.style.opacity = '1';
+        ctxPanel.style.pointerEvents = 'auto';
+      } else {
+        ctxPanel.style.opacity = '0';
+        ctxPanel.style.pointerEvents = 'none';
+      }
+    }
 
     // Prepare next screen: show it but invisible, slightly below
     nextEl.style.transition = 'none';

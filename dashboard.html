@@ -625,7 +625,7 @@ body::before {
 /* ===== ONBOARDING OVERLAY ===== */
 #bf-overlay, #ob-overlay {
   position:fixed; inset:0; z-index:9998; background:#07040f;
-  overflow-y:scroll; overflow-x:hidden; touch-action:pan-y;
+  overflow-y:auto; overflow-x:hidden; touch-action:pan-y;
   -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
   opacity:0; pointer-events:none; transition:opacity 0.4s ease;
 }
@@ -642,7 +642,49 @@ body::before {
 .ob-orb-1 { width:500px; height:500px; background:#3b0764; top:-120px; left:-100px; opacity:0.55; animation-delay:0s; }
 .ob-orb-2 { width:400px; height:400px; background:#0c4a6e; bottom:-80px; right:-80px; opacity:0.45; animation-delay:3s; }
 .ob-orb-3 { width:350px; height:350px; background:#4c1d95; top:40%; left:55%; opacity:0.35; animation-delay:5.5s; }
+.ob-orb-4 { width:340px; height:340px; background:#06b6d4; top:55%; left:-120px; opacity:0.2; animation-delay:1.5s; }
+.ob-orb-5 { width:300px; height:300px; background:#7c3aed; top:18%; right:-90px; opacity:0.28; animation-delay:4.5s; }
 @keyframes orbPulse { 0%{transform:scale(1) translate(0,0)} 100%{transform:scale(1.18) translate(24px,-18px)} }
+
+/* Side accent rails (desktop only) */
+.bf-side-rail {
+  position:fixed; top:14vh; bottom:14vh; width:1px; z-index:1; pointer-events:none;
+  background:linear-gradient(to bottom, transparent 0%, rgba(124,58,237,0.7) 25%, rgba(6,182,212,0.7) 75%, transparent 100%);
+  -webkit-mask-image:repeating-linear-gradient(to bottom, black 0 5px, transparent 5px 14px);
+          mask-image:repeating-linear-gradient(to bottom, black 0 5px, transparent 5px 14px);
+}
+.bf-side-rail.bf-side-left { left:64px; }
+.bf-side-rail.bf-side-right { right:64px; }
+.bf-side-rail-cap {
+  position:fixed; width:8px; height:8px; border-radius:50%; z-index:1; pointer-events:none;
+  background:linear-gradient(135deg,#9d5cf5,#22d3ee);
+  box-shadow:0 0 14px rgba(124,58,237,0.75), 0 0 28px rgba(6,182,212,0.45);
+}
+.bf-side-rail-cap.bf-cap-tl { left:60px; top:calc(14vh - 4px); }
+.bf-side-rail-cap.bf-cap-bl { left:60px; bottom:calc(14vh - 4px); }
+.bf-side-rail-cap.bf-cap-tr { right:60px; top:calc(14vh - 4px); }
+.bf-side-rail-cap.bf-cap-br { right:60px; bottom:calc(14vh - 4px); }
+
+.bf-side-mark {
+  position:fixed; z-index:1; pointer-events:none;
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:600;
+  letter-spacing:0.42em; color:rgba(255,255,255,0.55); text-transform:uppercase;
+  white-space:nowrap;
+}
+.bf-side-mark.bf-mark-left {
+  left:30px; top:50%; transform:translate(-50%,-50%) rotate(-90deg);
+}
+.bf-side-mark.bf-mark-right {
+  right:30px; top:50%; transform:translate(50%,-50%) rotate(90deg);
+}
+.bf-side-mark .bf-mark-accent {
+  background:linear-gradient(90deg,#9d5cf5,#22d3ee);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+
+@media (max-width:1100px) {
+  .bf-side-rail, .bf-side-rail-cap, .bf-side-mark { display:none; }
+}
 
 /* Shared nav bar (both overlays use this) */
 .ob-nav-bar {
@@ -2145,11 +2187,12 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 /* ===== BRAND FOUNDATION FLOW ===== */
 .bf-screens-container {
   width: 100%; display: flex; flex-direction: column; align-items: center;
-  position: relative; min-height: 100vh;
+  position: relative; min-height: calc(100vh - 92px);
+  padding-bottom: 24px;
 }
 .bf-screen {
   width: 100%; max-width: 740px;
-  padding: 40px 32px 120px;
+  padding: 16px 32px 16px;
   flex-direction: column; align-items: flex-start;
   display: none;
 }
@@ -2266,7 +2309,6 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 }
 .bf-promise-area { min-height: 140px; font-size: 16px; margin-bottom: 32px; }
 .bf-skip-btn {
-  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
   background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.18);
   border-radius: 100px; padding: 10px 22px; cursor: pointer;
   font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
@@ -2275,6 +2317,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   transition: color 0.2s, background 0.2s, border-color 0.2s;
   z-index: 10; white-space: nowrap;
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  margin-top: 22px; align-self: center;
 }
 .bf-skip-btn:hover { color: #ffffff; background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.32); }
 /* Completion screen */
@@ -2988,7 +3031,19 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   <div class="ob-orb ob-orb-1"></div>
   <div class="ob-orb ob-orb-2"></div>
   <div class="ob-orb ob-orb-3"></div>
+  <div class="ob-orb ob-orb-4"></div>
+  <div class="ob-orb ob-orb-5"></div>
   <div class="ob-particles" id="bf-particles"></div>
+
+  <!-- Side accent decorations (desktop only) -->
+  <div class="bf-side-rail bf-side-left"></div>
+  <div class="bf-side-rail bf-side-right"></div>
+  <div class="bf-side-rail-cap bf-cap-tl"></div>
+  <div class="bf-side-rail-cap bf-cap-bl"></div>
+  <div class="bf-side-rail-cap bf-cap-tr"></div>
+  <div class="bf-side-rail-cap bf-cap-br"></div>
+  <div class="bf-side-mark bf-mark-left">FRMLS <span class="bf-mark-accent">·</span> BRAND FOUNDATION</div>
+  <div class="bf-side-mark bf-mark-right">DEFINE <span class="bf-mark-accent">·</span> REFINE <span class="bf-mark-accent">·</span> BUILD</div>
 
   <div class="ob-nav-bar">
     <button id="bf-back-btn" class="ob-back-btn" onclick="bfNavBack()" disabled aria-label="Back">
@@ -3144,9 +3199,8 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       </div>
     </div>
 
+    <button id="bf-skip-btn" class="bf-skip-btn" onclick="bfSkip()">skip for now</button>
   </div><!-- /bf-screens-container -->
-
-  <button id="bf-skip-btn" class="bf-skip-btn" onclick="bfSkip()">skip for now</button>
 </div><!-- /bf-overlay -->
 
 <!-- ===== ONBOARDING OVERLAY (Brand Name + Completion) ===== -->

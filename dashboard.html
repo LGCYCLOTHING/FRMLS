@@ -758,6 +758,51 @@ body::before {
 .ob-phase-label { font-family:'Inter',sans-serif; font-size:14px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:#ffffff; }
 .ob-phase-step-sub { font-family:'Inter',sans-serif; font-size:12px; font-weight:600; letter-spacing:0.08em; color:rgba(255,255,255,0.7); text-transform:lowercase; }
 
+/* Clickable step track (foundation questions 1–6) */
+.bf-step-track { display:flex; align-items:center; gap:4px; margin-top:2px; }
+.bf-step-dot {
+  width:24px; height:24px; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:700;
+  border:1px solid rgba(255,255,255,0.18);
+  background:rgba(255,255,255,0.04);
+  color:rgba(255,255,255,0.45);
+  padding:0;
+  transition:all 0.2s cubic-bezier(0.16,1,0.3,1);
+  user-select:none;
+}
+.bf-step-dot.done {
+  border-color:rgba(255,255,255,0.5);
+  background:rgba(255,255,255,0.10);
+  color:#ffffff;
+  cursor:pointer;
+}
+.bf-step-dot.done:hover {
+  border-color:rgba(124,58,237,0.8);
+  background:rgba(124,58,237,0.18);
+  transform:translateY(-1px);
+  box-shadow:0 0 14px rgba(124,58,237,0.35);
+}
+.bf-step-dot.active {
+  border-color:transparent;
+  background:linear-gradient(135deg,#7c3aed,#06b6d4);
+  color:#ffffff;
+  box-shadow:0 0 16px rgba(124,58,237,0.55);
+  cursor:default;
+  transform:scale(1.05);
+}
+.bf-step-dot.upcoming {
+  border-color:rgba(255,255,255,0.10);
+  background:transparent;
+  color:rgba(255,255,255,0.28);
+  cursor:not-allowed;
+}
+.bf-step-connector {
+  width:10px; height:1px; background:rgba(255,255,255,0.14);
+  transition:background 0.25s;
+}
+.bf-step-connector.done { background:rgba(255,255,255,0.45); }
+
 /* Screen base */
 .ob-screen { display:none; padding:48px 32px 100px; max-width:660px; margin:0 auto; position:relative; z-index:1; }
 .ob-screen.ob-active { display:block; animation:obScreenIn 0.38s cubic-bezier(0.16,1,0.3,1) both; }
@@ -3105,7 +3150,19 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
         <div class="ob-phase-dot upcoming" id="bf-dot-3"></div>
       </div>
       <div class="ob-phase-label">BRAND FOUNDATION</div>
-      <div class="ob-phase-step-sub" id="bf-step-counter">question 1 of 6</div>
+      <div class="bf-step-track" id="bf-step-track" role="tablist" aria-label="Foundation steps">
+        <button type="button" class="bf-step-dot active" data-step="0" onclick="bfJumpToStep(0)" aria-label="Go to question 1">1</button>
+        <span class="bf-step-connector"></span>
+        <button type="button" class="bf-step-dot upcoming" data-step="1" onclick="bfJumpToStep(1)" aria-label="Go to question 2">2</button>
+        <span class="bf-step-connector"></span>
+        <button type="button" class="bf-step-dot upcoming" data-step="2" onclick="bfJumpToStep(2)" aria-label="Go to question 3">3</button>
+        <span class="bf-step-connector"></span>
+        <button type="button" class="bf-step-dot upcoming" data-step="3" onclick="bfJumpToStep(3)" aria-label="Go to question 4">4</button>
+        <span class="bf-step-connector"></span>
+        <button type="button" class="bf-step-dot upcoming" data-step="4" onclick="bfJumpToStep(4)" aria-label="Go to question 5">5</button>
+        <span class="bf-step-connector"></span>
+        <button type="button" class="bf-step-dot upcoming" data-step="5" onclick="bfJumpToStep(5)" aria-label="Go to question 6">6</button>
+      </div>
     </div>
     <div class="ob-back-spacer"></div>
   </div>
@@ -7637,6 +7694,7 @@ function obComplete() {
 /* ===== BRAND FOUNDATION ===== */
 const BF_COMPLETE_KEY = 'frmls_foundation_complete';
 const BF_STEP_KEY     = 'frmls_foundation_step';
+const BF_MAX_KEY      = 'frmls_foundation_max';
 const BF_ANSWERS_KEY  = 'frmls_foundation_answers';
 const BF_TOTAL_STEPS  = 6;
 
@@ -7674,6 +7732,7 @@ const BF_CONTEXT = [
 ];
 
 let bfCurrentStep = 0;
+let bfMaxVisited  = 0;
 let bfAnswers     = {};
 let bfIsAnimating = false;
 
@@ -7693,7 +7752,9 @@ function initBrandFoundation() {
     return;
   }
   const saved = parseInt(localStorage.getItem(BF_STEP_KEY) || '0', 10);
+  const savedMax = parseInt(localStorage.getItem(BF_MAX_KEY) || '0', 10);
   bfCurrentStep = isNaN(saved) ? 0 : Math.min(saved, BF_TOTAL_STEPS - 1);
+  bfMaxVisited  = isNaN(savedMax) ? bfCurrentStep : Math.max(savedMax, bfCurrentStep);
   bfShowOverlay();
 }
 
@@ -7701,6 +7762,7 @@ function initBrandFoundation() {
 function openBrandFoundation() {
   bfLoadAnswers();
   bfCurrentStep = 0;
+  bfMaxVisited  = parseInt(localStorage.getItem(BF_MAX_KEY) || '0', 10) || 0;
   bfShowOverlay();
 }
 
@@ -7766,13 +7828,20 @@ function bfGoTo(step, animate) {
     bfCurrentStep = step;
     localStorage.setItem(BF_STEP_KEY, step);
 
+    // Track furthest step visited so the step-track can mark prior steps clickable
+    if (step > bfMaxVisited) {
+      bfMaxVisited = step;
+      localStorage.setItem(BF_MAX_KEY, step);
+    }
+
     // Update nav bar
     const backBtn = document.getElementById('bf-back-btn');
-    const counter  = document.getElementById('bf-step-counter');
-    const skipBtn  = document.getElementById('bf-skip-btn');
+    const skipBtn = document.getElementById('bf-skip-btn');
     if (backBtn) backBtn.disabled = (step === 0 || step >= BF_TOTAL_STEPS);
-    if (counter) counter.textContent = step < BF_TOTAL_STEPS ? ('question ' + (step + 1) + ' of 6') : '';
     if (skipBtn) skipBtn.style.display = step < BF_TOTAL_STEPS ? 'block' : 'none';
+
+    // Update clickable step track
+    bfUpdateStepTrack(step);
 
     // Update phase dots for BF (phase 1 is always active during BF)
     const dot1 = document.getElementById('bf-dot-1');
@@ -7877,6 +7946,39 @@ function bfNavBack() {
   if (bfCurrentStep > 0 && bfCurrentStep < BF_TOTAL_STEPS) {
     bfGoTo(bfCurrentStep - 1, true);
   }
+}
+
+function bfJumpToStep(targetStep) {
+  if (bfIsAnimating) return;
+  if (targetStep === bfCurrentStep) return;
+  if (targetStep < 0 || targetStep >= BF_TOTAL_STEPS) return;
+  // Only allow jumping to steps the user has already reached
+  if (targetStep > bfMaxVisited) return;
+  bfGoTo(targetStep, true);
+}
+
+function bfUpdateStepTrack(step) {
+  const track = document.getElementById('bf-step-track');
+  if (!track) return;
+  const dots = track.querySelectorAll('.bf-step-dot');
+  const connectors = track.querySelectorAll('.bf-step-connector');
+  const reachable = Math.max(step, bfMaxVisited);
+  dots.forEach((dot, i) => {
+    dot.classList.remove('active', 'done', 'upcoming');
+    if (step >= BF_TOTAL_STEPS) {
+      dot.classList.add('done');
+    } else if (i === step) {
+      dot.classList.add('active');
+    } else if (i <= reachable) {
+      dot.classList.add('done');
+    } else {
+      dot.classList.add('upcoming');
+    }
+    dot.disabled = dot.classList.contains('upcoming') || dot.classList.contains('active');
+  });
+  connectors.forEach((conn, i) => {
+    conn.classList.toggle('done', i < Math.max(step, reachable));
+  });
 }
 
 function bfSkip() {

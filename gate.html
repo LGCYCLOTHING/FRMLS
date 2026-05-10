@@ -9,7 +9,7 @@
 <meta property="og:description" content="Anyone can build a store. Not everyone builds a brand. $37 one-time.">
 <meta name="theme-color" content="#07040f">
 <script>if(location.protocol!=='https:'&&location.hostname!=='localhost'){location.replace('https:'+window.location.href.substring(window.location.protocol.length));}</script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Caveat:wght@700&display=swap" rel="stylesheet" />
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-V9T01KTX3V"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-V9T01KTX3V');</script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
@@ -344,12 +344,28 @@ a{text-decoration:none;color:inherit;}
 /* sub fades in after the title reveal */
 .hero .sub{opacity:0;animation:hIn .5s cubic-bezier(.16,1,.3,1) .25s forwards;}
 
-.h1-plain{font-family:'Inter',sans-serif;font-size:68px;font-weight:900;letter-spacing:-0.045em;line-height:1.02;color:var(--white);display:block;margin-bottom:2px;}
+.h1-plain{font-family:'Inter',sans-serif;font-size:68px;font-weight:900;letter-spacing:-0.045em;line-height:1.02;color:var(--white);display:block;margin-bottom:2px;text-transform:uppercase;}
 .h1-grad{
   font-family:'Inter',sans-serif;font-size:68px;font-weight:900;letter-spacing:-0.045em;line-height:1.02;display:block;
-  background:var(--grad-90);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  color:var(--white);
   margin-bottom:18px;
+  text-transform:uppercase;
 }
+/* Curvy accent words inside the H1 — keep their original case, override the
+   uppercase transform of the parent line */
+.h1-script{
+  font-family:'Caveat', cursive;
+  font-weight:700;
+  font-size:1.18em;
+  letter-spacing:0;
+  text-transform:none;
+  -webkit-text-fill-color:initial;
+  margin-left:0.06em;
+  display:inline-block;
+  transform:translateY(0.06em); /* nudge so the script baseline aligns */
+}
+.h1-script.s-store{ color:#fb923c; }   /* coral */
+.h1-script.s-brand{ color:#22d3ee; }   /* cyan */
 .sub{font-size:18px;font-weight:400;color:rgba(255,255,255,0.7);letter-spacing:.01em;line-height:1.5;margin-bottom:28px;}
 .cta-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;}
 .btn-prim{
@@ -825,8 +841,8 @@ a{text-decoration:none;color:inherit;}
 <section class="hero">
 
   <div class="hero-text">
-    <span class="h1-plain" id="heroLine1">anyone can build a store.</span>
-    <span class="h1-grad"  id="heroLine2">not everyone builds a brand.</span>
+    <span class="h1-plain" id="heroLine1">anyone can build a <span class="h1-script s-store">store.</span></span>
+    <span class="h1-grad"  id="heroLine2">not everyone builds a <span class="h1-script s-brand">brand.</span></span>
     <p class="sub">figure out what your brand is. then build everything around it.</p>
     <div class="cta-row hi-5">
       <a class="btn-prim" href="https://whop.com/frmls" target="_blank" rel="noopener">Get Access — $37</a>
@@ -1384,9 +1400,15 @@ const mm = gsap.matchMedia();
   const line2 = document.getElementById('heroLine2');
   if (!line1 || !line2) return;
 
-  /* Split line1 (plain white) into individual words */
+  /* Split line1 (plain white) into individual words. Preserve the
+     curvy-script wrap on the final word ("store.") so the per-word
+     stagger reveal still applies but the styling stays intact. */
   const words1 = line1.textContent.split(' ');
-  line1.innerHTML = words1.map(w => `<span class="hero-word">${w}</span>`).join(' ');
+  line1.innerHTML = words1.map(w =>
+    w === 'store.'
+      ? `<span class="hero-word"><span class="h1-script s-store">${w}</span></span>`
+      : `<span class="hero-word">${w}</span>`
+  ).join(' ');
   const wordEls = line1.querySelectorAll('.hero-word');
 
   /* Animate line1 words staggered */

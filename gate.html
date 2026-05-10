@@ -1411,13 +1411,14 @@ const mm = gsap.matchMedia();
   const line2 = document.getElementById('heroLine2');
   if (!line1 || !line2) return;
 
-  /* Split line1 (plain white) into individual words. Preserve the
-     curvy-script wrap on the final word ("store.") so the per-word
-     stagger reveal still applies but the styling stays intact. */
+  /* Split line1 (plain white) into individual words. The script word
+     ("store.") is rendered as a sibling — NOT wrapped in .hero-word —
+     so its display:block isn't trapped inside an inline-block parent
+     and it can drop onto its own line, mirroring 'brand.' on line 2. */
   const words1 = line1.textContent.split(' ');
   line1.innerHTML = words1.map(w =>
     w === 'store.'
-      ? `<span class="hero-word"><span class="h1-script s-store">${w}</span></span>`
+      ? `<span class="h1-script s-store">${w}</span>`
       : `<span class="hero-word">${w}</span>`
   ).join(' ');
   const wordEls = line1.querySelectorAll('.hero-word');

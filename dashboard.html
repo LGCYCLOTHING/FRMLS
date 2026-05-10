@@ -5127,8 +5127,22 @@ function openIdentityModal() {
   document.body.style.overflow = 'hidden';
   document.documentElement.style.overflow = 'hidden';
   // Stop Lenis smooth scroll so it doesn't scroll the dashboard behind the modal.
-  // The .idm-body has overflow-y:auto and scrolls natively.
   if (typeof lenis !== 'undefined') lenis.stop();
+
+  // Bind a wheel handler directly on the modal body so Lenis (which listens
+  // at the window level) never sees the event and can't block native scroll.
+  const idmBody = document.getElementById('idm-body');
+  if (idmBody && !idmBody._idmWheelBound) {
+    idmBody.addEventListener('wheel', function(e) {
+      let delta = e.deltaY;
+      if (e.deltaMode === 1) delta *= 16;
+      if (e.deltaMode === 2) delta *= window.innerHeight;
+      idmBody.scrollTop += delta;
+      e.stopPropagation();
+      e.preventDefault();
+    }, { passive: false });
+    idmBody._idmWheelBound = true;
+  }
 }
 function closeIdentityModal() {
   const bd = document.getElementById('identity-modal-backdrop');

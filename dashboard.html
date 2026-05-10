@@ -3183,22 +3183,22 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <button class="bf-continue-btn" id="bf-continue-2" disabled onclick="bfNextStep()">continue →</button>
     </div>
 
-    <!-- Screen 3: The Enemy -->
+    <!-- Screen 3: The Audience -->
     <div class="bf-screen" id="bf-screen-3">
       <div class="bf-label">brand foundation — 04</div>
-      <h2 class="bf-headline">what does your brand stand against?</h2>
-      <p class="bf-subline">every strong brand rejects something.</p>
+      <h2 class="bf-headline">who are you actually building this for?</h2>
+      <p class="bf-subline">the person you'd kill to make happy.</p>
       <div class="bf-checkbox-grid">
-        <div class="bf-checkbox-card" data-value="fast-fashion" onclick="bfToggleCard(this,3,'fast-fashion');bfCheckContinue(3)">Fast fashion and disposable products</div>
-        <div class="bf-checkbox-card" data-value="hype-over-quality" onclick="bfToggleCard(this,3,'hype-over-quality');bfCheckContinue(3)">Brands that care more about hype than quality</div>
-        <div class="bf-checkbox-card" data-value="generic-stores" onclick="bfToggleCard(this,3,'generic-stores');bfCheckContinue(3)">Generic stores that look like everyone else</div>
-        <div class="bf-checkbox-card" data-value="performance" onclick="bfToggleCard(this,3,'performance');bfCheckContinue(3)">Brands that perform instead of being real</div>
-        <div class="bf-checkbox-card" data-value="overpriced" onclick="bfToggleCard(this,3,'overpriced');bfCheckContinue(3)">Overpriced products with no substance behind them</div>
-        <div class="bf-checkbox-card" data-value="talk-down" onclick="bfToggleCard(this,3,'talk-down');bfCheckContinue(3)">Brands that talk down to their customer</div>
-        <div class="bf-checkbox-card" data-value="too-loud" onclick="bfToggleCard(this,3,'too-loud');bfCheckContinue(3)">Too much noise — too loud too much trying</div>
-        <div class="bf-checkbox-card" data-value="playing-safe" onclick="bfToggleCard(this,3,'playing-safe');bfCheckContinue(3)">Playing it safe</div>
+        <div class="bf-checkbox-card" data-value="quality-over-hype" onclick="bfToggleCard(this,3,'quality-over-hype');bfCheckContinue(3)">Someone who values quality over hype</div>
+        <div class="bf-checkbox-card" data-value="distinct" onclick="bfToggleCard(this,3,'distinct');bfCheckContinue(3)">People who want to look distinct, not trendy</div>
+        <div class="bf-checkbox-card" data-value="builders" onclick="bfToggleCard(this,3,'builders');bfCheckContinue(3)">Builders and creatives shaping their own thing</div>
+        <div class="bf-checkbox-card" data-value="independent" onclick="bfToggleCard(this,3,'independent');bfCheckContinue(3)">Independent thinkers who don't follow</div>
+        <div class="bf-checkbox-card" data-value="tired-mainstream" onclick="bfToggleCard(this,3,'tired-mainstream');bfCheckContinue(3)">Anyone tired of the mainstream</div>
+        <div class="bf-checkbox-card" data-value="fewer-better" onclick="bfToggleCard(this,3,'fewer-better');bfCheckContinue(3)">People who buy fewer but better things</div>
+        <div class="bf-checkbox-card" data-value="pay-for-real" onclick="bfToggleCard(this,3,'pay-for-real');bfCheckContinue(3)">Someone willing to pay for something real</div>
+        <div class="bf-checkbox-card" data-value="story-driven" onclick="bfToggleCard(this,3,'story-driven');bfCheckContinue(3)">People who care about the story behind a brand</div>
       </div>
-      <textarea class="bf-textarea" data-screen="3" data-key="text" placeholder="define your own..." oninput="bfSaveTextarea(this,3,'text');bfCheckContinue(3)"></textarea>
+      <textarea class="bf-textarea" data-screen="3" data-key="text" placeholder="describe them in your own words..." oninput="bfSaveTextarea(this,3,'text');bfCheckContinue(3)"></textarea>
       <button class="bf-continue-btn" id="bf-continue-3" disabled onclick="bfNextStep()">continue →</button>
     </div>
 
@@ -4577,15 +4577,15 @@ function getBrandContext() {
     'grounded-real':'grounded and real',
     'mysterious':'mysterious and understated'
   };
-  const enemyLabels = {
-    'fast-fashion':'fast fashion and disposable products',
-    'hype-over-quality':'brands that care more about hype than quality',
-    'generic-stores':'generic stores that look like everyone else',
-    'performance':'brands that perform instead of being real',
-    'overpriced':'overpriced products with no substance',
-    'talk-down':'brands that talk down to their customer',
-    'too-loud':'too much noise and trying too hard',
-    'playing-safe':'playing it safe'
+  const audienceLabels = {
+    'quality-over-hype':'someone who values quality over hype',
+    'distinct':'people who want to look distinct, not trendy',
+    'builders':'builders and creatives shaping their own thing',
+    'independent':"independent thinkers who don't follow",
+    'tired-mainstream':'anyone tired of the mainstream',
+    'fewer-better':'people who buy fewer but better things',
+    'pay-for-real':'someone willing to pay for something real',
+    'story-driven':'people who care about the story behind a brand'
   };
 
   let brandName = '[your brand name]';
@@ -4614,7 +4614,7 @@ function getBrandContext() {
 
   let brandPromise = '[your brand promise]', moodWords = '[your mood words]';
   let brandPersonality = '[your brand personality]', brandWhy = '[why you built this]';
-  let brandEnemy = '[what you stand against]', brandReferences = '[your brand references]';
+  let brandAudience = '[who this is for]', brandReferences = '[your brand references]';
   try {
     const ans = JSON.parse(localStorage.getItem('frmls_foundation_answers') || '{}');
     if (ans[5] && ans[5].promise) brandPromise = ans[5].promise;
@@ -4626,14 +4626,14 @@ function getBrandContext() {
     const whyParts = [...whySels]; if (whyText) whyParts.push(whyText);
     if (whyParts.length) brandWhy = whyParts.join('; ');
     if (ans[3] && ans[3].selections && ans[3].selections.length)
-      brandEnemy = ans[3].selections.map(v => enemyLabels[v] || v).join(', ');
+      brandAudience = ans[3].selections.map(v => audienceLabels[v] || v).join(', ');
     if (ans[4] && ans[4].brands) {
       const refs = ans[4].brands.filter(b => b.name).map(b => b.feel ? `${b.name} (${b.feel})` : b.name);
       if (refs.length) brandReferences = refs.join(', ');
     }
   } catch(e) {}
 
-  return { brandName, threeWords, archetype, personalitySummary, voiceExample1, voiceExample2, voiceExample3, whatToAvoid, brandPromise, moodWords, brandPersonality, brandWhy, brandEnemy, brandReferences };
+  return { brandName, threeWords, archetype, personalitySummary, voiceExample1, voiceExample2, voiceExample3, whatToAvoid, brandPromise, moodWords, brandPersonality, brandWhy, brandAudience, brandReferences };
 }
 
 function buildPrompt(template) {
@@ -7657,9 +7657,9 @@ const BF_CONTEXT = [
     body: "People feel before they think. Get the emotion right and the rest of the brand — colors, words, voice — falls into place around it."
   },
   {
-    eyebrow: 'step 04 · the line',
-    title: 'what you reject',
-    body: "Brands that try to be for everyone end up forgettable. Knowing what you stand against sharpens what you actually stand for."
+    eyebrow: 'step 04 · the people',
+    title: 'know who it’s for',
+    body: "Every great brand can name its hero customer in one sentence. The clearer you are on who you're building for, the easier every decision after this gets."
   },
   {
     eyebrow: 'step 05 · the taste',

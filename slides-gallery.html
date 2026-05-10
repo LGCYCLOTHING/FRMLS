@@ -222,6 +222,13 @@ body {
   </div>
 
   <div class="post-group">
+    <div class="post-label">Posts</div>
+    <button class="post-btn" onclick="loadPost('identity')" id="btn-identity">
+      <span class="dot"></span>You Have No Identity
+    </button>
+  </div>
+
+  <div class="post-group">
     <div class="post-label">Other</div>
     <button class="post-btn" onclick="loadPost('founder')" id="btn-founder">
       <span class="dot"></span>Founder Story
@@ -259,6 +266,11 @@ const POSTS = {
   tip03: {
     title: 'TIP 03 — YOUR AESTHETIC IS YOUR ALGORITHM',
     folder: 'ig-tip03',
+    count: 9,
+  },
+  identity: {
+    title: 'YOU HAVE NO IDENTITY.',
+    folder: 'ig-identity',
     count: 9,
   },
   founder: {

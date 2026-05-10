@@ -5358,6 +5358,24 @@ function openIdentityModal() {
   bd.classList.add('idm-open');
   document.body.style.overflow = 'hidden';
   document.documentElement.style.overflow = 'hidden';
+  // Stop Lenis smooth scroll so wheel events don't reach the dashboard behind
+  if (typeof lenis !== 'undefined') lenis.stop();
+
+  // Route wheel events to the modal's scrollable body so Lenis (or any other
+  // global wheel listener) can't scroll the page behind the modal
+  if (!bd._idmWheelBound) {
+    bd.addEventListener('wheel', function(e) {
+      const body = document.getElementById('idm-body');
+      if (body) {
+        let delta = e.deltaY;
+        if (e.deltaMode === 1) delta *= 16;
+        if (e.deltaMode === 2) delta *= window.innerHeight;
+        body.scrollTop += delta;
+      }
+      e.stopPropagation(); e.preventDefault();
+    }, { passive: false });
+    bd._idmWheelBound = true;
+  }
 }
 function closeIdentityModal() {
   const bd = document.getElementById('identity-modal-backdrop');
@@ -5365,6 +5383,7 @@ function closeIdentityModal() {
   bd.classList.remove('idm-open');
   document.body.style.overflow = '';
   document.documentElement.style.overflow = '';
+  if (typeof lenis !== 'undefined') lenis.start();
   refreshIdentityStatus();
 }
 function buildIdentityModal() {

@@ -246,16 +246,17 @@ body::before {
 .idm-font-label { font-family:'DM Mono',monospace; font-size:10px; color:rgba(255,255,255,0.35); letter-spacing:0.08em; }
 
 /* Color grid */
-.idm-color-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.idm-color-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px; }
 @media(max-width:600px) { .idm-color-grid { grid-template-columns:repeat(2,1fr); } }
 .idm-color-card {
-  background:#1a1a24; border:1px solid #252530; border-radius:14px; padding:16px;
+  background:#1a1a24; border:1px solid #252530; border-radius:14px; padding:14px;
   cursor:pointer; transition:all 0.2s ease;
+  min-width:0;
 }
 .idm-color-card:hover { background:#222232; border-color:#333345; }
 .idm-color-card.idm-sel { border-color:rgba(124,58,237,0.5); background:rgba(124,58,237,0.06); }
-.idm-swatches { display:flex; gap:4px; margin-bottom:10px; }
-.idm-swatch { width:32px; height:32px; border-radius:8px; flex-shrink:0; }
+.idm-swatches { display:flex; gap:3px; margin-bottom:10px; }
+.idm-swatch { flex:1 1 0; min-width:0; aspect-ratio:1; max-height:32px; border-radius:6px; }
 .idm-color-name { font-size:13px; font-weight:700; color:#ffffff; margin-bottom:3px; }
 .idm-color-sub { font-size:11px; color:rgba(255,255,255,0.35); font-family:'DM Mono',monospace; }
 
@@ -5126,19 +5127,8 @@ function openIdentityModal() {
   document.body.style.overflow = 'hidden';
   document.documentElement.style.overflow = 'hidden';
   // Stop Lenis smooth scroll so it doesn't scroll the dashboard behind the modal.
-  // The .idm-body has overflow-y:auto so it scrolls natively on its own.
+  // The .idm-body has overflow-y:auto and scrolls natively.
   if (typeof lenis !== 'undefined') lenis.stop();
-
-  // If the wheel reaches the backdrop (i.e. user wheeled outside the body or
-  // beyond its scroll limits), swallow it so the page underneath stays put.
-  if (!bd._idmWheelBound) {
-    bd.addEventListener('wheel', function(e) {
-      const body = document.getElementById('idm-body');
-      if (body && body.contains(e.target)) return; // let body scroll natively
-      e.stopPropagation(); e.preventDefault();
-    }, { passive: false });
-    bd._idmWheelBound = true;
-  }
 }
 function closeIdentityModal() {
   const bd = document.getElementById('identity-modal-backdrop');
@@ -5209,7 +5199,6 @@ function buildIdentityModal() {
              maxlength="120"
              placeholder="e.g. less, but better."
              oninput="idmSetMantra(this.value)" />
-      <div class="idm-mantra-hint">leave it blank if you're not sure yet.</div>
     </div>
 
     <!-- Step 4: Color -->

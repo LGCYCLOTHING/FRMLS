@@ -1777,6 +1777,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   flex:1; overflow-y:scroll; padding:24px; scroll-behavior:smooth;
   direction:rtl;
   scrollbar-width:thin; scrollbar-color:var(--purple) #1a1a1a;
+  overscroll-behavior: contain;
 }
 .panel-body > * { direction:ltr; }
 .panel-body::-webkit-scrollbar { width:4px; }
@@ -6017,8 +6018,13 @@ function closePanel(silent) {
   document.addEventListener('wheel', e => {
     const panel = document.querySelector('.side-panel.open');
     if (!panel) return;
+    // Pinned panels live in normal layout — let native scrolling handle them
+    // (overscroll-behavior: contain on .panel-body stops chaining to the page).
+    if (panel.classList.contains('pinned')) return;
     const body = panel.querySelector('.panel-body');
     if (!body) return;
+    // Only intercept wheel events that started inside the panel itself.
+    if (!panel.contains(e.target)) return;
     e.preventDefault();
     const s = getPanelState(body);
     s.target = Math.max(0, Math.min(s.target + e.deltaY, body.scrollHeight - body.clientHeight));

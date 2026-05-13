@@ -1108,17 +1108,17 @@ body:has(#screen-7.active) .orca-shell {
 /* The shell: one big rounded card holding the whole dashboard. */
 .orca-shell {
   position: relative; z-index: 1;
-  background: linear-gradient(180deg, rgba(124,58,237,0.05), rgba(20,18,32,0.65) 40%, rgba(15,15,22,0.85));
-  border: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(180deg, rgba(var(--accent-rgb),0.06), var(--bg-card) 40%, var(--bg-card-2));
+  border: 1px solid var(--border-subtle);
   border-radius: 28px;
   padding: 26px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(124,58,237,0.04) inset;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(var(--accent-rgb),0.05) inset;
   overflow: hidden;
 }
 .orca-shell::before {
   content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
-  background: radial-gradient(ellipse 70% 50% at 0% 0%, rgba(124,58,237,0.10), transparent 60%),
-              radial-gradient(ellipse 60% 50% at 100% 100%, rgba(6,182,212,0.06), transparent 60%);
+  background: radial-gradient(ellipse 70% 50% at 0% 0%, rgba(var(--accent-rgb),0.10), transparent 60%),
+              radial-gradient(ellipse 60% 50% at 100% 100%, color-mix(in srgb, var(--cyan) 8%, transparent), transparent 60%);
   opacity: 0.9;
 }
 .orca-shell > * { position: relative; z-index: 1; }
@@ -1131,25 +1131,29 @@ body:has(#screen-7.active) .orca-shell {
 .orca-topbar-titles { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .orca-topbar-eyebrow {
   font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.42);
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted);
 }
 .orca-topbar-title {
-  font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: #fff; line-height: 1.1;
+  font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--white); line-height: 1.1;
 }
 .orca-topbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 .orca-pill {
   display: inline-flex; align-items: center; gap: 6px;
   height: 32px; padding: 0 14px;
-  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 999px; color: #d4d4dc; font-size: 12px; font-weight: 500;
+  background: rgba(var(--accent-rgb),0.05); border: 1px solid var(--border-subtle);
+  border-radius: 999px; color: var(--text-secondary); font-size: 12px; font-weight: 500;
   cursor: pointer; transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.18s;
 }
-.orca-pill:hover { background: rgba(124,58,237,0.12); border-color: rgba(124,58,237,0.35); color: #fff; transform: translateY(-1px); }
+.orca-pill:hover {
+  background: rgba(var(--accent-rgb),0.14);
+  border-color: rgba(var(--accent-rgb),0.40);
+  color: var(--white); transform: translateY(-1px);
+}
 .orca-pill kbd {
   font-family: 'DM Mono', monospace; font-size: 9px;
   padding: 1px 5px; margin-left: 4px;
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 4px; color: rgba(255,255,255,0.5);
+  background: rgba(var(--accent-rgb),0.06); border: 1px solid var(--border-subtle);
+  border-radius: 4px; color: var(--text-muted);
 }
 
 /* Brand line */
@@ -1168,7 +1172,7 @@ body:has(#screen-7.active) .orca-shell {
 .orca-brand-meta-words {
   font-family: 'DM Mono', monospace; font-size: 11px;
   letter-spacing: 0.2em; text-transform: uppercase;
-  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
+  background: var(--grad-text);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 
@@ -1182,49 +1186,58 @@ body:has(#screen-7.active) .orca-shell {
 
 .orca-kpi {
   position: relative; overflow: hidden;
-  background: linear-gradient(165deg, rgba(124,58,237,0.18), rgba(30,18,52,0.45) 60%, rgba(15,15,22,0.6));
-  border: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(165deg, rgba(var(--accent-rgb),0.18), var(--bg-card) 60%, var(--bg-card-2));
+  border: 1px solid var(--border-subtle);
   border-radius: 18px;
   padding: 16px 16px 18px;
   display: flex; flex-direction: column; gap: 8px;
   min-height: 132px;
 }
-.orca-kpi[data-tone="build"]      { background: linear-gradient(165deg, rgba(124,58,237,0.22), rgba(30,18,52,0.5) 55%, rgba(15,15,22,0.65)); }
-.orca-kpi[data-tone="foundation"] { background: linear-gradient(165deg, rgba(6,182,212,0.18), rgba(18,42,52,0.45) 55%, rgba(15,15,22,0.65)); }
-.orca-kpi[data-tone="modules"]    { background: linear-gradient(165deg, rgba(157,92,245,0.16), rgba(38,20,60,0.45) 55%, rgba(15,15,22,0.65)); }
-.orca-kpi[data-tone="tasks"]      { background: linear-gradient(165deg, rgba(16,185,129,0.14), rgba(18,42,32,0.45) 55%, rgba(15,15,22,0.65)); }
+.orca-kpi[data-tone="build"] {
+  background: linear-gradient(165deg, rgba(var(--accent-rgb),0.22), var(--bg-card) 55%, var(--bg-card-2));
+}
+.orca-kpi[data-tone="foundation"] {
+  background: linear-gradient(165deg, color-mix(in srgb, var(--cyan) 18%, transparent), var(--bg-card) 55%, var(--bg-card-2));
+}
+.orca-kpi[data-tone="modules"] {
+  background: linear-gradient(165deg, rgba(var(--accent-rgb),0.14), var(--bg-card) 55%, var(--bg-card-2));
+}
+.orca-kpi[data-tone="tasks"] {
+  background: linear-gradient(165deg, color-mix(in srgb, var(--cyan) 14%, transparent), var(--bg-card) 55%, var(--bg-card-2));
+}
 .orca-kpi::after {
   content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px;
-  background: radial-gradient(circle, rgba(255,255,255,0.06), transparent 60%);
+  background: radial-gradient(circle, rgba(var(--accent-rgb),0.06), transparent 60%);
   pointer-events:none;
 }
 .orca-kpi-head { display:flex; align-items:center; gap: 8px; }
 .orca-kpi-icon {
   width: 26px; height: 26px; border-radius: 8px;
   display: inline-flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
-  font-size: 13px; color: rgba(255,255,255,0.85);
+  background: rgba(var(--accent-rgb),0.08); border: 1px solid var(--border-subtle);
+  font-size: 13px; color: var(--white);
 }
 .orca-kpi-label {
   font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.55);
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted);
 }
 .orca-kpi-value {
-  font-size: 32px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: #fff;
-  margin-top: 4px;
+  font-size: 32px; font-weight: 800; letter-spacing: -0.03em; line-height: 1;
+  color: var(--white); margin-top: 4px;
 }
 .orca-kpi-sub {
   font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.12em; color: rgba(255,255,255,0.45);
+  letter-spacing: 0.12em; color: var(--text-muted);
 }
 .orca-kpi-track {
-  margin-top: auto; height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden;
+  margin-top: auto; height: 3px;
+  background: var(--border-subtle); border-radius: 2px; overflow: hidden;
 }
 .orca-kpi-fill {
   height: 100%; background: var(--grad); border-radius: 2px; width: 0%;
   transition: width 0.5s ease;
 }
-.orca-kpi-fill.complete { box-shadow: 0 0 10px rgba(124,58,237,0.7); }
+.orca-kpi-fill.complete { box-shadow: 0 0 10px rgba(var(--accent-rgb),0.7); }
 
 /* Bento Row */
 .orca-bento {
@@ -1234,8 +1247,8 @@ body:has(#screen-7.active) .orca-shell {
 @media (max-width:900px) { .orca-bento { grid-template-columns: 1fr; } }
 
 .orca-card {
-  background: rgba(20,18,28,0.6);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
   border-radius: 18px;
   padding: 18px;
   position: relative; overflow: hidden;
@@ -1245,23 +1258,23 @@ body:has(#screen-7.active) .orca-shell {
 }
 .orca-card-title {
   font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.55);
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted);
 }
 .orca-card-link {
-  background: none; border: none; color: #9d5cf5; cursor: pointer;
+  background: none; border: none; color: var(--purple-light); cursor: pointer;
   font-family: 'DM Mono', monospace; font-size: 10px;
   letter-spacing: 0.16em; text-transform: uppercase;
 }
-.orca-card-link:hover { color: #22d3ee; }
+.orca-card-link:hover { color: var(--cyan-light); }
 .orca-card-meta {
   font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.16em; color: rgba(255,255,255,0.5);
+  letter-spacing: 0.16em; color: var(--text-muted);
 }
 
 /* Live Preview card */
 .orca-card-preview::before {
   content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
-  background: radial-gradient(circle 280px at 30% 0%, rgba(124,58,237,0.10), transparent 70%);
+  background: radial-gradient(circle 280px at 30% 0%, rgba(var(--accent-rgb),0.10), transparent 70%);
 }
 .orca-card-preview > * { position: relative; z-index: 1; }
 .orca-preview-name {
@@ -1273,20 +1286,20 @@ body:has(#screen-7.active) .orca-shell {
 .orca-preview-row {
   display:flex; align-items:center; justify-content:space-between;
   padding: 8px 10px;
-  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+  background: rgba(var(--accent-rgb),0.04); border: 1px solid var(--border-subtle);
   border-radius: 10px;
 }
 .orca-preview-key {
   font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.45);
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted);
 }
 .orca-preview-val {
-  font-size: 12px; font-weight: 600; color: #fff;
+  font-size: 12px; font-weight: 600; color: var(--white);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%; text-align: right;
 }
 .orca-preview-audience {
-  font-size: 12px; color: #aaa; line-height: 1.55; font-style: italic;
-  padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05);
+  font-size: 12px; color: var(--text-muted); line-height: 1.55; font-style: italic;
+  padding-top: 12px; border-top: 1px solid var(--border-subtle);
 }
 
 /* Build Timeline card */
@@ -1296,21 +1309,21 @@ body:has(#screen-7.active) .orca-shell {
 }
 .orca-timeline-cell {
   aspect-ratio: 1.4 / 1;
-  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.05);
+  background: rgba(var(--accent-rgb),0.05); border: 1px solid var(--border-subtle);
   border-radius: 6px;
   position: relative;
 }
 .orca-timeline-cell.done {
-  background: linear-gradient(135deg, rgba(124,58,237,0.55), rgba(6,182,212,0.55));
+  background: var(--grad);
   border-color: transparent;
-  box-shadow: 0 0 12px rgba(124,58,237,0.25);
+  box-shadow: 0 0 12px rgba(var(--accent-rgb),0.30);
 }
 .orca-timeline-cell.active {
-  background: rgba(124,58,237,0.18); border-color: rgba(124,58,237,0.45);
+  background: rgba(var(--accent-rgb),0.20); border-color: rgba(var(--accent-rgb),0.45);
 }
 .orca-timeline-legend {
   font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.4);
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted);
 }
 
 /* Modules section */
@@ -1321,11 +1334,11 @@ body:has(#screen-7.active) .orca-shell {
 }
 .orca-section-title {
   font-family: 'DM Mono', monospace; font-size: 11px;
-  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.6);
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-secondary);
 }
 .orca-section-meta {
   font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 0.16em; color: rgba(255,255,255,0.4);
+  letter-spacing: 0.16em; color: var(--text-muted);
 }
 
 /* Dense module grid inside the orca shell */
@@ -1336,7 +1349,7 @@ body:has(#screen-7.active) .orca-shell {
 }
 .orca-modules-section .dash-box {
   padding: 14px; min-height: 120px;
-  background: rgba(15,15,22,0.5); border-color: rgba(255,255,255,0.05);
+  background: var(--bg-card); border-color: var(--border-subtle);
   border-radius: 14px;
 }
 .orca-modules-section .dash-box-icon  { font-size: 20px; margin-bottom: 8px; }
@@ -1348,8 +1361,8 @@ body:has(#screen-7.active) .orca-shell {
 
 /* Sidebar restyle on dashboard mode — integrated card surface */
 .sidebar-nav.mode-dashboard {
-  background: linear-gradient(180deg, rgba(124,58,237,0.05), rgba(15,15,22,0.85));
-  border: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(180deg, rgba(var(--accent-rgb),0.06), var(--bg-card) 60%, var(--bg-card-2));
+  border: 1px solid var(--border-subtle);
   border-radius: 24px;
   width: 190px;
   padding: 16px 14px;
@@ -1362,7 +1375,7 @@ body:has(#screen-7.active) .orca-shell {
   display: none;
   align-items: center; gap: 10px;
   padding: 10px; margin-bottom: 14px;
-  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(var(--accent-rgb),0.06); border: 1px solid var(--border-subtle);
   border-radius: 12px;
 }
 .sb-profile-avatar {
@@ -1374,12 +1387,12 @@ body:has(#screen-7.active) .orca-shell {
 }
 .sb-profile-info { display: flex; flex-direction: column; min-width: 0; }
 .sb-profile-name {
-  font-size: 12px; font-weight: 700; letter-spacing: -0.01em; color: #fff;
+  font-size: 12px; font-weight: 700; letter-spacing: -0.01em; color: var(--white);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;
 }
 .sb-profile-role {
   font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.45);
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted);
 }
 
 /* Hide the old FRMLS logo in sidebar when in dashboard mode (profile chip replaces it). */

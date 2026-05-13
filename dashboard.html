@@ -1064,18 +1064,45 @@ body::before {
 /* All rules scoped to #screen-7 / body:has(#screen-7.active) so onboarding is untouched. */
 
 @media (min-width:768px) {
-  /* Widen the app container on dashboard so the orca-shell can breathe. */
+  /* Full-bleed dashboard: app fills the viewport, orca-shell stretches. */
   body:has(#screen-7.active) .app {
-    max-width: 1280px;
+    max-width: none;
     width: 100%;
-    padding: 1.25rem 1.5rem 2rem 1.5rem;
-  }
-  /* Clear the fixed left sidebar when it's visible. */
-  @media (min-width:1140px) {
-    body:has(#screen-7.active) .app { padding-left: 210px; }
+    padding: 10px;
   }
   /* Hide the fixed right snapshot panel on dashboard — we have inline preview. */
   body:has(#screen-7.active) .snapshot-panel { display: none !important; }
+  /* Hide the floating theme toggle on dashboard — it now lives inside the topbar. */
+  body:has(#screen-7.active) .theme-toggle-btn { display: none !important; }
+}
+
+/* Sidebar gets unfixed and sits inline as a column inside the dashboard. */
+@media (min-width:1140px) {
+  body:has(#screen-7.active) {
+    display: flex;
+    align-items: stretch;
+    min-height: 100vh;
+  }
+  body:has(#screen-7.active) .sidebar-nav.mode-dashboard {
+    position: sticky;
+    top: 10px;
+    left: auto; transform: none;
+    width: 240px; min-width: 240px;
+    height: calc(100vh - 20px); max-height: calc(100vh - 20px);
+    margin: 10px 0 10px 10px;
+    align-self: flex-start;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+  body:has(#screen-7.active) .app {
+    flex: 1; min-width: 0;
+    padding: 10px 10px 10px 10px;
+  }
+}
+
+/* Orca shell fills its available column edge-to-edge. */
+body:has(#screen-7.active) .orca-shell {
+  min-height: calc(100vh - 20px);
 }
 
 /* The shell: one big rounded card holding the whole dashboard. */
@@ -3220,6 +3247,10 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
           <button class="orca-pill" onclick="openPanel('panel-brandkit')">◆ Brand Kit</button>
           <button class="orca-pill" onclick="openPanel('panel-checklist')">◉ Checklist</button>
           <button class="orca-pill" onclick="openQuickSearch()" title="Ctrl+K">⌕ Search<kbd>⌘K</kbd></button>
+          <button class="orca-pill orca-pill-theme" onclick="toggleColorMode()" aria-label="Toggle light/dark mode" title="Toggle theme">
+            <span class="theme-toggle-icon">🌙</span>
+            <span class="theme-toggle-label">dark</span>
+          </button>
         </div>
       </header>
 
@@ -6308,16 +6339,17 @@ function initColorMode() {
 }
 
 function _updateToggleUI(mode) {
+  const isLight = mode === 'light';
+  const iconChar  = isLight ? '☀️'  : '🌙';
+  const labelText = isLight ? 'light' : 'dark';
+  // Original fixed toggle (by ID)
   const icon  = document.getElementById('themeToggleIcon');
   const label = document.getElementById('themeToggleLabel');
-  if (!icon || !label) return;
-  if (mode === 'light') {
-    icon.textContent  = '☀️';
-    label.textContent = 'light';
-  } else {
-    icon.textContent  = '🌙';
-    label.textContent = 'dark';
-  }
+  if (icon)  icon.textContent  = iconChar;
+  if (label) label.textContent = labelText;
+  // Inline toggle inside orca-topbar (by class — may exist multiple)
+  document.querySelectorAll('.orca-pill-theme .theme-toggle-icon').forEach(el => el.textContent = iconChar);
+  document.querySelectorAll('.orca-pill-theme .theme-toggle-label').forEach(el => el.textContent = labelText);
 }
 
 /* ===== FLOATING NOTES + TASKS (PART 3) ===== */

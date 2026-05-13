@@ -1583,9 +1583,10 @@ body:has(#screen-7.active) .orca-shell {
 .sidebar-nav.mode-dashboard .sb-todo-item { padding: 6px 4px; }
 
 /* Resize handle — three vertical dots on the right edge, drag to resize. */
-.sb-resize-handle {
+.sb-resize-handle,
+.pinned-resize-handle {
   display: none;
-  position: absolute; top: 50%; right: 2px; transform: translateY(-50%);
+  position: absolute; top: 50%; transform: translateY(-50%);
   width: 12px; height: 50px;
   flex-direction: column; align-items: center; justify-content: center;
   gap: 4px;
@@ -1595,6 +1596,21 @@ body:has(#screen-7.active) .orca-shell {
   z-index: 20;
   opacity: 0.6; transition: opacity 0.15s, background 0.15s, border-color 0.15s;
 }
+.sb-resize-handle { right: 2px; }
+.pinned-resize-handle { left: 2px; }
+.side-panel.pinned .pinned-resize-handle { display: flex; }
+.pinned-resize-handle:hover,
+.pinned-resize-handle.dragging {
+  opacity: 1;
+  background: rgba(var(--accent-rgb), 0.18);
+  border-color: rgba(var(--accent-rgb), 0.40);
+}
+.pinned-resize-handle .sb-resize-dot {
+  width: 3px; height: 3px;
+  background: var(--text-muted); border-radius: 50%;
+}
+.pinned-resize-handle:hover .sb-resize-dot,
+.pinned-resize-handle.dragging .sb-resize-dot { background: var(--white); }
 .sidebar-nav.mode-dashboard .sb-resize-handle { display: flex; }
 .sb-resize-handle:hover,
 .sb-resize-handle.dragging { opacity: 1; background: rgba(var(--accent-rgb), 0.18); border-color: rgba(var(--accent-rgb), 0.4); }
@@ -5256,6 +5272,67 @@ function loadCustomLogo() {
 const SB_WIDTH_LS = 'frmls_sidebar_width';
 const SB_MIN = 200, SB_MAX = 460;
 
+/* ===== PINNED PANEL RESIZE (drag handle on the panel's left edge) ===== */
+const PINNED_WIDTH_LS = 'frmls_pinned_panel_width';
+const PINNED_MIN = 360, PINNED_MAX = 820;
+const _initializedPinnedPanels = new WeakSet();
+
+function _applyPinnedWidth(panel, w) {
+  panel.style.setProperty('width', w + 'px', 'important');
+  panel.style.setProperty('min-width', w + 'px', 'important');
+}
+
+function attachPinnedResize(panel) {
+  if (!panel) return;
+  // Re-apply saved width every time the panel becomes pinned.
+  const saved = parseInt(localStorage.getItem(PINNED_WIDTH_LS), 10);
+  if (saved && saved >= PINNED_MIN && saved <= PINNED_MAX) {
+    _applyPinnedWidth(panel, saved);
+  }
+  if (_initializedPinnedPanels.has(panel)) return;
+  _initializedPinnedPanels.add(panel);
+
+  const handle = document.createElement('div');
+  handle.className = 'pinned-resize-handle';
+  handle.title = 'Drag to resize panel';
+  handle.setAttribute('aria-label', 'Resize panel');
+  handle.innerHTML = '<span class="sb-resize-dot"></span><span class="sb-resize-dot"></span><span class="sb-resize-dot"></span>';
+  panel.appendChild(handle);
+
+  let dragging = false, startX = 0, startW = 0;
+  const onMove = e => {
+    if (!dragging) return;
+    // Handle is on the LEFT edge: dragging left increases width.
+    let w = startW - (e.clientX - startX);
+    w = Math.max(PINNED_MIN, Math.min(PINNED_MAX, w));
+    _applyPinnedWidth(panel, w);
+  };
+  const onUp = () => {
+    if (!dragging) return;
+    dragging = false;
+    document.body.classList.remove('sb-resizing');
+    handle.classList.remove('dragging');
+    localStorage.setItem(PINNED_WIDTH_LS, panel.offsetWidth);
+  };
+  handle.addEventListener('mousedown', e => {
+    if (!panel.classList.contains('pinned')) return;
+    dragging = true;
+    startX = e.clientX;
+    startW = panel.offsetWidth;
+    document.body.classList.add('sb-resizing');
+    handle.classList.add('dragging');
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+  // Double-click resets to default.
+  handle.addEventListener('dblclick', () => {
+    panel.style.removeProperty('width');
+    panel.style.removeProperty('min-width');
+    localStorage.removeItem(PINNED_WIDTH_LS);
+  });
+}
+
 function initSidebarResize() {
   const sidebar = document.getElementById('sidebarNav');
   const handle  = document.getElementById('sbResizeHandle');
@@ -5965,6 +6042,7 @@ function openPanel(id) {
   if (canPin) {
     document.body.classList.add('has-pinned-panel');
     panel.classList.add('pinned');
+    attachPinnedResize(panel);
     requestAnimationFrame(() => panel.classList.add('open'));
     return;
   }
@@ -5981,6 +6059,9 @@ function closePanel(silent) {
   document.querySelectorAll('.side-panel').forEach(p => {
     p.classList.remove('open');
     p.classList.remove('pinned');
+    // Clear pinned-mode inline width so slide-over falls back to CSS default.
+    p.style.removeProperty('width');
+    p.style.removeProperty('min-width');
   });
   document.body.classList.remove('has-pinned-panel');
   if (!silent) {

@@ -1704,6 +1704,8 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 .sh-inline-form { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:16px; margin-bottom:14px; display:none; }
 .sh-inline-form.open { display:block; }
 .sh-form-row { margin-bottom:10px; }
+.sh-card-link { color:var(--purple-light); text-decoration:none; word-break:break-all; transition:color 0.15s; }
+.sh-card-link:hover { color:var(--cyan-light); text-decoration:underline; }
 .sh-form-row label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#aaaaaa; display:block; margin-bottom:5px; }
 .sh-form-row input, .sh-form-row select, .sh-form-row textarea { width:100%; padding:9px 12px; font-size:13px; font-family:'Inter',sans-serif; font-weight:500; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); background:#1a1a1a; color:var(--white); outline:none; transition:border-color 0.2s; }
 .sh-form-row input:focus, .sh-form-row select:focus, .sh-form-row textarea:focus { border-color:var(--purple); }
@@ -4497,6 +4499,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
         </div>
         <div class="sh-form-row"><label>Product Category</label><input type="text" id="sh-s-product" placeholder="e.g. Candles, Apparel" /></div>
         <div class="sh-form-row"><label>Contact Info</label><input type="text" id="sh-s-contact" placeholder="email or WeChat" /></div>
+        <div class="sh-form-row"><label>Website / Manufacturer Link</label><input type="url" id="sh-s-url" placeholder="https://supplier.alibaba.com/…" /></div>
         <div class="sh-form-row"><label>Status</label>
           <select id="sh-s-status"><option>Active</option><option>Sampling</option><option>Negotiating</option><option>On Hold</option></select>
         </div>
@@ -8020,6 +8023,8 @@ function shSetSuppliers(d) { localStorage.setItem('sh_suppliers', JSON.stringify
 function shSaveSupplier() {
   const name    = document.getElementById('sh-s-name').value.trim();
   if (!name) { alert('Please enter a supplier name.'); return; }
+  let url = document.getElementById('sh-s-url').value.trim();
+  if (url && !/^https?:\/\//i.test(url)) url = 'https://' + url; // forgive missing scheme
   const data = shGetSuppliers();
   data.push({
     id: Date.now(),
@@ -8027,11 +8032,12 @@ function shSaveSupplier() {
     platform: document.getElementById('sh-s-platform').value,
     product:  document.getElementById('sh-s-product').value.trim(),
     contact:  document.getElementById('sh-s-contact').value.trim(),
+    url,
     status:   document.getElementById('sh-s-status').value,
     notes:    document.getElementById('sh-s-notes').value.trim()
   });
   shSetSuppliers(data);
-  ['sh-s-name','sh-s-product','sh-s-contact','sh-s-notes'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  ['sh-s-name','sh-s-product','sh-s-contact','sh-s-url','sh-s-notes'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
   shToggleForm('sh-supplier-form');
   shRenderSuppliers();
 }
@@ -8063,9 +8069,11 @@ function shRenderSuppliers() {
       <div class="sh-card-info">
         ${s.product ? `<div>Category: ${shEsc(s.product)}</div>` : ''}
         ${s.contact ? `<div>Contact: ${shEsc(s.contact)}</div>` : ''}
+        ${s.url     ? `<div>Website: <a href="${shEsc(s.url)}" target="_blank" rel="noopener noreferrer" class="sh-card-link">${shEsc(s.url)}</a></div>` : ''}
         ${s.notes   ? `<div style="margin-top:4px;color:#777">${shEsc(s.notes)}</div>` : ''}
       </div>
       <div class="sh-card-actions">
+        ${s.url ? `<button class="sh-card-btn" onclick="window.open('${shEsc(s.url)}','_blank','noopener,noreferrer')">Open Site ↗</button>` : ''}
         <button class="sh-card-btn" onclick="shCopyContact(${s.id})">Copy Contact</button>
         <button class="sh-card-btn danger" onclick="shDeleteSupplier(${s.id})">Delete</button>
       </div>

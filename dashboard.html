@@ -6,7 +6,7 @@
 <title>FRMLS — Store Builder System</title>
 <script>if(location.protocol!=='https:'&&location.hostname!=='localhost'){location.replace('https:'+window.location.href.substring(window.location.protocol.length));}</script>
 <script>try{document.documentElement.setAttribute('data-theme',localStorage.getItem('frmls_mode')||'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}</script>
-<script>try{if(localStorage.getItem('frmls_onboarding_complete')!=='true'){document.documentElement.classList.add('onboarding-active')}}catch(e){}</script>
+<script>try{document.documentElement.classList.add('frmls-init');if(localStorage.getItem('frmls_onboarding_complete')!=='true'){document.documentElement.classList.add('onboarding-active')}}catch(e){document.documentElement.classList.add('frmls-init')}</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700;900&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Barlow+Condensed:wght@400;700;900&display=swap" rel="stylesheet" />
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-V9T01KTX3V"></script>
 <script>
@@ -17,10 +17,13 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <style>
-/* ===== ONBOARDING FLASH PREVENTION ===== */
-html.onboarding-active body { visibility: hidden; }
+/* ===== FLASH PREVENTION ===== */
+html.onboarding-active body,
+html.frmls-init body { visibility: hidden; }
 html.onboarding-active #bf-overlay,
-html.onboarding-active #ob-overlay { visibility: visible; }
+html.onboarding-active #ob-overlay,
+html.frmls-init #bf-overlay,
+html.frmls-init #ob-overlay { visibility: visible; }
 
 /* ===== BASE ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1252,6 +1255,15 @@ body:has(#screen-7.active) .orca-shell {
   transition: width 0.5s ease;
 }
 .orca-kpi-fill.complete { box-shadow: 0 0 10px rgba(var(--accent-rgb),0.7); }
+
+/* Brand voice mantra inside the KPI tile */
+.orca-kpi-mantra {
+  font-size: 18px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.2;
+  background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  word-break: break-word; margin-top: 2px;
+}
+.orca-kpi-mantra.empty { font-size: 14px; font-weight: 600; -webkit-text-fill-color: var(--text-muted); background: none; }
 
 /* Prompts Hero — dedicated featured row above the bento */
 .orca-prompts-hero {
@@ -3536,13 +3548,15 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <section class="orca-kpis">
         <div class="orca-kpi" data-tone="build">
           <div class="orca-kpi-head">
-            <div class="orca-kpi-icon">◉</div>
-            <div class="orca-kpi-label">Build progress</div>
+            <div class="orca-kpi-icon">✦</div>
+            <div class="orca-kpi-label">Brand voice</div>
           </div>
-          <div class="orca-kpi-value" id="dash-build-pct">0%</div>
-          <div class="orca-kpi-sub">steps complete</div>
-          <div class="orca-kpi-track"><div class="orca-kpi-fill" id="dash-build-fill"></div></div>
+          <div class="orca-kpi-value orca-kpi-mantra" id="orca-kpi-mantra">—</div>
+          <div class="orca-kpi-sub" id="orca-kpi-mantra-sub">your three words</div>
         </div>
+        <!-- Hidden anchors so legacy code (updateDashProgress) still writes here without erroring. -->
+        <span id="dash-build-pct" style="display:none"></span>
+        <span id="dash-build-fill" style="display:none"></span>
         <div class="orca-kpi" data-tone="foundation">
           <div class="orca-kpi-head">
             <div class="orca-kpi-icon">◇</div>
@@ -7837,6 +7851,9 @@ document.addEventListener('DOMContentLoaded', () => {
   loadStoreUrl();
   loadSocials();
   loadLayoutState();
+
+  /* 10. Reveal the body once the correct screen is active. */
+  requestAnimationFrame(() => document.documentElement.classList.remove('frmls-init'));
 });
 
 // Ctrl+K global shortcut
@@ -8369,6 +8386,20 @@ function bfRefreshDashThreeWords() {
   const words = localStorage.getItem(BF_THREE_WORDS_KEY);
   const el    = document.getElementById('dash-three-words');
   if (el) el.textContent = words || '';
+  // Mirror into the Brand Voice KPI tile.
+  const mantraEl = document.getElementById('orca-kpi-mantra');
+  const subEl    = document.getElementById('orca-kpi-mantra-sub');
+  if (mantraEl) {
+    if (words && words.trim()) {
+      mantraEl.textContent = words;
+      mantraEl.classList.remove('empty');
+      if (subEl) subEl.textContent = 'your three words';
+    } else {
+      mantraEl.textContent = 'not set';
+      mantraEl.classList.add('empty');
+      if (subEl) subEl.textContent = 'finish Brand Foundation';
+    }
+  }
 }
 
 /* ===== ONBOARDING FLOW (Brand Detail Steps 2–6) ===== */

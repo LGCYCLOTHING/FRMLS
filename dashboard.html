@@ -1587,30 +1587,32 @@ body:has(#screen-7.active) .orca-shell {
 .pinned-resize-handle {
   display: none;
   position: absolute; top: 50%; transform: translateY(-50%);
-  width: 12px; height: 50px;
-  flex-direction: column; align-items: center; justify-content: center;
-  gap: 4px;
+  width: 18px; height: 56px;
+  align-items: center; justify-content: center;
   cursor: ew-resize;
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: 7px;
+  background: var(--grad);
+  border: 1px solid color-mix(in srgb, var(--purple) 60%, transparent);
+  border-radius: 8px;
+  color: #ffffff;
   z-index: 20;
-  opacity: 0.6; transition: opacity 0.15s, background 0.15s, border-color 0.15s;
+  box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.35);
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
 }
-.sb-resize-handle { right: 2px; }
-.pinned-resize-handle { left: 2px; }
+.sb-resize-handle { right: 4px; }
+.pinned-resize-handle { left: 4px; }
 .side-panel.pinned .pinned-resize-handle { display: flex; }
+.sb-resize-handle:hover,
 .pinned-resize-handle:hover,
+.sb-resize-handle.dragging,
 .pinned-resize-handle.dragging {
-  opacity: 1;
-  background: rgba(var(--accent-rgb), 0.18);
-  border-color: rgba(var(--accent-rgb), 0.40);
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 6px 18px rgba(var(--accent-rgb), 0.55);
+  filter: brightness(1.08);
 }
-.pinned-resize-handle .sb-resize-dot {
-  width: 3px; height: 3px;
-  background: var(--text-muted); border-radius: 50%;
-}
-.pinned-resize-handle:hover .sb-resize-dot,
-.pinned-resize-handle.dragging .sb-resize-dot { background: var(--white); }
+.sb-resize-handle svg,
+.pinned-resize-handle svg { display: block; }
+/* Legacy dot styling: kept short so any stale HTML still renders something. */
+.sb-resize-dot { display: none; }
 .sidebar-nav.mode-dashboard .sb-resize-handle { display: flex; }
 .sb-resize-handle:hover,
 .sb-resize-handle.dragging { opacity: 1; background: rgba(var(--accent-rgb), 0.18); border-color: rgba(var(--accent-rgb), 0.4); }
@@ -3374,9 +3376,11 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="sb-todo-list" id="sbTodoList"></div>
   </div>
   <div class="sb-resize-handle" id="sbResizeHandle" title="Drag to resize sidebar" aria-label="Resize sidebar">
-    <span class="sb-resize-dot"></span>
-    <span class="sb-resize-dot"></span>
-    <span class="sb-resize-dot"></span>
+    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M2.5 7h9"/>
+      <path d="M5 4.5 2.5 7 5 9.5"/>
+      <path d="M9 4.5 11.5 7 9 9.5"/>
+    </svg>
   </div>
 </nav>
 
@@ -4376,7 +4380,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="goodlooks-card" id="glcard-0">
       <div class="goodlooks-card-header">
         <span class="goodlooks-store-name">Represent Clothing</span>
-        <button class="goodlooks-copy-btn" onclick="copyGoodLooks(0)">copy</button>
+        <button class="goodlooks-copy-btn" onclick="openGoodLooks(0)">open ↗</button>
       </div>
       <div class="goodlooks-desc">Clean editorial product pages, strong brand voice, minimal navigation.</div>
       <ul class="goodlooks-bullets">
@@ -4390,7 +4394,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="goodlooks-card" id="glcard-1">
       <div class="goodlooks-card-header">
         <span class="goodlooks-store-name">Asket</span>
-        <button class="goodlooks-copy-btn" onclick="copyGoodLooks(1)">copy</button>
+        <button class="goodlooks-copy-btn" onclick="openGoodLooks(1)">open ↗</button>
       </div>
       <div class="goodlooks-desc">Radical transparency in product copy, simple layout, strong about page.</div>
       <ul class="goodlooks-bullets">
@@ -4404,7 +4408,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="goodlooks-card" id="glcard-2">
       <div class="goodlooks-card-header">
         <span class="goodlooks-store-name">Ssense</span>
-        <button class="goodlooks-copy-btn" onclick="copyGoodLooks(2)">copy</button>
+        <button class="goodlooks-copy-btn" onclick="openGoodLooks(2)">open ↗</button>
       </div>
       <div class="goodlooks-desc">Editorial photography over product shots, minimal navigation, strong curation, luxury feel without loud branding.</div>
       <ul class="goodlooks-bullets">
@@ -4418,7 +4422,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="goodlooks-card" id="glcard-3">
       <div class="goodlooks-card-header">
         <span class="goodlooks-store-name">Aime Leon Dore</span>
-        <button class="goodlooks-copy-btn" onclick="copyGoodLooks(3)">copy</button>
+        <button class="goodlooks-copy-btn" onclick="openGoodLooks(3)">open ↗</button>
       </div>
       <div class="goodlooks-desc">Lifestyle photography over product shots, minimal text, brand world over product features.</div>
       <ul class="goodlooks-bullets">
@@ -4432,7 +4436,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="goodlooks-card" id="glcard-4">
       <div class="goodlooks-card-header">
         <span class="goodlooks-store-name">Applied Art Forms</span>
-        <button class="goodlooks-copy-btn" onclick="copyGoodLooks(4)">copy</button>
+        <button class="goodlooks-copy-btn" onclick="openGoodLooks(4)">open ↗</button>
       </div>
       <div class="goodlooks-desc">Technical copy done beautifully, dark aesthetic, strong size guide.</div>
       <ul class="goodlooks-bullets">
@@ -5320,7 +5324,7 @@ function attachPinnedResize(panel) {
   handle.className = 'pinned-resize-handle';
   handle.title = 'Drag to resize panel';
   handle.setAttribute('aria-label', 'Resize panel');
-  handle.innerHTML = '<span class="sb-resize-dot"></span><span class="sb-resize-dot"></span><span class="sb-resize-dot"></span>';
+  handle.innerHTML = '<svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7h9"/><path d="M5 4.5 2.5 7 5 9.5"/><path d="M9 4.5 11.5 7 9 9.5"/></svg>';
   panel.appendChild(handle);
 
   let dragging = false, startX = 0, startW = 0;
@@ -6694,11 +6698,11 @@ function copyRaw(btn, text) {
 
 /* ===== WHAT GOOD LOOKS LIKE — COPY ===== */
 const goodLooksData = [
-  { name: 'Represent Clothing', desc: 'Clean editorial product pages, strong brand voice, minimal navigation.', bullets: ['Product images take up the full viewport — no distractions', 'Copy is direct and confident, never over-explains', 'Navigation has four items max — no dropdown overload'] },
-  { name: 'Asket', desc: 'Radical transparency in product copy, simple layout, strong about page.', bullets: ['Every product shows cost breakdown and material sourcing', 'Homepage is one scroll — no clutter, no pop-ups', 'About page reads like a manifesto, not a corporate blurb'] },
-  { name: 'Ssense', desc: 'Editorial photography over product shots, minimal navigation, strong curation, luxury feel without loud branding.', bullets: ['Editorial imagery does the selling — products are secondary to the world', 'Minimal copy throughout — strong visual hierarchy speaks instead', 'Curated product selection with dark and light contrast used intentionally'] },
-  { name: 'Aime Leon Dore', desc: 'Lifestyle photography over product shots, minimal text, brand world over product features.', bullets: ['Every image sells a feeling, not just a garment', 'Product pages have almost no descriptive copy — the image does the work', 'No discounts, no urgency timers — the brand speaks for itself'] },
-  { name: 'Applied Art Forms', desc: 'Technical copy done beautifully, dark aesthetic, strong size guide.', bullets: ['Fabric specs and construction details written with real precision', 'Dark palette used consistently — every page feels intentional', 'Size guide is a full page with fit notes, not just a chart'] }
+  { name: 'Represent Clothing', url: 'https://www.representclo.com',     desc: 'Clean editorial product pages, strong brand voice, minimal navigation.', bullets: ['Product images take up the full viewport — no distractions', 'Copy is direct and confident, never over-explains', 'Navigation has four items max — no dropdown overload'] },
+  { name: 'Asket',             url: 'https://www.asket.com',             desc: 'Radical transparency in product copy, simple layout, strong about page.', bullets: ['Every product shows cost breakdown and material sourcing', 'Homepage is one scroll — no clutter, no pop-ups', 'About page reads like a manifesto, not a corporate blurb'] },
+  { name: 'Ssense',            url: 'https://www.ssense.com',            desc: 'Editorial photography over product shots, minimal navigation, strong curation, luxury feel without loud branding.', bullets: ['Editorial imagery does the selling — products are secondary to the world', 'Minimal copy throughout — strong visual hierarchy speaks instead', 'Curated product selection with dark and light contrast used intentionally'] },
+  { name: 'Aime Leon Dore',    url: 'https://www.aimeleondore.com',      desc: 'Lifestyle photography over product shots, minimal text, brand world over product features.', bullets: ['Every image sells a feeling, not just a garment', 'Product pages have almost no descriptive copy — the image does the work', 'No discounts, no urgency timers — the brand speaks for itself'] },
+  { name: 'Applied Art Forms', url: 'https://www.appliedartforms.com',   desc: 'Technical copy done beautifully, dark aesthetic, strong size guide.', bullets: ['Fabric specs and construction details written with real precision', 'Dark palette used consistently — every page feels intentional', 'Size guide is a full page with fit notes, not just a chart'] }
 ];
 
 /* ===== STORE INSPIRATION — USER CARDS ===== */
@@ -6759,13 +6763,10 @@ function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function copyGoodLooks(idx) {
+function openGoodLooks(idx) {
   const d = goodLooksData[idx];
-  const text = `${d.name}\n${d.desc}\n\n${d.bullets.map(b => '• ' + b).join('\n')}`;
-  const btn = document.querySelector(`#glcard-${idx} .goodlooks-copy-btn`);
-  navigator.clipboard.writeText(text).then(() => {
-    if (btn) { btn.textContent = '✓'; btn.classList.add('copied'); setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1500); }
-  });
+  if (!d || !d.url) return;
+  window.open(d.url, '_blank', 'noopener,noreferrer');
 }
 
 /* ===== THEME SYSTEM ===== */

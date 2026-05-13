@@ -1140,7 +1140,8 @@ body:has(#screen-7.active) .orca-shell {
   display: flex; align-items: center; justify-content: space-between;
   gap: 16px; margin-bottom: 22px; flex-wrap: wrap;
 }
-.orca-topbar-titles { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.orca-topbar-titles { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.orca-topbar-logo { font-size: 22px; }
 .orca-topbar-eyebrow {
   font-family: 'DM Mono', monospace; font-size: 10px;
   letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted);
@@ -3370,7 +3371,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <!-- Topbar -->
       <header class="orca-topbar">
         <div class="orca-topbar-titles">
-          <div class="orca-topbar-eyebrow">FRMLS · your store. built right.</div>
+          <span class="logo-mark orca-topbar-logo">FRML<span class="accent">S</span></span>
           <h1 class="orca-topbar-title">Dashboard</h1>
         </div>
         <div class="orca-topbar-actions">

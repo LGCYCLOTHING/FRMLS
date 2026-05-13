@@ -1399,7 +1399,9 @@ body:has(#screen-7.active) .orca-shell {
   flex-shrink: 0;
   position: relative; overflow: hidden;
   padding: 0; border: none; cursor: pointer;
-  background-size: cover; background-position: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .sb-profile-avatar-letter { display: inline-flex; align-items: center; justify-content: center; }
 .sb-profile-avatar-edit {
@@ -1411,9 +1413,11 @@ body:has(#screen-7.active) .orca-shell {
 }
 .sb-profile-avatar:hover .sb-profile-avatar-edit,
 .sb-profile-avatar:focus-visible .sb-profile-avatar-edit { opacity: 1; }
+.sb-profile-avatar.has-logo {
+  background-color: var(--bg-card);
+  background-image: none;
+}
 .sb-profile-avatar.has-logo .sb-profile-avatar-letter { display: none; }
-.sb-profile-avatar.has-logo { background: none; }
-.sb-profile-avatar.has-logo[style*="background-image"] { background: inherit; }
 .sb-profile-avatar-clear {
   position: absolute; top: -4px; right: -4px;
   width: 14px; height: 14px; border-radius: 50%;

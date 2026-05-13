@@ -1099,7 +1099,7 @@ body::before {
     width: 240px; min-width: 240px;
     height: 100vh; max-height: 100vh;
     margin: 0;
-    border-radius: 0 24px 24px 0;
+    border-radius: 0 0 24px 0;
     align-self: flex-start;
     flex-shrink: 0;
     overflow-y: auto;
@@ -1123,7 +1123,7 @@ body:has(#screen-7.active) .orca-shell {
   position: relative; z-index: 1;
   background: linear-gradient(180deg, rgba(var(--accent-rgb),0.06), var(--bg-card) 40%, var(--bg-card-2));
   border: 1px solid var(--border-subtle);
-  border-radius: 28px;
+  border-radius: 0 0 28px 28px;
   padding: 26px;
   box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(var(--accent-rgb),0.05) inset;
   overflow: hidden;
@@ -1330,7 +1330,7 @@ body:has(#screen-7.active) .orca-shell {
     margin: 0;
     border: 1px solid var(--border-subtle);
     border-left: 1px solid var(--border-subtle);
-    border-radius: 24px 0 0 24px;
+    border-radius: 0 0 0 24px;
     flex-shrink: 0;
     align-self: flex-start;
     z-index: 1;
@@ -1346,6 +1346,7 @@ body:has(#screen-7.active) .orca-shell {
   display: grid; grid-template-columns: 1.4fr 1fr;
   gap: 12px; margin-bottom: 22px;
 }
+.orca-bento.orca-bento-single { grid-template-columns: 1fr; }
 @media (max-width:900px) { .orca-bento { grid-template-columns: 1fr; } }
 
 .orca-card {
@@ -3585,8 +3586,8 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
         </div>
       </section>
 
-      <!-- Bento Row -->
-      <section class="orca-bento">
+      <!-- Next Step (full width) -->
+      <section class="orca-bento orca-bento-single">
         <article class="orca-card orca-card-nextstep">
           <div class="orca-card-head">
             <div class="orca-card-title">Next step</div>
@@ -3595,17 +3596,6 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
           <div class="orca-next-label" id="orca-next-label">Loading…</div>
           <div class="orca-next-desc" id="orca-next-desc">—</div>
           <button type="button" class="orca-btn-primary orca-next-cta" id="orca-next-cta">Start →</button>
-        </article>
-        <article class="orca-card orca-card-timeline">
-          <div class="orca-card-head">
-            <div class="orca-card-title">Build Timeline</div>
-            <div class="orca-timeline-headright">
-              <span class="orca-card-meta" id="orca-timeline-meta">0 of 12 steps</span>
-              <button class="orca-card-link" onclick="openPanel('panel-prompts')">Open Prompts →</button>
-            </div>
-          </div>
-          <div class="orca-timeline-grid" id="orca-timeline-grid"></div>
-          <div class="orca-timeline-legend">12 onboarding steps → store ready</div>
         </article>
       </section>
 

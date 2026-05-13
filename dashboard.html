@@ -1373,35 +1373,31 @@ body:has(#screen-7.active) .orca-shell {
   letter-spacing: 0.16em; color: var(--text-muted);
 }
 
-/* Live Preview card */
-.orca-card-preview::before {
+/* Next Step card */
+.orca-card-nextstep {
+  display: flex; flex-direction: column; gap: 10px;
+  background: linear-gradient(165deg, rgba(var(--accent-rgb),0.10), var(--bg-card) 65%, var(--bg-card-2));
+}
+.orca-card-nextstep::before {
   content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
-  background: radial-gradient(circle 280px at 30% 0%, rgba(var(--accent-rgb),0.10), transparent 70%);
+  background: radial-gradient(circle 320px at 0% 0%, rgba(var(--accent-rgb),0.14), transparent 70%);
 }
-.orca-card-preview > * { position: relative; z-index: 1; }
-.orca-preview-name {
-  font-size: 22px; font-weight: 900; letter-spacing: -0.03em; line-height: 1;
+.orca-card-nextstep > * { position: relative; z-index: 1; }
+.orca-next-label {
+  font-size: 24px; font-weight: 800; letter-spacing: -0.02em;
+  color: var(--white); line-height: 1.2;
   background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text; margin-bottom: 14px; word-break: break-word;
+  background-clip: text;
 }
-.orca-preview-rows { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
-.orca-preview-row {
-  display:flex; align-items:center; justify-content:space-between;
-  padding: 8px 10px;
-  background: rgba(var(--accent-rgb),0.04); border: 1px solid var(--border-subtle);
-  border-radius: 10px;
+.orca-next-desc {
+  font-size: 13px; color: var(--text-muted); line-height: 1.5;
+  flex: 1;
 }
-.orca-preview-key {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted);
-}
-.orca-preview-val {
-  font-size: 12px; font-weight: 600; color: var(--white);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%; text-align: right;
-}
-.orca-preview-audience {
-  font-size: 12px; color: var(--text-muted); line-height: 1.55; font-style: italic;
-  padding-top: 12px; border-top: 1px solid var(--border-subtle);
+.orca-next-cta { align-self: flex-start; margin-top: 4px; }
+
+/* Build Timeline head right group */
+.orca-timeline-headright {
+  display: flex; align-items: center; gap: 10px;
 }
 
 /* Build Timeline card */
@@ -3554,24 +3550,22 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 
       <!-- Bento Row -->
       <section class="orca-bento">
-        <article class="orca-card orca-card-preview">
+        <article class="orca-card orca-card-nextstep">
           <div class="orca-card-head">
-            <div class="orca-card-title">Live Preview</div>
-            <button class="orca-card-link" onclick="openPanel('panel-brandkit')">Open Brand Kit →</button>
+            <div class="orca-card-title">Next step</div>
+            <span class="orca-card-meta" id="orca-next-eyebrow">pick up where you left off</span>
           </div>
-          <div class="orca-preview-name" id="orca-snap-name">—</div>
-          <div class="orca-preview-rows">
-            <div class="orca-preview-row"><span class="orca-preview-key">Category</span><span class="orca-preview-val" id="orca-snap-cat">—</span></div>
-            <div class="orca-preview-row"><span class="orca-preview-key">Vibe</span><span class="orca-preview-val" id="orca-snap-vibe">—</span></div>
-            <div class="orca-preview-row"><span class="orca-preview-key">Font</span><span class="orca-preview-val" id="orca-snap-font">—</span></div>
-            <div class="orca-preview-row"><span class="orca-preview-key">Palette</span><span class="orca-preview-val" id="orca-snap-color">—</span></div>
-          </div>
-          <div class="orca-preview-audience" id="orca-snap-audience">Your audience appears here as you fill in screen 2.</div>
+          <div class="orca-next-label" id="orca-next-label">Loading…</div>
+          <div class="orca-next-desc" id="orca-next-desc">—</div>
+          <button type="button" class="orca-btn-primary orca-next-cta" id="orca-next-cta">Start →</button>
         </article>
         <article class="orca-card orca-card-timeline">
           <div class="orca-card-head">
             <div class="orca-card-title">Build Timeline</div>
-            <span class="orca-card-meta" id="orca-timeline-meta">0 of 12 steps</span>
+            <div class="orca-timeline-headright">
+              <span class="orca-card-meta" id="orca-timeline-meta">0 of 12 steps</span>
+              <button class="orca-card-link" onclick="openPanel('panel-prompts')">Open Prompts →</button>
+            </div>
           </div>
           <div class="orca-timeline-grid" id="orca-timeline-grid"></div>
           <div class="orca-timeline-legend">12 onboarding steps → store ready</div>
@@ -5068,6 +5062,79 @@ function renderOrcaTimeline() {
   if (meta) meta.textContent = `${done} of ${total} steps`;
 }
 
+/* ===== NEXT STEP CARD ===== */
+function _nextStepResolve() {
+  // 1. Brand Foundation
+  const bfTxt = (document.getElementById('bf-box-status')?.textContent || '').toLowerCase();
+  if (!bfTxt.includes('complete')) {
+    return {
+      label: 'Build your Brand Foundation',
+      desc: 'Define your why, voice, and promise. The foundation everything else is built on.',
+      cta: 'Start Brand Foundation →',
+      action: () => (typeof openBrandFoundation === 'function') && openBrandFoundation()
+    };
+  }
+  // 2. Brand Identity (cat / vibe / font / color)
+  const haveCat   = !!(state && state.cat);
+  const haveVibe  = !!(state && state.vibe);
+  const haveFont  = !!(state && state.fontStyle);
+  const haveColor = !!(state && state.colorMood);
+  if (!(haveCat && haveVibe && haveFont && haveColor)) {
+    return {
+      label: 'Set your Brand Identity',
+      desc: 'Pick category, vibe, font, and palette. Three minutes — locks in your visual direction.',
+      cta: 'Open Brand Identity →',
+      action: () => (typeof openIdentityModal === 'function') && openIdentityModal()
+    };
+  }
+  // 3. Prompts (12 onboarding steps)
+  if (typeof stepDone !== 'undefined' && stepDone.size < 12) {
+    let next = 0;
+    for (let i = 0; i < 12; i++) { if (!stepDone.has(i)) { next = i; break; } }
+    return {
+      label: `Continue with Prompt ${next + 1} of 12`,
+      desc: 'Copy your next custom-written prompt and paste it into your AI of choice.',
+      cta: 'Open Prompt Pack →',
+      action: () => openPanel('panel-prompts')
+    };
+  }
+  // 4. Launch Checklist
+  try {
+    const raw = localStorage.getItem('frmlsChecklist');
+    const checked = new Set((JSON.parse(raw || '[]') || []).map(Number));
+    if (typeof launchItems !== 'undefined' && launchItems.length) {
+      const idx = launchItems.findIndex((_, i) => !checked.has(i));
+      if (idx >= 0) {
+        return {
+          label: 'Launch Checklist',
+          desc: `Next up: ${launchItems[idx].text}`,
+          cta: 'Open Launch Checklist →',
+          action: () => openPanel('panel-checklist')
+        };
+      }
+    }
+  } catch (e) {}
+  // 5. Done
+  return {
+    label: "You're ready to launch.",
+    desc: 'Everything is done. Remove your store password on Shopify and go live.',
+    cta: 'Open Brand Links →',
+    action: () => openPanel('panel-brandlinks')
+  };
+}
+
+function renderNextStep() {
+  const labelEl = document.getElementById('orca-next-label');
+  const descEl  = document.getElementById('orca-next-desc');
+  const ctaEl   = document.getElementById('orca-next-cta');
+  if (!labelEl || !descEl || !ctaEl) return;
+  const s = _nextStepResolve();
+  labelEl.textContent = s.label;
+  descEl.textContent  = s.desc;
+  ctaEl.textContent   = s.cta;
+  ctaEl.onclick       = s.action;
+}
+
 function updateSidebarProfile() {
   const b = (state.brandName || '').trim();
   const nameEl   = document.getElementById('sb-profile-name');
@@ -5658,6 +5725,7 @@ function updateChecklistProgress() {
   if (banner)  banner.classList.toggle('hidden', checked < total);
   saveChecklistState();
   if (typeof updateOrcaKpis === 'function') updateOrcaKpis();
+  if (typeof renderNextStep  === 'function') renderNextStep();
 }
 
 /* ===== DASHBOARD ===== */
@@ -5683,6 +5751,7 @@ function buildDashboard() {
   updateSidebarProfile();
   updateOrcaKpis();
   renderOrcaTimeline();
+  renderNextStep();
   updateSnapshot();
 }
 
@@ -5707,6 +5776,7 @@ function recordPanelOpen(panelId) {
   localStorage.setItem(PANEL_LS_PREFIX + panelId, Date.now().toString());
   refreshLastOpenedLabel(panelId);
   if (typeof updateOrcaKpis === 'function') updateOrcaKpis();
+  if (typeof renderNextStep  === 'function') renderNextStep();
 }
 
 function formatLastOpened(ts) {

@@ -1033,7 +1033,7 @@ body::before {
 .dash-orb-3 { width:500px; height:500px; background:radial-gradient(circle,#2d1b69,transparent 70%); opacity:0.10; top:30%; left:40%; filter:blur(160px); animation-delay:4.5s; }
 @keyframes dashOrbBreathe { 0%{transform:scale(1)} 100%{transform:scale(1.1)} }
 #screen-7 .dash-grid, #screen-7 .dash-quick-actions, #screen-7 .dash-welcome, #screen-7 .dash-build-progress { position:relative; z-index:1; }
-#screen-7::before { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(0deg,rgba(255,255,255,0.02) 0px,rgba(255,255,255,0.02) 1px,transparent 1px,transparent 60px),repeating-linear-gradient(90deg,rgba(255,255,255,0.02) 0px,rgba(255,255,255,0.02) 1px,transparent 1px,transparent 60px); pointer-events:none; z-index:0; }
+/* Grid pattern removed — relying on body orbs + global noise overlay for texture. */
 
 .dash-box { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:28px; cursor:pointer; position:relative; z-index:1; transition:transform 0.3s cubic-bezier(0.16,1,0.3,1),box-shadow 0.3s ease,border-color 0.3s ease,background 0.25s ease; display:flex; flex-direction:column; min-height:160px; outline:none; -webkit-tap-highlight-color:transparent; }
 .dash-box:focus { outline:none; }

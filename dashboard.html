@@ -1096,16 +1096,16 @@ body::before {
     min-height: 100vh;
   }
   body:has(#screen-7.active) .sidebar-nav.mode-dashboard {
-    position: sticky;
-    top: 10px;
+    position: relative;
+    top: auto;
     left: auto; transform: none;
     width: 240px; min-width: 240px;
-    height: calc(100vh - 20px); max-height: calc(100vh - 20px);
+    height: auto; max-height: none;
     margin: 10px 0 10px 10px;
     border-radius: 24px;
-    align-self: flex-start;
+    align-self: stretch;
     flex-shrink: 0;
-    overflow-y: auto;
+    overflow-y: visible;
     overflow-x: hidden;
   }
   /* Hide the leftover "← Launch Checklist" btn-row on dashboard. */
@@ -1332,19 +1332,19 @@ body:has(#screen-7.active) .orca-shell {
 /* ===== PINNED PANEL: a side-panel becomes a 3rd flex column on dashboard ===== */
 @media (min-width:1140px) {
   body:has(#screen-7.active).has-pinned-panel .side-panel.pinned {
-    position: sticky;
-    top: 10px;
+    position: relative;
+    top: auto;
     right: auto; bottom: auto; left: auto;
     transform: none !important;
     width: 560px;
-    height: calc(100vh - 20px);
-    max-height: calc(100vh - 20px);
+    height: auto;
+    max-height: none;
     margin: 10px 10px 10px 0;
     border: 1px solid var(--border-subtle);
     border-left: 1px solid var(--border-subtle);
     border-radius: 24px;
     flex-shrink: 0;
-    align-self: flex-start;
+    align-self: stretch;
     z-index: 1;
     background: linear-gradient(180deg, rgba(var(--accent-rgb),0.06), var(--bg-card) 60%, var(--bg-card-2));
     box-shadow: 0 30px 80px rgba(0,0,0,0.4);

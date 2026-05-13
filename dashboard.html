@@ -1316,6 +1316,30 @@ body:has(#screen-7.active) .orca-shell {
   color: var(--white); transform: translateY(-1px);
 }
 
+/* ===== PINNED PANEL: a side-panel becomes a 3rd flex column on dashboard ===== */
+@media (min-width:1140px) {
+  body:has(#screen-7.active).has-pinned-panel .side-panel.pinned {
+    position: sticky;
+    top: 10px;
+    right: auto; bottom: auto; left: auto;
+    transform: none !important;
+    width: 440px;
+    height: calc(100vh - 20px);
+    max-height: calc(100vh - 20px);
+    margin: 10px 10px 10px 0;
+    border: 1px solid var(--border-subtle);
+    border-left: 1px solid var(--border-subtle);
+    border-radius: 24px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(var(--accent-rgb),0.06), var(--bg-card) 60%, var(--bg-card-2));
+    box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+  }
+  /* No backdrop when pinned (it's a column, not a modal) */
+  body.has-pinned-panel .panel-overlay { display: none !important; }
+}
+
 /* Bento Row */
 .orca-bento {
   display: grid; grid-template-columns: 1.4fr 1fr;
@@ -3443,7 +3467,6 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
           <h1 class="orca-topbar-title">Dashboard</h1>
         </div>
         <div class="orca-topbar-actions">
-          <button class="orca-pill" onclick="openPanel('panel-prompts')">◧ Prompts</button>
           <button class="orca-pill" onclick="openPanel('panel-brandkit')">◆ Brand Kit</button>
           <button class="orca-pill" onclick="openPanel('panel-checklist')">◉ Checklist</button>
           <button class="orca-pill" onclick="openQuickSearch()" title="Ctrl+K">⌕ Search<kbd>⌘K</kbd></button>
@@ -5804,6 +5827,9 @@ function _unlockBodyScroll() {
   window.scrollTo(0, _savedScrollY);
 }
 
+// Panels that, on dashboard, dock as a 3rd column instead of opening as a modal.
+const PINNABLE_PANELS = new Set(['panel-prompts']);
+
 function openPanel(id) {
   closePanel(true);
   const panel = document.getElementById(id);
@@ -5824,9 +5850,18 @@ function openPanel(id) {
   // Track last opened timestamp
   recordPanelOpen(id);
 
-  // Lock background scroll using position:fixed approach
-  _lockBodyScroll();
+  // PINNED MODE: docks as a 3rd inline column on dashboard at desktop widths.
+  const onDashboard = document.getElementById('screen-7')?.classList.contains('active');
+  const canPin = onDashboard && PINNABLE_PANELS.has(id) && window.innerWidth >= 1140;
+  if (canPin) {
+    document.body.classList.add('has-pinned-panel');
+    panel.classList.add('pinned');
+    requestAnimationFrame(() => panel.classList.add('open'));
+    return;
+  }
 
+  // SLIDE-OVER MODE (default): modal overlay + scroll lock.
+  _lockBodyScroll();
   requestAnimationFrame(() => {
     overlay.classList.add('visible');
     panel.classList.add('open');
@@ -5834,7 +5869,11 @@ function openPanel(id) {
 }
 
 function closePanel(silent) {
-  document.querySelectorAll('.side-panel').forEach(p => p.classList.remove('open'));
+  document.querySelectorAll('.side-panel').forEach(p => {
+    p.classList.remove('open');
+    p.classList.remove('pinned');
+  });
+  document.body.classList.remove('has-pinned-panel');
   if (!silent) {
     document.getElementById('panelOverlay').classList.remove('visible');
     _unlockBodyScroll();

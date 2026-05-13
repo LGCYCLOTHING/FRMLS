@@ -1094,12 +1094,12 @@ body::before {
   }
   body:has(#screen-7.active) .sidebar-nav.mode-dashboard {
     position: sticky;
-    top: 0;
+    top: 10px;
     left: auto; transform: none;
     width: 240px; min-width: 240px;
-    height: 100vh; max-height: 100vh;
-    margin: 0;
-    border-radius: 0 0 24px 0;
+    height: calc(100vh - 20px); max-height: calc(100vh - 20px);
+    margin: 10px 0 10px 10px;
+    border-radius: 24px;
     align-self: flex-start;
     flex-shrink: 0;
     overflow-y: auto;
@@ -1123,7 +1123,7 @@ body:has(#screen-7.active) .orca-shell {
   position: relative; z-index: 1;
   background: linear-gradient(180deg, rgba(var(--accent-rgb),0.06), var(--bg-card) 40%, var(--bg-card-2));
   border: 1px solid var(--border-subtle);
-  border-radius: 0 0 28px 28px;
+  border-radius: 28px;
   padding: 26px;
   box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(var(--accent-rgb),0.05) inset;
   overflow: hidden;
@@ -1321,16 +1321,16 @@ body:has(#screen-7.active) .orca-shell {
 @media (min-width:1140px) {
   body:has(#screen-7.active).has-pinned-panel .side-panel.pinned {
     position: sticky;
-    top: 0;
+    top: 10px;
     right: auto; bottom: auto; left: auto;
     transform: none !important;
     width: 560px;
-    height: 100vh;
-    max-height: 100vh;
-    margin: 0;
+    height: calc(100vh - 20px);
+    max-height: calc(100vh - 20px);
+    margin: 10px 10px 10px 0;
     border: 1px solid var(--border-subtle);
     border-left: 1px solid var(--border-subtle);
-    border-radius: 0 0 0 24px;
+    border-radius: 24px;
     flex-shrink: 0;
     align-self: flex-start;
     z-index: 1;

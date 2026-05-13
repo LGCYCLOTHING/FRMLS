@@ -5934,8 +5934,9 @@ function _unlockBodyScroll() {
   window.scrollTo(0, _savedScrollY);
 }
 
-// Panels that, on dashboard, dock as a 3rd column instead of opening as a modal.
-const PINNABLE_PANELS = new Set(['panel-prompts', 'panel-designer', 'panel-email']);
+// On dashboard at desktop widths, every side-panel docks as a 3rd column.
+// (Set kept for future opt-out if a specific panel ever needs to stay modal.)
+const PINNABLE_PANELS = null;
 
 function openPanel(id) {
   closePanel(true);
@@ -5959,7 +5960,8 @@ function openPanel(id) {
 
   // PINNED MODE: docks as a 3rd inline column on dashboard at desktop widths.
   const onDashboard = document.getElementById('screen-7')?.classList.contains('active');
-  const canPin = onDashboard && PINNABLE_PANELS.has(id) && window.innerWidth >= 1140;
+  const allowedToPin = !PINNABLE_PANELS || PINNABLE_PANELS.has(id);
+  const canPin = onDashboard && allowedToPin && window.innerWidth >= 1140;
   if (canPin) {
     document.body.classList.add('has-pinned-panel');
     panel.classList.add('pinned');

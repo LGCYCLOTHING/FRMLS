@@ -1349,6 +1349,34 @@ body:has(#screen-7.active) .orca-shell {
     background: linear-gradient(180deg, rgba(var(--accent-rgb),0.06), var(--bg-card) 60%, var(--bg-card-2));
     box-shadow: 0 30px 80px rgba(0,0,0,0.4);
   }
+  /* Pinned panel header — match the dashboard topbar's eyebrow + title pattern */
+  .side-panel.pinned .panel-header {
+    position: relative;
+    display: block;
+    padding: 22px 68px 18px 26px;
+    background: transparent;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .side-panel.pinned .panel-header::before {
+    content: 'MODULE';
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .side-panel.pinned .panel-title {
+    display: block;
+    font-size: 22px; font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .side-panel.pinned .panel-close {
+    position: absolute;
+    top: 22px; right: 22px;
+  }
   /* No backdrop when pinned (it's a column, not a modal) */
   body.has-pinned-panel .panel-overlay { display: none !important; }
 }

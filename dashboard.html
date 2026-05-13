@@ -1060,6 +1060,46 @@ body::before {
 .dash-box-arrow { font-size:11px; font-family:'DM Mono',monospace; color:#555555; margin-top:5px; text-align:right; letter-spacing:0.08em; transition:color 0.2s; }
 .dash-box:hover .dash-box-arrow { color:#aaaaaa; }
 
+/* ===== DASHBOARD COMPACT LAYOUT — fit all tiles above the fold ===== */
+/* Scoped to the dashboard screen so onboarding screens keep their narrow column. */
+@media (min-width:768px) {
+  /* Widen the app container only when the dashboard is active. */
+  body:has(#screen-7.active) .app {
+    max-width: 880px;
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+  }
+  @media (min-width:1140px) {
+    body:has(#screen-7.active) .app { max-width: 900px; }
+  }
+  @media (min-width:1280px) {
+    body:has(#screen-7.active) .app { max-width: 940px; }
+  }
+
+  /* Trim vertical spacing in the dashboard header. */
+  #screen-7 .logo            { margin-bottom: 1rem; }
+  #screen-7 .dash-build-progress { margin-bottom: 0.85rem; }
+  #screen-7 .dash-quick-actions  { margin-bottom: 0.85rem; }
+  #screen-7 .dash-welcome    { margin-bottom: 1rem; }
+  #screen-7 .dash-brand-name { font-size: 32px; }
+  #screen-7 .dash-subtitle   { margin-top: 4px; }
+  #screen-7 .dash-three-words{ margin-top: 4px; }
+
+  /* Compact card grid: auto-fit so it lands on 4 cols at desktop, 3 narrower. */
+  #screen-7 .dash-grid {
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+  #screen-7 .dash-box { padding: 18px; min-height: 132px; }
+  #screen-7 .dash-box-icon  { font-size: 22px; margin-bottom: 10px; }
+  #screen-7 .dash-box-title { font-size: 15px; margin-bottom: 4px; }
+  #screen-7 .dash-box-desc  { font-size: 12.5px; line-height: 1.45; }
+  #screen-7 .dash-box-last,
+  #screen-7 .dash-box-status{ font-size: 10px; margin-top: 8px; }
+  #screen-7 .dash-box-arrow { font-size: 10px; margin-top: 4px; }
+}
+
 /* ===== ARRANGE MODE (iPhone-style) ===== */
 body.dashboard-arrange-mode { user-select:none; -webkit-user-select:none; }
 body.dashboard-arrange-mode .dash-box {

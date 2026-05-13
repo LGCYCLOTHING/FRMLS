@@ -1173,7 +1173,7 @@ body:has(#screen-7.active) .orca-shell {
 .orca-brandline { margin-bottom: 22px; }
 .orca-brand-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .orca-brand-name {
-  font-size: 38px; font-weight: 900; letter-spacing: -0.04em; line-height: 1;
+  font-size: 26px; font-weight: 900; letter-spacing: -0.035em; line-height: 1;
   background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text; word-break: break-word;
 }
@@ -1251,6 +1251,70 @@ body:has(#screen-7.active) .orca-shell {
   transition: width 0.5s ease;
 }
 .orca-kpi-fill.complete { box-shadow: 0 0 10px rgba(var(--accent-rgb),0.7); }
+
+/* Prompts Hero — dedicated featured row above the bento */
+.orca-prompts-hero {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  margin-bottom: 18px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  border: 1px solid var(--border-subtle);
+  background:
+    linear-gradient(135deg, rgba(var(--accent-rgb),0.18), color-mix(in srgb, var(--cyan) 14%, transparent) 60%, var(--bg-card));
+  position: relative; overflow: hidden;
+}
+.orca-prompts-hero::before {
+  content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background: radial-gradient(circle 380px at 0% 50%, rgba(var(--accent-rgb),0.18), transparent 70%);
+}
+.orca-prompts-hero > * { position: relative; z-index: 1; }
+.orca-prompts-left { display:flex; align-items:center; gap: 14px; min-width: 0; }
+.orca-prompts-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 22px; color: #fff;
+  background: var(--grad);
+  flex-shrink: 0;
+  box-shadow: 0 6px 16px rgba(var(--accent-rgb),0.35);
+}
+.orca-prompts-copy { display:flex; flex-direction:column; gap: 4px; min-width: 0; }
+.orca-prompts-headline {
+  font-size: 18px; font-weight: 700; letter-spacing: -0.01em; color: var(--white); line-height: 1.2;
+}
+.orca-prompts-sub {
+  font-size: 12.5px; color: var(--text-muted); line-height: 1.4;
+}
+.orca-prompts-actions { display:flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* Buttons used in the prompts hero (and reusable) */
+.orca-btn-primary {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 36px; padding: 0 18px;
+  background: var(--grad); color: #fff;
+  border: none; border-radius: 10px;
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+  letter-spacing: -0.005em; cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
+  box-shadow: 0 4px 14px rgba(var(--accent-rgb),0.25);
+}
+.orca-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(var(--accent-rgb),0.45); }
+.orca-btn-primary:active { transform: translateY(0); }
+.orca-btn-ghost {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 36px; padding: 0 14px;
+  background: rgba(var(--accent-rgb),0.06);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle); border-radius: 10px;
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.18s;
+}
+.orca-btn-ghost:hover {
+  background: rgba(var(--accent-rgb),0.12);
+  border-color: rgba(var(--accent-rgb),0.35);
+  color: var(--white); transform: translateY(-1px);
+}
 
 /* Bento Row */
 .orca-bento {
@@ -3441,6 +3505,23 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
           </div>
           <div class="orca-kpi-value" id="orca-kpi-tasks">0</div>
           <div class="orca-kpi-sub">to launch</div>
+        </div>
+      </section>
+
+      <!-- Prompts Hero -->
+      <section class="orca-prompts-hero">
+        <div class="orca-prompts-left">
+          <div class="orca-prompts-icon">◧</div>
+          <div class="orca-prompts-copy">
+            <div class="orca-card-title">Prompts</div>
+            <div class="orca-prompts-headline">All 12 build prompts, on demand</div>
+            <div class="orca-prompts-sub">Pre-written and brand-aware. Copy into Claude, ChatGPT, or any LLM.</div>
+          </div>
+        </div>
+        <div class="orca-prompts-actions">
+          <button type="button" class="orca-btn-primary" onclick="openPanel('panel-prompts')">Open Prompt Pack →</button>
+          <button type="button" class="orca-btn-ghost" onclick="openPanel('panel-designer')">⌥ Designer Prompts</button>
+          <button type="button" class="orca-btn-ghost" onclick="openPanel('panel-email')">✉ Email Prompts</button>
         </div>
       </section>
 

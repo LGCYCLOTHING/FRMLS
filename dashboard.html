@@ -1398,6 +1398,37 @@ body:has(#screen-7.active) .orca-shell {
 /* Hide the old FRMLS logo in sidebar when in dashboard mode (profile chip replaces it). */
 .sidebar-nav.mode-dashboard .sb-logo { display: none; }
 
+/* On dashboard, the to-do sits right under the nav instead of being pushed to the bottom. */
+.sidebar-nav.mode-dashboard .sb-nav-list { margin-bottom: 0; }
+.sidebar-nav.mode-dashboard .sb-todo-widget {
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+}
+.sidebar-nav.mode-dashboard .sb-todo-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.04em; text-transform: none;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+.sidebar-nav.mode-dashboard .sb-todo-input {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px; font-weight: 500;
+  padding: 8px 10px; border-radius: 8px;
+}
+.sidebar-nav.mode-dashboard .sb-todo-add-btn {
+  width: 28px; height: 28px; border-radius: 7px; font-size: 16px;
+}
+.sidebar-nav.mode-dashboard .sb-todo-list { gap: 4px; max-height: none; }
+.sidebar-nav.mode-dashboard .sb-todo-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px; font-weight: 500;
+  color: var(--text-secondary); line-height: 1.4;
+}
+.sidebar-nav.mode-dashboard .sb-todo-check { width: 16px; height: 16px; min-width: 16px; border-radius: 4px; }
+.sidebar-nav.mode-dashboard .sb-todo-check.checked::after { font-size: 10px; }
+.sidebar-nav.mode-dashboard .sb-todo-item { padding: 6px 4px; }
+
 /* ===== ARRANGE MODE (iPhone-style) ===== */
 body.dashboard-arrange-mode { user-select:none; -webkit-user-select:none; }
 body.dashboard-arrange-mode .dash-box {

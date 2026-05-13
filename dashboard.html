@@ -1060,45 +1060,303 @@ body::before {
 .dash-box-arrow { font-size:11px; font-family:'DM Mono',monospace; color:#555555; margin-top:5px; text-align:right; letter-spacing:0.08em; transition:color 0.2s; }
 .dash-box:hover .dash-box-arrow { color:#aaaaaa; }
 
-/* ===== DASHBOARD COMPACT LAYOUT — fit all tiles above the fold ===== */
-/* Scoped to the dashboard screen so onboarding screens keep their narrow column. */
+/* ===== ORCA-STYLE DASHBOARD REDESIGN ===== */
+/* All rules scoped to #screen-7 / body:has(#screen-7.active) so onboarding is untouched. */
+
 @media (min-width:768px) {
-  /* Widen the app container only when the dashboard is active. */
+  /* Widen the app container on dashboard so the orca-shell can breathe. */
   body:has(#screen-7.active) .app {
-    max-width: 880px;
-    padding-top: 1.5rem;
-    padding-bottom: 2rem;
+    max-width: 1280px;
+    width: 100%;
+    padding: 1.25rem 1.5rem 2rem 1.5rem;
   }
+  /* Clear the fixed left sidebar when it's visible. */
   @media (min-width:1140px) {
-    body:has(#screen-7.active) .app { max-width: 900px; }
+    body:has(#screen-7.active) .app { padding-left: 210px; }
   }
-  @media (min-width:1280px) {
-    body:has(#screen-7.active) .app { max-width: 940px; }
-  }
-
-  /* Trim vertical spacing in the dashboard header. */
-  #screen-7 .logo            { margin-bottom: 1rem; }
-  #screen-7 .dash-build-progress { margin-bottom: 0.85rem; }
-  #screen-7 .dash-quick-actions  { margin-bottom: 0.85rem; }
-  #screen-7 .dash-welcome    { margin-bottom: 1rem; }
-  #screen-7 .dash-brand-name { font-size: 32px; }
-  #screen-7 .dash-subtitle   { margin-top: 4px; }
-  #screen-7 .dash-three-words{ margin-top: 4px; }
-
-  /* Compact card grid: auto-fit so it lands on 4 cols at desktop, 3 narrower. */
-  #screen-7 .dash-grid {
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 12px;
-    margin-bottom: 1rem;
-  }
-  #screen-7 .dash-box { padding: 18px; min-height: 132px; }
-  #screen-7 .dash-box-icon  { font-size: 22px; margin-bottom: 10px; }
-  #screen-7 .dash-box-title { font-size: 15px; margin-bottom: 4px; }
-  #screen-7 .dash-box-desc  { font-size: 12.5px; line-height: 1.45; }
-  #screen-7 .dash-box-last,
-  #screen-7 .dash-box-status{ font-size: 10px; margin-top: 8px; }
-  #screen-7 .dash-box-arrow { font-size: 10px; margin-top: 4px; }
+  /* Hide the fixed right snapshot panel on dashboard — we have inline preview. */
+  body:has(#screen-7.active) .snapshot-panel { display: none !important; }
 }
+
+/* The shell: one big rounded card holding the whole dashboard. */
+.orca-shell {
+  position: relative; z-index: 1;
+  background: linear-gradient(180deg, rgba(124,58,237,0.05), rgba(20,18,32,0.65) 40%, rgba(15,15,22,0.85));
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 28px;
+  padding: 26px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(124,58,237,0.04) inset;
+  overflow: hidden;
+}
+.orca-shell::before {
+  content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background: radial-gradient(ellipse 70% 50% at 0% 0%, rgba(124,58,237,0.10), transparent 60%),
+              radial-gradient(ellipse 60% 50% at 100% 100%, rgba(6,182,212,0.06), transparent 60%);
+  opacity: 0.9;
+}
+.orca-shell > * { position: relative; z-index: 1; }
+
+/* Topbar */
+.orca-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; margin-bottom: 22px; flex-wrap: wrap;
+}
+.orca-topbar-titles { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.orca-topbar-eyebrow {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.42);
+}
+.orca-topbar-title {
+  font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: #fff; line-height: 1.1;
+}
+.orca-topbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.orca-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 32px; padding: 0 14px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 999px; color: #d4d4dc; font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.18s;
+}
+.orca-pill:hover { background: rgba(124,58,237,0.12); border-color: rgba(124,58,237,0.35); color: #fff; transform: translateY(-1px); }
+.orca-pill kbd {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  padding: 1px 5px; margin-left: 4px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px; color: rgba(255,255,255,0.5);
+}
+
+/* Brand line */
+.orca-brandline { margin-bottom: 22px; }
+.orca-brand-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.orca-brand-name {
+  font-size: 38px; font-weight: 900; letter-spacing: -0.04em; line-height: 1;
+  background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; word-break: break-word;
+}
+.orca-brand-meta { display: flex; flex-direction: column; gap: 2px; margin-top: 6px; }
+.orca-brand-meta-line {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted);
+}
+.orca-brand-meta-words {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* KPI Row */
+.orca-kpis {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 12px; margin-bottom: 18px;
+}
+@media (max-width:900px) { .orca-kpis { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width:520px) { .orca-kpis { grid-template-columns: 1fr; } }
+
+.orca-kpi {
+  position: relative; overflow: hidden;
+  background: linear-gradient(165deg, rgba(124,58,237,0.18), rgba(30,18,52,0.45) 60%, rgba(15,15,22,0.6));
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 18px;
+  padding: 16px 16px 18px;
+  display: flex; flex-direction: column; gap: 8px;
+  min-height: 132px;
+}
+.orca-kpi[data-tone="build"]      { background: linear-gradient(165deg, rgba(124,58,237,0.22), rgba(30,18,52,0.5) 55%, rgba(15,15,22,0.65)); }
+.orca-kpi[data-tone="foundation"] { background: linear-gradient(165deg, rgba(6,182,212,0.18), rgba(18,42,52,0.45) 55%, rgba(15,15,22,0.65)); }
+.orca-kpi[data-tone="modules"]    { background: linear-gradient(165deg, rgba(157,92,245,0.16), rgba(38,20,60,0.45) 55%, rgba(15,15,22,0.65)); }
+.orca-kpi[data-tone="tasks"]      { background: linear-gradient(165deg, rgba(16,185,129,0.14), rgba(18,42,32,0.45) 55%, rgba(15,15,22,0.65)); }
+.orca-kpi::after {
+  content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px;
+  background: radial-gradient(circle, rgba(255,255,255,0.06), transparent 60%);
+  pointer-events:none;
+}
+.orca-kpi-head { display:flex; align-items:center; gap: 8px; }
+.orca-kpi-icon {
+  width: 26px; height: 26px; border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+  font-size: 13px; color: rgba(255,255,255,0.85);
+}
+.orca-kpi-label {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.55);
+}
+.orca-kpi-value {
+  font-size: 32px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: #fff;
+  margin-top: 4px;
+}
+.orca-kpi-sub {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.12em; color: rgba(255,255,255,0.45);
+}
+.orca-kpi-track {
+  margin-top: auto; height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden;
+}
+.orca-kpi-fill {
+  height: 100%; background: var(--grad); border-radius: 2px; width: 0%;
+  transition: width 0.5s ease;
+}
+.orca-kpi-fill.complete { box-shadow: 0 0 10px rgba(124,58,237,0.7); }
+
+/* Bento Row */
+.orca-bento {
+  display: grid; grid-template-columns: 1.4fr 1fr;
+  gap: 12px; margin-bottom: 22px;
+}
+@media (max-width:900px) { .orca-bento { grid-template-columns: 1fr; } }
+
+.orca-card {
+  background: rgba(20,18,28,0.6);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 18px;
+  padding: 18px;
+  position: relative; overflow: hidden;
+}
+.orca-card-head {
+  display:flex; align-items:center; justify-content: space-between; gap: 12px; margin-bottom: 14px;
+}
+.orca-card-title {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.55);
+}
+.orca-card-link {
+  background: none; border: none; color: #9d5cf5; cursor: pointer;
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.16em; text-transform: uppercase;
+}
+.orca-card-link:hover { color: #22d3ee; }
+.orca-card-meta {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.16em; color: rgba(255,255,255,0.5);
+}
+
+/* Live Preview card */
+.orca-card-preview::before {
+  content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background: radial-gradient(circle 280px at 30% 0%, rgba(124,58,237,0.10), transparent 70%);
+}
+.orca-card-preview > * { position: relative; z-index: 1; }
+.orca-preview-name {
+  font-size: 22px; font-weight: 900; letter-spacing: -0.03em; line-height: 1;
+  background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 14px; word-break: break-word;
+}
+.orca-preview-rows { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
+.orca-preview-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+}
+.orca-preview-key {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.45);
+}
+.orca-preview-val {
+  font-size: 12px; font-weight: 600; color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%; text-align: right;
+}
+.orca-preview-audience {
+  font-size: 12px; color: #aaa; line-height: 1.55; font-style: italic;
+  padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Build Timeline card */
+.orca-timeline-grid {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;
+  margin-bottom: 14px;
+}
+.orca-timeline-cell {
+  aspect-ratio: 1.4 / 1;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 6px;
+  position: relative;
+}
+.orca-timeline-cell.done {
+  background: linear-gradient(135deg, rgba(124,58,237,0.55), rgba(6,182,212,0.55));
+  border-color: transparent;
+  box-shadow: 0 0 12px rgba(124,58,237,0.25);
+}
+.orca-timeline-cell.active {
+  background: rgba(124,58,237,0.18); border-color: rgba(124,58,237,0.45);
+}
+.orca-timeline-legend {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.4);
+}
+
+/* Modules section */
+.orca-modules-section { margin-top: 4px; }
+.orca-section-head {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom: 12px;
+}
+.orca-section-title {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.6);
+}
+.orca-section-meta {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: 0.16em; color: rgba(255,255,255,0.4);
+}
+
+/* Dense module grid inside the orca shell */
+.orca-modules-section .dash-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 0;
+}
+.orca-modules-section .dash-box {
+  padding: 14px; min-height: 120px;
+  background: rgba(15,15,22,0.5); border-color: rgba(255,255,255,0.05);
+  border-radius: 14px;
+}
+.orca-modules-section .dash-box-icon  { font-size: 20px; margin-bottom: 8px; }
+.orca-modules-section .dash-box-title { font-size: 14px; margin-bottom: 3px; }
+.orca-modules-section .dash-box-desc  { font-size: 11.5px; line-height: 1.4; }
+.orca-modules-section .dash-box-last,
+.orca-modules-section .dash-box-status { font-size: 9.5px; margin-top: 6px; }
+.orca-modules-section .dash-box-arrow  { font-size: 9.5px; margin-top: 3px; }
+
+/* Sidebar restyle on dashboard mode — integrated card surface */
+.sidebar-nav.mode-dashboard {
+  background: linear-gradient(180deg, rgba(124,58,237,0.05), rgba(15,15,22,0.85));
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 24px;
+  width: 190px;
+  padding: 16px 14px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+}
+.sidebar-nav.mode-dashboard .sb-profile { display: flex !important; }
+
+/* Sidebar profile chip (shown only in dashboard mode) */
+.sb-profile {
+  display: none;
+  align-items: center; gap: 10px;
+  padding: 10px; margin-bottom: 14px;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+}
+.sb-profile-avatar {
+  width: 32px; height: 32px; border-radius: 9px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--grad); color: #fff;
+  font-size: 14px; font-weight: 900; letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+.sb-profile-info { display: flex; flex-direction: column; min-width: 0; }
+.sb-profile-name {
+  font-size: 12px; font-weight: 700; letter-spacing: -0.01em; color: #fff;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;
+}
+.sb-profile-role {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.45);
+}
+
+/* Hide the old FRMLS logo in sidebar when in dashboard mode (profile chip replaces it). */
+.sidebar-nav.mode-dashboard .sb-logo { display: none; }
 
 /* ===== ARRANGE MODE (iPhone-style) ===== */
 body.dashboard-arrange-mode { user-select:none; -webkit-user-select:none; }
@@ -2749,6 +3007,13 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 <!-- ===== LEFT SIDEBAR ===== -->
 <nav class="sidebar-nav" id="sidebarNav">
   <div class="sb-logo">FRML<span class="logo-s">S</span></div>
+  <div class="sb-profile" id="sbProfile">
+    <div class="sb-profile-avatar" id="sb-profile-avatar">Y</div>
+    <div class="sb-profile-info">
+      <div class="sb-profile-name" id="sb-profile-name">YOUR BRAND</div>
+      <div class="sb-profile-role">your store</div>
+    </div>
+  </div>
   <div class="sb-nav-list">
     <button class="sb-nav-item" onclick="goTo(7)">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
@@ -2942,40 +3207,109 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="dash-orb dash-orb-1"></div>
     <div class="dash-orb dash-orb-2"></div>
     <div class="dash-orb dash-orb-3"></div>
-    <div class="screen-hero">
-      <div class="logo">
-        <span class="logo-mark">FRML<span class="accent">S</span></span>
-        <span class="logo-tag">your store. built right.</span>
-      </div>
-    </div>
-    <!-- Build Progress Bar -->
-    <div class="dash-build-progress">
-      <span class="dash-build-label">build progress</span>
-      <div class="dash-build-track"><div class="dash-build-fill" id="dash-build-fill"></div></div>
-      <span class="dash-build-pct" id="dash-build-pct">0%</span>
-    </div>
-    <!-- Quick Actions Bar -->
-    <div class="dash-quick-actions">
-      <button class="quick-pill" onclick="openPanel('panel-prompts')"><span class="quick-pill-icon">◧</span> Prompt Pack</button>
-      <button class="quick-pill" onclick="openPanel('panel-brandkit')"><span class="quick-pill-icon">◆</span> Brand Kit</button>
-      <button class="quick-pill" onclick="openPanel('panel-checklist')"><span class="quick-pill-icon">◉</span> Checklist</button>
-      <button class="quick-pill" onclick="openPanel('panel-roadmap')"><span class="quick-pill-icon">◫</span> Roadmap</button>
-      <button class="quick-pill" onclick="openQuickSearch()" title="Ctrl+K"><span class="quick-pill-icon">⌕</span> Search <span style="font-size:9px;opacity:0.45;margin-left:2px">⌘K</span></button>
-    </div>
-    <div class="dash-welcome">
-      <div class="dash-brand-row">
-        <div class="dash-brand-name" id="dash-brand-name">YOUR BRAND</div>
-        <button type="button" class="dash-brand-edit" onclick="openBrandNameModal()" aria-label="Edit brand name" title="Edit brand name">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 20l4-1 11-11-3-3L5 16l-1 4z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M14.5 6.5l3 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-      <div class="dash-subtitle" id="dash-meta">—</div>
-      <span class="dash-three-words" id="dash-three-words"></span>
-    </div>
-    <div class="dash-grid" id="dash-grid">
+    <!-- ===== ORCA SHELL ===== -->
+    <div class="orca-shell">
+      <!-- Topbar -->
+      <header class="orca-topbar">
+        <div class="orca-topbar-titles">
+          <div class="orca-topbar-eyebrow">FRMLS · your store. built right.</div>
+          <h1 class="orca-topbar-title">Dashboard</h1>
+        </div>
+        <div class="orca-topbar-actions">
+          <button class="orca-pill" onclick="openPanel('panel-prompts')">◧ Prompts</button>
+          <button class="orca-pill" onclick="openPanel('panel-brandkit')">◆ Brand Kit</button>
+          <button class="orca-pill" onclick="openPanel('panel-checklist')">◉ Checklist</button>
+          <button class="orca-pill" onclick="openQuickSearch()" title="Ctrl+K">⌕ Search<kbd>⌘K</kbd></button>
+        </div>
+      </header>
+
+      <!-- Brand line -->
+      <section class="orca-brandline">
+        <div class="orca-brand-row">
+          <div class="orca-brand-name" id="dash-brand-name">YOUR BRAND</div>
+          <button type="button" class="dash-brand-edit" onclick="openBrandNameModal()" aria-label="Edit brand name" title="Edit brand name">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 20l4-1 11-11-3-3L5 16l-1 4z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14.5 6.5l3 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+        <div class="orca-brand-meta">
+          <span class="orca-brand-meta-line" id="dash-meta">—</span>
+          <span class="orca-brand-meta-words" id="dash-three-words"></span>
+        </div>
+      </section>
+
+      <!-- KPI Row -->
+      <section class="orca-kpis">
+        <div class="orca-kpi" data-tone="build">
+          <div class="orca-kpi-head">
+            <div class="orca-kpi-icon">◉</div>
+            <div class="orca-kpi-label">Build progress</div>
+          </div>
+          <div class="orca-kpi-value" id="dash-build-pct">0%</div>
+          <div class="orca-kpi-sub">steps complete</div>
+          <div class="orca-kpi-track"><div class="orca-kpi-fill" id="dash-build-fill"></div></div>
+        </div>
+        <div class="orca-kpi" data-tone="foundation">
+          <div class="orca-kpi-head">
+            <div class="orca-kpi-icon">◇</div>
+            <div class="orca-kpi-label">Brand Foundation</div>
+          </div>
+          <div class="orca-kpi-value" id="orca-kpi-foundation">—</div>
+          <div class="orca-kpi-sub">your why &amp; voice</div>
+        </div>
+        <div class="orca-kpi" data-tone="modules">
+          <div class="orca-kpi-head">
+            <div class="orca-kpi-icon">▦</div>
+            <div class="orca-kpi-label">Modules opened</div>
+          </div>
+          <div class="orca-kpi-value" id="orca-kpi-modules">0</div>
+          <div class="orca-kpi-sub">of 12 tools</div>
+        </div>
+        <div class="orca-kpi" data-tone="tasks">
+          <div class="orca-kpi-head">
+            <div class="orca-kpi-icon">✓</div>
+            <div class="orca-kpi-label">Tasks remaining</div>
+          </div>
+          <div class="orca-kpi-value" id="orca-kpi-tasks">0</div>
+          <div class="orca-kpi-sub">to launch</div>
+        </div>
+      </section>
+
+      <!-- Bento Row -->
+      <section class="orca-bento">
+        <article class="orca-card orca-card-preview">
+          <div class="orca-card-head">
+            <div class="orca-card-title">Live Preview</div>
+            <button class="orca-card-link" onclick="openPanel('panel-brandkit')">Open Brand Kit →</button>
+          </div>
+          <div class="orca-preview-name" id="orca-snap-name">—</div>
+          <div class="orca-preview-rows">
+            <div class="orca-preview-row"><span class="orca-preview-key">Category</span><span class="orca-preview-val" id="orca-snap-cat">—</span></div>
+            <div class="orca-preview-row"><span class="orca-preview-key">Vibe</span><span class="orca-preview-val" id="orca-snap-vibe">—</span></div>
+            <div class="orca-preview-row"><span class="orca-preview-key">Font</span><span class="orca-preview-val" id="orca-snap-font">—</span></div>
+            <div class="orca-preview-row"><span class="orca-preview-key">Palette</span><span class="orca-preview-val" id="orca-snap-color">—</span></div>
+          </div>
+          <div class="orca-preview-audience" id="orca-snap-audience">Your audience appears here as you fill in screen 2.</div>
+        </article>
+        <article class="orca-card orca-card-timeline">
+          <div class="orca-card-head">
+            <div class="orca-card-title">Build Timeline</div>
+            <span class="orca-card-meta" id="orca-timeline-meta">0 of 12 steps</span>
+          </div>
+          <div class="orca-timeline-grid" id="orca-timeline-grid"></div>
+          <div class="orca-timeline-legend">12 onboarding steps → store ready</div>
+        </article>
+      </section>
+
+      <!-- Modules -->
+      <section class="orca-modules-section">
+        <div class="orca-section-head">
+          <div class="orca-section-title">Modules</div>
+          <span class="orca-section-meta">12 tools</span>
+        </div>
+        <div class="dash-grid" id="dash-grid">
       <div class="dash-box" id="box-identity" onclick="openIdentityModal()">
         <div class="dash-box-icon">◈</div>
         <div class="dash-box-title">Brand Identity</div>
@@ -3088,7 +3422,9 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
         <div class="dash-box-last" id="bf-box-status">—</div>
         <div class="dash-box-arrow">Open →</div>
       </div>
-    </div>
+        </div><!-- /dash-grid -->
+      </section><!-- /orca-modules-section -->
+    </div><!-- /orca-shell -->
     <div class="btn-row">
       <button class="btn" onclick="goTo(6)">← Launch Checklist</button>
     </div>
@@ -4393,21 +4729,76 @@ function toggleSbSteps(btn) {
 function updateSnapshot() {
   const nameVal = (document.getElementById('brandName') || {}).value || state.brandName;
   const audVal  = (document.getElementById('audience')  || {}).value || state.audience;
-  const snapName  = document.getElementById('snap-name');
-  const snapCat   = document.getElementById('snap-cat');
-  const snapVibe  = document.getElementById('snap-vibe');
-  const snapFont  = document.getElementById('snap-font');
-  const snapColor = document.getElementById('snap-color');
-  const snapAud   = document.getElementById('snap-audience');
-  if (snapName)  snapName.textContent  = nameVal || '—';
-  if (snapCat)   snapCat.textContent   = state.cat       || '—';
-  if (snapVibe)  snapVibe.textContent  = state.vibe      || '—';
-  if (snapFont)  snapFont.textContent  = state.fontStyle || '—';
-  if (snapColor) snapColor.textContent = state.colorMood || '—';
-  if (snapAud) {
-    const a = (audVal || '').trim();
-    snapAud.textContent = a ? (a.length > 50 ? a.slice(0,50) + '…' : a) : 'Your audience appears here as you fill in screen 2.';
+  const cat = state.cat || '—', vibe = state.vibe || '—', font = state.fontStyle || '—', color = state.colorMood || '—';
+  const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setText('snap-name',  nameVal || '—');
+  setText('snap-cat',   cat);
+  setText('snap-vibe',  vibe);
+  setText('snap-font',  font);
+  setText('snap-color', color);
+  // Mirror into the inline Orca Live Preview card on the dashboard.
+  setText('orca-snap-name',  nameVal || '—');
+  setText('orca-snap-cat',   cat);
+  setText('orca-snap-vibe',  vibe);
+  setText('orca-snap-font',  font);
+  setText('orca-snap-color', color);
+  const a = (audVal || '').trim();
+  const audText = a ? (a.length > 50 ? a.slice(0,50) + '…' : a) : 'Your audience appears here as you fill in screen 2.';
+  setText('snap-audience',      audText);
+  setText('orca-snap-audience', audText);
+}
+
+/* ===== ORCA KPIs + TIMELINE + SIDEBAR PROFILE ===== */
+function updateOrcaKpis() {
+  // Brand Foundation status — read from the existing bf-box-status element
+  const bfStatus = document.getElementById('bf-box-status');
+  const foundationEl = document.getElementById('orca-kpi-foundation');
+  if (foundationEl) {
+    const txt = bfStatus ? (bfStatus.textContent || '').trim() : '';
+    foundationEl.textContent = (txt && txt !== '—') ? txt : 'not started';
   }
+  // Modules opened — count panels with a stored timestamp
+  const panels = ['panel-brandkit','panel-prompts','panel-designer','panel-goodlooks','panel-checklist','panel-resources','panel-roadmap','panel-email','panel-moodboard','panel-supplier'];
+  let opened = 0;
+  panels.forEach(p => { if (localStorage.getItem('frmls_panel_opened_' + p)) opened++; });
+  const modulesEl = document.getElementById('orca-kpi-modules');
+  if (modulesEl) modulesEl.textContent = opened;
+  // Tasks remaining — launch checklist unchecked count
+  const total = (typeof launchItems !== 'undefined' && launchItems.length) ? launchItems.length : 20;
+  let checked = 0;
+  try {
+    const raw = localStorage.getItem('frmlsChecklist');
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) checked = arr.length;
+    }
+  } catch (e) {}
+  const remaining = Math.max(0, total - checked);
+  const tasksEl = document.getElementById('orca-kpi-tasks');
+  if (tasksEl) tasksEl.textContent = remaining;
+}
+
+function renderOrcaTimeline() {
+  const grid = document.getElementById('orca-timeline-grid');
+  if (!grid) return;
+  const total = 12;
+  const done  = (typeof stepDone !== 'undefined') ? stepDone.size : 0;
+  let html = '';
+  for (let i = 0; i < total; i++) {
+    const cls = i < done ? 'done' : (i === done ? 'active' : '');
+    html += `<div class="orca-timeline-cell ${cls}"></div>`;
+  }
+  grid.innerHTML = html;
+  const meta = document.getElementById('orca-timeline-meta');
+  if (meta) meta.textContent = `${done} of ${total} steps`;
+}
+
+function updateSidebarProfile() {
+  const b = (state.brandName || '').trim();
+  const nameEl = document.getElementById('sb-profile-name');
+  const avEl   = document.getElementById('sb-profile-avatar');
+  if (nameEl) nameEl.textContent = (b || 'YOUR BRAND').toUpperCase();
+  if (avEl)   avEl.textContent   = (b ? b.charAt(0) : 'Y').toUpperCase();
 }
 
 /* ===== FONT PREVIEW LIVE UPDATE (PART 6) ===== */
@@ -4865,6 +5256,7 @@ function updateChecklistProgress() {
   if (fillEl)  fillEl.style.width = (checked / total * 100) + '%';
   if (banner)  banner.classList.toggle('hidden', checked < total);
   saveChecklistState();
+  if (typeof updateOrcaKpis === 'function') updateOrcaKpis();
 }
 
 /* ===== DASHBOARD ===== */
@@ -4887,6 +5279,10 @@ function buildDashboard() {
   bfLoadAnswers();
   bfUpdateBoxStatus();
   bfRefreshDashThreeWords();
+  updateSidebarProfile();
+  updateOrcaKpis();
+  renderOrcaTimeline();
+  updateSnapshot();
 }
 
 function updateDashProgress() {
@@ -4895,15 +5291,13 @@ function updateDashProgress() {
   const pct   = Math.round(done / total * 100);
   const fill  = document.getElementById('dash-build-fill');
   const label = document.getElementById('dash-build-pct');
-  if (!fill || !label) return;
-  fill.style.width = pct + '%';
-  if (done >= total) {
-    fill.classList.add('complete');
-    label.textContent = 'store ready';
-  } else {
-    fill.classList.remove('complete');
-    label.textContent = pct + '%';
+  if (fill) {
+    fill.style.width = pct + '%';
+    fill.classList.toggle('complete', done >= total);
   }
+  if (label) label.textContent = (done >= total) ? 'store ready' : (pct + '%');
+  renderOrcaTimeline();
+  updateOrcaKpis();
 }
 
 const PANEL_LS_PREFIX = 'frmls_panel_opened_';
@@ -4911,6 +5305,7 @@ const PANEL_LS_PREFIX = 'frmls_panel_opened_';
 function recordPanelOpen(panelId) {
   localStorage.setItem(PANEL_LS_PREFIX + panelId, Date.now().toString());
   refreshLastOpenedLabel(panelId);
+  if (typeof updateOrcaKpis === 'function') updateOrcaKpis();
 }
 
 function formatLastOpened(ts) {

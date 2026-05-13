@@ -1102,7 +1102,10 @@ body::before {
     align-self: flex-start;
     flex-shrink: 0;
     overflow-y: auto;
+    overflow-x: hidden;
   }
+  /* Hide the leftover "← Launch Checklist" btn-row on dashboard. */
+  body:has(#screen-7.active) #screen-7 > .btn-row { display: none; }
   body:has(#screen-7.active) .app {
     flex: 1; min-width: 0;
     padding: 10px 10px 10px 10px;
@@ -1452,13 +1455,16 @@ body:has(#screen-7.active) .orca-shell {
   font-size: 11px; font-weight: 500;
   letter-spacing: 0; text-transform: none;
 }
+.sidebar-nav.mode-dashboard .sb-todo-input-row { gap: 6px; min-width: 0; }
 .sidebar-nav.mode-dashboard .sb-todo-input {
+  flex: 1; min-width: 0;
   font-family: 'Inter', sans-serif;
   font-size: 13px; font-weight: 500;
   padding: 8px 10px; border-radius: 8px;
 }
 .sidebar-nav.mode-dashboard .sb-todo-add-btn {
-  width: 28px; height: 28px; border-radius: 7px; font-size: 16px;
+  width: 26px; height: 26px; border-radius: 7px; font-size: 15px;
+  flex-shrink: 0;
 }
 .sidebar-nav.mode-dashboard .sb-todo-list { gap: 4px; max-height: none; }
 .sidebar-nav.mode-dashboard .sb-todo-text {
@@ -1469,6 +1475,31 @@ body:has(#screen-7.active) .orca-shell {
 .sidebar-nav.mode-dashboard .sb-todo-check { width: 16px; height: 16px; min-width: 16px; border-radius: 4px; }
 .sidebar-nav.mode-dashboard .sb-todo-check.checked::after { font-size: 10px; }
 .sidebar-nav.mode-dashboard .sb-todo-item { padding: 6px 4px; }
+
+/* Resize handle — three vertical dots on the right edge, drag to resize. */
+.sb-resize-handle {
+  display: none;
+  position: absolute; top: 50%; right: 2px; transform: translateY(-50%);
+  width: 12px; height: 50px;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px;
+  cursor: ew-resize;
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: 7px;
+  z-index: 20;
+  opacity: 0.6; transition: opacity 0.15s, background 0.15s, border-color 0.15s;
+}
+.sidebar-nav.mode-dashboard .sb-resize-handle { display: flex; }
+.sb-resize-handle:hover,
+.sb-resize-handle.dragging { opacity: 1; background: rgba(var(--accent-rgb), 0.18); border-color: rgba(var(--accent-rgb), 0.4); }
+.sb-resize-dot {
+  width: 3px; height: 3px;
+  background: var(--text-muted); border-radius: 50%;
+}
+.sb-resize-handle:hover .sb-resize-dot,
+.sb-resize-handle.dragging .sb-resize-dot { background: var(--white); }
+body.sb-resizing { cursor: ew-resize !important; user-select: none; }
+body.sb-resizing * { user-select: none !important; }
 
 /* ===== ARRANGE MODE (iPhone-style) ===== */
 body.dashboard-arrange-mode { user-select:none; -webkit-user-select:none; }
@@ -3158,6 +3189,11 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <button class="sb-todo-add-btn" onclick="sbAddTodo()" title="Add task">+</button>
     </div>
     <div class="sb-todo-list" id="sbTodoList"></div>
+  </div>
+  <div class="sb-resize-handle" id="sbResizeHandle" title="Drag to resize sidebar" aria-label="Resize sidebar">
+    <span class="sb-resize-dot"></span>
+    <span class="sb-resize-dot"></span>
+    <span class="sb-resize-dot"></span>
   </div>
 </nav>
 
@@ -5001,6 +5037,56 @@ function clearCustomLogo() {
 function loadCustomLogo() {
   const saved = localStorage.getItem(LOGO_LS);
   if (saved) applyCustomLogo(saved);
+}
+
+/* ===== SIDEBAR RESIZE (drag the 3-dot handle on the right edge) ===== */
+const SB_WIDTH_LS = 'frmls_sidebar_width';
+const SB_MIN = 200, SB_MAX = 460;
+
+function initSidebarResize() {
+  const sidebar = document.getElementById('sidebarNav');
+  const handle  = document.getElementById('sbResizeHandle');
+  if (!sidebar || !handle) return;
+
+  // Restore saved width
+  const saved = parseInt(localStorage.getItem(SB_WIDTH_LS), 10);
+  if (saved && saved >= SB_MIN && saved <= SB_MAX) {
+    sidebar.style.setProperty('width', saved + 'px', 'important');
+    sidebar.style.setProperty('min-width', saved + 'px', 'important');
+  }
+
+  let dragging = false, startX = 0, startW = 0;
+  const onMove = e => {
+    if (!dragging) return;
+    let w = startW + (e.clientX - startX);
+    w = Math.max(SB_MIN, Math.min(SB_MAX, w));
+    sidebar.style.setProperty('width', w + 'px', 'important');
+    sidebar.style.setProperty('min-width', w + 'px', 'important');
+  };
+  const onUp = () => {
+    if (!dragging) return;
+    dragging = false;
+    document.body.classList.remove('sb-resizing');
+    handle.classList.remove('dragging');
+    localStorage.setItem(SB_WIDTH_LS, sidebar.offsetWidth);
+  };
+  handle.addEventListener('mousedown', e => {
+    if (!sidebar.classList.contains('mode-dashboard')) return;
+    dragging = true;
+    startX = e.clientX;
+    startW = sidebar.offsetWidth;
+    document.body.classList.add('sb-resizing');
+    handle.classList.add('dragging');
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+  // Double-click resets to default width
+  handle.addEventListener('dblclick', () => {
+    sidebar.style.removeProperty('width');
+    sidebar.style.removeProperty('min-width');
+    localStorage.removeItem(SB_WIDTH_LS);
+  });
 }
 
 /* ===== FONT PREVIEW LIVE UPDATE (PART 6) ===== */
@@ -7493,6 +7579,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadTheme();
   initColorMode();
   loadCustomLogo();
+  initSidebarResize();
 
   /* 2. Restore state object from localStorage */
   try {

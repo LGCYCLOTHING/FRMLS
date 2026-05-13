@@ -1094,11 +1094,12 @@ body::before {
   }
   body:has(#screen-7.active) .sidebar-nav.mode-dashboard {
     position: sticky;
-    top: 10px;
+    top: 0;
     left: auto; transform: none;
     width: 240px; min-width: 240px;
-    height: calc(100vh - 20px); max-height: calc(100vh - 20px);
-    margin: 10px 0 10px 10px;
+    height: 100vh; max-height: 100vh;
+    margin: 0;
+    border-radius: 0 24px 24px 0;
     align-self: flex-start;
     flex-shrink: 0;
     overflow-y: auto;
@@ -1320,16 +1321,16 @@ body:has(#screen-7.active) .orca-shell {
 @media (min-width:1140px) {
   body:has(#screen-7.active).has-pinned-panel .side-panel.pinned {
     position: sticky;
-    top: 10px;
+    top: 0;
     right: auto; bottom: auto; left: auto;
     transform: none !important;
     width: 440px;
-    height: calc(100vh - 20px);
-    max-height: calc(100vh - 20px);
-    margin: 10px 10px 10px 0;
+    height: 100vh;
+    max-height: 100vh;
+    margin: 0;
     border: 1px solid var(--border-subtle);
     border-left: 1px solid var(--border-subtle);
-    border-radius: 24px;
+    border-radius: 24px 0 0 24px;
     flex-shrink: 0;
     align-self: flex-start;
     z-index: 1;

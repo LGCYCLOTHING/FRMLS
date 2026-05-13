@@ -320,7 +320,16 @@ body::before {
 
 /* ===== SIDEBAR TODO WIDGET ===== */
 .sb-todo-widget { width:100%; margin-top:16px; padding-top:16px; border-top:1px solid var(--border-subtle); }
-.sb-todo-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; }
+.sb-todo-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px; }
+.sb-todo-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-muted); }
+.sb-todo-clear {
+  background:none; border:none; cursor:pointer;
+  font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--text-muted);
+  padding:2px 4px; border-radius:4px;
+  transition:color 0.15s, background 0.15s;
+}
+.sb-todo-clear:hover { color:#ef4444; background:rgba(239,68,68,0.08); }
 .sb-todo-input-row { display:flex; align-items:center; gap:5px; margin-bottom:8px; }
 .sb-todo-input {
   flex:1; background:rgba(255,255,255,0.04); border:1px solid var(--border-subtle);
@@ -1384,7 +1393,34 @@ body:has(#screen-7.active) .orca-shell {
   background: var(--grad); color: #fff;
   font-size: 14px; font-weight: 900; letter-spacing: -0.02em;
   flex-shrink: 0;
+  position: relative; overflow: hidden;
+  padding: 0; border: none; cursor: pointer;
+  background-size: cover; background-position: center;
 }
+.sb-profile-avatar-letter { display: inline-flex; align-items: center; justify-content: center; }
+.sb-profile-avatar-edit {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.55); color: #fff;
+  opacity: 0; transition: opacity 0.18s;
+  border-radius: inherit;
+}
+.sb-profile-avatar:hover .sb-profile-avatar-edit,
+.sb-profile-avatar:focus-visible .sb-profile-avatar-edit { opacity: 1; }
+.sb-profile-avatar.has-logo .sb-profile-avatar-letter { display: none; }
+.sb-profile-avatar.has-logo { background: none; }
+.sb-profile-avatar.has-logo[style*="background-image"] { background: inherit; }
+.sb-profile-avatar-clear {
+  position: absolute; top: -4px; right: -4px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #ef4444; color: #fff; border: 1px solid var(--bg-card);
+  font-size: 9px; line-height: 1; font-weight: 700;
+  display: none; align-items: center; justify-content: center;
+  cursor: pointer; padding: 0;
+  z-index: 2;
+}
+.sb-profile-avatar.has-logo .sb-profile-avatar-clear { display: flex; }
+.sb-profile-avatar-clear:hover { background: #dc2626; }
 .sb-profile-info { display: flex; flex-direction: column; min-width: 0; }
 .sb-profile-name {
   font-size: 12px; font-weight: 700; letter-spacing: -0.01em; color: var(--white);
@@ -1404,12 +1440,17 @@ body:has(#screen-7.active) .orca-shell {
   margin-top: 14px; padding-top: 14px;
   border-top: 1px solid var(--border-subtle);
 }
+.sidebar-nav.mode-dashboard .sb-todo-head { margin-bottom: 10px; }
 .sidebar-nav.mode-dashboard .sb-todo-title {
   font-family: 'Inter', sans-serif;
   font-size: 12px; font-weight: 600;
   letter-spacing: 0.04em; text-transform: none;
   color: var(--text-secondary);
-  margin-bottom: 10px;
+}
+.sidebar-nav.mode-dashboard .sb-todo-clear {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0; text-transform: none;
 }
 .sidebar-nav.mode-dashboard .sb-todo-input {
   font-family: 'Inter', sans-serif;
@@ -3079,12 +3120,19 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 <nav class="sidebar-nav" id="sidebarNav">
   <div class="sb-logo">FRML<span class="logo-s">S</span></div>
   <div class="sb-profile" id="sbProfile">
-    <div class="sb-profile-avatar" id="sb-profile-avatar">Y</div>
+    <button type="button" class="sb-profile-avatar" id="sb-profile-avatar" onclick="openLogoUpload()" aria-label="Upload custom logo" title="Upload custom logo (1024×1024 recommended)">
+      <span class="sb-profile-avatar-letter" id="sb-profile-avatar-letter">Y</span>
+      <span class="sb-profile-avatar-edit" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16l-1 4z"/><path d="M14.5 6.5l3 3"/></svg>
+      </span>
+      <button type="button" class="sb-profile-avatar-clear" id="sb-profile-avatar-clear" onclick="event.stopPropagation();clearCustomLogo()" aria-label="Remove custom logo" title="Remove logo">✕</button>
+    </button>
     <div class="sb-profile-info">
       <div class="sb-profile-name" id="sb-profile-name">YOUR BRAND</div>
       <div class="sb-profile-role">your store</div>
     </div>
   </div>
+  <input type="file" id="logoUploadInput" accept="image/png,image/jpeg,image/webp,image/svg+xml" style="display:none" onchange="handleLogoUpload(this)" />
   <div class="sb-nav-list">
     <button class="sb-nav-item" onclick="goTo(7)">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
@@ -3100,7 +3148,10 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     </button>
   </div>
   <div class="sb-todo-widget">
-    <div class="sb-todo-title">To-Do</div>
+    <div class="sb-todo-head">
+      <div class="sb-todo-title">To-Do</div>
+      <button type="button" class="sb-todo-clear" id="sbTodoClear" onclick="sbClearAllTodos()" title="Clear all tasks">clear all</button>
+    </div>
     <div class="sb-todo-input-row">
       <input class="sb-todo-input" id="sbTodoInput" type="text" placeholder="add a task…"
         onkeydown="if(event.key==='Enter')sbAddTodo()" />
@@ -4870,10 +4921,86 @@ function renderOrcaTimeline() {
 
 function updateSidebarProfile() {
   const b = (state.brandName || '').trim();
-  const nameEl = document.getElementById('sb-profile-name');
-  const avEl   = document.getElementById('sb-profile-avatar');
-  if (nameEl) nameEl.textContent = (b || 'YOUR BRAND').toUpperCase();
-  if (avEl)   avEl.textContent   = (b ? b.charAt(0) : 'Y').toUpperCase();
+  const nameEl   = document.getElementById('sb-profile-name');
+  const letterEl = document.getElementById('sb-profile-avatar-letter');
+  if (nameEl)   nameEl.textContent   = (b || 'YOUR BRAND').toUpperCase();
+  if (letterEl) letterEl.textContent = (b ? b.charAt(0) : 'Y').toUpperCase();
+}
+
+/* ===== CUSTOM LOGO UPLOAD (sidebar profile avatar) ===== */
+const LOGO_LS = 'frmls_custom_logo';
+const LOGO_STORE_SIZE = 512; // px — square, cover-fit. Source 1024+ recommended.
+
+function openLogoUpload() {
+  const input = document.getElementById('logoUploadInput');
+  if (input) input.click();
+}
+
+function handleLogoUpload(input) {
+  const file = input && input.files && input.files[0];
+  if (!file) return;
+  if (!file.type || !file.type.startsWith('image/')) {
+    alert('Please choose an image file (PNG, JPG, WebP, or SVG).');
+    input.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    // SVGs are stored as-is (vector — no rasterizing).
+    if (file.type === 'image/svg+xml') {
+      try {
+        localStorage.setItem(LOGO_LS, e.target.result);
+        applyCustomLogo(e.target.result);
+      } catch (err) { alert('Image too large to save locally. Try a smaller file.'); }
+      input.value = '';
+      return;
+    }
+    const img = new Image();
+    img.onload = () => {
+      const size = LOGO_STORE_SIZE;
+      const canvas = document.createElement('canvas');
+      canvas.width = size; canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      // Cover-fit (crop to square, centered)
+      const ratio = Math.max(size / img.width, size / img.height);
+      const w = img.width * ratio, h = img.height * ratio;
+      ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.88);
+      try {
+        localStorage.setItem(LOGO_LS, dataUrl);
+        applyCustomLogo(dataUrl);
+      } catch (err) {
+        alert('Image too large to save locally. Try a smaller file.');
+      }
+    };
+    img.onerror = () => alert("Couldn't read that image. Try a different file.");
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  input.value = '';
+}
+
+function applyCustomLogo(dataUrl) {
+  const av = document.getElementById('sb-profile-avatar');
+  if (!av) return;
+  if (dataUrl) {
+    av.classList.add('has-logo');
+    av.style.backgroundImage = `url("${dataUrl}")`;
+  } else {
+    av.classList.remove('has-logo');
+    av.style.backgroundImage = '';
+  }
+}
+
+function clearCustomLogo() {
+  if (!confirm('Remove your custom logo?')) return;
+  localStorage.removeItem(LOGO_LS);
+  applyCustomLogo(null);
+}
+
+function loadCustomLogo() {
+  const saved = localStorage.getItem(LOGO_LS);
+  if (saved) applyCustomLogo(saved);
 }
 
 /* ===== FONT PREVIEW LIVE UPDATE (PART 6) ===== */
@@ -7322,6 +7449,15 @@ function sbDeleteTodo(id) {
   sbRenderTodos();
 }
 
+function sbClearAllTodos() {
+  if (!sbTodosData.length) return;
+  const n = sbTodosData.length;
+  if (!confirm(`Clear all ${n} task${n === 1 ? '' : 's'}? This can't be undone.`)) return;
+  sbTodosData = [];
+  sbSaveTodos();
+  sbRenderTodos();
+}
+
 function sbRenderTodos() {
   const list = document.getElementById('sbTodoList');
   if (!list) return;
@@ -7331,6 +7467,8 @@ function sbRenderTodos() {
       <span class="sb-todo-text" onclick="sbToggleTodo(${t.id})">${escHtml(t.text)}</span>
       <button class="sb-todo-del" onclick="sbDeleteTodo(${t.id})" title="Delete">✕</button>
     </div>`).join('');
+  const clearBtn = document.getElementById('sbTodoClear');
+  if (clearBtn) clearBtn.style.display = sbTodosData.length ? '' : 'none';
 }
 
 /* ===== INIT ===== */
@@ -7354,6 +7492,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* 1. Theme + color mode (no DOM dependencies) */
   loadTheme();
   initColorMode();
+  loadCustomLogo();
 
   /* 2. Restore state object from localStorage */
   try {

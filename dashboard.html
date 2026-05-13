@@ -2584,26 +2584,62 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 
 /* ===== LIGHT MODE: COMPLETE REBUILD ===== */
 
-/* Core variables */
+/* Core variables — warm, soft, accent-tinted (not pure white) */
 [data-theme="light"] {
-  --bg: #f5f4f0;
-  --bg-card: #ffffff;
-  --bg-card-2: #f8f7f4;
-  --bg-prompt: #f5f4f0;
-  --white: #111111;
-  --text-muted: #888888;
-  --text-secondary: #555555;
-  --border-subtle: rgba(0,0,0,0.08);
-  --border-mid: rgba(0,0,0,0.14);
+  --bg: #ece8df;
+  --bg-card: #f7f4ec;
+  --bg-card-2: #efebe1;
+  --bg-prompt: #f0ede4;
+  --white: #1a1a1a;
+  --text-muted: #777777;
+  --text-secondary: #444444;
+  --border-subtle: rgba(0,0,0,0.09);
+  --border-mid: rgba(0,0,0,0.15);
 }
 
 /* Body */
-[data-theme="light"] body { color: #111111; }
+[data-theme="light"] body { color: #1a1a1a; }
 
-/* Orbs — same purple/cyan, reduce to ~0.06 effective opacity */
+/* Orbs and ambience cranked up so the theme accent paints the background */
 [data-theme="light"] .orb-purple,
-[data-theme="light"] .orb-cyan { opacity: 0.5; }
-[data-theme="light"] body::before { opacity: 0.25; }
+[data-theme="light"] .orb-cyan { opacity: 1; }
+[data-theme="light"] body::before { opacity: 0.85; }
+
+/* Boost accent gradients in light mode so the theme color reads */
+[data-theme="light"] .orca-shell {
+  background: linear-gradient(180deg, rgba(var(--accent-rgb),0.12), var(--bg-card) 45%, var(--bg-card-2));
+}
+[data-theme="light"] .orca-shell::before {
+  background: radial-gradient(ellipse 70% 50% at 0% 0%, rgba(var(--accent-rgb),0.18), transparent 65%),
+              radial-gradient(ellipse 60% 50% at 100% 100%, color-mix(in srgb, var(--cyan) 14%, transparent), transparent 65%);
+}
+[data-theme="light"] .orca-kpi {
+  background: linear-gradient(165deg, rgba(var(--accent-rgb),0.16), var(--bg-card) 55%, var(--bg-card-2));
+}
+[data-theme="light"] .orca-kpi[data-tone="build"] {
+  background: linear-gradient(165deg, rgba(var(--accent-rgb),0.22), var(--bg-card) 55%, var(--bg-card-2));
+}
+[data-theme="light"] .orca-kpi[data-tone="foundation"] {
+  background: linear-gradient(165deg, color-mix(in srgb, var(--cyan) 22%, transparent), var(--bg-card) 55%, var(--bg-card-2));
+}
+[data-theme="light"] .orca-kpi[data-tone="modules"] {
+  background: linear-gradient(165deg, rgba(var(--accent-rgb),0.14), var(--bg-card) 55%, var(--bg-card-2));
+}
+[data-theme="light"] .orca-kpi[data-tone="tasks"] {
+  background: linear-gradient(165deg, color-mix(in srgb, var(--cyan) 18%, transparent), var(--bg-card) 55%, var(--bg-card-2));
+}
+[data-theme="light"] .orca-prompts-hero {
+  background: linear-gradient(135deg, rgba(var(--accent-rgb),0.22), color-mix(in srgb, var(--cyan) 16%, transparent) 60%, var(--bg-card));
+}
+[data-theme="light"] .orca-card-nextstep {
+  background: linear-gradient(165deg, rgba(var(--accent-rgb),0.14), var(--bg-card) 60%, var(--bg-card-2));
+}
+[data-theme="light"] .sidebar-nav.mode-dashboard {
+  background: linear-gradient(180deg, rgba(var(--accent-rgb),0.10), var(--bg-card) 55%, var(--bg-card-2));
+}
+[data-theme="light"] .side-panel.pinned {
+  background: linear-gradient(180deg, rgba(var(--accent-rgb),0.10), var(--bg-card) 55%, var(--bg-card-2)) !important;
+}
 
 /* ---- Sidebar ---- */
 [data-theme="light"] .sidebar-nav { background: #eeede8; border-right: 1px solid #d8d6d0; }

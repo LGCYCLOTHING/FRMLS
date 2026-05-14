@@ -642,8 +642,8 @@ a{text-decoration:none;color:inherit;}
 ───────────────────────────────────────────────────────────────────────────── */
 .showcase{border-top:1px solid var(--border);padding:80px 0;overflow:hidden;}
 .showcase-head{text-align:center;margin-bottom:52px;display:flex;flex-direction:column;align-items:center;}
-.showcase .wrap{max-width:1400px;}
-.showcase-inner{display:grid;grid-template-columns:1.55fr 1fr;gap:64px;align-items:start;}
+.showcase .wrap{max-width:1520px;}
+.showcase-inner{display:grid;grid-template-columns:minmax(0,2.05fr) minmax(320px,1fr);gap:96px;align-items:start;}
 .showcase-left{position:sticky;top:12vh;}
 .showcase-img{
   position:relative;border-radius:var(--r-lg);overflow:hidden;
@@ -801,8 +801,11 @@ a{text-decoration:none;color:inherit;}
   .feat-grid{grid-template-columns:repeat(2,1fr);}
   .feat-h{font-size:42px;}
 }
+@media(max-width:1300px){
+  .showcase-inner{grid-template-columns:minmax(0,1.7fr) minmax(280px,1fr);gap:64px;}
+}
 @media(max-width:1100px){
-  .showcase-inner{grid-template-columns:1.2fr 1fr;gap:40px;}
+  .showcase-inner{grid-template-columns:minmax(0,1.4fr) minmax(260px,1fr);gap:48px;}
 }
 @media(max-width:900px){
   .showcase-inner{grid-template-columns:1fr;gap:40px;}
@@ -1169,8 +1172,7 @@ a{text-decoration:none;color:inherit;}
   <div class="wrap">
     <div class="showcase-head">
       <span class="section-pill rv">Inside the dashboard</span>
-      <h2 class="section-h rv d1">this is what you actually get.</h2>
-      <p class="section-sub rv d2">no mockups. no marketing fluff. this is the real dashboard.</p>
+      <h2 class="section-h rv d1">Every step of your brand, in one workspace.</h2>
     </div>
     <div class="showcase-inner">
 

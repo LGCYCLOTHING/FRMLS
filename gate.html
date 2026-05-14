@@ -575,13 +575,6 @@ a{text-decoration:none;color:inherit;}
 @property --ang{ syntax:'<angle>'; inherits:false; initial-value:0deg; }
 @keyframes angSpin{to{--ang:360deg;}}
 
-.feat-num{
-  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;
-  color:rgba(255,255,255,0.28);text-transform:uppercase;
-  display:flex;align-items:center;gap:8px;margin-bottom:18px;
-}
-.feat-num::after{content:"";flex:1;height:1px;background:linear-gradient(90deg, rgba(255,255,255,0.10), transparent);}
-
 .feat-icon{
   position:relative;width:38px;height:38px;margin-bottom:18px;
   display:inline-flex;align-items:center;justify-content:center;
@@ -626,39 +619,22 @@ a{text-decoration:none;color:inherit;}
 .feat-desc{
   font-size:14px;font-weight:400;color:rgba(255,255,255,0.55);line-height:1.6;
 }
-.feat-tag{
-  display:inline-flex;align-items:center;gap:6px;margin-top:14px;
-  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;
-  text-transform:uppercase;color:rgba(157,92,245,0.85);
-  opacity:0;transform:translateY(4px);transition:opacity .3s, transform .3s;
-}
-.feat-tag::before{content:"";width:14px;height:1px;background:currentColor;}
-.feat-card:hover .feat-tag{opacity:1;transform:translateY(0);}
-
 /* Staggered reveal */
 .feat-card.rv{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);}
 .feat-card.rv.vis{opacity:1;transform:translateY(0);}
-.feat-card.rv.dx1{transition-delay:60ms;}
-.feat-card.rv.dx2{transition-delay:120ms;}
-.feat-card.rv.dx3{transition-delay:180ms;}
-.feat-card.rv.dx4{transition-delay:240ms;}
-.feat-card.rv.dx5{transition-delay:300ms;}
-.feat-card.rv.dx6{transition-delay:360ms;}
-.feat-card.rv.dx7{transition-delay:420ms;}
-.feat-card.rv.dx8{transition-delay:480ms;}
+.feat-card.rv.dx1{transition-delay:40ms;}
+.feat-card.rv.dx2{transition-delay:80ms;}
+.feat-card.rv.dx3{transition-delay:120ms;}
+.feat-card.rv.dx4{transition-delay:160ms;}
+.feat-card.rv.dx5{transition-delay:200ms;}
+.feat-card.rv.dx6{transition-delay:240ms;}
+.feat-card.rv.dx7{transition-delay:280ms;}
+.feat-card.rv.dx8{transition-delay:320ms;}
+.feat-card.rv.dx9{transition-delay:360ms;}
+.feat-card.rv.dx10{transition-delay:400ms;}
+.feat-card.rv.dx11{transition-delay:440ms;}
+.feat-card.rv.dx12{transition-delay:480ms;}
 
-.feat-foot{
-  display:flex;align-items:center;justify-content:center;gap:18px;
-  margin-top:48px;
-  font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.10em;
-  text-transform:uppercase;color:rgba(255,255,255,0.38);
-}
-.feat-foot .ff-line{flex:1;max-width:140px;height:1px;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);}
-.feat-foot em{
-  font-style:normal;font-family:'Instrument Serif', serif;letter-spacing:.02em;
-  font-size:15px;text-transform:none;
-  background:var(--grad-90);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
 .feat-title em{font-style:italic;color:rgba(255,255,255,0.65);}
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -948,16 +924,10 @@ a{text-decoration:none;color:inherit;}
   .feat-sub{font-size:10px;letter-spacing:.10em;}
   .feat-sub .cursor{width:6px;height:11px;}
   .feat-card{padding:16px 14px 14px;border-radius:10px;}
-  .feat-num{font-size:8.5px;letter-spacing:.12em;margin-bottom:12px;gap:6px;}
   .feat-icon{width:30px;height:30px;margin-bottom:12px;border-radius:8px;}
   .feat-icon svg{width:16px;height:16px;stroke-width:1.6;}
   .feat-title{font-size:14px;margin-bottom:6px;letter-spacing:-0.015em;line-height:1.2;}
   .feat-desc{font-size:12px;line-height:1.5;}
-  .feat-tag{font-size:8.5px;letter-spacing:.10em;margin-top:10px;opacity:1;transform:none;}
-  .feat-tag::before{width:10px;}
-  .feat-foot{margin-top:28px;font-size:10px;letter-spacing:.06em;gap:10px;flex-direction:column;text-align:center;padding:0 16px;}
-  .feat-foot em{font-size:13px;}
-  .feat-foot .ff-line{display:none;}
 
   .pricing-section{padding:60px 0;}
   .price-card{padding:32px 28px;}
@@ -977,7 +947,6 @@ a{text-decoration:none;color:inherit;}
   .feat-card{padding:14px 12px 12px;}
   .feat-title{font-size:13px;}
   .feat-desc{font-size:11.5px;}
-  .feat-num{font-size:8px;}
 }
 
 /* ── GRAIN OVERLAY ─────────────────────────────────────────────────────────── */
@@ -1170,91 +1139,101 @@ a{text-decoration:none;color:inherit;}
     <div class="feat-grid">
 
       <div class="feat-card rv dx1">
-        <div class="feat-num">01 — Foundation</div>
         <div class="feat-icon">
           <svg viewBox="0 0 24 24"><path d="M12 2l2.5 7H22l-6 4.5L18.5 21 12 16.5 5.5 21 8 13.5 2 9h7.5L12 2z"/></svg>
         </div>
         <div class="feat-title">Brand <span class="accent">Foundation</span></div>
-        <div class="feat-desc">Your why, your voice, your promise. A guided flow that defines what your brand actually stands for — before you touch a single tool.</div>
-        <div class="feat-tag">First step</div>
+        <div class="feat-desc">Your why, your voice, your promise. A guided flow that defines what your brand actually stands for.</div>
       </div>
 
       <div class="feat-card rv dx2">
-        <div class="feat-num">02 — Direction</div>
         <div class="feat-icon">
           <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>
         </div>
-        <div class="feat-title">Brand <span class="accent">Identity Finder</span></div>
-        <div class="feat-desc">A guided 5-step flow that locks in your category, vibe, font direction, and color mood — so every decision after this point is consistent.</div>
-        <div class="feat-tag">Guided flow</div>
+        <div class="feat-title">Brand <span class="accent">Identity</span></div>
+        <div class="feat-desc">Category, vibe, font, and color direction — locked in before you build anything.</div>
       </div>
 
       <div class="feat-card rv dx3">
-        <div class="feat-num">03 — Locked in</div>
         <div class="feat-icon">
           <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
         </div>
         <div class="feat-title">Brand <span class="accent">Kit</span></div>
-        <div class="feat-desc">Your colors, fonts, and tone of voice saved in one place — and pulled into every prompt, email, and design decision automatically.</div>
-        <div class="feat-tag">Auto-fills everywhere</div>
+        <div class="feat-desc">Your colors, fonts, and tone of voice — pulled into every prompt, email, and decision.</div>
       </div>
 
       <div class="feat-card rv dx4">
-        <div class="feat-num">04 — Prompts</div>
         <div class="feat-icon">
           <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5M8 9h2"/></svg>
         </div>
-        <div class="feat-title">12-Step <span class="accent">Prompt Pack</span></div>
-        <div class="feat-desc">Every prompt pre-filled with your brand voice, audience, and direction. Paste it into ChatGPT or Claude — nothing left blank.</div>
-        <div class="feat-tag">12 prompts</div>
+        <div class="feat-title">Prompt <span class="accent">Pack</span></div>
+        <div class="feat-desc">All 12 build prompts, pre-filled with your brand voice. Paste into Claude, ChatGPT, or any LLM.</div>
       </div>
 
       <div class="feat-card rv dx5">
-        <div class="feat-num">05 — Build</div>
         <div class="feat-icon">
           <svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
         </div>
-        <div class="feat-title">Designer <span class="accent">Code Prompts</span></div>
-        <div class="feat-desc">Claude Code snippets that build your Shopify theme around <em>your</em> brand. Not a generic template — your store, built right.</div>
-        <div class="feat-tag">Shopify ready</div>
+        <div class="feat-title">Designer <span class="accent">Prompts</span></div>
+        <div class="feat-desc">Claude Code snippets that build your Shopify theme around <em>your</em> brand — not a generic template.</div>
       </div>
 
       <div class="feat-card rv dx6">
-        <div class="feat-num">06 — Map</div>
         <div class="feat-icon">
           <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.2"/><circle cx="18" cy="6" r="2.2"/><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="18" r="2.2"/><path d="M8 6h8M6 8v8M18 8v8M8 18h8"/></svg>
         </div>
         <div class="feat-title">Store <span class="accent">Roadmap</span></div>
-        <div class="feat-desc">A visual map of your entire build. See how every step connects — click any node to jump straight in.</div>
-        <div class="feat-tag">Interactive</div>
+        <div class="feat-desc">A visual map of every step. See how it connects — click any node to jump straight in.</div>
       </div>
 
       <div class="feat-card rv dx7">
-        <div class="feat-num">07 — Retention</div>
         <div class="feat-icon">
           <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
         </div>
         <div class="feat-title">Email <span class="accent">Marketing</span></div>
-        <div class="feat-desc">Welcome, abandoned cart, post-purchase — flows, subject lines, and copy pre-filled with your identity. Ready to paste into Klaviyo.</div>
-        <div class="feat-tag">Flows + copy</div>
+        <div class="feat-desc">Welcome, abandoned cart, post-purchase — flows, copy, and subject lines in your brand voice.</div>
       </div>
 
       <div class="feat-card rv dx8">
-        <div class="feat-num">08 — Launch</div>
         <div class="feat-icon">
           <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
         </div>
         <div class="feat-title">Launch <span class="accent">Checklist</span></div>
-        <div class="feat-desc">20 items to check before you go live. Track your progress and launch with nothing missing — and nothing rushed.</div>
-        <div class="feat-tag">20 checks</div>
+        <div class="feat-desc">20 items to check before you go live. Track progress and launch with nothing missing.</div>
       </div>
 
-    </div>
+      <div class="feat-card rv dx9">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="2"/><path d="M8 9V6a4 4 0 0 1 8 0v3"/><path d="M3 14h18"/></svg>
+        </div>
+        <div class="feat-title">Supplier <span class="accent">Hub</span></div>
+        <div class="feat-desc">Manage suppliers, orders, and costs in one place — with notes, links, and contact info.</div>
+      </div>
 
-    <div class="feat-foot rv d3">
-      <span class="ff-line"></span>
-      <span class="ff-text">plus <em>Supplier Hub</em>, <em>Mood Board</em>, <em>Store Inspiration</em>, and <em>Resources</em> — every tool in one place.</span>
-      <span class="ff-line"></span>
+      <div class="feat-card rv dx10">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
+        </div>
+        <div class="feat-title">Mood <span class="accent">Board</span></div>
+        <div class="feat-desc">A canvas for your visual references. Pin what inspires you, build the look from one place.</div>
+      </div>
+
+      <div class="feat-card rv dx11">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="feat-title">Store <span class="accent">Inspiration</span></div>
+        <div class="feat-desc">Curated references from stores that get it right — homepages, PDPs, navs, and emails.</div>
+      </div>
+
+      <div class="feat-card rv dx12">
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg>
+        </div>
+        <div class="feat-title">Resources <span class="accent">Library</span></div>
+        <div class="feat-desc">Every tool you need to build — apps, fonts, plugins, image sources, and more. All in one place.</div>
+      </div>
+
     </div>
 
   </div>

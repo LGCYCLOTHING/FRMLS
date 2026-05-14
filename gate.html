@@ -887,6 +887,39 @@ a{text-decoration:none;color:inherit;}
 .sr-block-desc{
   font-size:13px;line-height:1.55;color:rgba(255,255,255,0.55);margin:0;
 }
+.sr-block-desc em{
+  font-style:italic;color:rgba(255,255,255,0.8);
+}
+
+/* Closing block — CTA-style, matches the lead block's prominence */
+.sr-block-close{
+  display:block !important;
+  padding:22px 22px 22px !important;
+  border-radius:14px !important;
+  background:
+    linear-gradient(180deg, rgba(6,182,212,0.08), rgba(124,58,237,0.04)),
+    rgba(10,8,20,0.6) !important;
+  border:1px solid rgba(34,211,238,0.30) !important;
+  margin-top:6px;
+}
+.sr-block-close:hover{transform:none !important;}
+.sr-block-close .sr-block-title{
+  font-size:18px;margin-bottom:8px;
+  background:var(--grad-90);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.sr-block-cta{
+  display:inline-flex;align-items:center;gap:6px;margin-top:14px;
+  padding:10px 18px;border-radius:100px;
+  font-family:'DM Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.10em;
+  text-transform:uppercase;color:#fff;
+  background:linear-gradient(135deg, #7c3aed, #06b6d4);
+  box-shadow:0 0 24px rgba(124,58,237,0.35);
+  transition:transform .2s, box-shadow .2s;
+}
+.sr-block-cta:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 30px rgba(124,58,237,0.55);
+}
 
 /* ─────────────────────────────────────────────────────────────────────────────
    PRICING
@@ -1425,16 +1458,56 @@ a{text-decoration:none;color:inherit;}
         <div class="sr-block">
           <div class="sr-num">02</div>
           <div class="sr-block-body">
-            <div class="sr-block-title">Twelve modules. One workspace.</div>
-            <p class="sr-block-desc">Brand Kit, Prompt Pack, Designer Prompts, Roadmap, Email, Checklist — all one click away in the dashboard below.</p>
+            <div class="sr-block-title">Every prompt, pre-filled</div>
+            <p class="sr-block-desc">Open any of the 12 prompts and they already know your category, your audience, your tone. Paste into Claude or ChatGPT and run.</p>
           </div>
         </div>
 
         <div class="sr-block">
           <div class="sr-num">03</div>
           <div class="sr-block-body">
+            <div class="sr-block-title">Twelve modules. One workspace.</div>
+            <p class="sr-block-desc">Brand Kit, Prompt Pack, Designer Prompts, Roadmap, Email, Checklist — all one click away in the dashboard below.</p>
+          </div>
+        </div>
+
+        <div class="sr-block">
+          <div class="sr-num">04</div>
+          <div class="sr-block-body">
+            <div class="sr-block-title">Designer code, not templates</div>
+            <p class="sr-block-desc">Claude Code snippets that build your Shopify theme around <em>your</em> brand — custom sections, your colors, your fonts. Not a generic theme pack.</p>
+          </div>
+        </div>
+
+        <div class="sr-block">
+          <div class="sr-num">05</div>
+          <div class="sr-block-body">
+            <div class="sr-block-title">Email flows in your voice</div>
+            <p class="sr-block-desc">Welcome, abandoned cart, post-purchase — flows, subject lines, and copy already in your brand's tone. Ready to paste into Klaviyo.</p>
+          </div>
+        </div>
+
+        <div class="sr-block">
+          <div class="sr-num">06</div>
+          <div class="sr-block-body">
+            <div class="sr-block-title">Suppliers, mood, and references</div>
+            <p class="sr-block-desc">Track suppliers, costs, and orders in one place. Pin your visual references. Pull from a library of stores that get it right.</p>
+          </div>
+        </div>
+
+        <div class="sr-block">
+          <div class="sr-num">07</div>
+          <div class="sr-block-body">
             <div class="sr-block-title">Built to ship — not to plan</div>
-            <p class="sr-block-desc">Every step ends with something you can paste, send, or tick. Real outputs, not theory.</p>
+            <p class="sr-block-desc">Every step ends with something you can paste, send, or tick. Real outputs, not theory. Plus a 20-item launch checklist for the final push.</p>
+          </div>
+        </div>
+
+        <div class="sr-block sr-block-close">
+          <div class="sr-block-body">
+            <div class="sr-block-title">One payment. Lifetime access.</div>
+            <p class="sr-block-desc">$37 once. Every future module, every new prompt pack, every update — yours, forever.</p>
+            <a class="sr-block-cta" href="https://whop.com/frmls" target="_blank" rel="noopener">Get access →</a>
           </div>
         </div>
       </div>

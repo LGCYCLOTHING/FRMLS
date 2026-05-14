@@ -9,7 +9,7 @@
 <meta property="og:description" content="Anyone can build a store. Not everyone builds a brand. $37 one-time.">
 <meta name="theme-color" content="#07040f">
 <script>if(location.protocol!=='https:'&&location.hostname!=='localhost'){location.replace('https:'+window.location.href.substring(window.location.protocol.length));}</script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Italianno&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Italianno&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-V9T01KTX3V"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-V9T01KTX3V');</script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
@@ -488,62 +488,222 @@ a{text-decoration:none;color:inherit;}
 /* ─────────────────────────────────────────────────────────────────────────────
    FEATURE CARDS
 ───────────────────────────────────────────────────────────────────────────── */
-.features-section{border-top:1px solid var(--border);padding:72px 0;}
-.features-head{text-align:center;margin-bottom:48px;display:flex;flex-direction:column;align-items:center;}
-.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);}
-.feat-col{
-  padding:36px 32px;
-  border-right:1px solid var(--border);border-bottom:1px solid var(--border);
-  transition:background .25s,transform .25s,box-shadow .25s;
+.features-section{
+  position:relative;border-top:1px solid var(--border);padding:120px 0 110px;
+  overflow:hidden;
 }
-.feat-col:hover{background:rgba(255,255,255,0.025);transform:translateY(-2px);box-shadow:0 0 28px rgba(124,58,237,0.1),0 8px 24px rgba(0,0,0,0.25);}
-.feat-col:nth-child(4n){border-right:none;}
-.feat-col:nth-last-child(-n+4){border-bottom:none;}
-.feat-icon{width:28px;height:28px;margin-bottom:18px;}
-.feat-icon svg{width:28px;height:28px;stroke:var(--white);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;opacity:.7;}
-.feat-title{font-size:15px;font-weight:700;letter-spacing:-0.02em;color:var(--white);margin-bottom:8px;}
-.feat-desc{font-size:15px;font-weight:400;color:#777;line-height:1.65;}
+.features-section::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 20%, rgba(124,58,237,0.10), transparent 60%),
+    radial-gradient(ellipse 50% 50% at 88% 80%, rgba(6,182,212,0.08), transparent 60%);
+}
+.features-section .wrap{position:relative;z-index:1;}
+
+.features-head{text-align:center;margin-bottom:72px;display:flex;flex-direction:column;align-items:center;gap:0;}
+.features-head .section-pill{margin-bottom:22px;}
+.feat-h{
+  font-family:'Inter',sans-serif;
+  font-size:56px;font-weight:800;letter-spacing:-0.045em;line-height:1.05;
+  color:var(--white);margin-bottom:18px;max-width:780px;
+}
+.feat-h .it{
+  font-family:'Instrument Serif', serif;
+  font-style:italic;font-weight:400;letter-spacing:-0.02em;
+  background:var(--grad-90);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.feat-h .scr{
+  font-family:'Italianno', cursive;
+  font-style:normal;font-weight:400;
+  font-size:1.35em;line-height:.7;letter-spacing:.01em;
+  background:var(--grad-90);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  display:inline-block;transform:translateY(0.08em);
+  padding-right:.06em;
+}
+.feat-sub{
+  font-family:'DM Mono', monospace;font-size:13px;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(255,255,255,0.45);
+  min-height:1.4em;
+}
+.feat-sub .cursor{
+  display:inline-block;width:8px;height:14px;margin-left:3px;
+  background:var(--cyan-l);transform:translateY(2px);
+  animation:caretBlink 1s steps(1) infinite;
+}
+@keyframes caretBlink{50%{opacity:0;}}
+
+/* Grid + cards */
+.feat-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  position:relative;
+}
+
+.feat-card{
+  position:relative;
+  padding:28px 26px 26px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.022), rgba(255,255,255,0.008));
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:var(--r-md);
+  overflow:hidden;
+  transition:transform .35s cubic-bezier(.16,1,.3,1), border-color .35s, background .35s;
+}
+.feat-card::before{
+  /* animated gradient border on hover */
+  content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;
+  background:conic-gradient(from var(--ang,0deg), transparent 0deg, rgba(124,58,237,0) 60deg, rgba(157,92,245,0.55) 120deg, rgba(34,211,238,0.55) 180deg, rgba(124,58,237,0) 240deg, transparent 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  opacity:0;transition:opacity .4s;pointer-events:none;
+}
+.feat-card::after{
+  /* subtle radial glow that follows the cursor */
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:radial-gradient(220px circle at var(--mx,50%) var(--my,0%), rgba(157,92,245,0.10), transparent 60%);
+  opacity:0;transition:opacity .35s;
+}
+.feat-card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(255,255,255,0.10);
+  background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.012));
+}
+.feat-card:hover::before{opacity:1;animation:angSpin 6s linear infinite;}
+.feat-card:hover::after{opacity:1;}
+@property --ang{ syntax:'<angle>'; inherits:false; initial-value:0deg; }
+@keyframes angSpin{to{--ang:360deg;}}
+
+.feat-num{
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.18em;
+  color:rgba(255,255,255,0.28);text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;margin-bottom:18px;
+}
+.feat-num::after{content:"";flex:1;height:1px;background:linear-gradient(90deg, rgba(255,255,255,0.10), transparent);}
+
+.feat-icon{
+  position:relative;width:38px;height:38px;margin-bottom:18px;
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:10px;
+  background:linear-gradient(135deg, rgba(124,58,237,0.18), rgba(6,182,212,0.10));
+  border:1px solid rgba(157,92,245,0.22);
+  animation:iconFloat 6s ease-in-out infinite;
+}
+.feat-icon svg{
+  width:20px;height:20px;
+  stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;
+  opacity:.92;
+}
+.feat-card:nth-child(2n) .feat-icon{animation-delay:-2s;}
+.feat-card:nth-child(3n) .feat-icon{animation-delay:-4s;}
+@keyframes iconFloat{
+  0%,100%{transform:translateY(0) rotate(0deg);}
+  50%{transform:translateY(-3px) rotate(-1.5deg);}
+}
+.feat-card:hover .feat-icon{
+  border-color:rgba(157,92,245,0.45);
+  background:linear-gradient(135deg, rgba(124,58,237,0.32), rgba(6,182,212,0.18));
+}
+
+.feat-title{
+  font-family:'Inter',sans-serif;
+  font-size:17px;font-weight:700;letter-spacing:-0.02em;
+  color:var(--white);margin-bottom:10px;
+  background:linear-gradient(90deg, #fff 0%, #fff 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:200% 100%;
+  transition:background-image .4s;
+}
+.feat-card:hover .feat-title{
+  background-image:var(--grad-90);
+}
+.feat-title .accent{
+  font-family:'Instrument Serif', serif;
+  font-style:italic;font-weight:400;letter-spacing:-0.01em;
+}
+.feat-desc{
+  font-size:14px;font-weight:400;color:rgba(255,255,255,0.55);line-height:1.6;
+}
+.feat-tag{
+  display:inline-flex;align-items:center;gap:6px;margin-top:14px;
+  font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(157,92,245,0.85);
+  opacity:0;transform:translateY(4px);transition:opacity .3s, transform .3s;
+}
+.feat-tag::before{content:"";width:14px;height:1px;background:currentColor;}
+.feat-card:hover .feat-tag{opacity:1;transform:translateY(0);}
+
+/* Staggered reveal */
+.feat-card.rv{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);}
+.feat-card.rv.vis{opacity:1;transform:translateY(0);}
+.feat-card.rv.dx1{transition-delay:60ms;}
+.feat-card.rv.dx2{transition-delay:120ms;}
+.feat-card.rv.dx3{transition-delay:180ms;}
+.feat-card.rv.dx4{transition-delay:240ms;}
+.feat-card.rv.dx5{transition-delay:300ms;}
+.feat-card.rv.dx6{transition-delay:360ms;}
+.feat-card.rv.dx7{transition-delay:420ms;}
+.feat-card.rv.dx8{transition-delay:480ms;}
+
+.feat-foot{
+  display:flex;align-items:center;justify-content:center;gap:18px;
+  margin-top:48px;
+  font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.10em;
+  text-transform:uppercase;color:rgba(255,255,255,0.38);
+}
+.feat-foot .ff-line{flex:1;max-width:140px;height:1px;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);}
+.feat-foot em{
+  font-style:normal;font-family:'Instrument Serif', serif;letter-spacing:.02em;
+  font-size:15px;text-transform:none;
+  background:var(--grad-90);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.feat-title em{font-style:italic;color:rgba(255,255,255,0.65);}
 
 /* ─────────────────────────────────────────────────────────────────────────────
    STICKY SHOWCASE
 ───────────────────────────────────────────────────────────────────────────── */
 .showcase{border-top:1px solid var(--border);padding:80px 0;}
 .showcase-head{text-align:center;margin-bottom:52px;display:flex;flex-direction:column;align-items:center;}
-.showcase-inner{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;}
-.showcase-left{position:sticky;top:15vh;}
+.showcase .wrap{max-width:1400px;}
+.showcase-inner{display:grid;grid-template-columns:1.55fr 1fr;gap:64px;align-items:start;}
+.showcase-left{position:sticky;top:12vh;}
 .showcase-img{
   position:relative;border-radius:var(--r-lg);overflow:hidden;
-  border:1px solid var(--border-mid);background:#0a0a12;min-height:480px;
+  border:1px solid var(--border-mid);background:#0a0a12;
+  min-height:620px;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.45),
+    0 0 0 1px rgba(255,255,255,0.02),
+    0 0 60px rgba(124,58,237,0.10);
 }
 .sc-dash{width:100%;height:100%;display:flex;}
 .sc-sidebar{
-  width:168px;flex-shrink:0;background:#0d0b17;
+  width:220px;flex-shrink:0;background:#0d0b17;
   border-right:1px solid rgba(255,255,255,0.05);
-  padding:18px 14px;display:flex;flex-direction:column;gap:2px;
+  padding:24px 16px;display:flex;flex-direction:column;gap:3px;
 }
-.sc-logo{font-size:13px;font-weight:900;letter-spacing:-0.02em;margin-bottom:18px;color:rgba(255,255,255,0.75);}
+.sc-logo{font-size:17px;font-weight:900;letter-spacing:-0.02em;margin-bottom:24px;color:rgba(255,255,255,0.78);}
 .sc-nav-item{
-  height:30px;border-radius:6px;padding:0 9px;
+  height:36px;border-radius:7px;padding:0 11px;
   display:flex;align-items:center;
-  font-size:12px;font-weight:500;color:rgba(255,255,255,0.3);gap:7px;
+  font-size:13px;font-weight:500;color:rgba(255,255,255,0.3);gap:9px;
   transition:background .25s,color .25s;
 }
-.sc-nav-item.active{background:linear-gradient(135deg,rgba(124,58,237,0.18),rgba(6,182,212,0.08));color:rgba(255,255,255,0.85);}
-.sc-nav-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;}
-.sc-main{flex:1;padding:18px;overflow:hidden;}
-.sc-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-.sc-title{font-size:13px;font-weight:700;letter-spacing:-0.02em;color:rgba(255,255,255,0.8);transition:color .3s;}
-.sc-tag{font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.1em;color:rgba(255,255,255,0.18);}
-.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px;}
+.sc-nav-item.active{background:linear-gradient(135deg,rgba(124,58,237,0.18),rgba(6,182,212,0.08));color:rgba(255,255,255,0.92);font-weight:600;}
+.sc-nav-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.sc-main{flex:1;padding:24px 26px;overflow:hidden;}
+.sc-header-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;}
+.sc-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,0.32);margin-bottom:6px;}
+.sc-title{font-size:22px;font-weight:800;letter-spacing:-0.03em;color:rgba(255,255,255,0.92);transition:color .3s;display:block;}
+.sc-tag{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;color:rgba(255,255,255,0.22);}
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
 .sc-card{
-  height:78px;border-radius:8px;
+  height:96px;border-radius:10px;
   background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);
-  padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;
+  padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;
 }
 .sc-card.p{background:rgba(124,58,237,0.09);border-color:rgba(124,58,237,0.2);}
 .sc-card.c{background:rgba(6,182,212,0.08);border-color:rgba(6,182,212,0.16);}
-.sc-card-label{font-size:11px;font-family:'DM Mono',monospace;letter-spacing:.08em;color:rgba(255,255,255,0.32);text-transform:uppercase;}
-.sc-card-val{font-size:28px;font-weight:800;color:rgba(255,255,255,0.8);letter-spacing:-0.03em;}
+.sc-card-label{font-size:11.5px;font-family:'DM Mono',monospace;letter-spacing:.08em;color:rgba(255,255,255,0.4);text-transform:uppercase;}
+.sc-card-val{font-size:32px;font-weight:800;color:rgba(255,255,255,0.88);letter-spacing:-0.03em;}
 .sc-list-row{display:flex;flex-direction:column;gap:4px;}
 .sc-list-item{height:22px;border-radius:4px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.04);}
 
@@ -681,47 +841,56 @@ a{text-decoration:none;color:inherit;}
    SHOWCASE ENRICHMENTS
 ───────────────────────────────────────────────────────────────────────────── */
 .sc-subtitle{
-  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;
-  color:rgba(255,255,255,0.35);margin-top:2px;
+  font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;
+  color:rgba(255,255,255,0.42);margin-top:4px;
 }
-.sc-divider{height:1px;background:rgba(255,255,255,0.05);margin:7px 0;}
+.sc-divider{height:1px;background:rgba(255,255,255,0.05);margin:10px 0;}
+.sc-list-row{transition:opacity .25s;}
 .sc-prompt-item{
-  display:flex;align-items:center;gap:7px;
-  height:22px;padding:0 2px;border-radius:4px;
+  display:flex;align-items:center;gap:10px;
+  height:30px;padding:0 6px;border-radius:5px;
   transition:background .15s;
 }
-.sc-prompt-item.on{background:rgba(124,58,237,0.1);}
+.sc-prompt-item.on{background:rgba(124,58,237,0.10);}
 .sc-prompt-num{
-  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;
-  color:rgba(255,255,255,0.25);width:18px;flex-shrink:0;
+  font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.06em;
+  color:rgba(255,255,255,0.28);width:22px;flex-shrink:0;text-align:center;
 }
-.sc-prompt-name{font-size:12px;font-weight:500;color:rgba(255,255,255,0.45);}
-.sc-prompt-item.on .sc-prompt-name{color:rgba(255,255,255,0.75);}
+.sc-prompt-item.on .sc-prompt-num{color:var(--cyan-l);}
+.sc-prompt-name{font-size:13px;font-weight:500;color:rgba(255,255,255,0.5);}
+.sc-prompt-item.on .sc-prompt-name{color:rgba(255,255,255,0.85);}
 .sc-progress-row{
-  display:flex;align-items:center;gap:8px;margin-top:4px;
+  display:flex;align-items:center;gap:12px;margin-top:14px;
+  padding-top:14px;border-top:1px solid rgba(255,255,255,0.05);
 }
 .sc-prog-label{
-  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.06em;
-  color:rgba(255,255,255,0.32);white-space:nowrap;
+  font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.10em;text-transform:uppercase;
+  color:rgba(255,255,255,0.42);white-space:nowrap;
 }
-.sc-prog-track{flex:1;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;}
-.sc-prog-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#7c3aed,#06b6d4);}
-.sc-prog-pct{font-family:'DM Mono',monospace;font-size:11px;color:var(--cyan-l);white-space:nowrap;}
+.sc-prog-track{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
+.sc-prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#7c3aed,#06b6d4);transition:width .5s cubic-bezier(.16,1,.3,1);}
+.sc-prog-pct{font-family:'DM Mono',monospace;font-size:12px;color:var(--cyan-l);white-space:nowrap;font-weight:500;}
 
 /* ─────────────────────────────────────────────────────────────────────────────
    MOBILE
 ───────────────────────────────────────────────────────────────────────────── */
 @media(max-width:1060px){
   .feat-grid{grid-template-columns:repeat(2,1fr);}
-  .feat-col:nth-child(4n){border-right:1px solid var(--border);}
-  .feat-col:nth-last-child(-n+4){border-bottom:1px solid var(--border);}
-  .feat-col:nth-child(2n){border-right:none;}
-  .feat-col:nth-last-child(-n+2){border-bottom:none;}
+  .feat-h{font-size:42px;}
+}
+@media(max-width:1100px){
+  .showcase-inner{grid-template-columns:1.2fr 1fr;gap:40px;}
+  .showcase-img{min-height:540px;}
+  .sc-sidebar{width:180px;padding:18px 12px;}
+  .sc-main{padding:18px 20px;}
+  .sc-title{font-size:18px;}
 }
 @media(max-width:900px){
   .showcase-inner{grid-template-columns:1fr;gap:40px;}
   .showcase-left{position:relative;top:auto;}
   .showcase-right{padding:0;}
+  .showcase-img{min-height:560px;}
+  .sc-sidebar{width:200px;}
 }
 @media(max-width:767px){
   :root{--nav-h:60px;}
@@ -743,13 +912,20 @@ a{text-decoration:none;color:inherit;}
   .showcase-inner{grid-template-columns:1fr;gap:40px;}
   .showcase-left{position:relative;top:auto;}
   .showcase-right{padding:0;}
+  .showcase-img{min-height:520px;}
+  .sc-sidebar{width:150px;padding:14px 10px;}
+  .sc-nav-item{font-size:11px;height:30px;}
+  .sc-main{padding:16px 18px;}
+  .sc-title{font-size:17px;}
+  .sc-card-val{font-size:24px;}
 
   .wrap{padding:0 20px;}
   .section-h{font-size:34px;}
   .features-section{padding:80px 0;}
-  .feat-grid{grid-template-columns:1fr;}
-  .feat-col{border-right:none !important;border-bottom:1px solid var(--border) !important;}
-  .feat-col:last-child{border-bottom:none !important;}
+  .feat-grid{grid-template-columns:1fr;gap:12px;}
+  .feat-h{font-size:34px;}
+  .feat-sub{font-size:11px;letter-spacing:.10em;}
+  .feat-card{padding:24px 22px;}
 
   .pricing-section{padding:60px 0;}
   .price-card{padding:32px 28px;}
@@ -946,64 +1122,104 @@ a{text-decoration:none;color:inherit;}
 </div>
 
 <!-- ═══════════════════════════ FEATURES GRID ═══════════════════════════ -->
-<section class="features-section">
+<section class="features-section" id="featuresGrid">
   <div class="wrap">
     <div class="features-head">
-      <span class="section-pill rv">What you get</span>
-      <h2 class="section-h rv d1">everything you need to build a brand that lasts.</h2>
-      <p class="section-sub rv d2">identity. voice. direction. tools to build it all.</p>
+      <span class="section-pill rv">What's inside</span>
+      <h2 class="feat-h rv d1">every <span class="it">module</span>, built into <span class="scr">one</span> system.</h2>
+      <p class="feat-sub rv d2" id="featSubTyper"><span class="ftxt"></span><span class="cursor"></span></p>
     </div>
+
     <div class="feat-grid">
 
-      <div class="feat-col rv d1">
-        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 9l10 13L22 9 12 2z"/></svg></div>
-        <div class="feat-title">Brand Identity System</div>
-        <div class="feat-desc">Start with a guided brand foundation flow. Define your why, your personality, your voice, and your direction before you touch a single tool.</div>
+      <div class="feat-card rv dx1">
+        <div class="feat-num">01 — Foundation</div>
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2l2.5 7H22l-6 4.5L18.5 21 12 16.5 5.5 21 8 13.5 2 9h7.5L12 2z"/></svg>
+        </div>
+        <div class="feat-title">Brand <span class="accent">Foundation</span></div>
+        <div class="feat-desc">Your why, your voice, your promise. A guided flow that defines what your brand actually stands for — before you touch a single tool.</div>
+        <div class="feat-tag">First step</div>
       </div>
 
-      <div class="feat-col rv d2">
-        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zm-1 7H8m5 4H8m3-8H8"/></svg></div>
-        <div class="feat-title">Custom Prompt Pack</div>
-        <div class="feat-desc">Every prompt pre-filled with your brand identity. Your voice, your direction, your customer — already inside every step.</div>
+      <div class="feat-card rv dx2">
+        <div class="feat-num">02 — Direction</div>
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <div class="feat-title">Brand <span class="accent">Identity Finder</span></div>
+        <div class="feat-desc">A guided 5-step flow that locks in your category, vibe, font direction, and color mood — so every decision after this point is consistent.</div>
+        <div class="feat-tag">Guided flow</div>
       </div>
 
-      <div class="feat-col rv d3">
-        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div>
-        <div class="feat-title">Designer Code Prompts</div>
-        <div class="feat-desc">Code snippets to build your Shopify store around your brand identity. Not a generic theme — your brand, built right.</div>
+      <div class="feat-card rv dx3">
+        <div class="feat-num">03 — Locked in</div>
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="feat-title">Brand <span class="accent">Kit</span></div>
+        <div class="feat-desc">Your colors, fonts, and tone of voice saved in one place — and pulled into every prompt, email, and design decision automatically.</div>
+        <div class="feat-tag">Auto-fills everywhere</div>
       </div>
 
-      <div class="feat-col rv d4">
-        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
-        <div class="feat-title">Launch Checklist</div>
-        <div class="feat-desc">20 items to check before you go live. Track progress and launch with nothing missing.</div>
+      <div class="feat-card rv dx4">
+        <div class="feat-num">04 — Prompts</div>
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5M8 9h2"/></svg>
+        </div>
+        <div class="feat-title">12-Step <span class="accent">Prompt Pack</span></div>
+        <div class="feat-desc">Every prompt pre-filled with your brand voice, audience, and direction. Paste it into ChatGPT or Claude — nothing left blank.</div>
+        <div class="feat-tag">12 prompts</div>
       </div>
 
-      <div class="feat-col rv d1">
-        <div class="feat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6l2.1 2.1M5.6 18.4l2.1-2.1m8.6-8.6l2.1-2.1"/></svg></div>
-        <div class="feat-title">Store Roadmap</div>
-        <div class="feat-desc">Visual map of your entire build. See how every step connects. Click any node to jump.</div>
+      <div class="feat-card rv dx5">
+        <div class="feat-num">05 — Build</div>
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+        </div>
+        <div class="feat-title">Designer <span class="accent">Code Prompts</span></div>
+        <div class="feat-desc">Claude Code snippets that build your Shopify theme around <em>your</em> brand. Not a generic template — your store, built right.</div>
+        <div class="feat-tag">Shopify ready</div>
       </div>
 
-      <div class="feat-col rv d2">
-        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg></div>
-        <div class="feat-title">Email Marketing</div>
-        <div class="feat-desc">Email flows written in your brand voice. Welcome, abandoned cart, post purchase — all pre-filled with your identity.</div>
+      <div class="feat-card rv dx6">
+        <div class="feat-num">06 — Map</div>
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.2"/><circle cx="18" cy="6" r="2.2"/><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="18" r="2.2"/><path d="M8 6h8M6 8v8M18 8v8M8 18h8"/></svg>
+        </div>
+        <div class="feat-title">Store <span class="accent">Roadmap</span></div>
+        <div class="feat-desc">A visual map of your entire build. See how every step connects — click any node to jump straight in.</div>
+        <div class="feat-tag">Interactive</div>
       </div>
 
-      <div class="feat-col rv d3">
-        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg></div>
-        <div class="feat-title">Typography System</div>
-        <div class="feat-desc">8 curated font pairings matched to each brand aesthetic. Headers, body, and display sizes included.</div>
+      <div class="feat-card rv dx7">
+        <div class="feat-num">07 — Retention</div>
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+        </div>
+        <div class="feat-title">Email <span class="accent">Marketing</span></div>
+        <div class="feat-desc">Welcome, abandoned cart, post-purchase — flows, subject lines, and copy pre-filled with your identity. Ready to paste into Klaviyo.</div>
+        <div class="feat-tag">Flows + copy</div>
       </div>
 
-      <div class="feat-col rv d4">
-        <div class="feat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4m0 4h.01"/></svg></div>
-        <div class="feat-title">Color Systems</div>
-        <div class="feat-desc">10 complete palettes — primary, secondary, accent, neutral, and semantic tokens for every brand style.</div>
+      <div class="feat-card rv dx8">
+        <div class="feat-num">08 — Launch</div>
+        <div class="feat-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <div class="feat-title">Launch <span class="accent">Checklist</span></div>
+        <div class="feat-desc">20 items to check before you go live. Track your progress and launch with nothing missing — and nothing rushed.</div>
+        <div class="feat-tag">20 checks</div>
       </div>
 
     </div>
+
+    <div class="feat-foot rv d3">
+      <span class="ff-line"></span>
+      <span class="ff-text">plus <em>Supplier Hub</em>, <em>Mood Board</em>, <em>Store Inspiration</em>, and <em>Resources</em> — every tool in one place.</span>
+      <span class="ff-line"></span>
+    </div>
+
   </div>
 </section>
 
@@ -1023,50 +1239,36 @@ a{text-decoration:none;color:inherit;}
         <div class="showcase-img" id="showcaseImg">
           <div class="sc-dash">
             <div class="sc-sidebar">
-              <div class="sc-logo">FRMLS</div>
-              <div class="sc-nav-item active" id="scNav0"><span class="sc-nav-dot"></span>Prompt Pack</div>
-              <div class="sc-nav-item" id="scNav1"><span class="sc-nav-dot"></span>Brand Identity</div>
-              <div class="sc-nav-item" id="scNav2"><span class="sc-nav-dot"></span>Themes</div>
-              <div class="sc-nav-item" id="scNav3"><span class="sc-nav-dot"></span>Flowchart</div>
-              <div class="sc-nav-item" id="scNav4"><span class="sc-nav-dot"></span>Checklist</div>
+              <div class="sc-logo">FRML<span style="background:var(--grad-90);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">S</span></div>
+              <div class="sc-nav-item active" id="scNav0"><span class="sc-nav-dot"></span>Brand Foundation</div>
+              <div class="sc-nav-item" id="scNav1"><span class="sc-nav-dot"></span>Identity Finder</div>
+              <div class="sc-nav-item" id="scNav2"><span class="sc-nav-dot"></span>Brand Kit</div>
+              <div class="sc-nav-item" id="scNav3"><span class="sc-nav-dot"></span>Prompt Pack</div>
+              <div class="sc-nav-item" id="scNav4"><span class="sc-nav-dot"></span>Launch Checklist</div>
             </div>
             <div class="sc-main">
               <div class="sc-header-row" style="align-items:flex-start;">
                 <div>
-                  <span class="sc-title" id="scMainTitle">Prompt Pack</span>
-                  <div class="sc-subtitle" id="scSubTitle">your brand voice, loaded in.</div>
+                  <div class="sc-eyebrow" id="scEyebrow">step 01 · foundation</div>
+                  <span class="sc-title" id="scMainTitle">Brand Foundation</span>
+                  <div class="sc-subtitle" id="scSubTitle">your why, your voice, your promise.</div>
                 </div>
                 <span class="sc-tag">FRMLS</span>
               </div>
               <div class="sc-grid" id="scTarget0">
-                <div class="sc-card p"><span class="sc-card-label">Prompts Ready</span><span class="sc-card-val">12/12</span></div>
-                <div class="sc-card c"><span class="sc-card-label">Identity Score</span><span class="sc-card-val">87%</span></div>
-                <div class="sc-card"><span class="sc-card-label">Themes</span><span class="sc-card-val">10</span></div>
-                <div class="sc-card"><span class="sc-card-label">Checklist</span><span class="sc-card-val">18/20</span></div>
+                <div class="sc-card p"><span class="sc-card-label">Foundation</span><span class="sc-card-val" id="scStat0">4/6</span></div>
+                <div class="sc-card c"><span class="sc-card-label">Identity</span><span class="sc-card-val" id="scStat1">locked</span></div>
+                <div class="sc-card"><span class="sc-card-label">Prompts</span><span class="sc-card-val" id="scStat2">12/12</span></div>
+                <div class="sc-card"><span class="sc-card-label">Checklist</span><span class="sc-card-val" id="scStat3">18/20</span></div>
               </div>
               <div class="sc-divider"></div>
-              <div class="sc-list-row" style="gap:0;">
-                <div class="sc-prompt-item on">
-                  <span class="sc-prompt-num">01</span>
-                  <span class="sc-prompt-name">Homepage hero copy</span>
-                </div>
-                <div class="sc-prompt-item">
-                  <span class="sc-prompt-num">02</span>
-                  <span class="sc-prompt-name">Collection page structure</span>
-                </div>
-                <div class="sc-prompt-item">
-                  <span class="sc-prompt-num">03</span>
-                  <span class="sc-prompt-name">Email welcome flow</span>
-                </div>
-                <div class="sc-prompt-item">
-                  <span class="sc-prompt-num">04</span>
-                  <span class="sc-prompt-name">Product descriptions</span>
-                </div>
+              <div class="sc-list-row" id="scList" style="gap:0;">
+                <!-- list items rendered by JS -->
               </div>
               <div class="sc-progress-row" id="scTarget4">
-                <span class="sc-prog-label">Launch</span>
-                <div class="sc-prog-track"><div class="sc-prog-fill" style="width:85%"></div></div>
-                <span class="sc-prog-pct">85%</span>
+                <span class="sc-prog-label" id="scProgLabel">Launch</span>
+                <div class="sc-prog-track"><div class="sc-prog-fill" id="scProgFill" style="width:18%"></div></div>
+                <span class="sc-prog-pct" id="scProgPct">18%</span>
               </div>
             </div>
           </div>
@@ -1076,29 +1278,29 @@ a{text-decoration:none;color:inherit;}
 
       <div class="showcase-right" id="showcaseRight">
         <div class="feat-block" data-feat="0" id="sfeat0">
-          <div class="feat-block-num">01</div>
-          <div class="feat-block-title">12-Step Prompt Pack</div>
-          <div class="feat-block-desc">Every prompt pre-loaded with your brand voice, aesthetic, and direction. Paste and run — nothing left blank.</div>
+          <div class="feat-block-num">01 — START HERE</div>
+          <div class="feat-block-title">Brand Foundation</div>
+          <div class="feat-block-desc">A 6-step questionnaire to find your why, your visual energy, your audience, and the promise behind your brand — before you touch a single tool.</div>
         </div>
         <div class="feat-block" data-feat="1" id="sfeat1">
-          <div class="feat-block-num">02</div>
+          <div class="feat-block-num">02 — DIRECTION</div>
           <div class="feat-block-title">Brand Identity Finder</div>
-          <div class="feat-block-desc">A guided 5-step flow that locks in your category, vibe, font pairing, color mood, and audience before you build anything.</div>
+          <div class="feat-block-desc">A guided 5-step flow that locks in your category, vibe, font direction, color mood, and hero customer — so every decision after this stays consistent.</div>
         </div>
         <div class="feat-block" data-feat="2" id="sfeat2">
-          <div class="feat-block-num">03</div>
-          <div class="feat-block-title">10 Themes + Light/Dark Mode</div>
-          <div class="feat-block-desc">Ten complete design systems — each with light and dark variants, color tokens, and type scales matched to your aesthetic.</div>
+          <div class="feat-block-num">03 — LOCKED IN</div>
+          <div class="feat-block-title">Brand Kit</div>
+          <div class="feat-block-desc">Your complete brand document — colors, fonts, tone of voice, audience, and aesthetic. Saved once, pulled into every prompt and email automatically.</div>
         </div>
         <div class="feat-block" data-feat="3" id="sfeat3">
-          <div class="feat-block-num">04</div>
-          <div class="feat-block-title">Decision Tree Flowchart</div>
-          <div class="feat-block-desc">A visual map of every build decision. See how each step connects and jump directly to any section in one click.</div>
+          <div class="feat-block-num">04 — BUILD</div>
+          <div class="feat-block-title">12-Step Prompt Pack</div>
+          <div class="feat-block-desc">Every prompt pre-loaded with your brand voice, aesthetic, and direction. Paste into Claude or ChatGPT and run — nothing left blank.</div>
         </div>
         <div class="feat-block" data-feat="4" id="sfeat4">
-          <div class="feat-block-num">05</div>
+          <div class="feat-block-num">05 — GO LIVE</div>
           <div class="feat-block-title">Launch Checklist</div>
-          <div class="feat-block-desc">20 items covering every critical launch task — from payment testing to mobile review to meta titles. Nothing skipped.</div>
+          <div class="feat-block-desc">20 items covering every critical launch task — from payment testing to mobile review to meta titles. Don't skip the test purchase.</div>
         </div>
       </div>
 
@@ -1435,10 +1637,88 @@ const mm = gsap.matchMedia();
   const container  = document.getElementById('showcaseImg');
   const scNavItems = document.querySelectorAll('.sc-nav-item');
   const scTitleEl  = document.getElementById('scMainTitle');
-  const titlesMap  = ['Prompt Pack','Brand Identity','Themes','Flowchart','Checklist'];
+  const scSubEl    = document.getElementById('scSubTitle');
+  const scEyebrowEl= document.getElementById('scEyebrow');
+  const scListEl   = document.getElementById('scList');
+  const scProgFill = document.getElementById('scProgFill');
+  const scProgPct  = document.getElementById('scProgPct');
+  const scProgLbl  = document.getElementById('scProgLabel');
+
+  const stepData = [
+    {
+      eyebrow:'step 01 · foundation',
+      title:'Brand Foundation',
+      sub:'your why, your voice, your promise.',
+      list:[
+        ['01','The why — what your brand stands for', true],
+        ['02','The look — your visual energy', true],
+        ['03','The feeling — the first beat', true],
+        ['04','The people — your hero customer', false],
+      ],
+      progLabel:'Foundation', progPct:50
+    },
+    {
+      eyebrow:'step 02 · direction',
+      title:'Brand Identity Finder',
+      sub:'category. vibe. font. color. audience.',
+      list:[
+        ['01','Category — what space you live in', true],
+        ['02','Vibe — refined, raw, soft, sharp', true],
+        ['03','Font direction — serif, sans, display', true],
+        ['04','Color mood — light, dark, saturated', false],
+      ],
+      progLabel:'Identity', progPct:75
+    },
+    {
+      eyebrow:'step 03 · brand kit',
+      title:'Brand Kit',
+      sub:'one document. screenshot it. build from it.',
+      list:[
+        ['◆','Color palette — primary, accent, neutral', true],
+        ['Aa','Font pairing — heading + body', true],
+        ['"','Tone of voice — how your brand sounds', true],
+        ['◎','Audience + aesthetic snapshot', true],
+      ],
+      progLabel:'Brand Kit', progPct:100
+    },
+    {
+      eyebrow:'step 04 · build',
+      title:'12-Step Prompt Pack',
+      sub:'your brand voice, loaded into every prompt.',
+      list:[
+        ['01','Homepage hero copy', true],
+        ['02','Collection page structure', true],
+        ['03','Product descriptions', false],
+        ['04','About page narrative', false],
+      ],
+      progLabel:'Prompts', progPct:25
+    },
+    {
+      eyebrow:'final step · go live',
+      title:'Launch Checklist',
+      sub:'twenty checks. zero things missed.',
+      list:[
+        ['✓','Payment test purchase complete', true],
+        ['✓','Mobile review — all pages', true],
+        ['✓','Meta titles + descriptions set', true],
+        ['○','Remove storefront password', false],
+      ],
+      progLabel:'Launch', progPct:90
+    }
+  ];
+
+  function renderList(items){
+    if (!scListEl) return;
+    scListEl.innerHTML = items.map(([num,name,on]) =>
+      `<div class="sc-prompt-item${on ? ' on' : ''}">
+        <span class="sc-prompt-num">${num}</span>
+        <span class="sc-prompt-name">${name}</span>
+      </div>`
+    ).join('');
+  }
 
   /* Map each feature index to the dashboard element it should highlight */
-  const targetIds  = ['scTarget0','scNav1','scNav2','scNav3','scTarget4'];
+  const targetIds  = ['scTarget0','scTarget0','scTarget0','scList','scTarget4'];
   let activeIdx = -1;
 
   function positionOverlay(targetEl) {
@@ -1459,12 +1739,23 @@ const mm = gsap.matchMedia();
       scNavItems[activeIdx]?.classList.remove('active');
     }
     activeIdx = i;
-    const targetEl = document.getElementById(targetIds[i]);
-    positionOverlay(targetEl);
-    if (overlay) overlay.style.opacity = '1';
+    const d = stepData[i];
+    renderList(d.list);
+    if (scEyebrowEl) scEyebrowEl.textContent = d.eyebrow;
+    if (scTitleEl)   scTitleEl.textContent   = d.title;
+    if (scSubEl)     scSubEl.textContent     = d.sub;
+    if (scProgLbl)   scProgLbl.textContent   = d.progLabel;
+    if (scProgPct)   scProgPct.textContent   = d.progPct + '%';
+    if (scProgFill)  scProgFill.style.width  = d.progPct + '%';
+
+    /* highlight overlay placed after list re-render */
+    requestAnimationFrame(() => {
+      const targetEl = document.getElementById(targetIds[i]);
+      positionOverlay(targetEl);
+      if (overlay) overlay.style.opacity = '1';
+    });
     featBlocks[i]?.querySelector('.feat-block-title')?.classList.add('active');
     scNavItems[i]?.classList.add('active');
-    if (scTitleEl) scTitleEl.textContent = titlesMap[i];
   }
 
   mm.add('(min-width: 768px)', () => {
@@ -1479,6 +1770,9 @@ const mm = gsap.matchMedia();
     });
     activateFeature(0);
   });
+
+  /* Render the first step's list even on mobile so it doesn't appear empty */
+  renderList(stepData[0].list);
 })();
 
 
@@ -1527,6 +1821,55 @@ const mm = gsap.matchMedia();
   });
 })();
 
+/* ── FEATURES: typing subtitle + cursor-tracked card glow ─────────────────── */
+(function initFeatures(){
+  const sub = document.getElementById('featSubTyper');
+  if (sub){
+    const target = sub.querySelector('.ftxt');
+    const phrases = [
+      'identity. voice. direction.',
+      'every prompt, pre-filled with your brand.',
+      'a system, not a template.',
+      'paste. run. ship.'
+    ];
+    let pIdx = 0, cIdx = 0, deleting = false;
+
+    function tick(){
+      const phrase = phrases[pIdx];
+      if (!deleting){
+        target.textContent = phrase.slice(0, ++cIdx);
+        if (cIdx === phrase.length){ deleting = true; return setTimeout(tick, 1600); }
+        return setTimeout(tick, 38 + Math.random()*40);
+      } else {
+        target.textContent = phrase.slice(0, --cIdx);
+        if (cIdx === 0){ deleting = false; pIdx = (pIdx + 1) % phrases.length; return setTimeout(tick, 280); }
+        return setTimeout(tick, 22);
+      }
+    }
+
+    /* start typing when the section enters view */
+    const startObs = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => { if (e.isIntersecting){ tick(); obs.disconnect(); } });
+    }, { threshold: 0.2 });
+    const sec = document.getElementById('featuresGrid');
+    if (sec) startObs.observe(sec); else tick();
+  }
+
+  /* cursor-tracked radial glow on each card */
+  document.querySelectorAll('.feat-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width)  * 100;
+      const y = ((e.clientY - r.top)  / r.height) * 100;
+      card.style.setProperty('--mx', x + '%');
+      card.style.setProperty('--my', y + '%');
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.setProperty('--mx', '50%');
+      card.style.setProperty('--my', '0%');
+    });
+  });
+})();
 
 </script>
 

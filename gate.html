@@ -282,20 +282,30 @@ a{text-decoration:none;color:inherit;}
     linear-gradient(to top,   #0a0a0a 0%, transparent 50%);
 }
 
-/* ── drifting grid (subtle structural depth) ── */
+/* ── brand resonance: concentric arcs emanating from bottom-center ── */
 .hero-grid{
-  position:absolute;inset:-60px;z-index:1;pointer-events:none;
+  position:absolute;inset:-80px;z-index:1;pointer-events:none;
   background-image:
-    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-  background-size:64px 64px;
-  animation:gridDrift 28s linear infinite;
-  -webkit-mask-image:radial-gradient(ellipse 75% 60% at 50% 45%, black 0%, transparent 80%);
-          mask-image:radial-gradient(ellipse 75% 60% at 50% 45%, black 0%, transparent 80%);
+    repeating-radial-gradient(
+      circle at 50% 108%,
+      transparent 0px,
+      transparent 119px,
+      rgba(157,92,245,0.055) 120px,
+      rgba(157,92,245,0.055) 121px,
+      transparent 122px,
+      transparent 199px,
+      rgba(34,211,238,0.04) 200px,
+      rgba(34,211,238,0.04) 201px,
+      transparent 202px
+    );
+  -webkit-mask-image:radial-gradient(ellipse 78% 65% at 50% 55%, black 0%, transparent 78%);
+          mask-image:radial-gradient(ellipse 78% 65% at 50% 55%, black 0%, transparent 78%);
+  animation:gridDrift 12s ease-in-out infinite;
+  transform-origin:50% 108%;
 }
 @keyframes gridDrift{
-  from { transform:translate(0,0); }
-  to   { transform:translate(64px,64px); }
+  0%, 100% { transform:scale(1);    opacity:1; }
+  50%      { transform:scale(1.05); opacity:0.72; }
 }
 
 /* ── sweeping aurora beam ── */
@@ -757,19 +767,20 @@ a{text-decoration:none;color:inherit;}
 /* the part the user actually types — this is where the type animation belongs */
 .bf-card-typed{
   margin-top:auto;
-  padding:8px 10px;
+  padding:9px 11px;
   border-radius:7px;
-  background:rgba(255,255,255,0.03);
-  border:1px dashed rgba(255,255,255,0.10);
-  font-family:'Instrument Serif', serif;
-  font-style:italic;font-size:12px;line-height:1.35;
-  color:rgba(255,255,255,0.78);
-  min-height:2.5em;
+  background:rgba(255,255,255,0.04);
+  border:1px dashed rgba(255,255,255,0.12);
+  font-family:'Inter', sans-serif;
+  font-style:normal;font-weight:500;
+  font-size:12px;line-height:1.4;letter-spacing:-0.005em;
+  color:#fff;
+  min-height:2.6em;
   display:flex;align-items:flex-start;
 }
 .bf-card.bf-done .bf-card-typed{
-  border-style:solid;border-color:rgba(34,211,238,0.30);
-  background:rgba(6,182,212,0.05);
+  border-style:solid;border-color:rgba(34,211,238,0.40);
+  background:rgba(6,182,212,0.07);
 }
 .bf-card-typed-text{display:inline;}
 .bf-card-caret{
@@ -815,15 +826,67 @@ a{text-decoration:none;color:inherit;}
   pointer-events:none;
 }
 
-.showcase-right{padding:40px 0;}
-.feat-block{padding:32px 0;border-bottom:1px solid var(--border);transition:transform .25s cubic-bezier(.16,1,.3,1);}
-.feat-block:first-child{padding-top:0;}
-.feat-block:last-child{border-bottom:none;}
-.feat-block:hover{transform:translateX(6px);}
-.feat-block-num{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.14em;color:rgba(255,255,255,0.18);margin-bottom:10px;}
-.feat-block-title{font-size:24px;font-weight:700;letter-spacing:-0.03em;color:var(--white);margin-bottom:10px;line-height:1.2;transition:color .3s;}
-.feat-block-title.active{background:var(--grad-90);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.feat-block-desc{font-size:15px;color:#666;line-height:1.7;max-width:360px;}
+.showcase-right{padding:0;display:flex;flex-direction:column;gap:18px;}
+
+/* Lead block — sets the narrative for the column */
+.sr-block-lead{
+  padding:22px 22px 24px;
+  border-radius:14px;
+  background:
+    linear-gradient(180deg, rgba(124,58,237,0.10), rgba(6,182,212,0.04)),
+    rgba(10,8,20,0.6);
+  border:1px solid rgba(157,92,245,0.22);
+}
+.sr-eyebrow{
+  display:inline-block;
+  font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--cyan-l);
+  padding:4px 10px;border-radius:100px;
+  background:rgba(6,182,212,0.09);border:1px solid rgba(6,182,212,0.28);
+  margin-bottom:14px;
+}
+.sr-title{
+  font-family:'Inter',sans-serif;
+  font-size:24px;font-weight:800;letter-spacing:-0.025em;line-height:1.18;
+  color:var(--white);margin:0 0 10px;
+}
+.sr-lead{
+  font-size:14px;line-height:1.6;color:rgba(255,255,255,0.62);margin:0;
+}
+
+/* Numbered value blocks */
+.sr-block:not(.sr-block-lead){
+  display:flex;gap:14px;align-items:flex-start;
+  padding:18px 20px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(255,255,255,0.07);
+  transition:transform .3s cubic-bezier(.16,1,.3,1), border-color .3s, background .3s;
+}
+.sr-block:not(.sr-block-lead):hover{
+  transform:translateX(4px);
+  border-color:rgba(157,92,245,0.35);
+  background:rgba(255,255,255,0.04);
+}
+.sr-num{
+  flex:0 0 auto;
+  font-family:'DM Mono',monospace;font-size:11px;font-weight:600;
+  letter-spacing:.10em;
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg, rgba(124,58,237,0.25), rgba(6,182,212,0.15));
+  border:1px solid rgba(157,92,245,0.40);
+  color:#fff;
+}
+.sr-block-body{flex:1;min-width:0;}
+.sr-block-title{
+  font-family:'Inter',sans-serif;
+  font-size:15px;font-weight:700;letter-spacing:-0.015em;
+  color:var(--white);margin-bottom:6px;line-height:1.25;
+}
+.sr-block-desc{
+  font-size:13px;line-height:1.55;color:rgba(255,255,255,0.55);margin:0;
+}
 
 /* ─────────────────────────────────────────────────────────────────────────────
    PRICING
@@ -972,16 +1035,19 @@ a{text-decoration:none;color:inherit;}
 .cta-row{flex-direction:column;width:100%;padding:0 20px;}
   .btn-prim{width:100%;justify-content:center;font-size:14px;}
 
-  /* SHOWCASE — stack image above feature blocks on mobile */
+  /* SHOWCASE — stack image above value blocks on mobile */
   .showcase{padding:64px 0;}
   .showcase-inner{grid-template-columns:1fr;gap:32px;}
   .showcase-left{position:relative;top:auto;}
-  .showcase-right{padding:0;}
+  .showcase-right{padding:0;gap:12px;}
   .showcase-img{border-radius:10px;}
-  .feat-block{padding:24px 0;}
-  .feat-block-num{font-size:10px;letter-spacing:.12em;margin-bottom:8px;}
-  .feat-block-title{font-size:20px;margin-bottom:8px;}
-  .feat-block-desc{font-size:14px;line-height:1.6;max-width:none;}
+  .sr-block-lead{padding:18px 18px 20px;}
+  .sr-title{font-size:20px;}
+  .sr-lead{font-size:13px;}
+  .sr-block:not(.sr-block-lead){padding:14px 16px;gap:12px;}
+  .sr-num{width:28px;height:28px;font-size:10px;}
+  .sr-block-title{font-size:14px;}
+  .sr-block-desc{font-size:12.5px;}
 
   .wrap{padding:0 16px;}
   .section-h{font-size:30px;}
@@ -1327,7 +1393,6 @@ a{text-decoration:none;color:inherit;}
           <div class="bf-flow-head">
             <span class="bf-flow-pill">Brand Foundation · 6 steps</span>
             <span class="bf-flow-line"></span>
-            <span class="bf-flow-tag">done in ~12 min</span>
           </div>
 
           <div class="bf-grid" id="bfGrid"></div>
@@ -1343,30 +1408,34 @@ a{text-decoration:none;color:inherit;}
       </div>
 
       <div class="showcase-right" id="showcaseRight">
-        <div class="feat-block" data-feat="0" id="sfeat0">
-          <div class="feat-block-num">01 — START HERE</div>
-          <div class="feat-block-title">Brand Foundation</div>
-          <div class="feat-block-desc">A 6-step questionnaire to find your why, your visual energy, your audience, and the promise behind your brand — before you touch a single tool.</div>
+        <div class="sr-block sr-block-lead">
+          <span class="sr-eyebrow">how it works</span>
+          <h3 class="sr-title">Answer once. Build everything from it.</h3>
+          <p class="sr-lead">The 6-step Foundation above isn't busywork. Your answers auto-fill every prompt, every email, every design choice that comes after.</p>
         </div>
-        <div class="feat-block" data-feat="1" id="sfeat1">
-          <div class="feat-block-num">02 — DIRECTION</div>
-          <div class="feat-block-title">Brand Identity Finder</div>
-          <div class="feat-block-desc">A guided 5-step flow that locks in your category, vibe, font direction, color mood, and hero customer — so every decision after this stays consistent.</div>
+
+        <div class="sr-block">
+          <div class="sr-num">01</div>
+          <div class="sr-block-body">
+            <div class="sr-block-title">Your voice, locked in</div>
+            <p class="sr-block-desc">Six answers become your brand's DNA — pulled into every prompt automatically. No more starting from scratch.</p>
+          </div>
         </div>
-        <div class="feat-block" data-feat="2" id="sfeat2">
-          <div class="feat-block-num">03 — LOCKED IN</div>
-          <div class="feat-block-title">Brand Kit</div>
-          <div class="feat-block-desc">Your complete brand document — colors, fonts, tone of voice, audience, and aesthetic. Saved once, pulled into every prompt and email automatically.</div>
+
+        <div class="sr-block">
+          <div class="sr-num">02</div>
+          <div class="sr-block-body">
+            <div class="sr-block-title">Twelve modules. One workspace.</div>
+            <p class="sr-block-desc">Brand Kit, Prompt Pack, Designer Prompts, Roadmap, Email, Checklist — all one click away in the dashboard below.</p>
+          </div>
         </div>
-        <div class="feat-block" data-feat="3" id="sfeat3">
-          <div class="feat-block-num">04 — BUILD</div>
-          <div class="feat-block-title">12-Step Prompt Pack</div>
-          <div class="feat-block-desc">Every prompt pre-loaded with your brand voice, aesthetic, and direction. Paste into Claude or ChatGPT and run — nothing left blank.</div>
-        </div>
-        <div class="feat-block" data-feat="4" id="sfeat4">
-          <div class="feat-block-num">05 — GO LIVE</div>
-          <div class="feat-block-title">Launch Checklist</div>
-          <div class="feat-block-desc">20 items covering every critical launch task — from payment testing to mobile review to meta titles. Don't skip the test purchase.</div>
+
+        <div class="sr-block">
+          <div class="sr-num">03</div>
+          <div class="sr-block-body">
+            <div class="sr-block-title">Built to ship — not to plan</div>
+            <p class="sr-block-desc">Every step ends with something you can paste, send, or tick. Real outputs, not theory.</p>
+          </div>
         </div>
       </div>
 
@@ -1696,34 +1765,9 @@ const mm = gsap.matchMedia();
   });
 })();
 
-/* ── 2. STICKY SHOWCASE — title highlight on scroll ─────────────────────── */
-(function() {
-  const featBlocks = document.querySelectorAll('.feat-block');
-  if (!featBlocks.length) return;
-  let activeIdx = -1;
-
-  function activateFeature(i) {
-    if (activeIdx === i) return;
-    if (activeIdx >= 0) {
-      featBlocks[activeIdx]?.querySelector('.feat-block-title')?.classList.remove('active');
-    }
-    activeIdx = i;
-    featBlocks[i]?.querySelector('.feat-block-title')?.classList.add('active');
-  }
-
-  mm.add('(min-width: 768px)', () => {
-    featBlocks.forEach((block, i) => {
-      ScrollTrigger.create({
-        trigger: block,
-        start: 'top 62%',
-        end: 'bottom 38%',
-        onEnter: () => activateFeature(i),
-        onEnterBack: () => activateFeature(i),
-      });
-    });
-    activateFeature(0);
-  });
-})();
+/* (Old sticky-showcase scroll handler removed — right column is no longer
+   scroll-driven feat-blocks; it's three static value blocks alongside the
+   dashboard image.) */
 
 /* ── 3. BRAND FOUNDATION GRID — all 6 type in parallel, ~2s total ───────── */
 (function() {
@@ -1757,7 +1801,8 @@ const mm = gsap.matchMedia();
 
   const cards = grid.querySelectorAll('.bf-card');
 
-  /* Type the user's answer in the typed-line element */
+  /* Type the user's answer one card at a time. Returns the duration so the
+     caller can chain the next card start exactly when this one's done. */
   function typeAnswer(card, text, done){
     const target = card.querySelector('.bf-card-typed-text');
     if (!target){ done && done(); return; }
@@ -1765,8 +1810,13 @@ const mm = gsap.matchMedia();
     target.textContent = '';
     function tick(){
       target.textContent = text.slice(0, ++i);
-      if (i >= text.length){ card.classList.add('bf-done'); done && done(); return; }
-      setTimeout(tick, 16 + Math.random()*14);
+      if (i >= text.length){
+        card.classList.add('bf-done');
+        /* short rest after the last char so the eye can settle */
+        setTimeout(() => done && done(), 220);
+        return;
+      }
+      setTimeout(tick, 28 + Math.random()*16);
     }
     tick();
   }
@@ -1776,15 +1826,19 @@ const mm = gsap.matchMedia();
     if (started) return;
     started = true;
 
-    /* 1) all 6 cards fade in together (with a tiny stagger so the eye reads the row) */
+    /* 1) cards fade in one after the other (140ms between each) */
     cards.forEach((card, i) => {
-      setTimeout(() => card.classList.add('bf-in'), 40 + i * 50);
+      setTimeout(() => card.classList.add('bf-in'), 80 + i * 140);
     });
 
-    /* 2) start typing the answers in parallel — staggered by 110ms */
-    cards.forEach((card, i) => {
-      setTimeout(() => typeAnswer(card, steps[i].typed), 520 + i * 110);
-    });
+    /* 2) once the row has finished revealing, type each card's answer
+          strictly in sequence — one finishes before the next begins. */
+    const startDelay = 80 + cards.length * 140 + 200;
+    function runCard(i){
+      if (i >= cards.length) return;
+      typeAnswer(cards[i], steps[i].typed, () => runCard(i + 1));
+    }
+    setTimeout(() => runCard(0), startDelay);
   }
 
   if ('IntersectionObserver' in window){

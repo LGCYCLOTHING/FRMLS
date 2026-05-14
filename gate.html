@@ -645,6 +645,111 @@ a{text-decoration:none;color:inherit;}
 .showcase .wrap{max-width:1520px;}
 .showcase-inner{display:grid;grid-template-columns:minmax(0,2.05fr) minmax(320px,1fr);gap:96px;align-items:start;}
 .showcase-left{position:sticky;top:12vh;}
+/* ── Brand Foundation 6-step flow graphic (module spotlight) ────────────── */
+.bf-flow{
+  position:relative;margin-bottom:18px;
+  padding:18px 22px 20px;
+  border:1px solid rgba(255,255,255,0.08);border-radius:14px;
+  background:
+    linear-gradient(180deg, rgba(124,58,237,0.06), rgba(6,182,212,0.03)),
+    rgba(255,255,255,0.012);
+  overflow:hidden;
+}
+.bf-flow::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 90% at 50% -20%, rgba(157,92,245,0.18), transparent 60%);
+}
+.bf-flow > *{position:relative;z-index:1;}
+
+.bf-flow-head{
+  display:flex;align-items:center;gap:14px;margin-bottom:18px;
+}
+.bf-flow-pill{
+  font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--cyan-l);
+  padding:5px 11px;border-radius:100px;
+  background:rgba(6,182,212,0.09);border:1px solid rgba(6,182,212,0.28);
+  white-space:nowrap;
+}
+.bf-flow-line{flex:1;height:1px;background:linear-gradient(90deg, rgba(157,92,245,0.40), rgba(34,211,238,0.40), transparent);}
+.bf-flow-tag{
+  font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.10em;
+  text-transform:uppercase;color:rgba(255,255,255,0.38);white-space:nowrap;
+}
+
+.bf-flow-track{
+  display:flex;align-items:flex-start;gap:6px;
+}
+.bf-flow-step{
+  flex:1 1 0;min-width:0;
+  display:flex;flex-direction:column;align-items:center;gap:9px;
+  text-align:center;
+  transition:transform .25s cubic-bezier(.16,1,.3,1);
+}
+.bf-flow-step:hover{transform:translateY(-2px);}
+
+.bf-flow-node{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg, rgba(124,58,237,0.28), rgba(6,182,212,0.16));
+  border:1px solid rgba(157,92,245,0.45);
+  box-shadow:inset 0 0 0 3px rgba(0,0,0,0.45), 0 0 16px rgba(124,58,237,0.18);
+  position:relative;
+  transition:transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s;
+}
+.bf-flow-num{
+  font-family:'DM Mono',monospace;font-size:13px;font-weight:600;
+  color:#fff;line-height:1;
+}
+.bf-flow-step.active .bf-flow-node{
+  background:linear-gradient(135deg, #7c3aed, #06b6d4);
+  border-color:rgba(34,211,238,0.85);
+  box-shadow:inset 0 0 0 3px rgba(0,0,0,0.20), 0 0 24px rgba(34,211,238,0.45);
+  transform:scale(1.08);
+}
+
+.bf-flow-step-label{
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:700;
+  color:rgba(255,255,255,0.92);letter-spacing:-0.01em;line-height:1.1;
+}
+.bf-flow-step-label em{
+  font-family:'Instrument Serif', serif;
+  font-style:italic;font-weight:400;letter-spacing:0;
+  background:linear-gradient(90deg, #c4b5fd, #22d3ee);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.bf-flow-step-sub{
+  font-size:11px;color:rgba(255,255,255,0.42);line-height:1.3;
+  max-width:120px;
+}
+
+.bf-flow-link{
+  flex:0 0 auto;align-self:center;
+  width:22px;height:1px;margin-top:14px;
+  background:linear-gradient(90deg, rgba(157,92,245,0.55), rgba(34,211,238,0.55));
+  position:relative;
+}
+.bf-flow-link::after{
+  content:"";position:absolute;right:-1px;top:50%;
+  width:5px;height:5px;
+  border-right:1px solid rgba(34,211,238,0.75);
+  border-top:1px solid rgba(34,211,238,0.75);
+  transform:translateY(-50%) rotate(45deg);
+}
+
+@media(max-width:760px){
+  .bf-flow{padding:14px 12px 16px;}
+  .bf-flow-head{margin-bottom:14px;gap:10px;}
+  .bf-flow-tag{display:none;}
+  .bf-flow-track{flex-wrap:wrap;justify-content:center;gap:6px 4px;}
+  .bf-flow-step{flex:0 0 calc(33.333% - 4px);gap:6px;}
+  .bf-flow-node{width:30px;height:30px;}
+  .bf-flow-num{font-size:11px;}
+  .bf-flow-step-label{font-size:11.5px;}
+  .bf-flow-step-sub{font-size:10px;max-width:100%;}
+  .bf-flow-link{display:none;}
+}
+
 .showcase-img{
   position:relative;border-radius:var(--r-lg);overflow:hidden;
   border:1px solid var(--border-mid);background:#0a0a12;
@@ -1177,6 +1282,53 @@ a{text-decoration:none;color:inherit;}
     <div class="showcase-inner">
 
       <div class="showcase-left">
+
+        <!-- Module spotlight: 6-step Brand Foundation graphic -->
+        <div class="bf-flow rv" id="bfFlow" aria-label="Brand Foundation — 6 step flow">
+          <div class="bf-flow-head">
+            <span class="bf-flow-pill">Brand Foundation · 6 steps</span>
+            <span class="bf-flow-line"></span>
+            <span class="bf-flow-tag">guided · ~12 min</span>
+          </div>
+          <div class="bf-flow-track">
+            <div class="bf-flow-step" data-step="0">
+              <div class="bf-flow-node"><span class="bf-flow-num">1</span></div>
+              <div class="bf-flow-step-label">the <em>why</em></div>
+              <div class="bf-flow-step-sub">what your brand really stands for</div>
+            </div>
+            <div class="bf-flow-link"></div>
+            <div class="bf-flow-step" data-step="1">
+              <div class="bf-flow-node"><span class="bf-flow-num">2</span></div>
+              <div class="bf-flow-step-label">the <em>look</em></div>
+              <div class="bf-flow-step-sub">your visual energy</div>
+            </div>
+            <div class="bf-flow-link"></div>
+            <div class="bf-flow-step" data-step="2">
+              <div class="bf-flow-node"><span class="bf-flow-num">3</span></div>
+              <div class="bf-flow-step-label">the <em>feeling</em></div>
+              <div class="bf-flow-step-sub">the first beat people get</div>
+            </div>
+            <div class="bf-flow-link"></div>
+            <div class="bf-flow-step" data-step="3">
+              <div class="bf-flow-node"><span class="bf-flow-num">4</span></div>
+              <div class="bf-flow-step-label">the <em>people</em></div>
+              <div class="bf-flow-step-sub">your hero customer</div>
+            </div>
+            <div class="bf-flow-link"></div>
+            <div class="bf-flow-step" data-step="4">
+              <div class="bf-flow-node"><span class="bf-flow-num">5</span></div>
+              <div class="bf-flow-step-label">the <em>taste</em></div>
+              <div class="bf-flow-step-sub">the standard you're aiming for</div>
+            </div>
+            <div class="bf-flow-link"></div>
+            <div class="bf-flow-step" data-step="5">
+              <div class="bf-flow-node"><span class="bf-flow-num">6</span></div>
+              <div class="bf-flow-step-label">the <em>promise</em></div>
+              <div class="bf-flow-step-sub">one line that lands</div>
+            </div>
+          </div>
+        </div>
+
         <div class="showcase-img" id="showcaseImg">
           <img class="sc-screenshot"
                src="Opera%20Snapshot_2026-05-13_171747_www.frmls.com.png"
@@ -1566,6 +1718,53 @@ const mm = gsap.matchMedia();
       });
     });
     activateFeature(0);
+  });
+})();
+
+/* ── 3. BRAND FOUNDATION FLOW — auto-cycle the active node ──────────────── */
+(function() {
+  const flow  = document.getElementById('bfFlow');
+  if (!flow) return;
+  const steps = flow.querySelectorAll('.bf-flow-step');
+  if (!steps.length) return;
+  let idx = 0, started = false, timer = null;
+
+  function setActive(i) {
+    steps.forEach((s, j) => s.classList.toggle('active', j === i));
+  }
+
+  function tick() {
+    idx = (idx + 1) % steps.length;
+    setActive(idx);
+  }
+
+  function start() {
+    if (started) return;
+    started = true;
+    setActive(0);
+    timer = setInterval(tick, 1500);
+  }
+
+  /* kick off when the flow scrolls into view */
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => { if (e.isIntersecting){ start(); obs.disconnect(); } });
+    }, { threshold: 0.2 });
+    io.observe(flow);
+  } else {
+    start();
+  }
+
+  /* pause the cycle if user hovers a step, so they can read it */
+  steps.forEach((step, i) => {
+    step.addEventListener('mouseenter', () => {
+      if (timer) clearInterval(timer);
+      idx = i;
+      setActive(idx);
+    });
+    step.addEventListener('mouseleave', () => {
+      if (started) timer = setInterval(tick, 1500);
+    });
   });
 })();
 

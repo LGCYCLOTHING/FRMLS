@@ -9,7 +9,7 @@
 <meta property="og:description" content="Anyone can build a store. Not everyone builds a brand. $37 one-time.">
 <meta name="theme-color" content="#07040f">
 <script>if(location.protocol!=='https:'&&location.hostname!=='localhost'){location.replace('https:'+window.location.href.substring(window.location.protocol.length));}</script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Italianno&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&family=Italianno&family=Instrument+Serif:ital@0;1&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet" />
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-V9T01KTX3V"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-V9T01KTX3V');</script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
@@ -21,7 +21,8 @@
    RESET & BASE
 ───────────────────────────────────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:auto;}
+html{scroll-behavior:auto;overflow-x:hidden;max-width:100vw;}
+body{overflow-x:hidden;max-width:100vw;}
 
 :root{
   --bg:          #0a0a0a;
@@ -513,12 +514,14 @@ a{text-decoration:none;color:inherit;}
   background:var(--grad-90);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
 .feat-h .scr{
-  font-family:'Italianno', cursive;
-  font-style:normal;font-weight:400;
-  font-size:1.35em;line-height:.7;letter-spacing:.01em;
-  background:var(--grad-90);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  display:inline-block;transform:translateY(0.08em);
-  padding-right:.06em;
+  font-family:'Caveat', cursive;
+  font-style:normal;font-weight:700;
+  font-size:1.30em;line-height:.95;letter-spacing:-0.005em;
+  background:linear-gradient(90deg, #c4b5fd 0%, #9d5cf5 35%, #22d3ee 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  display:inline-block;transform:translateY(0.04em) rotate(-2deg);
+  padding:0 .06em;
+  filter:drop-shadow(0 2px 18px rgba(157,92,245,0.35));
 }
 .feat-sub{
   font-family:'DM Mono', monospace;font-size:13px;letter-spacing:.14em;
@@ -660,7 +663,7 @@ a{text-decoration:none;color:inherit;}
 /* ─────────────────────────────────────────────────────────────────────────────
    STICKY SHOWCASE
 ───────────────────────────────────────────────────────────────────────────── */
-.showcase{border-top:1px solid var(--border);padding:80px 0;}
+.showcase{border-top:1px solid var(--border);padding:80px 0;overflow:hidden;}
 .showcase-head{text-align:center;margin-bottom:52px;display:flex;flex-direction:column;align-items:center;}
 .showcase .wrap{max-width:1400px;}
 .showcase-inner{display:grid;grid-template-columns:1.55fr 1fr;gap:64px;align-items:start;}
@@ -727,7 +730,7 @@ a{text-decoration:none;color:inherit;}
 /* ─────────────────────────────────────────────────────────────────────────────
    PRICING
 ───────────────────────────────────────────────────────────────────────────── */
-.pricing-section{border-top:1px solid var(--border);padding:80px 0;}
+.pricing-section{border-top:1px solid var(--border);padding:80px 0;overflow:hidden;}
 .pricing-head{text-align:center;display:flex;flex-direction:column;align-items:center;margin-bottom:64px;}
 .price-card{
   max-width:460px;margin:0 auto;
@@ -761,7 +764,7 @@ a{text-decoration:none;color:inherit;}
 /* ─────────────────────────────────────────────────────────────────────────────
    ACCESS SECTION (final CTA)
 ───────────────────────────────────────────────────────────────────────────── */
-.access-section{border-top:1px solid var(--border);padding:80px 0;}
+.access-section{border-top:1px solid var(--border);padding:80px 0;overflow:hidden;}
 .access-inner{max-width:420px;margin:0 auto;text-align:center;}
 .access-h{font-size:28px;font-weight:800;letter-spacing:-0.03em;margin-bottom:10px;}
 .access-sub{font-size:14px;color:var(--dim);margin-bottom:36px;}
@@ -908,24 +911,52 @@ a{text-decoration:none;color:inherit;}
 .cta-row{flex-direction:column;width:100%;padding:0 20px;}
   .btn-prim{width:100%;justify-content:center;font-size:14px;}
 
-.showcase{padding:80px 0;}
-  .showcase-inner{grid-template-columns:1fr;gap:40px;}
+  /* SHOWCASE — stack, hide the inner sidebar so the mockup fits on mobile */
+  .showcase{padding:64px 0;}
+  .showcase-inner{grid-template-columns:1fr;gap:32px;}
   .showcase-left{position:relative;top:auto;}
   .showcase-right{padding:0;}
-  .showcase-img{min-height:520px;}
-  .sc-sidebar{width:150px;padding:14px 10px;}
-  .sc-nav-item{font-size:11px;height:30px;}
-  .sc-main{padding:16px 18px;}
-  .sc-title{font-size:17px;}
-  .sc-card-val{font-size:24px;}
+  .showcase-img{min-height:auto;}
+  .sc-sidebar{display:none;}
+  .sc-main{padding:18px 16px;}
+  .sc-eyebrow{font-size:10px;letter-spacing:.12em;}
+  .sc-title{font-size:18px;}
+  .sc-subtitle{font-size:11px;}
+  .sc-grid{grid-template-columns:1fr 1fr;gap:8px;}
+  .sc-card{height:78px;padding:10px 12px;border-radius:8px;}
+  .sc-card-label{font-size:9.5px;letter-spacing:.08em;}
+  .sc-card-val{font-size:22px;}
+  .sc-prompt-item{height:26px;padding:0 4px;}
+  .sc-prompt-num{font-size:11px;width:18px;}
+  .sc-prompt-name{font-size:12px;}
+  .sc-progress-row{margin-top:10px;padding-top:10px;gap:8px;}
+  .sc-prog-label,.sc-prog-pct{font-size:10px;}
+  .feat-block{padding:24px 0;}
+  .feat-block-num{font-size:10px;letter-spacing:.12em;margin-bottom:8px;}
+  .feat-block-title{font-size:20px;margin-bottom:8px;}
+  .feat-block-desc{font-size:14px;line-height:1.6;max-width:none;}
 
-  .wrap{padding:0 20px;}
-  .section-h{font-size:34px;}
-  .features-section{padding:80px 0;}
-  .feat-grid{grid-template-columns:1fr;gap:12px;}
-  .feat-h{font-size:34px;}
-  .feat-sub{font-size:11px;letter-spacing:.10em;}
-  .feat-card{padding:24px 22px;}
+  .wrap{padding:0 16px;}
+  .section-h{font-size:30px;}
+
+  /* FEATURES — 2 cards across on mobile, tighter padding + smaller text */
+  .features-section{padding:64px 0 56px;}
+  .features-head{margin-bottom:40px;}
+  .feat-grid{grid-template-columns:repeat(2,1fr);gap:8px;}
+  .feat-h{font-size:30px;letter-spacing:-0.035em;line-height:1.08;max-width:none;padding:0 8px;}
+  .feat-sub{font-size:10px;letter-spacing:.10em;}
+  .feat-sub .cursor{width:6px;height:11px;}
+  .feat-card{padding:16px 14px 14px;border-radius:10px;}
+  .feat-num{font-size:8.5px;letter-spacing:.12em;margin-bottom:12px;gap:6px;}
+  .feat-icon{width:30px;height:30px;margin-bottom:12px;border-radius:8px;}
+  .feat-icon svg{width:16px;height:16px;stroke-width:1.6;}
+  .feat-title{font-size:14px;margin-bottom:6px;letter-spacing:-0.015em;line-height:1.2;}
+  .feat-desc{font-size:12px;line-height:1.5;}
+  .feat-tag{font-size:8.5px;letter-spacing:.10em;margin-top:10px;opacity:1;transform:none;}
+  .feat-tag::before{width:10px;}
+  .feat-foot{margin-top:28px;font-size:10px;letter-spacing:.06em;gap:10px;flex-direction:column;text-align:center;padding:0 16px;}
+  .feat-foot em{font-size:13px;}
+  .feat-foot .ff-line{display:none;}
 
   .pricing-section{padding:60px 0;}
   .price-card{padding:32px 28px;}
@@ -941,6 +972,11 @@ a{text-decoration:none;color:inherit;}
 @media(max-width:480px){
   .h1-plain{font-size:34px;letter-spacing:-0.035em;}
   .h1-grad{font-size:34px;letter-spacing:-0.035em;}
+  .feat-h{font-size:26px;}
+  .feat-card{padding:14px 12px 12px;}
+  .feat-title{font-size:13px;}
+  .feat-desc{font-size:11.5px;}
+  .feat-num{font-size:8px;}
 }
 
 /* ── GRAIN OVERLAY ─────────────────────────────────────────────────────────── */
@@ -1832,27 +1868,40 @@ const mm = gsap.matchMedia();
       'a system, not a template.',
       'paste. run. ship.'
     ];
-    let pIdx = 0, cIdx = 0, deleting = false;
+    let pIdx = 0, cIdx = 0, deleting = false, started = false;
 
     function tick(){
+      if (!target) return;
       const phrase = phrases[pIdx];
       if (!deleting){
-        target.textContent = phrase.slice(0, ++cIdx);
-        if (cIdx === phrase.length){ deleting = true; return setTimeout(tick, 1600); }
+        cIdx++;
+        target.textContent = phrase.slice(0, cIdx);
+        if (cIdx >= phrase.length){ deleting = true; return setTimeout(tick, 1600); }
         return setTimeout(tick, 38 + Math.random()*40);
       } else {
-        target.textContent = phrase.slice(0, --cIdx);
-        if (cIdx === 0){ deleting = false; pIdx = (pIdx + 1) % phrases.length; return setTimeout(tick, 280); }
+        cIdx--;
+        target.textContent = phrase.slice(0, cIdx);
+        if (cIdx <= 0){ cIdx = 0; deleting = false; pIdx = (pIdx + 1) % phrases.length; return setTimeout(tick, 280); }
         return setTimeout(tick, 22);
       }
     }
 
-    /* start typing when the section enters view */
-    const startObs = new IntersectionObserver((entries, obs) => {
-      entries.forEach(e => { if (e.isIntersecting){ tick(); obs.disconnect(); } });
-    }, { threshold: 0.2 });
+    function start(){
+      if (started) return;
+      started = true;
+      tick();
+    }
+
+    /* start when section enters view */
     const sec = document.getElementById('featuresGrid');
-    if (sec) startObs.observe(sec); else tick();
+    if (sec && 'IntersectionObserver' in window){
+      const startObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting){ start(); startObs.disconnect(); } });
+      }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
+      startObs.observe(sec);
+    }
+    /* fallback — if section never enters viewport (or observer fails), kick off after 2s */
+    setTimeout(start, 2000);
   }
 
   /* cursor-tracked radial glow on each card */

@@ -772,8 +772,48 @@ a{text-decoration:none;color:inherit;}
   box-shadow:0 0 0 1px rgba(34,211,238,0.20), 0 0 18px rgba(34,211,238,0.22);
   color:#fff;
 }
+.bf-stage-chip.bf-just-clicked{animation:bfChipPulse .45s cubic-bezier(.16,1,.3,1);}
+@keyframes bfChipPulse{
+  0%   {transform:translateY(0) scale(1);}
+  35%  {transform:translateY(0) scale(0.94);}
+  70%  {transform:translateY(0) scale(1.04);}
+  100% {transform:translateY(0) scale(1);}
+}
 @keyframes bfChipIn{to{opacity:1;transform:translateY(0);}}
 @keyframes bfFadeIn{to{opacity:1;}}
+
+/* fake mouse pointer that drives the interaction */
+.bf-stage-cursor{
+  position:absolute;left:0;top:0;
+  width:20px;height:20px;
+  pointer-events:none;z-index:5;
+  opacity:0;
+  transform:translate3d(60px,60px,0);
+  transition:opacity .25s ease, transform .55s cubic-bezier(.5,.05,.2,1);
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,0.55));
+  will-change:transform,opacity;
+}
+.bf-stage-cursor.visible{opacity:1;}
+.bf-stage-cursor.clicking{animation:bfCursorClick .28s ease;}
+@keyframes bfCursorClick{
+  0%   {filter:drop-shadow(0 2px 6px rgba(0,0,0,0.55));}
+  50%  {filter:drop-shadow(0 0 14px rgba(34,211,238,0.85)) drop-shadow(0 2px 6px rgba(0,0,0,0.55));}
+  100% {filter:drop-shadow(0 2px 6px rgba(0,0,0,0.55));}
+}
+.bf-stage-cursor svg, .bf-stage-cursor{transform-origin:4px 2.5px;}
+
+/* ripple under the cursor on click */
+.bf-stage-ripple{
+  position:absolute;pointer-events:none;z-index:4;
+  width:14px;height:14px;border-radius:50%;
+  border:1.5px solid rgba(34,211,238,0.85);
+  transform:translate(-50%,-50%) scale(0.4);
+  opacity:0.9;
+  animation:bfRipple .55s ease-out forwards;
+}
+@keyframes bfRipple{
+  to{transform:translate(-50%,-50%) scale(2.8);opacity:0;}
+}
 
 /* fade-out transition between steps */
 .bf-stage.bf-out{
@@ -1353,6 +1393,10 @@ a{text-decoration:none;color:inherit;}
             </h3>
             <p class="bf-stage-sub" id="bfStageSub"></p>
             <div class="bf-stage-chips" id="bfStageChips" aria-hidden="true"></div>
+            <svg class="bf-stage-cursor" id="bfStageCursor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 2.5l6.5 16 2.4-6.6 6.6-2.4L4 2.5z"
+                    fill="#fff" stroke="#0a0a14" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
           </div>
         </div>
 
@@ -1757,6 +1801,7 @@ const mm = gsap.matchMedia();
   const qEl        = document.getElementById('bfStageQ');
   const subEl      = document.getElementById('bfStageSub');
   const chipsEl    = document.getElementById('bfStageChips');
+  const cursorEl   = document.getElementById('bfStageCursor');
   const counterEl  = document.getElementById('bfFlowCounter');
   const fillEl     = document.getElementById('bfStepperFill');
   const dots       = flow.querySelectorAll('.bf-stepper-dot');
@@ -1865,14 +1910,81 @@ const mm = gsap.matchMedia();
   function renderChips(items, done){
     chipsEl.innerHTML = '';
     items.forEach((item, i) => {
-      const [text, selected] = item;
+      const [text] = item;
       const chip = document.createElement('span');
-      chip.className = 'bf-stage-chip' + (selected ? ' selected' : '');
+      chip.className = 'bf-stage-chip';
+      chip.dataset.targetSelected = item[1] ? '1' : '0';
       chip.textContent = text;
       chip.style.animationDelay = (i * 70) + 'ms';
       chipsEl.appendChild(chip);
     });
-    phaseTimer = setTimeout(() => done && done(), items.length * 70 + 350);
+    /* wait for the stagger-in to finish before the cursor enters */
+    phaseTimer = setTimeout(() => done && done(), items.length * 70 + 360);
+  }
+
+  function hideCursor(){
+    if (!cursorEl) return;
+    cursorEl.classList.remove('visible');
+  }
+
+  function moveCursorTo(targetEl, callback){
+    if (!cursorEl || !targetEl){ callback && callback(); return; }
+    const stageRect = stage.getBoundingClientRect();
+    const tRect = targetEl.getBoundingClientRect();
+    /* land the cursor tip ~30% into the chip from the left, vertically centred */
+    const x = tRect.left - stageRect.left + tRect.width  * 0.30;
+    const y = tRect.top  - stageRect.top  + tRect.height * 0.55;
+    cursorEl.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    cursorEl.classList.add('visible');
+    /* wait for the move-easing to finish */
+    phaseTimer = setTimeout(() => callback && callback(), 560);
+  }
+
+  function clickChip(chipEl, callback){
+    if (!chipEl){ callback && callback(); return; }
+    /* cursor pulse */
+    if (cursorEl){
+      cursorEl.classList.remove('clicking');
+      void cursorEl.offsetWidth;
+      cursorEl.classList.add('clicking');
+    }
+    /* ripple under the cursor */
+    if (cursorEl){
+      const stageRect = stage.getBoundingClientRect();
+      const tRect = chipEl.getBoundingClientRect();
+      const rx = tRect.left - stageRect.left + tRect.width  * 0.30;
+      const ry = tRect.top  - stageRect.top  + tRect.height * 0.55;
+      const r = document.createElement('span');
+      r.className = 'bf-stage-ripple';
+      r.style.left = rx + 'px';
+      r.style.top  = ry + 'px';
+      stage.appendChild(r);
+      setTimeout(() => r.remove(), 600);
+    }
+    /* mark the chip selected with its own pulse */
+    setTimeout(() => {
+      chipEl.classList.add('selected', 'bf-just-clicked');
+      setTimeout(() => chipEl.classList.remove('bf-just-clicked'), 500);
+    }, 120);
+    phaseTimer = setTimeout(() => callback && callback(), 380);
+  }
+
+  function clickAllTargets(done){
+    const targets = Array.from(chipsEl.querySelectorAll('.bf-stage-chip'))
+      .filter(c => c.dataset.targetSelected === '1');
+    let i = 0;
+    function next(){
+      if (cancelled) return;
+      if (i >= targets.length){ hideCursor(); done && done(); return; }
+      const chip = targets[i++];
+      moveCursorTo(chip, () => clickChip(chip, next));
+    }
+    /* initial cursor reveal at the first target */
+    if (targets.length){
+      next();
+    } else {
+      hideCursor(); done && done();
+    }
   }
 
   function runStep(idx){
@@ -1886,6 +1998,7 @@ const mm = gsap.matchMedia();
     eyebrowEl.textContent = data.eyebrow;
     subEl.textContent = '';
     chipsEl.innerHTML = '';
+    hideCursor();
 
     /* phase 1: type the question */
     typeText(qEl, data.q, 38, () => {
@@ -1899,18 +2012,23 @@ const mm = gsap.matchMedia();
         stage.dataset.phase = 'chips';
         renderChips(data.chips, () => {
           if (cancelled) return;
-          /* phase 4: hold */
-          stage.dataset.phase = 'hold';
-          phaseTimer = setTimeout(() => {
+          /* phase 4: cursor enters and clicks the targets */
+          clickAllTargets(() => {
             if (cancelled) return;
-            /* phase 5: fade out and advance */
-            stage.classList.add('bf-out');
+            /* phase 5: hold */
+            stage.dataset.phase = 'hold';
             phaseTimer = setTimeout(() => {
               if (cancelled) return;
-              curIdx = (curIdx + 1) % steps.length;
-              runStep(curIdx);
-            }, 380);
-          }, 1900);
+              /* phase 6: fade out and advance */
+              hideCursor();
+              stage.classList.add('bf-out');
+              phaseTimer = setTimeout(() => {
+                if (cancelled) return;
+                curIdx = (curIdx + 1) % steps.length;
+                runStep(curIdx);
+              }, 380);
+            }, 1400);
+          });
         });
       }, 350);
     });

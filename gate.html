@@ -680,157 +680,113 @@ a{text-decoration:none;color:inherit;}
   text-transform:uppercase;color:rgba(255,255,255,0.55);white-space:nowrap;
 }
 
-/* compact horizontal stepper */
-.bf-stepper{
-  position:relative;display:flex;align-items:center;justify-content:space-between;
-  margin:4px 8px 22px;height:28px;
+/* 6-card grid — all steps visible at once, type in parallel */
+.bf-grid{
+  display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;
 }
-.bf-stepper::before{
-  content:"";position:absolute;left:14px;right:14px;top:50%;
-  height:1px;background:rgba(255,255,255,0.10);transform:translateY(-50%);
-}
-.bf-stepper-fill{
-  position:absolute;left:14px;top:50%;height:2px;width:0;
-  background:linear-gradient(90deg, #7c3aed, #06b6d4);
-  transform:translateY(-50%);
-  box-shadow:0 0 14px rgba(124,58,237,0.50);
-  transition:width .6s cubic-bezier(.16,1,.3,1);
-  border-radius:2px;
-}
-.bf-stepper-dot{
-  position:relative;z-index:1;
-  width:28px;height:28px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  background:#0a0a14;border:1px solid rgba(255,255,255,0.14);
-  font-family:'DM Mono',monospace;font-size:11px;font-weight:600;
-  color:rgba(255,255,255,0.45);
-  transition:all .35s cubic-bezier(.16,1,.3,1);
-}
-.bf-stepper-dot.done{
-  background:rgba(124,58,237,0.18);border-color:rgba(157,92,245,0.55);
-  color:#fff;
-}
-.bf-stepper-dot.active{
-  background:linear-gradient(135deg, #7c3aed, #06b6d4);
-  border-color:rgba(34,211,238,0.85);
-  color:#fff;
-  transform:scale(1.18);
-  box-shadow:0 0 22px rgba(34,211,238,0.45);
-}
-
-/* live preview surface — mimics the real BF question screen */
-.bf-stage{
+.bf-card{
   position:relative;
-  padding:24px 26px 22px;
-  border-radius:12px;
+  padding:14px 14px 12px;
+  border-radius:11px;
   background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,58,237,0.10), transparent 60%),
-    rgba(10,8,20,0.75);
+    linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.005)),
+    rgba(10,8,20,0.55);
   border:1px solid rgba(255,255,255,0.08);
-  min-height:200px;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .5s cubic-bezier(.16,1,.3,1), transform .5s cubic-bezier(.16,1,.3,1), border-color .3s;
+  min-height:128px;
+  display:flex;flex-direction:column;
 }
-.bf-stage-eyebrow{
-  font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--cyan-l);margin-bottom:14px;
-  opacity:0;animation:bfFadeIn .35s ease forwards;
+.bf-card.bf-in{opacity:1;transform:translateY(0);}
+.bf-card.bf-done{border-color:rgba(157,92,245,0.30);}
+.bf-card.bf-done::after{
+  content:"\2713";position:absolute;top:9px;right:11px;
+  font-size:10px;font-weight:700;
+  width:16px;height:16px;line-height:16px;text-align:center;
+  border-radius:50%;
+  background:linear-gradient(135deg, #7c3aed, #06b6d4);color:#fff;
+  box-shadow:0 0 12px rgba(34,211,238,0.45);
+  animation:bfTick .5s cubic-bezier(.16,1,.3,1);
 }
-.bf-stage-question{
-  font-family:'Inter',sans-serif;font-weight:800;
-  font-size:24px;letter-spacing:-0.025em;line-height:1.15;
-  color:#fff;margin:0 0 10px;min-height:1.2em;
+@keyframes bfTick{
+  0%{transform:scale(0);}
+  60%{transform:scale(1.18);}
+  100%{transform:scale(1);}
 }
-.bf-stage-q{display:inline;}
-.bf-stage-caret{
-  display:inline-block;width:3px;height:0.9em;margin-left:4px;
-  background:var(--cyan-l);vertical-align:-0.08em;
-  animation:bfCaret 1s steps(1) infinite;
-}
-.bf-stage[data-phase="hold"] .bf-stage-caret{opacity:0;}
-@keyframes bfCaret{50%{opacity:0;}}
-.bf-stage-sub{
-  font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:.06em;
-  color:rgba(255,255,255,0.45);margin:0 0 16px;min-height:1.2em;
-  opacity:0;transform:translateY(4px);transition:opacity .35s, transform .35s;
-}
-.bf-stage[data-phase="sub"] .bf-stage-sub,
-.bf-stage[data-phase="chips"] .bf-stage-sub,
-.bf-stage[data-phase="hold"] .bf-stage-sub{opacity:1;transform:translateY(0);}
 
-.bf-stage-chips{
-  display:flex;flex-wrap:wrap;gap:7px;
-  min-height:36px;
+.bf-card-num{
+  font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
 }
-.bf-stage-chip{
-  font-family:'Inter',sans-serif;font-size:12.5px;font-weight:500;
-  color:#fff;padding:7px 13px;border-radius:100px;
-  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);
-  opacity:0;transform:translateY(6px);
-  animation:bfChipIn .4s cubic-bezier(.16,1,.3,1) forwards;
+.bf-card-num em{
+  font-family:'Instrument Serif',serif;
+  font-style:italic;font-weight:400;
+  font-size:13px;letter-spacing:0;text-transform:none;
+  background:linear-gradient(90deg, #c4b5fd, #22d3ee);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
-.bf-stage-chip.selected{
-  background:rgba(6,182,212,0.14);border-color:rgba(34,211,238,0.65);
-  box-shadow:0 0 0 1px rgba(34,211,238,0.20), 0 0 18px rgba(34,211,238,0.22);
+
+.bf-card-q{
+  font-family:'Inter',sans-serif;font-weight:700;
+  font-size:12.5px;line-height:1.3;letter-spacing:-0.005em;
+  color:#fff;margin-bottom:10px;min-height:2.6em;
+  opacity:0;transform:translateY(3px);
+  transition:opacity .3s, transform .3s;
+}
+.bf-card.bf-in .bf-card-q{opacity:1;transform:translateY(0);}
+
+.bf-card-chips{
+  display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;
+}
+.bf-card-chip{
+  font-family:'Inter',sans-serif;font-size:10px;font-weight:500;
+  color:rgba(255,255,255,0.6);
+  padding:3px 8px;border-radius:100px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);
+  opacity:0;transform:translateY(3px);
+  transition:opacity .3s, transform .3s;
+}
+.bf-card.bf-in .bf-card-chip{opacity:1;transform:translateY(0);}
+.bf-card-chip.selected{
+  background:rgba(6,182,212,0.14);border-color:rgba(34,211,238,0.55);
   color:#fff;
-}
-.bf-stage-chip.bf-just-clicked{animation:bfChipPulse .45s cubic-bezier(.16,1,.3,1);}
-@keyframes bfChipPulse{
-  0%   {transform:translateY(0) scale(1);}
-  35%  {transform:translateY(0) scale(0.94);}
-  70%  {transform:translateY(0) scale(1.04);}
-  100% {transform:translateY(0) scale(1);}
-}
-@keyframes bfChipIn{to{opacity:1;transform:translateY(0);}}
-@keyframes bfFadeIn{to{opacity:1;}}
-
-/* fake mouse pointer that drives the interaction */
-.bf-stage-cursor{
-  position:absolute;left:0;top:0;
-  width:20px;height:20px;
-  pointer-events:none;z-index:5;
-  opacity:0;
-  transform:translate3d(60px,60px,0);
-  transition:opacity .25s ease, transform .55s cubic-bezier(.5,.05,.2,1);
-  filter:drop-shadow(0 2px 6px rgba(0,0,0,0.55));
-  will-change:transform,opacity;
-}
-.bf-stage-cursor.visible{opacity:1;}
-.bf-stage-cursor.clicking{animation:bfCursorClick .28s ease;}
-@keyframes bfCursorClick{
-  0%   {filter:drop-shadow(0 2px 6px rgba(0,0,0,0.55));}
-  50%  {filter:drop-shadow(0 0 14px rgba(34,211,238,0.85)) drop-shadow(0 2px 6px rgba(0,0,0,0.55));}
-  100% {filter:drop-shadow(0 2px 6px rgba(0,0,0,0.55));}
-}
-.bf-stage-cursor svg, .bf-stage-cursor{transform-origin:4px 2.5px;}
-
-/* ripple under the cursor on click */
-.bf-stage-ripple{
-  position:absolute;pointer-events:none;z-index:4;
-  width:14px;height:14px;border-radius:50%;
-  border:1.5px solid rgba(34,211,238,0.85);
-  transform:translate(-50%,-50%) scale(0.4);
-  opacity:0.9;
-  animation:bfRipple .55s ease-out forwards;
-}
-@keyframes bfRipple{
-  to{transform:translate(-50%,-50%) scale(2.8);opacity:0;}
+  box-shadow:0 0 12px rgba(34,211,238,0.20);
 }
 
-/* fade-out transition between steps */
-.bf-stage.bf-out{
-  opacity:0;transform:translateY(4px);
-  transition:opacity .35s ease, transform .35s ease;
+/* the part the user actually types — this is where the type animation belongs */
+.bf-card-typed{
+  margin-top:auto;
+  padding:8px 10px;
+  border-radius:7px;
+  background:rgba(255,255,255,0.03);
+  border:1px dashed rgba(255,255,255,0.10);
+  font-family:'Instrument Serif', serif;
+  font-style:italic;font-size:12px;line-height:1.35;
+  color:rgba(255,255,255,0.78);
+  min-height:2.5em;
+  display:flex;align-items:flex-start;
 }
+.bf-card.bf-done .bf-card-typed{
+  border-style:solid;border-color:rgba(34,211,238,0.30);
+  background:rgba(6,182,212,0.05);
+}
+.bf-card-typed-text{display:inline;}
+.bf-card-caret{
+  display:inline-block;width:2px;height:0.95em;margin-left:2px;
+  background:var(--cyan-l);vertical-align:-0.1em;
+  animation:bfCaret 0.9s steps(1) infinite;
+}
+.bf-card.bf-done .bf-card-caret{display:none;}
+@keyframes bfCaret{50%{opacity:0;}}
 
 @media(max-width:760px){
   .bf-flow{padding:14px 14px 16px;border-radius:12px;}
   .bf-flow-head{margin-bottom:12px;gap:10px;}
-  .bf-stepper{margin:2px 4px 16px;height:24px;}
-  .bf-stepper-dot{width:24px;height:24px;font-size:10px;}
-  .bf-stepper::before, .bf-stepper-fill{left:12px;right:12px;}
-  .bf-stage{padding:18px 18px 16px;min-height:160px;border-radius:10px;}
-  .bf-stage-question{font-size:18px;}
-  .bf-stage-sub{font-size:10.5px;margin-bottom:12px;}
-  .bf-stage-chip{font-size:11.5px;padding:6px 11px;}
+  .bf-grid{grid-template-columns:repeat(2, 1fr);gap:8px;}
+  .bf-card{padding:12px 12px 10px;min-height:112px;}
+  .bf-card-q{font-size:11.5px;}
+  .bf-card-chip{font-size:9.5px;padding:2.5px 7px;}
 }
 
 .showcase-img{
@@ -1366,38 +1322,15 @@ a{text-decoration:none;color:inherit;}
 
       <div class="showcase-left">
 
-        <!-- Module spotlight: 6-step Brand Foundation, animated preview -->
-        <div class="bf-flow rv" id="bfFlow" aria-label="Brand Foundation — 6 step flow">
+        <!-- Module spotlight: all 6 Brand Foundation steps at a glance -->
+        <div class="bf-flow rv" id="bfFlow" aria-label="Brand Foundation — 6 step preview">
           <div class="bf-flow-head">
-            <span class="bf-flow-pill">Brand Foundation · live preview</span>
+            <span class="bf-flow-pill">Brand Foundation · 6 steps</span>
             <span class="bf-flow-line"></span>
-            <span class="bf-flow-tag" id="bfFlowCounter">01 / 06</span>
+            <span class="bf-flow-tag">done in ~12 min</span>
           </div>
 
-          <!-- compact stepper -->
-          <div class="bf-stepper" role="presentation">
-            <div class="bf-stepper-fill" id="bfStepperFill"></div>
-            <div class="bf-stepper-dot active" data-step="0" aria-label="step 1"><span>1</span></div>
-            <div class="bf-stepper-dot" data-step="1" aria-label="step 2"><span>2</span></div>
-            <div class="bf-stepper-dot" data-step="2" aria-label="step 3"><span>3</span></div>
-            <div class="bf-stepper-dot" data-step="3" aria-label="step 4"><span>4</span></div>
-            <div class="bf-stepper-dot" data-step="4" aria-label="step 5"><span>5</span></div>
-            <div class="bf-stepper-dot" data-step="5" aria-label="step 6"><span>6</span></div>
-          </div>
-
-          <!-- live preview surface (mimics the real UI) -->
-          <div class="bf-stage" id="bfStage" data-phase="typing">
-            <div class="bf-stage-eyebrow" id="bfStageEyebrow">brand foundation — 01</div>
-            <h3 class="bf-stage-question">
-              <span class="bf-stage-q" id="bfStageQ"></span><span class="bf-stage-caret" aria-hidden="true"></span>
-            </h3>
-            <p class="bf-stage-sub" id="bfStageSub"></p>
-            <div class="bf-stage-chips" id="bfStageChips" aria-hidden="true"></div>
-            <svg class="bf-stage-cursor" id="bfStageCursor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 2.5l6.5 16 2.4-6.6 6.6-2.4L4 2.5z"
-                    fill="#fff" stroke="#0a0a14" stroke-width="1.2" stroke-linejoin="round"/>
-            </svg>
-          </div>
+          <div class="bf-grid" id="bfGrid"></div>
         </div>
 
         <div class="showcase-img" id="showcaseImg">
@@ -1792,253 +1725,66 @@ const mm = gsap.matchMedia();
   });
 })();
 
-/* ── 3. BRAND FOUNDATION LIVE PREVIEW — typed questions + chips ─────────── */
+/* ── 3. BRAND FOUNDATION GRID — all 6 type in parallel, ~2s total ───────── */
 (function() {
   const flow = document.getElementById('bfFlow');
-  if (!flow) return;
-  const stage      = document.getElementById('bfStage');
-  const eyebrowEl  = document.getElementById('bfStageEyebrow');
-  const qEl        = document.getElementById('bfStageQ');
-  const subEl      = document.getElementById('bfStageSub');
-  const chipsEl    = document.getElementById('bfStageChips');
-  const cursorEl   = document.getElementById('bfStageCursor');
-  const counterEl  = document.getElementById('bfFlowCounter');
-  const fillEl     = document.getElementById('bfStepperFill');
-  const dots       = flow.querySelectorAll('.bf-stepper-dot');
-  if (!stage || !qEl || !subEl || !chipsEl) return;
+  const grid = document.getElementById('bfGrid');
+  if (!flow || !grid) return;
 
   const steps = [
-    {
-      eyebrow:'brand foundation — 01',
-      q:'why do you actually want to build this brand?',
-      sub:'not the easy answer. the real one.',
-      chips:[
-        ['create something real', 1],
-        ['financial freedom', 0],
-        ['passion for the space', 1],
-        ['prove something to myself', 0]
-      ]
-    },
-    {
-      eyebrow:'brand foundation — 02',
-      q:'what does your brand actually look like?',
-      sub:'the visual energy — before any product.',
-      chips:[
-        ['minimal & clean', 0],
-        ['raw & textural', 1],
-        ['editorial', 1],
-        ['loud & graphic', 0]
-      ]
-    },
-    {
-      eyebrow:'brand foundation — 03',
-      q:'what should people feel when they see your brand?',
-      sub:'before they read a single word.',
-      chips:[
-        ['Calm', 0], ['Refined', 1], ['Rebellious', 0],
-        ['Elevated', 1], ['Raw', 0], ['Quiet', 1]
-      ]
-    },
-    {
-      eyebrow:'brand foundation — 04',
-      q:'who are you actually building this for?',
-      sub:'one real person — not a target market.',
-      chips:[
-        ['values quality over hype', 1],
-        ['wants to look distinct', 0],
-        ['buys fewer, better things', 1],
-        ['cares about the story', 0]
-      ]
-    },
-    {
-      eyebrow:'brand foundation — 05',
-      q:'name brands you respect.',
-      sub:'not to copy — because they make you feel something.',
-      chips:[
-        ['Aimé Leon Dore', 1],
-        ['Margiela', 1],
-        ['Stüssy', 0],
-        ['Our Legacy', 1]
-      ]
-    },
-    {
-      eyebrow:'brand foundation — 06',
-      q:'my brand exists so that…',
-      sub:'one line. the first true thing.',
-      chips:[
-        ['people feel less alone', 1]
-      ]
-    }
+    { word:'why',     q:'why are you actually building this brand?', chips:[['create something real',0],['financial freedom',0],['passion for the space',1]], typed:'i want to build something that outlives me.' },
+    { word:'look',    q:'what does your brand actually look like?',  chips:[['minimal & clean',0],['raw & textural',1],['editorial',1]],                    typed:'the inside of an art gallery — quiet, considered.' },
+    { word:'feeling', q:'what should people feel when they see it?', chips:[['Calm',0],['Refined',1],['Rebellious',0],['Elevated',1]],                       typed:'like they found something rare.' },
+    { word:'people',  q:'who are you actually building this for?',   chips:[['quality over hype',1],['look distinct',0],['fewer, better things',1]],        typed:'a 25-year-old who hates fast fashion.' },
+    { word:'taste',   q:'name brands you respect.',                  chips:[['Aimé Leon Dore',1],['Margiela',1],['Our Legacy',1]],                          typed:"Margiela's silence. ALD's confidence." },
+    { word:'promise', q:'my brand exists so that…',                  chips:[],                                                                              typed:'people feel less alone in being themselves.' }
   ];
 
-  let curIdx = 0;
-  let typingTimer = null, phaseTimer = null;
-  let cancelled = false;
+  /* Build the 6 cards once. Question + chips appear instantly (just fade-in);
+     the typed line at the bottom is the part the user actually writes. */
+  grid.innerHTML = steps.map((s, i) => `
+    <div class="bf-card" data-i="${i}">
+      <div class="bf-card-num">${String(i+1).padStart(2,'0')} · <em>${s.word}</em></div>
+      <div class="bf-card-q">${s.q}</div>
+      ${s.chips.length ? `<div class="bf-card-chips">${
+        s.chips.map(([t, sel]) => `<span class="bf-card-chip${sel?' selected':''}">${t}</span>`).join('')
+      }</div>` : ''}
+      <div class="bf-card-typed">
+        <span class="bf-card-typed-text"></span><span class="bf-card-caret"></span>
+      </div>
+    </div>
+  `).join('');
 
-  function clearTimers(){
-    if (typingTimer){ clearTimeout(typingTimer); typingTimer = null; }
-    if (phaseTimer){ clearTimeout(phaseTimer); phaseTimer = null; }
-  }
+  const cards = grid.querySelectorAll('.bf-card');
 
-  function setStepDots(activeIdx){
-    dots.forEach((d, i) => {
-      d.classList.remove('active', 'done');
-      if (i < activeIdx) d.classList.add('done');
-      else if (i === activeIdx) d.classList.add('active');
-    });
-    if (counterEl){
-      counterEl.textContent = String(activeIdx + 1).padStart(2,'0') + ' / 06';
-    }
-    if (fillEl){
-      const pct = (activeIdx / (steps.length - 1)) * 100;
-      fillEl.style.width = pct + '%';
-    }
-  }
-
-  function typeText(el, text, charMs, done){
+  /* Type the user's answer in the typed-line element */
+  function typeAnswer(card, text, done){
+    const target = card.querySelector('.bf-card-typed-text');
+    if (!target){ done && done(); return; }
     let i = 0;
-    el.textContent = '';
-    function step(){
-      if (cancelled) return;
-      el.textContent = text.slice(0, ++i);
-      if (i >= text.length){ done && done(); return; }
-      typingTimer = setTimeout(step, charMs + Math.random()*20);
+    target.textContent = '';
+    function tick(){
+      target.textContent = text.slice(0, ++i);
+      if (i >= text.length){ card.classList.add('bf-done'); done && done(); return; }
+      setTimeout(tick, 16 + Math.random()*14);
     }
-    step();
-  }
-
-  function renderChips(items, done){
-    chipsEl.innerHTML = '';
-    items.forEach((item, i) => {
-      const [text] = item;
-      const chip = document.createElement('span');
-      chip.className = 'bf-stage-chip';
-      chip.dataset.targetSelected = item[1] ? '1' : '0';
-      chip.textContent = text;
-      chip.style.animationDelay = (i * 70) + 'ms';
-      chipsEl.appendChild(chip);
-    });
-    /* wait for the stagger-in to finish before the cursor enters */
-    phaseTimer = setTimeout(() => done && done(), items.length * 70 + 360);
-  }
-
-  function hideCursor(){
-    if (!cursorEl) return;
-    cursorEl.classList.remove('visible');
-  }
-
-  function moveCursorTo(targetEl, callback){
-    if (!cursorEl || !targetEl){ callback && callback(); return; }
-    const stageRect = stage.getBoundingClientRect();
-    const tRect = targetEl.getBoundingClientRect();
-    /* land the cursor tip ~30% into the chip from the left, vertically centred */
-    const x = tRect.left - stageRect.left + tRect.width  * 0.30;
-    const y = tRect.top  - stageRect.top  + tRect.height * 0.55;
-    cursorEl.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    cursorEl.classList.add('visible');
-    /* wait for the move-easing to finish */
-    phaseTimer = setTimeout(() => callback && callback(), 560);
-  }
-
-  function clickChip(chipEl, callback){
-    if (!chipEl){ callback && callback(); return; }
-    /* cursor pulse */
-    if (cursorEl){
-      cursorEl.classList.remove('clicking');
-      void cursorEl.offsetWidth;
-      cursorEl.classList.add('clicking');
-    }
-    /* ripple under the cursor */
-    if (cursorEl){
-      const stageRect = stage.getBoundingClientRect();
-      const tRect = chipEl.getBoundingClientRect();
-      const rx = tRect.left - stageRect.left + tRect.width  * 0.30;
-      const ry = tRect.top  - stageRect.top  + tRect.height * 0.55;
-      const r = document.createElement('span');
-      r.className = 'bf-stage-ripple';
-      r.style.left = rx + 'px';
-      r.style.top  = ry + 'px';
-      stage.appendChild(r);
-      setTimeout(() => r.remove(), 600);
-    }
-    /* mark the chip selected with its own pulse */
-    setTimeout(() => {
-      chipEl.classList.add('selected', 'bf-just-clicked');
-      setTimeout(() => chipEl.classList.remove('bf-just-clicked'), 500);
-    }, 120);
-    phaseTimer = setTimeout(() => callback && callback(), 380);
-  }
-
-  function clickAllTargets(done){
-    const targets = Array.from(chipsEl.querySelectorAll('.bf-stage-chip'))
-      .filter(c => c.dataset.targetSelected === '1');
-    let i = 0;
-    function next(){
-      if (cancelled) return;
-      if (i >= targets.length){ hideCursor(); done && done(); return; }
-      const chip = targets[i++];
-      moveCursorTo(chip, () => clickChip(chip, next));
-    }
-    /* initial cursor reveal at the first target */
-    if (targets.length){
-      next();
-    } else {
-      hideCursor(); done && done();
-    }
-  }
-
-  function runStep(idx){
-    if (cancelled) return;
-    const data = steps[idx];
-    setStepDots(idx);
-
-    /* reset stage */
-    stage.classList.remove('bf-out');
-    stage.dataset.phase = 'typing';
-    eyebrowEl.textContent = data.eyebrow;
-    subEl.textContent = '';
-    chipsEl.innerHTML = '';
-    hideCursor();
-
-    /* phase 1: type the question */
-    typeText(qEl, data.q, 38, () => {
-      if (cancelled) return;
-      /* phase 2: show sub */
-      stage.dataset.phase = 'sub';
-      subEl.textContent = data.sub;
-      phaseTimer = setTimeout(() => {
-        if (cancelled) return;
-        /* phase 3: drop in chips */
-        stage.dataset.phase = 'chips';
-        renderChips(data.chips, () => {
-          if (cancelled) return;
-          /* phase 4: cursor enters and clicks the targets */
-          clickAllTargets(() => {
-            if (cancelled) return;
-            /* phase 5: hold */
-            stage.dataset.phase = 'hold';
-            phaseTimer = setTimeout(() => {
-              if (cancelled) return;
-              /* phase 6: fade out and advance */
-              hideCursor();
-              stage.classList.add('bf-out');
-              phaseTimer = setTimeout(() => {
-                if (cancelled) return;
-                curIdx = (curIdx + 1) % steps.length;
-                runStep(curIdx);
-              }, 380);
-            }, 1400);
-          });
-        });
-      }, 350);
-    });
+    tick();
   }
 
   let started = false;
   function start(){
     if (started) return;
     started = true;
-    runStep(0);
+
+    /* 1) all 6 cards fade in together (with a tiny stagger so the eye reads the row) */
+    cards.forEach((card, i) => {
+      setTimeout(() => card.classList.add('bf-in'), 40 + i * 50);
+    });
+
+    /* 2) start typing the answers in parallel — staggered by 110ms */
+    cards.forEach((card, i) => {
+      setTimeout(() => typeAnswer(card, steps[i].typed), 520 + i * 110);
+    });
   }
 
   if ('IntersectionObserver' in window){
@@ -2047,21 +1793,7 @@ const mm = gsap.matchMedia();
     }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
     io.observe(flow);
   }
-  setTimeout(start, 2500);
-
-  /* clicking a dot jumps to that step */
-  dots.forEach((dot, i) => {
-    dot.style.cursor = 'pointer';
-    dot.addEventListener('click', () => {
-      cancelled = true;
-      clearTimers();
-      setTimeout(() => {
-        cancelled = false;
-        curIdx = i;
-        runStep(curIdx);
-      }, 50);
-    });
-  });
+  setTimeout(start, 2000);
 })();
 
 

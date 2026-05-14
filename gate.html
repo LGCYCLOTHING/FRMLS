@@ -800,6 +800,116 @@ a{text-decoration:none;color:inherit;}
   .bf-card-chip{font-size:9.5px;padding:2.5px 7px;}
 }
 
+/* ── Launch Checklist visual (below the dashboard image) ────────────────── */
+.lc-flow{
+  position:relative;margin-top:18px;
+  padding:20px 24px 22px;
+  border:1px solid rgba(255,255,255,0.09);border-radius:16px;
+  background:
+    linear-gradient(180deg, rgba(6,182,212,0.05), rgba(124,58,237,0.03)),
+    rgba(255,255,255,0.012);
+  overflow:hidden;
+  box-shadow:0 12px 40px rgba(0,0,0,0.30), 0 0 60px rgba(34,211,238,0.06);
+}
+.lc-flow::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 70% 90% at 50% -20%, rgba(34,211,238,0.16), transparent 60%);
+}
+.lc-flow > *{position:relative;z-index:1;}
+
+.lc-flow-head{
+  display:flex;align-items:center;gap:14px;margin-bottom:14px;
+}
+.lc-flow-pill{
+  font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--cyan-l);
+  padding:5px 11px;border-radius:100px;
+  background:rgba(6,182,212,0.09);border:1px solid rgba(6,182,212,0.28);
+  white-space:nowrap;
+}
+.lc-flow-line{flex:1;height:1px;background:linear-gradient(90deg, rgba(157,92,245,0.40), rgba(34,211,238,0.40), transparent);}
+.lc-flow-counter{
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;
+  color:rgba(255,255,255,0.78);white-space:nowrap;
+}
+.lc-flow-counter strong{
+  font-weight:700;
+  background:var(--grad-90);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.lc-progress{
+  height:4px;border-radius:3px;
+  background:rgba(255,255,255,0.06);
+  overflow:hidden;margin-bottom:16px;
+}
+.lc-progress-fill{
+  height:100%;width:0;border-radius:3px;
+  background:linear-gradient(90deg, #7c3aed, #06b6d4);
+  box-shadow:0 0 12px rgba(34,211,238,0.55);
+  transition:width .5s cubic-bezier(.16,1,.3,1);
+}
+
+.lc-grid{
+  display:grid;grid-template-columns:repeat(4, 1fr);gap:6px 8px;
+}
+.lc-item{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;
+  border-radius:8px;
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(255,255,255,0.06);
+  opacity:0;transform:translateY(4px);
+  transition:opacity .35s, transform .35s, background .3s, border-color .3s;
+  min-width:0;
+}
+.lc-item.lc-in{opacity:1;transform:translateY(0);}
+.lc-item.lc-checked{
+  background:rgba(6,182,212,0.06);
+  border-color:rgba(34,211,238,0.30);
+}
+.lc-box{
+  flex:0 0 auto;
+  width:14px;height:14px;border-radius:4px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.18);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:700;color:transparent;line-height:1;
+  transition:background .25s, border-color .25s, color .25s, transform .25s;
+}
+.lc-item.lc-checked .lc-box{
+  background:linear-gradient(135deg, #7c3aed, #06b6d4);
+  border-color:transparent;
+  color:#fff;
+  animation:lcCheck .35s cubic-bezier(.16,1,.3,1);
+}
+@keyframes lcCheck{
+  0%{transform:scale(0.7);}
+  60%{transform:scale(1.15);}
+  100%{transform:scale(1);}
+}
+.lc-text{
+  font-family:'Inter',sans-serif;font-size:11.5px;font-weight:500;
+  color:rgba(255,255,255,0.78);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  letter-spacing:-0.005em;
+  transition:color .25s, text-decoration-color .25s;
+}
+.lc-item.lc-checked .lc-text{
+  color:rgba(255,255,255,0.45);
+  text-decoration:line-through;
+  text-decoration-color:rgba(255,255,255,0.30);
+}
+
+@media(max-width:980px){
+  .lc-grid{grid-template-columns:repeat(3, 1fr);}
+}
+@media(max-width:760px){
+  .lc-flow{padding:14px 14px 16px;border-radius:12px;margin-top:14px;}
+  .lc-grid{grid-template-columns:repeat(2, 1fr);gap:5px;}
+  .lc-item{padding:7px 9px;}
+  .lc-text{font-size:10.5px;}
+}
+
 .showcase-img{
   position:relative;border-radius:var(--r-lg);overflow:hidden;
   border:1px solid var(--border-mid);background:#0a0a12;
@@ -1438,6 +1548,17 @@ a{text-decoration:none;color:inherit;}
                loading="lazy" decoding="async" />
           <div class="sc-glare" aria-hidden="true"></div>
         </div>
+
+        <!-- Module spotlight: 20-item Launch Checklist visual -->
+        <div class="lc-flow rv" id="lcFlow" aria-label="Launch Checklist — 20 items">
+          <div class="lc-flow-head">
+            <span class="lc-flow-pill">Launch Checklist · 20 items</span>
+            <span class="lc-flow-line"></span>
+            <span class="lc-flow-counter" id="lcCounter">0 / 20</span>
+          </div>
+          <div class="lc-progress"><div class="lc-progress-fill" id="lcProgressFill"></div></div>
+          <div class="lc-grid" id="lcGrid"></div>
+        </div>
       </div>
 
       <div class="showcase-right" id="showcaseRight">
@@ -1459,15 +1580,15 @@ a{text-decoration:none;color:inherit;}
           <div class="sr-num">02</div>
           <div class="sr-block-body">
             <div class="sr-block-title">Every prompt, pre-filled</div>
-            <p class="sr-block-desc">Open any of the 12 prompts and they already know your category, your audience, your tone. Paste into Claude or ChatGPT and run.</p>
+            <p class="sr-block-desc">Open any prompt and it already knows your category, your audience, your tone. Paste into any AI service and run.</p>
           </div>
         </div>
 
         <div class="sr-block">
           <div class="sr-num">03</div>
           <div class="sr-block-body">
-            <div class="sr-block-title">Twelve modules. One workspace.</div>
-            <p class="sr-block-desc">Brand Kit, Prompt Pack, Designer Prompts, Roadmap, Email, Checklist — all one click away in the dashboard below.</p>
+            <div class="sr-block-title">Every module, one workspace.</div>
+            <p class="sr-block-desc">Brand Kit, Prompt Pack, Designer Prompts, Roadmap, Email, Checklist — all one click away in the dashboard below. New modules ship continuously.</p>
           </div>
         </div>
 
@@ -1483,7 +1604,7 @@ a{text-decoration:none;color:inherit;}
           <div class="sr-num">05</div>
           <div class="sr-block-body">
             <div class="sr-block-title">Email flows in your voice</div>
-            <p class="sr-block-desc">Welcome, abandoned cart, post-purchase — flows, subject lines, and copy already in your brand's tone. Ready to paste into Klaviyo.</p>
+            <p class="sr-block-desc">Welcome, abandoned cart, post-purchase — flows, subject lines, and copy already in your brand's tone. Ready to paste into any email tool.</p>
           </div>
         </div>
 
@@ -1499,7 +1620,7 @@ a{text-decoration:none;color:inherit;}
           <div class="sr-num">07</div>
           <div class="sr-block-body">
             <div class="sr-block-title">Built to ship — not to plan</div>
-            <p class="sr-block-desc">Every step ends with something you can paste, send, or tick. Real outputs, not theory. Plus a 20-item launch checklist for the final push.</p>
+            <p class="sr-block-desc">Every step ends with something you can paste, send, or tick. Real outputs, not theory.</p>
           </div>
         </div>
 
@@ -1921,6 +2042,98 @@ const mm = gsap.matchMedia();
     io.observe(flow);
   }
   setTimeout(start, 2000);
+})();
+
+
+/* ── 4. LAUNCH CHECKLIST — 20 items, animated tick-off ──────────────────── */
+(function() {
+  const flow      = document.getElementById('lcFlow');
+  const grid      = document.getElementById('lcGrid');
+  const fillEl    = document.getElementById('lcProgressFill');
+  const counterEl = document.getElementById('lcCounter');
+  if (!flow || !grid) return;
+
+  /* Short labels — kept tight so a 4-column grid fits cleanly */
+  const items = [
+    'Shopify + theme',
+    'Brand + domain',
+    'Homepage copy',
+    'Hero image',
+    'About section',
+    'First product live',
+    'Product photos',
+    'Descriptions',
+    'Pricing + variants',
+    'Shipping policy',
+    'Return policy',
+    'Privacy policy',
+    'Domain pointed live',
+    'Payment provider',
+    'Test purchase',
+    'Nav menu set up',
+    'Instagram bio',
+    'Launch post ready',
+    'Email signup',
+    'Store password off'
+  ];
+
+  /* Build the cells */
+  grid.innerHTML = items.map((t, i) => `
+    <div class="lc-item" data-i="${i}">
+      <span class="lc-box">✓</span>
+      <span class="lc-text" title="${t}">${t}</span>
+    </div>
+  `).join('');
+
+  const cells = grid.querySelectorAll('.lc-item');
+  const TOTAL = items.length;
+  const TARGET_CHECKED = 17; /* end-state: 17/20 — "almost there" */
+
+  function setCounter(n){
+    if (counterEl){
+      counterEl.innerHTML = `<strong>${n}</strong> / ${TOTAL}`;
+    }
+    if (fillEl){
+      fillEl.style.width = ((n / TOTAL) * 100) + '%';
+    }
+  }
+
+  let started = false;
+  function start(){
+    if (started) return;
+    started = true;
+
+    /* 1) reveal all 20 cells stagger-in (25ms apart, ~500ms total) */
+    cells.forEach((cell, i) => {
+      setTimeout(() => cell.classList.add('lc-in'), 30 + i * 25);
+    });
+
+    /* 2) once revealed, tick them off one by one — fast pace (~90ms each)
+          so it reads as "boom boom boom done" rather than waiting. */
+    const tickStart = 30 + cells.length * 25 + 220;
+    let checked = 0;
+    function tickOne(i){
+      if (i >= TARGET_CHECKED) return;
+      const cell = cells[i];
+      if (cell){
+        cell.classList.add('lc-checked');
+        checked++;
+        setCounter(checked);
+      }
+      setTimeout(() => tickOne(i + 1), 85);
+    }
+    setTimeout(() => tickOne(0), tickStart);
+  }
+
+  setCounter(0);
+
+  if ('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => { if (e.isIntersecting){ start(); obs.disconnect(); } });
+    }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
+    io.observe(flow);
+  }
+  setTimeout(start, 2200);
 })();
 
 

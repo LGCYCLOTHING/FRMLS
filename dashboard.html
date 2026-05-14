@@ -3455,6 +3455,36 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   .bf-completion-title { font-size: 26px; }
   .bf-completion-sub { font-size: 16px; }
 }
+
+/* Desktop — compress so the whole flow + skip button fits in one viewport (no scroll) */
+@media (min-width: 768px) {
+  #bf-overlay { overflow: hidden; }
+  .bf-screens-container {
+    height: calc(100vh - 64px);
+    min-height: 0;
+    padding-bottom: 8px;
+    justify-content: flex-start;
+  }
+  .bf-screen { padding: 8px 32px 0; }
+  .bf-label { margin-bottom: 12px; }
+  .bf-headline { font-size: 46px; line-height: 1.05; margin-bottom: 8px; }
+  .bf-subline { margin-bottom: 18px; }
+  .bf-checkbox-grid { gap: 8px; margin-bottom: 12px; }
+  .bf-checkbox-card { padding: 11px 14px; font-size: 14px; line-height: 1.35; border-radius: 11px; }
+  .bf-textarea { min-height: 54px; padding: 11px 16px; margin-bottom: 14px; border-radius: 11px; }
+  .bf-continue-btn { padding: 11px 36px; }
+  .bf-skip-btn { margin-top: 12px; padding: 8px 20px; font-size: 12.5px; }
+}
+
+/* Slightly more breathing room on tall screens — content stays comfortable */
+@media (min-width: 768px) and (min-height: 900px) {
+  .bf-headline { font-size: 52px; margin-bottom: 12px; }
+  .bf-subline { margin-bottom: 28px; }
+  .bf-checkbox-grid { gap: 10px; margin-bottom: 18px; }
+  .bf-checkbox-card { padding: 14px 16px; font-size: 14.5px; }
+  .bf-textarea { min-height: 70px; margin-bottom: 22px; }
+  .bf-skip-btn { margin-top: 18px; }
+}
 </style>
 </head>
 <body>

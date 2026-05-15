@@ -397,7 +397,7 @@ function render() {
   thumbs.innerHTML = '';
   for (let i = 1; i <= post.count; i++) {
     const img = document.createElement('img');
-    img.src = `${post.folder}/slide-${i}.png`;
+    img.src = `${post.folder}/slide-${String(i).padStart(2, '0')}.png`;
     img.className = 'thumb' + (i === currentSlide ? ' active' : '');
     img.onclick = (function(n){ return () => goToSlide(n); })(i);
     thumbs.appendChild(img);
@@ -408,7 +408,7 @@ function render() {
 
 function setMainImg(n) {
   const post = POSTS[currentPost];
-  document.getElementById('main-img').src = `${post.folder}/slide-${n}.png`;
+  document.getElementById('main-img').src = `${post.folder}/slide-${String(n).padStart(2, '0')}.png`;
 }
 
 function updateCounter() {

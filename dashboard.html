@@ -2194,68 +2194,56 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 .social-edit-btn:hover { color:var(--white); }
 
 /* ===== MOOD BOARD PANEL — FULLSCREEN ===== */
-#panel-moodboard {
-  width: 100vw !important;
-  left: 0 !important;
-  right: 0 !important;
+/* ===== MOOD BOARD — compact upload panel ===== */
+.moodboard-intro {
+  font-size:13px; color:#aaaaaa; line-height:1.55; margin-bottom:16px;
 }
-#panel-moodboard .panel-body {
-  display: flex;
-  flex-direction: column;
-  padding: 24px;
-  gap: 0;
-  direction: rtl;
-}
-#panel-moodboard .panel-body > * { direction: ltr; }
 .moodboard-grid {
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  grid-template-rows:repeat(2,1fr);
-  gap:16px;
-  flex:1;
-  min-height:0;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:10px;
 }
-@media (max-width:600px) { .moodboard-grid { grid-template-columns:repeat(2,1fr); grid-template-rows:repeat(3,1fr); } }
 .moodboard-slot {
-  position:relative; border-radius:var(--radius-lg); background:var(--bg-card-2);
-  border:1px solid var(--border-subtle);
+  position:relative; border-radius:var(--radius-md); background:var(--bg-card-2);
+  border:1px dashed var(--border-subtle);
   display:flex; align-items:center; justify-content:center;
   cursor:pointer; overflow:hidden; transition:border-color 0.2s, background 0.2s;
-  min-height:180px;
+  aspect-ratio:1 / 1;
 }
-.moodboard-slot:hover { border-color:var(--border-mid); background:rgba(255,255,255,0.02); }
+.moodboard-slot.filled { border-style:solid; }
+.moodboard-slot:hover { border-color:var(--border-mid); background:rgba(255,255,255,0.025); }
 .moodboard-slot-plus {
-  display:flex; flex-direction:column; align-items:center; gap:6px;
-  color:#3a3a3a; pointer-events:none; transition:color 0.2s;
+  display:flex; flex-direction:column; align-items:center; gap:5px;
+  color:#555; pointer-events:none; transition:color 0.2s;
 }
-.moodboard-slot:hover .moodboard-slot-plus { color:#555; }
-.moodboard-plus-icon { font-size:28px; line-height:1; font-weight:300; }
+.moodboard-slot:hover .moodboard-slot-plus { color:#888; }
+.moodboard-plus-icon { font-size:22px; line-height:1; font-weight:300; }
 .moodboard-plus-label {
   font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.14em; text-transform:uppercase;
 }
 .moodboard-img {
   position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-  border-radius:var(--radius-lg); display:none;
+  border-radius:calc(var(--radius-md) - 1px); display:none;
 }
 .moodboard-slot.filled .moodboard-img { display:block; }
 .moodboard-slot.filled .moodboard-slot-plus { display:none; }
 .moodboard-slot-hover-overlay {
   position:absolute; inset:0; background:rgba(0,0,0,0.55);
   display:flex; align-items:center; justify-content:center;
-  border-radius:var(--radius-lg); opacity:0; transition:opacity 0.2s; pointer-events:none;
+  border-radius:calc(var(--radius-md) - 1px); opacity:0; transition:opacity 0.2s; pointer-events:none;
 }
 .moodboard-slot.filled:hover .moodboard-slot-hover-overlay { opacity:1; pointer-events:auto; }
 .moodboard-slot-remove {
-  width:36px; height:36px; border-radius:50%;
+  width:32px; height:32px; border-radius:50%;
   background:rgba(0,0,0,0.8); border:1.5px solid rgba(255,255,255,0.2);
-  color:#fff; font-size:14px; cursor:pointer;
+  color:#fff; font-size:13px; cursor:pointer;
   display:flex; align-items:center; justify-content:center;
   transition:background 0.15s, border-color 0.15s; line-height:1;
 }
 .moodboard-slot-remove:hover { background:rgba(239,68,68,0.9); border-color:rgba(239,68,68,0.5); }
 .moodboard-hint {
-  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em;
-  color:#333; text-align:center; line-height:1.65; padding-top:14px; flex-shrink:0;
+  font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase;
+  color:#555; text-align:center; line-height:1.6; margin-top:18px;
 }
 
 /* ===== PINNED NOTES WIDGET ===== */
@@ -3173,11 +3161,12 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 
 /* ---- Misc ---- */
 [data-theme="light"] .dash-notes-saved.visible { color: var(--green); }
-[data-theme="light"] .moodboard-hint { color: #aaaaaa; }
-[data-theme="light"] .moodboard-slot { background: #f8f7f4; border-color: #e0ddd8; }
-[data-theme="light"] .moodboard-slot:hover { border-color: #c8c6c0; background: #f5f4f0; }
-[data-theme="light"] .moodboard-slot-plus { color: #cccccc; }
-[data-theme="light"] .moodboard-slot:hover .moodboard-slot-plus { color: #aaaaaa; }
+[data-theme="light"] .moodboard-intro { color: #666666; }
+[data-theme="light"] .moodboard-hint { color: #999999; }
+[data-theme="light"] .moodboard-slot { background: #f8f7f4; border-color: #d8d6d0; }
+[data-theme="light"] .moodboard-slot:hover { border-color: #b8b6b0; background: #f5f4f0; }
+[data-theme="light"] .moodboard-slot-plus { color: #aaaaaa; }
+[data-theme="light"] .moodboard-slot:hover .moodboard-slot-plus { color: #777777; }
 
 /* ---- Scrollbar ---- */
 [data-theme="light"] ::-webkit-scrollbar-track { background: #edecea; }
@@ -5014,8 +5003,9 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <button class="panel-close" onclick="closePanel()">✕</button>
   </div>
   <div class="panel-body">
+    <p class="moodboard-intro">Drop in 6 references that capture the visual world of your brand — fits, palettes, packaging, anything that sets the tone.</p>
     <div class="moodboard-grid" id="moodboardGrid"></div>
-    <div class="moodboard-hint">click any slot to upload an image — your references, saved automatically</div>
+    <div class="moodboard-hint">click any tile to upload · saved automatically</div>
   </div>
 </div>
 

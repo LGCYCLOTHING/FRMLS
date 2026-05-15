@@ -634,10 +634,16 @@ body::before {
 .prompt-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:#888888; margin-bottom:10px; }
 .prompt-label.ideogram-tag   { color:#a78bfa; }
 .prompt-label.midjourney-tag { color:#67e8f9; }
-.prompt-text { font-size:13px; color:#cccccc; line-height:1.75; font-family:'DM Mono',monospace; }
+.prompt-text { font-size:14px; color:#ededed; line-height:1.7; font-family:'Inter','Helvetica Neue',Helvetica,Arial,sans-serif; letter-spacing:0.005em; font-weight:400; }
 .copy-btn { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; padding:6px 13px; margin-top:10px; border:1px solid var(--border-mid); border-radius:var(--radius-sm); background:transparent; cursor:pointer; color:#cccccc; transition:all 0.2s cubic-bezier(0.16,1,0.3,1); }
 .copy-btn:hover { background:rgba(255,255,255,0.06); color:var(--white); border-color:rgba(255,255,255,0.2); }
-.copy-btn.copied { background:rgba(16,185,129,0.15); border-color:rgba(16,185,129,0.38); color:var(--green); }
+.copy-btn.copied { background:rgba(255,255,255,0.04); border-color:var(--border-mid); color:#cccccc; }
+/* Prompt-pack copy meta — "copied 2m ago" / "last visited" stamp */
+.pk-copy-row { display:flex; align-items:center; gap:10px; margin-top:10px; flex-wrap:wrap; }
+.pk-copy-row .copy-btn { margin-top:0; }
+.pk-copy-stamp { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#777777; }
+.pk-copy-stamp[data-state="copied"]  { color:#aaaaaa; }
+.pk-copy-stamp[data-state="visited"] { color:#666666; }
 .visual-intro { font-size:13px; color:#aaaaaa; margin-bottom:12px; font-style:italic; line-height:1.6; }
 
 /* ===== BRAND CONTEXT BANNER (PROMPT PACK) ===== */
@@ -652,6 +658,18 @@ body::before {
 .pk-ctx-amber-link { color:#f59e0b; text-decoration:underline; cursor:pointer; background:none; border:none; font-size:12px; font-family:'Inter',sans-serif; padding:0; }
 .pk-personalized-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; background:linear-gradient(90deg, rgba(var(--accent-rgb),0.14), color-mix(in srgb, var(--cyan) 13%, transparent)); border:1px solid rgba(var(--accent-rgb),0.30); color:var(--purple-light); border-radius:4px; padding:2px 7px; margin-bottom:10px; }
 .pk-missing-badge { display:inline-block; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; background:rgba(245,158,11,0.07); border:1px solid rgba(245,158,11,0.22); color:#f59e0b; border-radius:4px; padding:2px 7px; margin-bottom:10px; }
+
+/* ===== PROMPT PACK — 2-COLUMN GRID ===== */
+#pk-stepList { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; align-items:start; }
+#pk-stepList .step-item { display:flex; flex-direction:column; min-width:0; }
+#pk-stepList .step-header { padding:14px 14px; }
+#pk-stepList .step-title { font-size:14px; line-height:1.25; word-break:break-word; }
+#pk-stepList .step-item:has(.step-body.open) { grid-column:1 / -1; }
+#pk-stepList .step-body { padding:0 16px 16px; }
+@media (max-width:560px) {
+  #pk-stepList { grid-template-columns:1fr; }
+  #pk-stepList .step-item:has(.step-body.open) { grid-column:auto; }
+}
 
 /* ===== ONBOARDING OVERLAY ===== */
 #bf-overlay, #ob-overlay {
@@ -2935,7 +2953,11 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 [data-theme="light"] .prompt-label.midjourney-tag { color: var(--cyan); }
 [data-theme="light"] .copy-btn { background: #ffffff; border-color: #d8d6d0; color: #555555; }
 [data-theme="light"] .copy-btn:hover { background: #f5f4f0; color: #111111; border-color: #c8c6c0; }
-[data-theme="light"] .copy-btn.copied { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.3); }
+[data-theme="light"] .copy-btn.copied { background: #f5f4f0; border-color: #d8d6d0; color: #555555; }
+[data-theme="light"] .pk-copy-stamp { color: #999999; }
+[data-theme="light"] .pk-copy-stamp[data-state="copied"]  { color: #555555; }
+[data-theme="light"] .pk-copy-stamp[data-state="visited"] { color: #888888; }
+[data-theme="light"] .prompt-text { color: #1f1f1f; }
 [data-theme="light"] .visual-intro { color: #666666; }
 
 /* ---- Resource cards ---- */
@@ -3574,7 +3596,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="sb-mini-card sb-stats-card">
       <div class="sb-mini-title">Your progress</div>
       <div class="sb-stats-row"><span id="sb-stat-days">0</span><span class="sb-stat-label">days building</span></div>
-      <div class="sb-stats-row"><span id="sb-stat-prompts">0</span><span class="sb-stat-label">of 12 prompts used</span></div>
+      <div class="sb-stats-row"><span id="sb-stat-prompts">0</span><span class="sb-stat-label">of 22 prompts used</span></div>
       <div class="sb-stats-row"><span id="sb-stat-modules">0</span><span class="sb-stat-label">of 12 modules opened</span></div>
     </div>
 
@@ -3875,7 +3897,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
           <div class="orca-prompts-icon">◧</div>
           <div class="orca-prompts-copy">
             <div class="orca-card-title">Prompts</div>
-            <div class="orca-prompts-headline">All 12 build prompts, on demand</div>
+            <div class="orca-prompts-headline">Every build prompt, on demand</div>
             <div class="orca-prompts-sub">Pre-written and brand-aware. Copy into Claude, ChatGPT, or any LLM.</div>
           </div>
         </div>
@@ -5999,6 +6021,56 @@ const brandPackSteps = [
     title: 'SEO and Meta Description',
     label: 'SEO and Meta Description',
     prompt: 'Write an SEO title and meta description for the homepage of {{brandName}}. Brand is {{archetype}} — {{threeWords}}. Brand promise: {{brandPromise}}. SEO title: under 60 characters, includes brand name, describes what the brand sells and who it is for. Meta description: under 155 characters, captures the brand feeling and drives clicks. Both should balance search intent with brand voice. Voice reference: {{voiceExample}}.'
+  },
+  {
+    title: 'Instagram Caption',
+    label: 'Instagram Caption',
+    prompt: 'Write 5 Instagram caption options for a feed post from {{brandName}}. The brand is {{archetype}} — {{threeWords}}. Brand feeling: {{moodWords}}. Voice matches: {{voiceExample}}. Post context: [product, lookbook shot, or behind-the-scenes — describe in one line]. Each caption under 220 characters. No hashtags. No emojis unless they feel native to the brand. Caption should make the right person stop scrolling and feel like the brand is speaking only to them. Avoid: {{whatToAvoid}}.'
+  },
+  {
+    title: 'TikTok / Reels Script',
+    label: 'TikTok / Reels Script',
+    prompt: 'Write a 15-30 second TikTok or Reels script for {{brandName}}. The brand is {{threeWords}}. Brand feeling: {{moodWords}}. Video context: [product showcase, founder talking, styling clip — describe in one line]. Structure: hook in the first 2 seconds, payoff by second 7, soft close at the end. Voice matches: {{voiceExample}}. No tired hooks like "wait for it" or "POV". Avoid: {{whatToAvoid}}. Output the script with on-screen text suggestions and a one-line caption.'
+  },
+  {
+    title: 'Drop Announcement',
+    label: 'Drop Announcement',
+    prompt: 'Write a drop announcement for {{brandName}}. Drop name: [name]. What is launching: [products or theme]. Brand personality: {{archetype}} — {{threeWords}}. Brand feeling: {{moodWords}}. Voice: {{voiceExample}}. Output three versions: (1) a 1-sentence teaser for social, (2) a 50-word email subject + preheader + body for the drop list, (3) a 2-line site banner. Build anticipation without manufactured hype. Avoid: {{whatToAvoid}}.'
+  },
+  {
+    title: 'Sale & Promo Copy',
+    label: 'Sale & Promo Copy',
+    prompt: 'Write sale and promo copy for {{brandName}} that does not cheapen the brand. The brand is {{threeWords}} — {{archetype}}. Voice: {{voiceExample}}. Promo context: [percentage off, end-of-season, exclusive, or one-time — describe]. Output four pieces: (1) a 1-line site banner, (2) an email subject + 60-word body, (3) a 1-line social caption, (4) a justification line that explains the sale on-brand (limited stock, end of run, etc.). No urgency cliches, no all-caps, no "don\'t miss out". Avoid: {{whatToAvoid}}.'
+  },
+  {
+    title: 'Email Capture / Pop-up',
+    label: 'Email Capture / Pop-up',
+    prompt: 'Write the copy for the email capture pop-up on {{brandName}}. Brand personality: {{archetype}} — {{threeWords}}. Brand feeling: {{moodWords}}. Voice: {{voiceExample}}. Output: a 4-word headline, a 1-sentence sub (under 12 words), a placeholder for the email field, a button label, and a small dismiss line. The incentive is: [10% off / first access / nothing — describe]. The whole thing should read like the brand, not a generic Shopify pop-up. Avoid: {{whatToAvoid}}.'
+  },
+  {
+    title: 'Review Request Email',
+    label: 'Review Request Email',
+    prompt: 'Write a post-purchase review request email for {{brandName}}, sent 10-14 days after delivery. Brand personality: {{threeWords}}. Voice: {{voiceExample}}. The email should not beg or bribe — it should make the customer feel their honest opinion actually matters to a small brand. Include a subject line, preheader, and a 90-word body. End with a single clear CTA to leave a review. Avoid: {{whatToAvoid}}.'
+  },
+  {
+    title: 'Back-in-Stock Email',
+    label: 'Back-in-Stock Email',
+    prompt: 'Write a back-in-stock email for {{brandName}} for someone who joined the waitlist for a sold-out product. Product: [name]. Brand voice: {{voiceExample}}. Brand feeling: {{moodWords}}. Output a subject line, preheader, and a 60-word body. The tone is calm confirmation, not a flash-sale alert. Make the reader feel they were remembered, not blasted. End with a single CTA. Avoid: {{whatToAvoid}}.'
+  },
+  {
+    title: 'Meta / Facebook Ad Copy',
+    label: 'Meta / Facebook Ad Copy',
+    prompt: 'Write Meta (Facebook/Instagram) ad copy for {{brandName}}. Brand personality: {{archetype}} — {{threeWords}}. Brand promise: {{brandPromise}}. Voice: {{voiceExample}}. Ad context: [product, collection, brand awareness, or retargeting — describe]. Output three variations, each with: a primary text (under 90 words), a headline (under 40 chars), and a description (under 30 chars). Lead with the feeling, not the discount. Avoid: {{whatToAvoid}}.'
+  },
+  {
+    title: 'FAQ Copy',
+    label: 'FAQ Copy',
+    prompt: 'Write 6 FAQ questions and answers for {{brandName}}. Brand personality: {{threeWords}}. Voice: {{voiceExample}}. Cover: sizing/fit, shipping, returns, materials or quality, restocks, and one brand-philosophy question (why this brand exists or what it stands for). Each answer under 50 words. Honest, direct, never corporate. Avoid: {{whatToAvoid}}.'
+  },
+  {
+    title: 'Founder\'s Letter',
+    label: 'Founder\'s Letter',
+    prompt: 'Write a founder\'s letter for {{brandName}} — used for first-order inserts, press, and founder-led emails. The brand was built because: {{brandWhy}}. It exists so that: {{brandPromise}}. The feeling it gives: {{moodWords}}. Voice: {{voiceExample}}. Write in first person, signed by the founder. Under 200 words. It should sound like a real person wrote it once, by hand — not a marketing team. Reference the feeling of {{moodWords}} without naming those words directly. Avoid: {{whatToAvoid}}.'
   }
 ];
 
@@ -6750,6 +6822,50 @@ function buildBrandKitPanel() {
   if (toneEl) toneEl.textContent = kd.tone;
 }
 
+/* ===== PROMPT PACK — COPY / VISIT TIMESTAMPS ===== */
+const PK_COPY_TS_LS  = 'frmls_pk_copy_ts';
+const PK_VISIT_TS_LS = 'frmls_pk_visit_ts';
+
+function pkReadMap(key) {
+  try { return JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (e) { return {}; }
+}
+function pkWriteMap(key, map) {
+  try { localStorage.setItem(key, JSON.stringify(map)); } catch (e) {}
+}
+function pkMarkCopied(i) {
+  const m = pkReadMap(PK_COPY_TS_LS); m[i] = Date.now(); pkWriteMap(PK_COPY_TS_LS, m);
+  pkRefreshStamp(i);
+}
+function pkMarkVisited(i) {
+  const m = pkReadMap(PK_VISIT_TS_LS); m[i] = Date.now(); pkWriteMap(PK_VISIT_TS_LS, m);
+  pkRefreshStamp(i);
+}
+function pkTimeAgo(ts) {
+  if (!ts) return '';
+  const d = Date.now() - ts;
+  if (d < 45 * 1000) return 'just now';
+  const m = Math.round(d / 60000);
+  if (m < 60) return m + 'm ago';
+  const h = Math.round(d / 3600000);
+  if (h < 24) return h + 'h ago';
+  const days = Math.round(d / 86400000);
+  if (days < 7)  return days + 'd ago';
+  if (days < 30) return Math.round(days / 7) + 'w ago';
+  return Math.round(days / 30) + 'mo ago';
+}
+function pkStampHTML(i) {
+  const copied  = pkReadMap(PK_COPY_TS_LS)[i];
+  const visited = pkReadMap(PK_VISIT_TS_LS)[i];
+  if (copied)  return `<span class="pk-copy-stamp" data-state="copied"  id="pk-stamp-${i}">copied · ${pkTimeAgo(copied)}</span>`;
+  if (visited) return `<span class="pk-copy-stamp" data-state="visited" id="pk-stamp-${i}">last opened · ${pkTimeAgo(visited)}</span>`;
+  return `<span class="pk-copy-stamp" id="pk-stamp-${i}"></span>`;
+}
+function pkRefreshStamp(i) {
+  const el = document.getElementById('pk-stamp-' + i);
+  if (!el) return;
+  el.outerHTML = pkStampHTML(i);
+}
+
 /* Panel: Prompt Pack */
 function buildPromptPackPanel() {
   const ctx = getBrandContext();
@@ -6797,7 +6913,10 @@ function buildPromptPackPanel() {
           ${badge}
           <div class="prompt-label">prompt — ${step.label}</div>
           <div class="prompt-text">${builtPrompt}</div>
-          <button class="copy-btn" onclick="copyRaw(this,window._pkBuiltPrompts[${i}]);markDonePk(${i},true)">copy prompt</button>
+          <div class="pk-copy-row">
+            <button class="copy-btn" onclick="copyRaw(this,window._pkBuiltPrompts[${i}]);pkMarkCopied(${i});markDonePk(${i},true)">copy prompt</button>
+            ${pkStampHTML(i)}
+          </div>
         </div>
       </div>
     </div>`;
@@ -6810,7 +6929,7 @@ function togglePkStep(i) {
   const body = document.getElementById('pk-body-' + i);
   const isOpen = body.classList.contains('open');
   document.querySelectorAll('#pk-stepList .step-body').forEach(b => b.classList.remove('open'));
-  if (!isOpen) { body.classList.add('open'); stepVisited.add(i); updatePkTracker(); updateTracker(); }
+  if (!isOpen) { body.classList.add('open'); stepVisited.add(i); pkMarkVisited(i); updatePkTracker(); updateTracker(); }
 }
 
 function markDonePk(i, checked) {

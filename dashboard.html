@@ -1978,30 +1978,47 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 .designer-section { margin-bottom:18px; }
 .designer-section-title { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:#666666; margin-bottom:10px; }
 
-/* ===== DESIGNER PROMPT — VISUAL PREVIEWS ===== */
+/* ===== DESIGNER PROMPT — VISUAL PREVIEWS (animated) ===== */
 .dp-preview {
   position:relative; width:100%; aspect-ratio:16 / 9;
   border-radius:8px; overflow:hidden; margin-bottom:12px;
   background:#0a0a0a; border:1px solid var(--border-subtle);
+  box-shadow:0 6px 24px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.02);
 }
 .dp-preview-label {
-  position:absolute; top:8px; left:8px; z-index:5;
+  position:absolute; top:8px; left:8px; z-index:6;
   font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.18em; text-transform:uppercase;
-  color:rgba(255,255,255,0.55); background:rgba(0,0,0,0.45);
+  color:rgba(255,255,255,0.6); background:rgba(0,0,0,0.5);
   padding:3px 7px; border-radius:3px; backdrop-filter:blur(6px);
-  pointer-events:none;
+  pointer-events:none; display:flex; align-items:center; gap:5px;
+}
+.dp-preview-label::before {
+  content:''; width:5px; height:5px; border-radius:50%; background:#ef4444;
+  box-shadow:0 0 6px rgba(239,68,68,0.7);
+  animation:dpRecDot 1.4s ease-in-out infinite;
+}
+@keyframes dpRecDot { 0%,100% { opacity:1; } 50% { opacity:0.35; } }
+
+/* Shared faux mouse cursor — inline SVG, no asset required */
+.dp-cursor {
+  position:absolute; width:11px; height:14px; z-index:5; pointer-events:none;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 18'><path d='M1.2 1 L1.2 13 L4.1 10.2 L6.6 15.8 L8.6 14.9 L6.1 9.3 L10.6 9.3 Z' fill='%23ffffff' stroke='%23000000' stroke-width='0.6' stroke-linejoin='round'/></svg>") no-repeat center / contain;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+  opacity:0;
 }
 
-/* 1. Hero — full bleed image, headline overlapping bottom */
+/* ============ 1. HERO — Ken-burns + headline cycle ============ */
 .dp-preview-hero .dp-hero-img {
-  position:absolute; inset:0;
+  position:absolute; inset:-6%;
   background:
-    radial-gradient(ellipse at 30% 35%, rgba(255,255,255,0.18), transparent 55%),
+    radial-gradient(ellipse at 30% 35%, rgba(255,255,255,0.22), transparent 55%),
+    radial-gradient(ellipse at 80% 80%, rgba(140,80,255,0.25), transparent 60%),
     linear-gradient(135deg, #3a2740 0%, #1a1820 60%, #0c0a14 100%);
+  transform-origin:30% 40%;
 }
 .dp-preview-hero .dp-hero-overlay {
-  position:absolute; left:0; right:0; bottom:0; height:55%;
-  background:linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.85) 100%);
+  position:absolute; left:0; right:0; bottom:0; height:60%;
+  background:linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.88) 100%);
 }
 .dp-preview-hero .dp-hero-text {
   position:absolute; left:14px; bottom:12px; right:14px;
@@ -2012,96 +2029,195 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   display:block; font-size:9px; font-weight:500; letter-spacing:0.18em;
   text-transform:uppercase; opacity:0.75; margin-top:4px;
 }
+.dp-preview-hero .dp-hero-shine {
+  position:absolute; top:0; bottom:0; left:-30%; width:30%; z-index:1;
+  background:linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.10) 50%, transparent 70%);
+  transform:skewX(-12deg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dp-preview-hero .dp-hero-img   { animation:dpHeroZoom 9s ease-in-out infinite; }
+  .dp-preview-hero .dp-hero-text  { animation:dpHeroTextRise 9s ease-in-out infinite; }
+  .dp-preview-hero .dp-hero-shine { animation:dpHeroShine 9s ease-in-out infinite; }
+}
+@keyframes dpHeroZoom {
+  0%, 100% { transform:scale(1.02) translate(0,0); }
+  50%      { transform:scale(1.16) translate(-2%, -1%); }
+}
+@keyframes dpHeroTextRise {
+  0%, 18%  { opacity:0; transform:translateY(14px); }
+  35%, 82% { opacity:1; transform:translateY(0); }
+  95%,100% { opacity:0; transform:translateY(-6px); }
+}
+@keyframes dpHeroShine {
+  0%, 60%  { left:-30%; opacity:0; }
+  68%      { opacity:1; }
+  92%,100% { left:130%; opacity:0; }
+}
 
-/* 2. PDP — two-column, thumbs + main, accordion right */
+/* ============ 2. PDP — accordion opens, thumb cycles, image swap ============ */
 .dp-preview-pdp { background:#0d0d0d; display:flex; padding:10px; gap:10px; aspect-ratio:16 / 11; }
 .dp-pdp-left  { width:55%; display:flex; gap:6px; }
 .dp-pdp-thumbs { display:flex; flex-direction:column; gap:4px; width:18px; }
-.dp-pdp-thumbs span { flex:1; background:#1c1c1c; border-radius:3px; }
-.dp-pdp-thumbs span:first-child { background:#2a2a2a; outline:1px solid rgba(255,255,255,0.18); outline-offset:-1px; }
-.dp-pdp-main  { flex:1; background:linear-gradient(135deg,#262026 0%,#141218 100%); border-radius:4px; }
+.dp-pdp-thumbs span { flex:1; background:#1c1c1c; border-radius:3px; outline:1px solid transparent; outline-offset:-1px; transition:outline-color 0.3s, background 0.3s; }
+.dp-pdp-main  {
+  flex:1; border-radius:4px; position:relative; overflow:hidden;
+  background:linear-gradient(135deg,#262026 0%,#141218 100%);
+}
+.dp-pdp-main::before, .dp-pdp-main::after {
+  content:''; position:absolute; inset:0; opacity:0;
+  transition:opacity 0.8s ease;
+}
+.dp-pdp-main::before { background:radial-gradient(ellipse at 60% 50%, rgba(255,200,180,0.16), transparent 60%), linear-gradient(135deg,#3a2832 0%,#181318 100%); }
+.dp-pdp-main::after  { background:radial-gradient(ellipse at 30% 30%, rgba(180,200,255,0.18), transparent 60%), linear-gradient(135deg,#1a2538 0%,#0d121b 100%); }
 .dp-pdp-right { width:45%; display:flex; flex-direction:column; gap:6px; padding:2px 0; }
 .dp-pdp-title { height:10px; width:80%; background:#e8e8e8; border-radius:2px; }
 .dp-pdp-price { height:7px; width:35%; background:#888; border-radius:2px; margin-bottom:4px; }
-.dp-pdp-acc   { height:9px; background:#1a1a1a; border-radius:2px; border:1px solid #232323; position:relative; }
-.dp-pdp-acc::after {
-  content:''; position:absolute; right:5px; top:50%; transform:translateY(-50%);
-  border-left:3px solid transparent; border-right:3px solid transparent;
-  border-top:3px solid #555;
+.dp-pdp-acc   {
+  background:#1a1a1a; border-radius:2px; border:1px solid #232323; position:relative; overflow:hidden;
+  height:9px; transition:height 0.5s cubic-bezier(0.22,1,0.36,1);
 }
+.dp-pdp-acc::after {
+  content:''; position:absolute; right:5px; top:6px;
+  border-left:3px solid transparent; border-right:3px solid transparent;
+  border-top:3px solid #666; transition:transform 0.4s ease;
+}
+.dp-pdp-acc .dp-pdp-acc-fill {
+  position:absolute; top:14px; left:6px; right:6px; display:flex; flex-direction:column; gap:2px;
+  opacity:0; transition:opacity 0.4s ease 0.1s;
+}
+.dp-pdp-acc .dp-pdp-acc-fill span { display:block; height:3px; background:#3a3a3a; border-radius:1px; }
+.dp-pdp-acc .dp-pdp-acc-fill span:nth-child(1) { width:90%; }
+.dp-pdp-acc .dp-pdp-acc-fill span:nth-child(2) { width:75%; }
+.dp-pdp-acc .dp-pdp-acc-fill span:nth-child(3) { width:60%; }
 .dp-pdp-btn {
   margin-top:auto; height:18px; background:#fff; color:#000;
   border-radius:2px; font-family:'DM Mono',monospace; font-size:7px;
   letter-spacing:0.18em; display:flex; align-items:center; justify-content:center; font-weight:700;
+  transition:transform 0.2s;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dp-preview-pdp .dp-pdp-thumbs span:nth-child(1) { animation:dpPdpThumb 8s ease-in-out infinite; }
+  .dp-preview-pdp .dp-pdp-thumbs span:nth-child(2) { animation:dpPdpThumb 8s ease-in-out infinite -2s; }
+  .dp-preview-pdp .dp-pdp-thumbs span:nth-child(3) { animation:dpPdpThumb 8s ease-in-out infinite -4s; }
+  .dp-preview-pdp .dp-pdp-thumbs span:nth-child(4) { animation:dpPdpThumb 8s ease-in-out infinite -6s; }
+  .dp-preview-pdp .dp-pdp-main::before { animation:dpPdpImgA 8s ease-in-out infinite; }
+  .dp-preview-pdp .dp-pdp-main::after  { animation:dpPdpImgB 8s ease-in-out infinite; }
+  .dp-preview-pdp .dp-pdp-right > .dp-pdp-acc:nth-child(3) { animation:dpPdpAcc 8s ease-in-out infinite; }
+  .dp-preview-pdp .dp-pdp-right > .dp-pdp-acc:nth-child(4) { animation:dpPdpAcc 8s ease-in-out infinite -3s; }
+  .dp-preview-pdp .dp-pdp-right > .dp-pdp-acc:nth-child(3) .dp-pdp-acc-fill { animation:dpPdpAccFill 8s ease-in-out infinite; }
+  .dp-preview-pdp .dp-pdp-right > .dp-pdp-acc:nth-child(4) .dp-pdp-acc-fill { animation:dpPdpAccFill 8s ease-in-out infinite -3s; }
+  .dp-preview-pdp .dp-pdp-right > .dp-pdp-acc:nth-child(3)::after { animation:dpPdpAccArrow 8s ease-in-out infinite; }
+  .dp-preview-pdp .dp-pdp-right > .dp-pdp-acc:nth-child(4)::after { animation:dpPdpAccArrow 8s ease-in-out infinite -3s; }
+  .dp-preview-pdp .dp-pdp-btn { animation:dpPdpBtnPulse 8s ease-in-out infinite; }
+}
+@keyframes dpPdpThumb {
+  0%, 18%, 100% { outline-color:transparent; background:#1c1c1c; }
+  4%, 14%       { outline-color:rgba(255,255,255,0.4); background:#2c2c2c; }
+}
+@keyframes dpPdpImgA {
+  0%, 22%, 100% { opacity:0; } 28%, 48% { opacity:1; }
+}
+@keyframes dpPdpImgB {
+  0%, 52%, 100% { opacity:0; } 58%, 78% { opacity:1; }
+}
+@keyframes dpPdpAcc {
+  0%, 22%, 80%, 100% { height:9px; }
+  32%, 70%           { height:32px; }
+}
+@keyframes dpPdpAccFill {
+  0%, 25%, 78%, 100% { opacity:0; }
+  35%, 70%           { opacity:1; }
+}
+@keyframes dpPdpAccArrow {
+  0%, 22%, 80%, 100% { transform:rotate(0); }
+  32%, 70%           { transform:rotate(180deg); }
+}
+@keyframes dpPdpBtnPulse {
+  0%, 88%, 100% { transform:scale(1); }
+  92%, 96%      { transform:scale(1.05); }
 }
 
-/* 3. Navigation — transparent → solid on scroll (animated) */
+/* ============ 3. NAVIGATION — page scrolls past, nav locks in ============ */
 .dp-preview-nav { background:#0a0a0a; }
 .dp-nav-hero {
-  position:absolute; inset:0;
+  position:absolute; left:0; right:0; top:0; height:200%;
   background:
-    linear-gradient(180deg, rgba(40,30,60,0.6) 0%, transparent 50%),
-    linear-gradient(135deg, #2a1d3a 0%, #15131f 100%);
+    linear-gradient(180deg, rgba(40,30,60,0.6) 0%, transparent 22%, transparent 100%),
+    linear-gradient(180deg,
+      #2a1d3a 0%, #20182a 22%,
+      #15131f 22%, #15131f 60%,
+      #1c1828 60%, #1c1828 78%,
+      #14101c 78%, #14101c 100%);
+}
+.dp-nav-hero::before {
+  content:''; position:absolute; left:50%; top:14%; transform:translateX(-50%);
+  width:60%; height:14%; border-radius:3px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.03));
 }
 .dp-nav-hero::after {
-  content:''; position:absolute; left:50%; bottom:18%; transform:translateX(-50%);
-  width:60%; height:18%; border-radius:3px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  content:''; position:absolute; left:10%; right:10%; top:36%;
+  height:1px; background:rgba(255,255,255,0.10);
+  box-shadow:0 14px 0 rgba(255,255,255,0.06), 0 28px 0 rgba(255,255,255,0.04);
 }
 .dp-nav-bar {
   position:absolute; top:0; left:0; right:0; height:22px;
   display:flex; align-items:center; justify-content:space-between;
-  padding:0 12px; z-index:2;
+  padding:0 12px; z-index:3;
   background:transparent; border-bottom:1px solid transparent;
-  transition:background 0.3s ease, border-color 0.3s ease;
+  backdrop-filter:blur(0px);
+  transition:background 0.45s ease, border-color 0.45s ease, backdrop-filter 0.45s ease;
 }
 .dp-nav-bar .dp-nav-logo {
   font-family:'Inter',sans-serif; font-size:9px; font-weight:800; letter-spacing:0.12em; color:#fff;
 }
 .dp-nav-bar .dp-nav-links { display:flex; gap:8px; }
-.dp-nav-bar .dp-nav-links i { display:block; width:14px; height:2px; background:rgba(255,255,255,0.85); border-radius:1px; }
+.dp-nav-bar .dp-nav-links i { display:block; width:14px; height:2px; background:rgba(255,255,255,0.9); border-radius:1px; }
 .dp-nav-scroll-cue {
-  position:absolute; right:8px; bottom:6px; z-index:3;
+  position:absolute; right:8px; bottom:6px; z-index:4;
   font-family:'DM Mono',monospace; font-size:7px; letter-spacing:0.16em; text-transform:uppercase;
-  color:rgba(255,255,255,0.5); pointer-events:none;
+  color:rgba(255,255,255,0.55); pointer-events:none;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .dp-preview-nav .dp-nav-bar { animation:dpNavScroll 4.2s ease-in-out infinite; }
-  .dp-preview-nav .dp-nav-hero { animation:dpNavHero 4.2s ease-in-out infinite; }
-  .dp-preview-nav .dp-nav-scroll-cue { animation:dpNavCue 4.2s ease-in-out infinite; }
+  .dp-preview-nav .dp-nav-bar    { animation:dpNavScroll 5.2s ease-in-out infinite; }
+  .dp-preview-nav .dp-nav-hero   { animation:dpNavHero 5.2s ease-in-out infinite; }
+  .dp-preview-nav .dp-nav-scroll-cue { animation:dpNavCue 5.2s ease-in-out infinite; }
 }
 @keyframes dpNavScroll {
-  0%, 18%   { background:transparent; border-bottom-color:transparent; }
-  42%, 78%  { background:#0a0a0a; border-bottom-color:rgba(255,255,255,0.08); }
-  100%      { background:transparent; border-bottom-color:transparent; }
+  0%, 10%   { background:transparent; border-bottom-color:transparent; }
+  30%, 78%  { background:rgba(8,8,12,0.92); border-bottom-color:rgba(255,255,255,0.10); backdrop-filter:blur(6px); }
+  92%, 100% { background:transparent; border-bottom-color:transparent; }
 }
 @keyframes dpNavHero {
-  0%, 18%   { transform:translateY(0); }
-  42%, 78%  { transform:translateY(-18%); }
-  100%      { transform:translateY(0); }
+  0%, 10%   { transform:translateY(0); }
+  30%, 78%  { transform:translateY(-44%); }
+  92%, 100% { transform:translateY(0); }
 }
 @keyframes dpNavCue {
-  0%, 18%   { opacity:1; content:'\2193 scroll'; }
-  20%, 100% { opacity:0; }
+  0%, 18%   { opacity:1; transform:translateY(0); }
+  24%, 100% { opacity:0; transform:translateY(6px); }
 }
 
-/* 4. Banner — transparent w/ thin border, dismissible, above header */
+/* ============ 4. BANNER — multi-message slide cycle + dismiss tap ============ */
 .dp-preview-banner { background:#0a0a0a; aspect-ratio:16 / 10; }
 .dp-banner-bar {
   position:absolute; top:0; left:0; right:0; height:18px; z-index:2;
   display:flex; align-items:center; justify-content:center;
-  background:transparent; border-bottom:1px solid rgba(255,255,255,0.16);
+  background:transparent; border-bottom:1px solid rgba(255,255,255,0.18);
   font-family:'DM Mono',monospace; font-size:7px; letter-spacing:0.22em; text-transform:uppercase;
-  color:rgba(255,255,255,0.92);
+  color:rgba(255,255,255,0.95); overflow:hidden;
+}
+.dp-banner-msg {
+  position:absolute; left:0; right:22px; text-align:center;
+  opacity:0; transform:translateY(6px);
 }
 .dp-banner-bar .dp-banner-x {
-  position:absolute; right:8px; top:50%; transform:translateY(-50%);
-  color:rgba(255,255,255,0.65); font-size:9px; line-height:1;
+  position:absolute; right:7px; top:50%; transform:translateY(-50%);
+  color:rgba(255,255,255,0.7); font-size:9px; line-height:1; z-index:3;
 }
 .dp-banner-page {
   position:absolute; inset:18px 0 0 0;
   background:
-    linear-gradient(180deg, rgba(40,30,60,0.5) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(40,30,60,0.5) 0%, transparent 55%),
     linear-gradient(135deg, #1f1827 0%, #0e0d14 100%);
 }
 .dp-banner-page::before {
@@ -2113,57 +2229,118 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   display:flex; align-items:center;
   font-family:'Inter',sans-serif; font-size:9px; font-weight:800; letter-spacing:0.12em; color:#fff;
 }
+.dp-preview-banner .dp-cursor { animation:dpBannerCursor 12s ease-in-out infinite; }
+@media (prefers-reduced-motion: no-preference) {
+  .dp-banner-msg-1 { animation:dpBannerMsg1 12s ease-in-out infinite; }
+  .dp-banner-msg-2 { animation:dpBannerMsg2 12s ease-in-out infinite; }
+  .dp-banner-msg-3 { animation:dpBannerMsg3 12s ease-in-out infinite; }
+  .dp-preview-banner .dp-banner-x { animation:dpBannerXPress 12s ease-in-out infinite; }
+}
+@keyframes dpBannerMsg1 {
+  0%, 22% { opacity:1; transform:translateY(0); }
+  26%, 100% { opacity:0; transform:translateY(-8px); }
+}
+@keyframes dpBannerMsg2 {
+  0%, 28% { opacity:0; transform:translateY(8px); }
+  34%, 52% { opacity:1; transform:translateY(0); }
+  56%, 100% { opacity:0; transform:translateY(-8px); }
+}
+@keyframes dpBannerMsg3 {
+  0%, 58% { opacity:0; transform:translateY(8px); }
+  64%, 84% { opacity:1; transform:translateY(0); }
+  88%, 100% { opacity:0; transform:translateY(-8px); }
+}
+@keyframes dpBannerCursor {
+  0%, 80%      { opacity:0; left:30%; top:60%; }
+  84%          { opacity:1; left:30%; top:60%; }
+  90%, 92%     { opacity:1; left:88%; top:14%; transform:scale(1); }
+  93%, 95%     { opacity:1; left:88%; top:14%; transform:scale(0.85); }
+  97%, 100%    { opacity:0; left:88%; top:14%; }
+}
+@keyframes dpBannerXPress {
+  0%, 92%, 100% { transform:translateY(-50%) scale(1); color:rgba(255,255,255,0.7); }
+  93%, 95%      { transform:translateY(-50%) scale(0.78); color:#fff; }
+}
 
-/* 5. Product Grid — 3 cols, hover zoom (animated) */
+/* ============ 5. PRODUCT GRID — cursor moves card to card, zoom triggers ============ */
 .dp-preview-grid { background:#0d0d0d; padding:14px 10px; aspect-ratio:16 / 11; }
 .dp-grid-row { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; height:100%; }
-.dp-grid-card { display:flex; flex-direction:column; gap:4px; }
+.dp-grid-card { display:flex; flex-direction:column; gap:4px; position:relative; }
 .dp-grid-img {
   flex:1; border-radius:3px; overflow:hidden; position:relative;
   background:linear-gradient(135deg, #2a242e 0%, #141218 100%);
+  transition:box-shadow 0.3s ease;
 }
-.dp-grid-img::after {
+.dp-grid-img::before {
   content:''; position:absolute; inset:0;
-  background:radial-gradient(ellipse at 35% 40%, rgba(255,255,255,0.15), transparent 60%);
-  transition:transform 0.6s ease;
+  background:
+    radial-gradient(ellipse at 35% 40%, rgba(255,255,255,0.15), transparent 60%),
+    linear-gradient(135deg, transparent 0%, rgba(140,80,200,0.10) 100%);
+  transition:transform 0.45s ease;
 }
 .dp-grid-name  { height:5px; width:70%; background:#888; border-radius:1px; }
 .dp-grid-price { height:5px; width:35%; background:#555; border-radius:1px; }
 @media (prefers-reduced-motion: no-preference) {
-  .dp-preview-grid .dp-grid-card:nth-child(2) .dp-grid-img::after {
-    animation:dpGridZoom 3.4s ease-in-out infinite;
-  }
-  .dp-preview-grid .dp-grid-card:nth-child(2) .dp-grid-img {
-    animation:dpGridFrame 3.4s ease-in-out infinite;
-  }
+  .dp-preview-grid .dp-cursor { animation:dpGridCursor 9s ease-in-out infinite; }
+  .dp-preview-grid .dp-grid-card:nth-child(1) .dp-grid-img::before { animation:dpGridZoom1 9s ease-in-out infinite; }
+  .dp-preview-grid .dp-grid-card:nth-child(1) .dp-grid-img         { animation:dpGridFrame1 9s ease-in-out infinite; }
+  .dp-preview-grid .dp-grid-card:nth-child(2) .dp-grid-img::before { animation:dpGridZoom2 9s ease-in-out infinite; }
+  .dp-preview-grid .dp-grid-card:nth-child(2) .dp-grid-img         { animation:dpGridFrame2 9s ease-in-out infinite; }
+  .dp-preview-grid .dp-grid-card:nth-child(3) .dp-grid-img::before { animation:dpGridZoom3 9s ease-in-out infinite; }
+  .dp-preview-grid .dp-grid-card:nth-child(3) .dp-grid-img         { animation:dpGridFrame3 9s ease-in-out infinite; }
 }
-@keyframes dpGridZoom {
-  0%, 30%, 100% { transform:scale(1); }
-  55%, 75%      { transform:scale(1.12); }
+@keyframes dpGridCursor {
+  0%, 4%   { opacity:0; left:5%;  top:90%; }
+  8%, 28%  { opacity:1; left:18%; top:50%; }
+  38%, 58% { opacity:1; left:50%; top:50%; }
+  68%, 88% { opacity:1; left:82%; top:50%; }
+  94%, 100%{ opacity:0; left:95%; top:90%; }
 }
-@keyframes dpGridFrame {
-  0%, 30%, 100% { box-shadow:none; }
-  55%, 75%      { box-shadow:0 0 0 1px rgba(255,255,255,0.18); }
-}
+@keyframes dpGridZoom1 { 0%,8%,32%,100% { transform:scale(1); } 14%,26% { transform:scale(1.14); } }
+@keyframes dpGridFrame1 { 0%,8%,32%,100% { box-shadow:none; } 14%,26% { box-shadow:0 0 0 1px rgba(255,255,255,0.22); } }
+@keyframes dpGridZoom2 { 0%,38%,62%,100% { transform:scale(1); } 44%,56% { transform:scale(1.14); } }
+@keyframes dpGridFrame2 { 0%,38%,62%,100% { box-shadow:none; } 44%,56% { box-shadow:0 0 0 1px rgba(255,255,255,0.22); } }
+@keyframes dpGridZoom3 { 0%,68%,92%,100% { transform:scale(1); } 74%,86% { transform:scale(1.14); } }
+@keyframes dpGridFrame3 { 0%,68%,92%,100% { box-shadow:none; } 74%,86% { box-shadow:0 0 0 1px rgba(255,255,255,0.22); } }
 
-/* 6. Footer — minimal dark, 3-col */
+/* ============ 6. FOOTER — minimal dark, socials pulse on cycle ============ */
 .dp-preview-footer { background:#080808; padding:14px 12px 10px; aspect-ratio:16 / 8; display:flex; flex-direction:column; }
 .dp-footer-row { flex:1; display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; align-items:center; }
 .dp-footer-col { display:flex; flex-direction:column; gap:4px; }
 .dp-footer-brand { font-family:'Inter',sans-serif; font-size:10px; font-weight:800; letter-spacing:0.1em; color:#fff; }
 .dp-footer-tag   { height:4px; width:90%; background:#3a3a3a; border-radius:1px; }
 .dp-footer-nav   { align-items:center; gap:5px; }
-.dp-footer-nav span { height:4px; width:70%; background:#666; border-radius:1px; }
+.dp-footer-nav span { height:4px; width:70%; background:#666; border-radius:1px; transition:background 0.4s; }
 .dp-footer-social { flex-direction:row; justify-content:flex-end; gap:6px; }
-.dp-footer-social i { display:block; width:9px; height:9px; border-radius:50%; background:#3a3a3a; }
+.dp-footer-social i {
+  display:block; width:10px; height:10px; border-radius:50%;
+  background:#3a3a3a; transition:background 0.3s, transform 0.3s;
+}
 .dp-footer-copy {
   margin-top:6px; padding-top:5px; border-top:1px solid rgba(255,255,255,0.06);
   font-family:'DM Mono',monospace; font-size:6px; letter-spacing:0.18em; text-transform:uppercase; color:#555; text-align:center;
 }
+@media (prefers-reduced-motion: no-preference) {
+  .dp-preview-footer .dp-footer-social i:nth-child(1) { animation:dpFooterDot 4.8s ease-in-out infinite; }
+  .dp-preview-footer .dp-footer-social i:nth-child(2) { animation:dpFooterDot 4.8s ease-in-out infinite -1.6s; }
+  .dp-preview-footer .dp-footer-social i:nth-child(3) { animation:dpFooterDot 4.8s ease-in-out infinite -3.2s; }
+  .dp-preview-footer .dp-footer-nav span:nth-child(1) { animation:dpFooterNav 4.8s ease-in-out infinite; }
+  .dp-preview-footer .dp-footer-nav span:nth-child(2) { animation:dpFooterNav 4.8s ease-in-out infinite -1.6s; }
+  .dp-preview-footer .dp-footer-nav span:nth-child(3) { animation:dpFooterNav 4.8s ease-in-out infinite -3.2s; }
+}
+@keyframes dpFooterDot {
+  0%, 86%, 100% { background:#3a3a3a; transform:scale(1); }
+  5%, 18%       { background:#fff; transform:scale(1.18); }
+}
+@keyframes dpFooterNav {
+  0%, 86%, 100% { background:#666; }
+  5%, 18%       { background:#e8e8e8; }
+}
 
 /* Light theme touch-ups for previews */
-[data-theme="light"] .dp-preview { border-color:#e0ddd8; }
-[data-theme="light"] .dp-preview-label { background:rgba(255,255,255,0.7); color:#333; }
+[data-theme="light"] .dp-preview { border-color:#e0ddd8; background:#f5f4f0; }
+[data-theme="light"] .dp-preview-label { background:rgba(0,0,0,0.7); color:#fff; }
+[data-theme="light"] .dp-preview-label::before { background:#dc2626; }
 
 /* Panel placeholder */
 .panel-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:64px 24px; }
@@ -4753,6 +4930,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
           <span class="dp-preview-label">preview</span>
           <div class="dp-hero-img"></div>
           <div class="dp-hero-overlay"></div>
+          <div class="dp-hero-shine"></div>
           <div class="dp-hero-text">Your headline.<small>full-bleed image</small></div>
         </div>
         <div class="prompt-text">Update your Shopify theme hero section to be full bleed with the headline text overlapping the bottom of the image. Make the text white, bold, left aligned, with a subtle dark gradient overlay on the bottom half of the image. Keep it responsive.</div>
@@ -4771,8 +4949,8 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
           <div class="dp-pdp-right">
             <div class="dp-pdp-title"></div>
             <div class="dp-pdp-price"></div>
-            <div class="dp-pdp-acc"></div>
-            <div class="dp-pdp-acc"></div>
+            <div class="dp-pdp-acc"><div class="dp-pdp-acc-fill"><span></span><span></span><span></span></div></div>
+            <div class="dp-pdp-acc"><div class="dp-pdp-acc-fill"><span></span><span></span><span></span></div></div>
             <div class="dp-pdp-acc"></div>
             <div class="dp-pdp-btn">Add to cart</div>
           </div>
@@ -4785,7 +4963,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <div class="designer-section-title">Navigation</div>
       <div class="prompt-box">
         <div class="dp-preview dp-preview-nav" aria-hidden="true">
-          <span class="dp-preview-label">preview · animated</span>
+          <span class="dp-preview-label">preview</span>
           <div class="dp-nav-hero"></div>
           <div class="dp-nav-bar">
             <span class="dp-nav-logo">BRAND</span>
@@ -4803,10 +4981,13 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
         <div class="dp-preview dp-preview-banner" aria-hidden="true">
           <span class="dp-preview-label">preview</span>
           <div class="dp-banner-bar">
-            Free shipping over $100
+            <span class="dp-banner-msg dp-banner-msg-1">Free shipping over $100</span>
+            <span class="dp-banner-msg dp-banner-msg-2">New drop · march 15</span>
+            <span class="dp-banner-msg dp-banner-msg-3">10% off your first order</span>
             <span class="dp-banner-x">✕</span>
           </div>
           <div class="dp-banner-page"></div>
+          <i class="dp-cursor"></i>
         </div>
         <div class="prompt-text">Add a full width announcement banner above your Shopify theme header. Make it transparent with a thin bottom border. Text centered, small caps font, white text. Should be dismissible with an X button.</div>
         <button class="copy-btn" onclick="copyRaw(this,'Add a full width announcement banner above your Shopify theme header. Make it transparent with a thin bottom border. Text centered, small caps font, white text. Should be dismissible with an X button.')">copy prompt</button>
@@ -4816,12 +4997,13 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <div class="designer-section-title">Product Grid</div>
       <div class="prompt-box">
         <div class="dp-preview dp-preview-grid" aria-hidden="true">
-          <span class="dp-preview-label">preview · hover zoom</span>
+          <span class="dp-preview-label">preview</span>
           <div class="dp-grid-row">
             <div class="dp-grid-card"><div class="dp-grid-img"></div><div class="dp-grid-name"></div><div class="dp-grid-price"></div></div>
             <div class="dp-grid-card"><div class="dp-grid-img"></div><div class="dp-grid-name"></div><div class="dp-grid-price"></div></div>
             <div class="dp-grid-card"><div class="dp-grid-img"></div><div class="dp-grid-name"></div><div class="dp-grid-price"></div></div>
           </div>
+          <i class="dp-cursor"></i>
         </div>
         <div class="prompt-text">Update your Shopify theme collection grid to show 3 products per row on desktop, 2 on tablet, 1 on mobile. Add a smooth zoom effect on product image hover. Remove the add to cart button from the grid — show only image, name, and price.</div>
         <button class="copy-btn" onclick="copyRaw(this,'Update your Shopify theme collection grid to show 3 products per row on desktop, 2 on tablet, 1 on mobile. Add a smooth zoom effect on product image hover. Remove the add to cart button from the grid — show only image, name, and price.')">copy prompt</button>

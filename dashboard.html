@@ -1978,6 +1978,193 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 .designer-section { margin-bottom:18px; }
 .designer-section-title { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:#666666; margin-bottom:10px; }
 
+/* ===== DESIGNER PROMPT — VISUAL PREVIEWS ===== */
+.dp-preview {
+  position:relative; width:100%; aspect-ratio:16 / 9;
+  border-radius:8px; overflow:hidden; margin-bottom:12px;
+  background:#0a0a0a; border:1px solid var(--border-subtle);
+}
+.dp-preview-label {
+  position:absolute; top:8px; left:8px; z-index:5;
+  font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.18em; text-transform:uppercase;
+  color:rgba(255,255,255,0.55); background:rgba(0,0,0,0.45);
+  padding:3px 7px; border-radius:3px; backdrop-filter:blur(6px);
+  pointer-events:none;
+}
+
+/* 1. Hero — full bleed image, headline overlapping bottom */
+.dp-preview-hero .dp-hero-img {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at 30% 35%, rgba(255,255,255,0.18), transparent 55%),
+    linear-gradient(135deg, #3a2740 0%, #1a1820 60%, #0c0a14 100%);
+}
+.dp-preview-hero .dp-hero-overlay {
+  position:absolute; left:0; right:0; bottom:0; height:55%;
+  background:linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0.85) 100%);
+}
+.dp-preview-hero .dp-hero-text {
+  position:absolute; left:14px; bottom:12px; right:14px;
+  color:#fff; font-weight:800; font-size:18px; letter-spacing:-0.02em; line-height:1.05;
+  font-family:'Inter',sans-serif;
+}
+.dp-preview-hero .dp-hero-text small {
+  display:block; font-size:9px; font-weight:500; letter-spacing:0.18em;
+  text-transform:uppercase; opacity:0.75; margin-top:4px;
+}
+
+/* 2. PDP — two-column, thumbs + main, accordion right */
+.dp-preview-pdp { background:#0d0d0d; display:flex; padding:10px; gap:10px; aspect-ratio:16 / 11; }
+.dp-pdp-left  { width:55%; display:flex; gap:6px; }
+.dp-pdp-thumbs { display:flex; flex-direction:column; gap:4px; width:18px; }
+.dp-pdp-thumbs span { flex:1; background:#1c1c1c; border-radius:3px; }
+.dp-pdp-thumbs span:first-child { background:#2a2a2a; outline:1px solid rgba(255,255,255,0.18); outline-offset:-1px; }
+.dp-pdp-main  { flex:1; background:linear-gradient(135deg,#262026 0%,#141218 100%); border-radius:4px; }
+.dp-pdp-right { width:45%; display:flex; flex-direction:column; gap:6px; padding:2px 0; }
+.dp-pdp-title { height:10px; width:80%; background:#e8e8e8; border-radius:2px; }
+.dp-pdp-price { height:7px; width:35%; background:#888; border-radius:2px; margin-bottom:4px; }
+.dp-pdp-acc   { height:9px; background:#1a1a1a; border-radius:2px; border:1px solid #232323; position:relative; }
+.dp-pdp-acc::after {
+  content:''; position:absolute; right:5px; top:50%; transform:translateY(-50%);
+  border-left:3px solid transparent; border-right:3px solid transparent;
+  border-top:3px solid #555;
+}
+.dp-pdp-btn {
+  margin-top:auto; height:18px; background:#fff; color:#000;
+  border-radius:2px; font-family:'DM Mono',monospace; font-size:7px;
+  letter-spacing:0.18em; display:flex; align-items:center; justify-content:center; font-weight:700;
+}
+
+/* 3. Navigation — transparent → solid on scroll (animated) */
+.dp-preview-nav { background:#0a0a0a; }
+.dp-nav-hero {
+  position:absolute; inset:0;
+  background:
+    linear-gradient(180deg, rgba(40,30,60,0.6) 0%, transparent 50%),
+    linear-gradient(135deg, #2a1d3a 0%, #15131f 100%);
+}
+.dp-nav-hero::after {
+  content:''; position:absolute; left:50%; bottom:18%; transform:translateX(-50%);
+  width:60%; height:18%; border-radius:3px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+}
+.dp-nav-bar {
+  position:absolute; top:0; left:0; right:0; height:22px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 12px; z-index:2;
+  background:transparent; border-bottom:1px solid transparent;
+  transition:background 0.3s ease, border-color 0.3s ease;
+}
+.dp-nav-bar .dp-nav-logo {
+  font-family:'Inter',sans-serif; font-size:9px; font-weight:800; letter-spacing:0.12em; color:#fff;
+}
+.dp-nav-bar .dp-nav-links { display:flex; gap:8px; }
+.dp-nav-bar .dp-nav-links i { display:block; width:14px; height:2px; background:rgba(255,255,255,0.85); border-radius:1px; }
+.dp-nav-scroll-cue {
+  position:absolute; right:8px; bottom:6px; z-index:3;
+  font-family:'DM Mono',monospace; font-size:7px; letter-spacing:0.16em; text-transform:uppercase;
+  color:rgba(255,255,255,0.5); pointer-events:none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dp-preview-nav .dp-nav-bar { animation:dpNavScroll 4.2s ease-in-out infinite; }
+  .dp-preview-nav .dp-nav-hero { animation:dpNavHero 4.2s ease-in-out infinite; }
+  .dp-preview-nav .dp-nav-scroll-cue { animation:dpNavCue 4.2s ease-in-out infinite; }
+}
+@keyframes dpNavScroll {
+  0%, 18%   { background:transparent; border-bottom-color:transparent; }
+  42%, 78%  { background:#0a0a0a; border-bottom-color:rgba(255,255,255,0.08); }
+  100%      { background:transparent; border-bottom-color:transparent; }
+}
+@keyframes dpNavHero {
+  0%, 18%   { transform:translateY(0); }
+  42%, 78%  { transform:translateY(-18%); }
+  100%      { transform:translateY(0); }
+}
+@keyframes dpNavCue {
+  0%, 18%   { opacity:1; content:'\2193 scroll'; }
+  20%, 100% { opacity:0; }
+}
+
+/* 4. Banner — transparent w/ thin border, dismissible, above header */
+.dp-preview-banner { background:#0a0a0a; aspect-ratio:16 / 10; }
+.dp-banner-bar {
+  position:absolute; top:0; left:0; right:0; height:18px; z-index:2;
+  display:flex; align-items:center; justify-content:center;
+  background:transparent; border-bottom:1px solid rgba(255,255,255,0.16);
+  font-family:'DM Mono',monospace; font-size:7px; letter-spacing:0.22em; text-transform:uppercase;
+  color:rgba(255,255,255,0.92);
+}
+.dp-banner-bar .dp-banner-x {
+  position:absolute; right:8px; top:50%; transform:translateY(-50%);
+  color:rgba(255,255,255,0.65); font-size:9px; line-height:1;
+}
+.dp-banner-page {
+  position:absolute; inset:18px 0 0 0;
+  background:
+    linear-gradient(180deg, rgba(40,30,60,0.5) 0%, transparent 60%),
+    linear-gradient(135deg, #1f1827 0%, #0e0d14 100%);
+}
+.dp-banner-page::before {
+  content:''; position:absolute; top:8px; left:12px; right:12px; height:1px;
+  background:rgba(255,255,255,0.08);
+}
+.dp-banner-page::after {
+  content:'BRAND'; position:absolute; top:0; left:12px; height:22px;
+  display:flex; align-items:center;
+  font-family:'Inter',sans-serif; font-size:9px; font-weight:800; letter-spacing:0.12em; color:#fff;
+}
+
+/* 5. Product Grid — 3 cols, hover zoom (animated) */
+.dp-preview-grid { background:#0d0d0d; padding:14px 10px; aspect-ratio:16 / 11; }
+.dp-grid-row { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; height:100%; }
+.dp-grid-card { display:flex; flex-direction:column; gap:4px; }
+.dp-grid-img {
+  flex:1; border-radius:3px; overflow:hidden; position:relative;
+  background:linear-gradient(135deg, #2a242e 0%, #141218 100%);
+}
+.dp-grid-img::after {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(ellipse at 35% 40%, rgba(255,255,255,0.15), transparent 60%);
+  transition:transform 0.6s ease;
+}
+.dp-grid-name  { height:5px; width:70%; background:#888; border-radius:1px; }
+.dp-grid-price { height:5px; width:35%; background:#555; border-radius:1px; }
+@media (prefers-reduced-motion: no-preference) {
+  .dp-preview-grid .dp-grid-card:nth-child(2) .dp-grid-img::after {
+    animation:dpGridZoom 3.4s ease-in-out infinite;
+  }
+  .dp-preview-grid .dp-grid-card:nth-child(2) .dp-grid-img {
+    animation:dpGridFrame 3.4s ease-in-out infinite;
+  }
+}
+@keyframes dpGridZoom {
+  0%, 30%, 100% { transform:scale(1); }
+  55%, 75%      { transform:scale(1.12); }
+}
+@keyframes dpGridFrame {
+  0%, 30%, 100% { box-shadow:none; }
+  55%, 75%      { box-shadow:0 0 0 1px rgba(255,255,255,0.18); }
+}
+
+/* 6. Footer — minimal dark, 3-col */
+.dp-preview-footer { background:#080808; padding:14px 12px 10px; aspect-ratio:16 / 8; display:flex; flex-direction:column; }
+.dp-footer-row { flex:1; display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; align-items:center; }
+.dp-footer-col { display:flex; flex-direction:column; gap:4px; }
+.dp-footer-brand { font-family:'Inter',sans-serif; font-size:10px; font-weight:800; letter-spacing:0.1em; color:#fff; }
+.dp-footer-tag   { height:4px; width:90%; background:#3a3a3a; border-radius:1px; }
+.dp-footer-nav   { align-items:center; gap:5px; }
+.dp-footer-nav span { height:4px; width:70%; background:#666; border-radius:1px; }
+.dp-footer-social { flex-direction:row; justify-content:flex-end; gap:6px; }
+.dp-footer-social i { display:block; width:9px; height:9px; border-radius:50%; background:#3a3a3a; }
+.dp-footer-copy {
+  margin-top:6px; padding-top:5px; border-top:1px solid rgba(255,255,255,0.06);
+  font-family:'DM Mono',monospace; font-size:6px; letter-spacing:0.18em; text-transform:uppercase; color:#555; text-align:center;
+}
+
+/* Light theme touch-ups for previews */
+[data-theme="light"] .dp-preview { border-color:#e0ddd8; }
+[data-theme="light"] .dp-preview-label { background:rgba(255,255,255,0.7); color:#333; }
+
 /* Panel placeholder */
 .panel-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:64px 24px; }
 .panel-placeholder-icon { font-size:44px; margin-bottom:18px; background:var(--grad-text); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
@@ -4562,6 +4749,12 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="designer-section">
       <div class="designer-section-title">Hero</div>
       <div class="prompt-box">
+        <div class="dp-preview dp-preview-hero" aria-hidden="true">
+          <span class="dp-preview-label">preview</span>
+          <div class="dp-hero-img"></div>
+          <div class="dp-hero-overlay"></div>
+          <div class="dp-hero-text">Your headline.<small>full-bleed image</small></div>
+        </div>
         <div class="prompt-text">Update your Shopify theme hero section to be full bleed with the headline text overlapping the bottom of the image. Make the text white, bold, left aligned, with a subtle dark gradient overlay on the bottom half of the image. Keep it responsive.</div>
         <button class="copy-btn" onclick="copyRaw(this,'Update your Shopify theme hero section to be full bleed with the headline text overlapping the bottom of the image. Make the text white, bold, left aligned, with a subtle dark gradient overlay on the bottom half of the image. Keep it responsive.')">copy prompt</button>
       </div>
@@ -4569,6 +4762,21 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="designer-section">
       <div class="designer-section-title">Product Page</div>
       <div class="prompt-box">
+        <div class="dp-preview dp-preview-pdp" aria-hidden="true">
+          <span class="dp-preview-label">preview</span>
+          <div class="dp-pdp-left">
+            <div class="dp-pdp-thumbs"><span></span><span></span><span></span><span></span></div>
+            <div class="dp-pdp-main"></div>
+          </div>
+          <div class="dp-pdp-right">
+            <div class="dp-pdp-title"></div>
+            <div class="dp-pdp-price"></div>
+            <div class="dp-pdp-acc"></div>
+            <div class="dp-pdp-acc"></div>
+            <div class="dp-pdp-acc"></div>
+            <div class="dp-pdp-btn">Add to cart</div>
+          </div>
+        </div>
         <div class="prompt-text">Update your Shopify theme product page to use a two column layout on desktop. Left column: product images with a vertical thumbnail strip. Right column: product title, price, description in accordion sections, and add to cart button. Matches a clean editorial fashion brand aesthetic.</div>
         <button class="copy-btn" onclick="copyRaw(this,'Update your Shopify theme product page to use a two column layout on desktop. Left column: product images with a vertical thumbnail strip. Right column: product title, price, description in accordion sections, and add to cart button. Matches a clean editorial fashion brand aesthetic.')">copy prompt</button>
       </div>
@@ -4576,6 +4784,15 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="designer-section">
       <div class="designer-section-title">Navigation</div>
       <div class="prompt-box">
+        <div class="dp-preview dp-preview-nav" aria-hidden="true">
+          <span class="dp-preview-label">preview · animated</span>
+          <div class="dp-nav-hero"></div>
+          <div class="dp-nav-bar">
+            <span class="dp-nav-logo">BRAND</span>
+            <span class="dp-nav-links"><i></i><i></i><i></i><i></i></span>
+          </div>
+          <span class="dp-nav-scroll-cue">↓ scroll</span>
+        </div>
         <div class="prompt-text">Update your Shopify theme header to be transparent on the homepage and solid dark on scroll. Add a smooth transition between the two states. Keep all navigation links white.</div>
         <button class="copy-btn" onclick="copyRaw(this,'Update your Shopify theme header to be transparent on the homepage and solid dark on scroll. Add a smooth transition between the two states. Keep all navigation links white.')">copy prompt</button>
       </div>
@@ -4583,6 +4800,14 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="designer-section">
       <div class="designer-section-title">Banner</div>
       <div class="prompt-box">
+        <div class="dp-preview dp-preview-banner" aria-hidden="true">
+          <span class="dp-preview-label">preview</span>
+          <div class="dp-banner-bar">
+            Free shipping over $100
+            <span class="dp-banner-x">✕</span>
+          </div>
+          <div class="dp-banner-page"></div>
+        </div>
         <div class="prompt-text">Add a full width announcement banner above your Shopify theme header. Make it transparent with a thin bottom border. Text centered, small caps font, white text. Should be dismissible with an X button.</div>
         <button class="copy-btn" onclick="copyRaw(this,'Add a full width announcement banner above your Shopify theme header. Make it transparent with a thin bottom border. Text centered, small caps font, white text. Should be dismissible with an X button.')">copy prompt</button>
       </div>
@@ -4590,6 +4815,14 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="designer-section">
       <div class="designer-section-title">Product Grid</div>
       <div class="prompt-box">
+        <div class="dp-preview dp-preview-grid" aria-hidden="true">
+          <span class="dp-preview-label">preview · hover zoom</span>
+          <div class="dp-grid-row">
+            <div class="dp-grid-card"><div class="dp-grid-img"></div><div class="dp-grid-name"></div><div class="dp-grid-price"></div></div>
+            <div class="dp-grid-card"><div class="dp-grid-img"></div><div class="dp-grid-name"></div><div class="dp-grid-price"></div></div>
+            <div class="dp-grid-card"><div class="dp-grid-img"></div><div class="dp-grid-name"></div><div class="dp-grid-price"></div></div>
+          </div>
+        </div>
         <div class="prompt-text">Update your Shopify theme collection grid to show 3 products per row on desktop, 2 on tablet, 1 on mobile. Add a smooth zoom effect on product image hover. Remove the add to cart button from the grid — show only image, name, and price.</div>
         <button class="copy-btn" onclick="copyRaw(this,'Update your Shopify theme collection grid to show 3 products per row on desktop, 2 on tablet, 1 on mobile. Add a smooth zoom effect on product image hover. Remove the add to cart button from the grid — show only image, name, and price.')">copy prompt</button>
       </div>
@@ -4597,6 +4830,15 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="designer-section">
       <div class="designer-section-title">Footer</div>
       <div class="prompt-box">
+        <div class="dp-preview dp-preview-footer" aria-hidden="true">
+          <span class="dp-preview-label">preview</span>
+          <div class="dp-footer-row">
+            <div class="dp-footer-col"><div class="dp-footer-brand">BRAND</div><div class="dp-footer-tag"></div></div>
+            <div class="dp-footer-col dp-footer-nav"><span></span><span></span><span></span></div>
+            <div class="dp-footer-col dp-footer-social"><i></i><i></i><i></i></div>
+          </div>
+          <div class="dp-footer-copy">© 2026 · all rights reserved</div>
+        </div>
         <div class="prompt-text">Redesign your Shopify theme footer to be minimal and dark. Three columns: brand name and one line description left, navigation links center, social icons right. Small copyright line at the very bottom. Clean, no clutter.</div>
         <button class="copy-btn" onclick="copyRaw(this,'Redesign your Shopify theme footer to be minimal and dark. Three columns: brand name and one line description left, navigation links center, social icons right. Small copyright line at the very bottom. Clean, no clutter.')">copy prompt</button>
       </div>

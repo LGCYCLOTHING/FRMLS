@@ -250,6 +250,9 @@ body {
     <button class="post-btn" onclick="loadPost('skipped')" id="btn-skipped">
       <span class="dot"></span>Your Brand Is Getting Skipped
     </button>
+    <button class="post-btn" onclick="loadPost('aigen')" id="btn-aigen">
+      <span class="dot"></span>Your Brand Looks AI-Generated
+    </button>
   </div>
 
   <div class="post-group">
@@ -341,6 +344,11 @@ const POSTS = {
     title: 'YOUR BRAND IS GETTING SKIPPED.',
     folder: 'ig-skipped',
     count: 8,
+  },
+  aigen: {
+    title: 'YOUR BRAND LOOKS AI-GENERATED.',
+    folder: 'ig-aigen',
+    count: 9,
   },
 };
 

@@ -763,38 +763,56 @@ body::before {
   .bf-ambient { opacity: 0.45; filter: blur(80px); }
 }
 
-/* Per-step context panel (left side, desktop only) */
+/* Per-step context panel (left side, desktop only) — liquid-glass card
+   that matches the right-side meanings panel in width and treatment. */
 .bf-context {
   position:fixed; left:48px; top:50%; transform:translateY(-50%);
-  width:268px; z-index:2;
-  padding:22px 24px; border-radius:18px;
-  background:linear-gradient(135deg, rgba(124,58,237,0.10), rgba(6,182,212,0.05));
+  width:300px; z-index:2;
+  padding:22px 22px 20px; border-radius:18px;
+  background:
+    linear-gradient(180deg, rgba(124,58,237,0.10), rgba(6,182,212,0.04)),
+    rgba(20,16,32,0.45);
   border:1px solid rgba(255,255,255,0.10);
-  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(18px) saturate(1.4);
+  -webkit-backdrop-filter:blur(18px) saturate(1.4);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.35),
+    0 0 0 1px rgba(157,92,245,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.06);
   display:none;
   transition:opacity 0.35s ease;
+  overflow:hidden;
 }
 .bf-context::before {
-  content:''; position:absolute; left:-1px; top:18px; bottom:18px; width:2px;
+  content:''; position:absolute; left:0; top:18px; bottom:18px; width:2px;
   border-radius:2px;
   background:linear-gradient(to bottom,#9d5cf5,#22d3ee);
 }
+/* Soft top-left highlight to match the meanings panel */
+.bf-context::after {
+  content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background:radial-gradient(ellipse 80% 60% at 20% 0%, rgba(255,255,255,0.06), transparent 60%);
+}
+.bf-context > * { position:relative; z-index:1; }
+
 .bf-context-eyebrow {
-  font-family:'DM Mono',monospace; font-size:10px; font-weight:600;
-  letter-spacing:0.22em; text-transform:uppercase;
+  font-family:'Inter',sans-serif; font-size:10px; font-weight:700;
+  letter-spacing:0.20em; text-transform:uppercase;
   background:linear-gradient(90deg,#9d5cf5,#22d3ee);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 .bf-context-title {
   font-family:'Inter',sans-serif; font-size:18px; font-weight:700;
   color:#ffffff; letter-spacing:-0.01em; line-height:1.25;
-  margin-bottom:12px;
+  margin-bottom:14px;
 }
 .bf-context-body {
   font-family:'Inter',sans-serif; font-size:13px; font-weight:500;
-  color:rgba(255,255,255,0.74); line-height:1.55;
+  color:rgba(255,255,255,0.72); line-height:1.55;
 }
+.bf-context-body p { margin:0; }
+.bf-context-body p + p { margin-top:12px; }
 
 @media (min-width:1280px) {
   .bf-context { display:block; }
@@ -10038,36 +10056,38 @@ function bfRefreshMeaningPanel(screenIdx) {
   });
 }
 
+/* The body field uses \n\n between paragraphs — the renderer turns each
+   chunk into its own <p> so the left panel reads with breathing room. */
 const BF_CONTEXT = [
   {
     eyebrow: 'step 01 · the why',
     title: 'find your why',
-    body: "Every strong brand starts here. Without a real reason behind it, the rest is just decoration that won't hold up under pressure."
+    body: "Every strong brand starts here. Without a real reason behind it, the rest is just decoration that won't hold up under pressure.\n\nThe honest answer matters more than the polished one. Your why is what keeps you going on the days nothing else does — write the one that's actually true, not the one that sounds good in an interview."
   },
   {
     eyebrow: 'step 02 · the look',
     title: 'find your visual energy',
-    body: "Before words, before product, before logos — your brand has a feel. Lock it down now and every visual decision after this gets simpler."
+    body: "Before words, before product, before logos — your brand has a feel. Lock it down now and every visual decision after this gets simpler.\n\nThis isn't about your favorite aesthetic. It's about the visual energy that matches the brand you're building — even if it looks nothing like what you'd hang on your own wall."
   },
   {
     eyebrow: 'step 03 · the feeling',
     title: 'the first beat',
-    body: "People feel before they think. Get the emotion right and the rest of the brand — colors, words, voice — falls into place around it."
+    body: "People feel before they think. Get the emotion right and the rest of the brand — colors, words, voice — falls into place around it.\n\nPick the words that capture what someone should feel in the first three seconds. Not what they'll think after reading your about page, or how you'd describe it on a pitch deck."
   },
   {
     eyebrow: 'step 04 · the people',
     title: 'know who it’s for',
-    body: "Every great brand can name its hero customer in one sentence. The clearer you are on who you're building for, the easier every decision after this gets."
+    body: "Every great brand can name its hero customer in one sentence. The clearer you are on who you're building for, the easier every decision after this gets.\n\nIf the answer is 'everyone' or 'anyone who likes good design' — keep narrowing. The narrower you go, the more clearly the right person will hear you and the more loyal they'll be."
   },
   {
     eyebrow: 'step 05 · the taste',
     title: 'name your standard',
-    body: "The brands you respect reveal the bar you're aiming for — even if your output looks nothing like theirs. Taste is the thing."
+    body: "The brands you respect reveal the bar you're aiming for — even if your output looks nothing like theirs. Taste is the thing.\n\nSkip the brands you think you're supposed to name. Pick the ones that genuinely shape your eye — and write down what they make you feel, not just their name. The feeling is what you're actually borrowing."
   },
   {
     eyebrow: 'step 06 · the promise',
     title: 'one line that lands',
-    body: "If a stranger asked what you're building in five seconds, this is your answer. Get this right and the whole brand has a spine."
+    body: "If a stranger asked what you're building in five seconds, this is your answer. Get this right and the whole brand has a spine.\n\nThe best promises sound obvious in hindsight. Don't overwrite this. Write the first true thing that comes out — that's almost always the right one. You can polish later; you can't fake honest."
   }
 ];
 
@@ -10226,7 +10246,16 @@ function bfGoTo(step, animate) {
       if (ctx && step < BF_TOTAL_STEPS) {
         if (ctxEyebrow) ctxEyebrow.textContent = ctx.eyebrow;
         if (ctxTitle)   ctxTitle.textContent   = ctx.title;
-        if (ctxBody)    ctxBody.textContent    = ctx.body;
+        if (ctxBody) {
+          /* Split the body on \n\n so each paragraph becomes its own <p>;
+             CSS adds margin between them for breathing room. */
+          ctxBody.innerHTML = '';
+          (ctx.body || '').split(/\n{2,}/).forEach(para => {
+            const p = document.createElement('p');
+            p.textContent = para.trim();
+            ctxBody.appendChild(p);
+          });
+        }
         ctxPanel.style.opacity = '1';
         ctxPanel.style.pointerEvents = 'auto';
       } else {

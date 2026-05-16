@@ -6463,15 +6463,40 @@ function getBrandContext() {
   try {
     const ans = JSON.parse(localStorage.getItem('frmls_foundation_answers') || '{}');
     if (ans[5] && ans[5].promise) brandPromise = ans[5].promise;
-    if (ans[2] && ans[2].moods && ans[2].moods.length) moodWords = ans[2].moods.join(', ');
-    if (ans[1] && ans[1].selections && ans[1].selections.length)
-      brandLook = ans[1].selections.map(v => lookLabels[v] || v).join(', ');
+
+    /* helper: merge selected-label list + freeform text into a single string */
+    const merge = (sels, text) => {
+      const parts = [...(sels || [])];
+      const t = (text || '').trim();
+      if (t) parts.push(t);
+      return parts.join('; ');
+    };
+
+    /* step 0 — the why */
     const whySels = (ans[0] && ans[0].selections) ? ans[0].selections.map(v => whyLabels[v] || v) : [];
-    const whyText = (ans[0] && ans[0].text) ? ans[0].text.trim() : '';
-    const whyParts = [...whySels]; if (whyText) whyParts.push(whyText);
-    if (whyParts.length) brandWhy = whyParts.join('; ');
-    if (ans[3] && ans[3].selections && ans[3].selections.length)
-      brandAudience = ans[3].selections.map(v => audienceLabels[v] || v).join(', ');
+    const whyText = ans[0] && ans[0].text;
+    const whyMerged = merge(whySels, whyText);
+    if (whyMerged) brandWhy = whyMerged;
+
+    /* step 1 — the look (selections + freeform) */
+    const lookSels = (ans[1] && ans[1].selections) ? ans[1].selections.map(v => lookLabels[v] || v) : [];
+    const lookText = ans[1] && ans[1].text;
+    const lookMerged = merge(lookSels, lookText);
+    if (lookMerged) brandLook = lookMerged;
+
+    /* step 2 — the feeling (mood pills + freeform) */
+    const moodSels = (ans[2] && ans[2].moods) ? ans[2].moods : [];
+    const moodText = ans[2] && ans[2].text;
+    const moodMerged = merge(moodSels, moodText);
+    if (moodMerged) moodWords = moodMerged;
+
+    /* step 3 — the people (selections + freeform) */
+    const audSels = (ans[3] && ans[3].selections) ? ans[3].selections.map(v => audienceLabels[v] || v) : [];
+    const audText = ans[3] && ans[3].text;
+    const audMerged = merge(audSels, audText);
+    if (audMerged) brandAudience = audMerged;
+
+    /* step 4 — taste / references */
     if (ans[4] && ans[4].brands) {
       const refs = ans[4].brands.filter(b => b.name).map(b => b.feel ? `${b.name} (${b.feel})` : b.name);
       if (refs.length) brandReferences = refs.join(', ');
@@ -6492,44 +6517,46 @@ function buildPrompt(template) {
     .replace(/\{\{voiceExample\}\}/g, c.voiceExample1)
     .replace(/\{\{whatToAvoid\}\}/g, c.whatToAvoid)
     .replace(/\{\{brandLook\}\}/g, c.brandLook)
-    .replace(/\{\{brandWhy\}\}/g, c.brandWhy);
+    .replace(/\{\{brandWhy\}\}/g, c.brandWhy)
+    .replace(/\{\{brandAudience\}\}/g, c.brandAudience)
+    .replace(/\{\{brandReferences\}\}/g, c.brandReferences);
 }
 
 const brandPackSteps = [
   {
     title: 'Brand Identity',
     label: 'Define Your Brand Identity',
-    prompt: 'My brand is called {{brandName}}. It exists because {{brandPromise}}. The feeling it gives people is: {{moodWords}}. The visual energy is: {{brandLook}}. Three words that define everything: {{threeWords}}. Write a complete brand identity statement that captures all of this in 3-4 sentences. It should sound like {{voiceExample}} — that is the voice and tone to match throughout everything.'
+    prompt: 'My brand is called {{brandName}}. It exists because {{brandPromise}}. The feeling it gives people is: {{moodWords}}. The visual energy is: {{brandLook}}. Three words that define everything: {{threeWords}}. This is for: {{brandAudience}}. Brands I respect (taste references, not to copy): {{brandReferences}}. Write a complete brand identity statement that captures all of this in 3-4 sentences. It should sound like {{voiceExample}} — that is the voice and tone to match throughout everything.'
   },
   {
     title: 'Homepage Headline',
     label: 'Homepage Headline',
-    prompt: 'Write 5 homepage headline options for {{brandName}}. The brand is {{archetype}} — {{threeWords}}. The feeling it gives people: {{moodWords}}. Brand promise: {{brandPromise}}. Voice reference: {{voiceExample}}. Each headline should be under 8 words, no filler, no generic language. Avoid: {{whatToAvoid}}. The best headline makes someone feel something before they read anything else.'
+    prompt: 'Write 5 homepage headline options for {{brandName}}. The brand is {{archetype}} — {{threeWords}}. The feeling it gives people: {{moodWords}}. Brand promise: {{brandPromise}}. Written for: {{brandAudience}}. Voice reference: {{voiceExample}}. Each headline should be under 8 words, no filler, no generic language. Avoid: {{whatToAvoid}}. The best headline makes someone feel something before they read anything else.'
   },
   {
     title: 'Homepage Subline',
     label: 'Homepage Subline',
-    prompt: 'Write 5 homepage subline options for {{brandName}} to sit below the main headline. The brand is {{threeWords}} in feeling. Brand promise: {{brandPromise}}. Keep each subline under 12 words. It should support the headline without repeating it. Voice: {{voiceExample}}. Avoid: {{whatToAvoid}}.'
+    prompt: 'Write 5 homepage subline options for {{brandName}} to sit below the main headline. The brand is {{threeWords}} in feeling. Brand promise: {{brandPromise}}. Written for: {{brandAudience}}. Keep each subline under 12 words. It should support the headline without repeating it. Voice: {{voiceExample}}. Avoid: {{whatToAvoid}}.'
   },
   {
     title: 'Product Description',
     label: 'Product Description',
-    prompt: 'Write a product description for {{brandName}}. Product: [product name and brief description]. The brand feeling is: {{moodWords}}. Brand personality: {{threeWords}}. Do not list materials or specs — write about the feeling of owning and wearing this product. Who it is for, what it says about them, why they need it in their life. Voice matches: {{voiceExample}}. Under 60 words. Avoid: {{whatToAvoid}}.'
+    prompt: 'Write a product description for {{brandName}}. Product: [product name and brief description]. The brand feeling is: {{moodWords}}. Brand personality: {{threeWords}}. This product is for: {{brandAudience}}. Do not list materials or specs — write about the feeling of owning and wearing this product. Who it is for, what it says about them, why they need it in their life. Voice matches: {{voiceExample}}. Under 60 words. Avoid: {{whatToAvoid}}.'
   },
   {
     title: 'About Page',
     label: 'About Page',
-    prompt: 'Write the about page for {{brandName}}. The brand exists because: {{brandPromise}}. Visual energy: {{brandLook}}. The feeling it gives: {{moodWords}}. What it stands against: {{whatToAvoid}}. Write it in first person, honest, no corporate language. It should answer three things: why this brand exists, who it is for, and what it stands for. Voice matches: {{voiceExample}}. Under 150 words.'
+    prompt: 'Write the about page for {{brandName}}. The brand exists because: {{brandPromise}}. Visual energy: {{brandLook}}. The feeling it gives: {{moodWords}}. Who this is for: {{brandAudience}}. Taste references (not to copy): {{brandReferences}}. What it stands against: {{whatToAvoid}}. Write it in first person, honest, no corporate language. It should answer three things: why this brand exists, who it is for, and what it stands for. Voice matches: {{voiceExample}}. Under 150 words.'
   },
   {
     title: 'Brand Story',
     label: 'Brand Story',
-    prompt: 'Write the origin story for {{brandName}}. The brand was built because: {{brandWhy}}. It exists so that: {{brandPromise}}. Personality: {{threeWords}}. Write it as a short honest narrative — not a press release. Sound like a real person built this for a real reason. Reference the feeling of {{moodWords}} without saying those words directly. Under 100 words. Voice: {{voiceExample}}.'
+    prompt: 'Write the origin story for {{brandName}}. The brand was built because: {{brandWhy}}. It exists so that: {{brandPromise}}. Personality: {{threeWords}}. Built for: {{brandAudience}}. Brands that shaped the taste (not to copy): {{brandReferences}}. Write it as a short honest narrative — not a press release. Sound like a real person built this for a real reason. Reference the feeling of {{moodWords}} without saying those words directly. Under 100 words. Voice: {{voiceExample}}.'
   },
   {
     title: 'Instagram Bio',
     label: 'Instagram Bio',
-    prompt: 'Write 5 Instagram bio options for {{brandName}}. The brand is {{threeWords}}. Brand promise: {{brandPromise}}. Each bio must be under 150 characters. No hashtags. No emojis unless they feel completely natural to the brand. The bio should make the right person immediately feel like they found their brand. Avoid: {{whatToAvoid}}.'
+    prompt: 'Write 5 Instagram bio options for {{brandName}}. The brand is {{threeWords}}. Brand promise: {{brandPromise}}. Speaking to: {{brandAudience}}. Each bio must be under 150 characters. No hashtags. No emojis unless they feel completely natural to the brand. The bio should make the right person immediately feel like they found their brand. Avoid: {{whatToAvoid}}.'
   },
   {
     title: 'Welcome Email',
@@ -6549,7 +6576,7 @@ const brandPackSteps = [
   {
     title: 'Collection Page Description',
     label: 'Collection Page Description',
-    prompt: 'Write a collection page description for {{brandName}}. Collection name: [collection name]. Brand feeling: {{moodWords}}. Personality: {{threeWords}}. Under 40 words. It should set the mood for the collection before they see a single product. Do not describe the products — describe the feeling of the collection. Voice: {{voiceExample}}. Avoid: {{whatToAvoid}}.'
+    prompt: 'Write a collection page description for {{brandName}}. Collection name: [collection name]. Brand feeling: {{moodWords}}. Personality: {{threeWords}}. Speaking to: {{brandAudience}}. Under 40 words. It should set the mood for the collection before they see a single product. Do not describe the products — describe the feeling of the collection. Voice: {{voiceExample}}. Avoid: {{whatToAvoid}}.'
   },
   {
     title: 'SEO and Meta Description',
@@ -6594,17 +6621,17 @@ const brandPackSteps = [
   {
     title: 'Meta / Facebook Ad Copy',
     label: 'Meta / Facebook Ad Copy',
-    prompt: 'Write Meta (Facebook/Instagram) ad copy for {{brandName}}. Brand personality: {{archetype}} — {{threeWords}}. Brand promise: {{brandPromise}}. Voice: {{voiceExample}}. Ad context: [product, collection, brand awareness, or retargeting — describe]. Output three variations, each with: a primary text (under 90 words), a headline (under 40 chars), and a description (under 30 chars). Lead with the feeling, not the discount. Avoid: {{whatToAvoid}}.'
+    prompt: 'Write Meta (Facebook/Instagram) ad copy for {{brandName}}. Brand personality: {{archetype}} — {{threeWords}}. Brand promise: {{brandPromise}}. Target customer: {{brandAudience}}. Voice: {{voiceExample}}. Ad context: [product, collection, brand awareness, or retargeting — describe]. Output three variations, each with: a primary text (under 90 words), a headline (under 40 chars), and a description (under 30 chars). Lead with the feeling, not the discount. Avoid: {{whatToAvoid}}.'
   },
   {
     title: 'FAQ Copy',
     label: 'FAQ Copy',
-    prompt: 'Write 6 FAQ questions and answers for {{brandName}}. Brand personality: {{threeWords}}. Voice: {{voiceExample}}. Cover: sizing/fit, shipping, returns, materials or quality, restocks, and one brand-philosophy question (why this brand exists or what it stands for). Each answer under 50 words. Honest, direct, never corporate. Avoid: {{whatToAvoid}}.'
+    prompt: 'Write 6 FAQ questions and answers for {{brandName}}. Brand personality: {{threeWords}}. Speaking to: {{brandAudience}}. Voice: {{voiceExample}}. Cover: sizing/fit, shipping, returns, materials or quality, restocks, and one brand-philosophy question (why this brand exists or what it stands for). Each answer under 50 words. Honest, direct, never corporate. Avoid: {{whatToAvoid}}.'
   },
   {
     title: 'Founder\'s Letter',
     label: 'Founder\'s Letter',
-    prompt: 'Write a founder\'s letter for {{brandName}} — used for first-order inserts, press, and founder-led emails. The brand was built because: {{brandWhy}}. It exists so that: {{brandPromise}}. The feeling it gives: {{moodWords}}. Voice: {{voiceExample}}. Write in first person, signed by the founder. Under 200 words. It should sound like a real person wrote it once, by hand — not a marketing team. Reference the feeling of {{moodWords}} without naming those words directly. Avoid: {{whatToAvoid}}.'
+    prompt: 'Write a founder\'s letter for {{brandName}} — used for first-order inserts, press, and founder-led emails. The brand was built because: {{brandWhy}}. It exists so that: {{brandPromise}}. Written for: {{brandAudience}}. Brands that shaped the taste (not to copy, just context): {{brandReferences}}. The feeling it gives: {{moodWords}}. Voice: {{voiceExample}}. Write in first person, signed by the founder. Under 200 words. It should sound like a real person wrote it once, by hand — not a marketing team. Reference the feeling of {{moodWords}} without naming those words directly. Avoid: {{whatToAvoid}}.'
   }
 ];
 
@@ -6854,35 +6881,35 @@ function refreshLastOpenedLabels() {
 
 /* ===== EMAIL MARKETING PANEL ===== */
 function buildEmailPanel() {
-  const b = state.brandName || 'your brand';
-  const v = state.vibe      || 'minimalist';
-  const a = state.audience  || 'your audience';
-
-  const emailPrompts = [
+  /* Templates use the same {{placeholder}} format as the Prompt Pack, so
+     they get filled with the user's actual Brand Foundation answers via
+     buildPrompt() — voice, audience, mood, references, the lot. */
+  const emailTemplates = [
     {
       label: 'Welcome Email',
-      text: `Write a welcome email for ${b}. The brand has a ${v} aesthetic and speaks to ${a}. This email goes out the moment someone subscribes. Introduce the brand story, what makes us different, and end with a soft call to action — browse the store or follow on social. Tone should feel personal, not corporate. Keep it under 200 words.`
+      template: 'Write a welcome email for {{brandName}} that goes out the moment someone subscribes. The brand is {{archetype}} — {{threeWords}}. Brand promise: {{brandPromise}}. Feeling it gives: {{moodWords}}. Written for: {{brandAudience}}. Voice: {{voiceExample}}. Introduce the brand story, what makes it different, and end with a soft CTA — browse the store or follow on social. Tone is personal, not corporate. Subject line included. Under 200 words. Avoid: {{whatToAvoid}}.'
     },
     {
       label: 'Abandoned Cart Email',
-      text: `Write an abandoned cart email for ${b}. The brand has a ${v} aesthetic and sells to ${a}. The customer left something in their cart. Remind them what they were looking at, create a little urgency without being pushy, and give them one clear link back to their cart. Keep it short, punchy, and on-brand. Under 120 words.`
+      template: 'Write an abandoned cart email for {{brandName}}. Brand personality: {{threeWords}}. Brand feeling: {{moodWords}}. The customer is: {{brandAudience}}. Voice: {{voiceExample}}. Remind them of the feeling they were going for when they added to cart — do not use generic urgency tactics like "limited time" or "hurry". Give them one clear link back. Subject line included. Under 120 words. Avoid: {{whatToAvoid}}.'
     },
     {
       label: 'Product Launch Announcement',
-      text: `Write a product launch email for ${b}. The brand has a ${v} aesthetic and speaks to ${a}. We're dropping something new. Build anticipation in the subject line, lead with the product's key benefit or story, include a strong CTA to shop now. Make it feel like an event, not just an update. Under 180 words.`
+      template: 'Write a product launch email for {{brandName}} announcing something new. Brand personality: {{archetype}} — {{threeWords}}. Brand promise: {{brandPromise}}. Feeling: {{moodWords}}. Written for: {{brandAudience}}. Voice: {{voiceExample}}. Build anticipation in the subject line, lead with the product\'s key benefit or story, include a strong CTA to shop now. Make it feel like an event, not just an update. Subject line included. Under 180 words. Avoid: {{whatToAvoid}}.'
     },
     {
       label: 'Win-Back Campaign',
-      text: `Write a win-back email for ${b}. The brand has a ${v} aesthetic and sells to ${a}. This goes to customers who haven't bought in 90+ days. Remind them why they loved us, show what's new or changed, and offer a reason to return. Don't beg — be confident. Under 150 words.`
+      template: 'Write a win-back email for {{brandName}} to customers who haven\'t bought in 90+ days. Brand personality: {{threeWords}}. Brand promise: {{brandPromise}}. Speaking to: {{brandAudience}}. Voice: {{voiceExample}}. Remind them why they loved this brand, show what\'s new or changed, and offer a reason to return. Don\'t beg — be confident. Subject line included. Under 150 words. Avoid: {{whatToAvoid}}.'
     },
     {
       label: 'Back In Stock Notification',
-      text: `Write a back in stock email for ${b}. The brand has a ${v} aesthetic and speaks to ${a}. A popular product just came back. Create urgency — it sold out before and it will again. Lead with the product, keep copy tight, one CTA to shop before it's gone. Under 100 words.`
+      template: 'Write a back-in-stock email for {{brandName}} for someone who joined the waitlist for a sold-out product. Product: [name]. Brand voice: {{voiceExample}}. Brand feeling: {{moodWords}}. For: {{brandAudience}}. Tone is calm confirmation, not flash-sale alert. Make the reader feel they were remembered, not blasted. Subject line, preheader, and a 60-word body. End with a single CTA. Avoid: {{whatToAvoid}}.'
     }
   ];
 
   const container = document.getElementById('email-prompts-list');
   if (!container) return;
+  const emailPrompts = emailTemplates.map(p => ({ label: p.label, text: buildPrompt(p.template) }));
   container.innerHTML = emailPrompts.map(p => `
     <div class="prompt-box" style="margin-bottom:12px">
       <div class="prompt-label">${p.label.toLowerCase()}</div>

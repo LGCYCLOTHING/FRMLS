@@ -603,6 +603,89 @@ body::after {
 .font-note-text { font-size:13px; color:#aaaaaa; font-style:italic; margin-top:6px; }
 .kit-tone-text { font-size:14px; color:#cccccc; line-height:1.7; font-style:italic; border-left:2px solid var(--purple); padding-left:14px; }
 
+/* ===== BRAND KIT — action buttons + asset uploader ===== */
+.pk-actions-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+.pk-action-btn {
+  display:inline-flex; align-items:center; gap:7px;
+  font-family:'Inter',sans-serif; font-size:12px; font-weight:500; letter-spacing:0.04em;
+  padding:8px 14px; border-radius:999px; cursor:pointer;
+  background:rgba(var(--accent-rgb),0.10);
+  border:1px solid rgba(var(--accent-rgb),0.30);
+  color:var(--purple-light);
+  transition:all 0.2s ease;
+}
+.pk-action-btn:hover {
+  background:rgba(var(--accent-rgb),0.18);
+  border-color:rgba(var(--accent-rgb),0.50);
+  transform:translateY(-1px);
+}
+.pk-action-btn svg { flex-shrink:0; opacity:0.9; }
+
+.pk-assets-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:10px; }
+.pk-asset-slot {
+  position:relative;
+  border:1.5px dashed var(--border-mid);
+  border-radius:var(--radius-md);
+  background:var(--bg-card-2);
+  aspect-ratio:1/1;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  cursor:pointer; overflow:hidden;
+  transition:border-color 0.2s ease, background 0.2s ease;
+}
+.pk-asset-slot:hover { border-color:rgba(var(--accent-rgb),0.55); background:rgba(var(--accent-rgb),0.04); }
+.pk-asset-slot.has-image { border-style:solid; border-color:rgba(var(--accent-rgb),0.35); }
+.pk-asset-slot input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; }
+.pk-asset-icon { font-size:22px; color:#666; margin-bottom:6px; line-height:1; }
+.pk-asset-label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#888; text-align:center; padding:0 6px; }
+.pk-asset-slot.has-image .pk-asset-icon,
+.pk-asset-slot.has-image .pk-asset-label { display:none; }
+.pk-asset-thumb {
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; background:#000;
+}
+.pk-asset-name {
+  position:absolute; left:6px; right:6px; bottom:6px;
+  font-size:10px; letter-spacing:0.08em; text-transform:uppercase;
+  color:#fff; background:rgba(0,0,0,0.55); backdrop-filter:blur(6px);
+  padding:3px 7px; border-radius:4px; text-align:center;
+  pointer-events:none;
+}
+.pk-asset-remove {
+  position:absolute; top:5px; right:5px; z-index:2;
+  width:22px; height:22px; border-radius:50%;
+  background:rgba(0,0,0,0.65); color:#fff; border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; line-height:1; opacity:0; transition:opacity 0.2s ease;
+}
+.pk-asset-slot:hover .pk-asset-remove { opacity:1; }
+.pk-assets-hint { font-size:11px; color:#777; margin-top:8px; font-style:italic; }
+@media (max-width:480px) {
+  .pk-assets-grid { grid-template-columns:repeat(2, 1fr); }
+}
+
+/* ===== BRAND KIT — PDF print mode ===== */
+@media print {
+  @page { margin:18mm; size:A4; }
+  html, body { background:#fff !important; color:#111 !important; }
+  body * { visibility:hidden !important; }
+  #pk-printable, #pk-printable * { visibility:visible !important; }
+  #pk-printable { position:absolute; left:0; top:0; right:0; padding:0 !important; max-width:none; width:100%; }
+  .no-print, .pk-asset-slot input, .pk-asset-remove { display:none !important; }
+  .panel-kit-name { color:#111 !important; background:none !important; -webkit-text-fill-color:#111 !important; }
+  .panel-section-title { color:#666 !important; }
+  .swatch-hex, .swatch-name, .swatch-role, .kit-meta-item, .kit-meta-label,
+  .font-name, .font-role-tag, .font-note-text, .kit-tone-text {
+    color:#222 !important;
+  }
+  .kit-tone-text { border-left-color:#888 !important; }
+  .pk-asset-slot {
+    border:1px solid #ddd !important; background:#fafafa !important;
+    page-break-inside:avoid; break-inside:avoid;
+  }
+  .pk-asset-slot:not(.has-image) { display:none !important; }
+  .pk-asset-name { background:rgba(0,0,0,0.85) !important; }
+}
+
 /* ===== STEP TRACKER ===== */
 .step-tracker { background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px 18px; margin-bottom:1.5rem; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
 .tracker-info { display:flex; align-items:center; gap:10px; font-size:13px; color:#cccccc; flex-wrap:wrap; white-space:nowrap; }
@@ -1584,6 +1667,63 @@ body:has(#screen-7.active) .orca-shell {
   flex: 1;
 }
 .orca-next-cta { align-self: flex-start; margin-top: 4px; }
+
+/* Activity card — streak chip + recent action timeline */
+.orca-activity-card {
+  display: flex; flex-direction: column; gap: 12px;
+  background: var(--bg-card-2);
+  border: 1px solid var(--border-subtle);
+}
+.orca-streak-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 12px; border-radius: 999px;
+  background: rgba(var(--accent-rgb), 0.10);
+  border: 1px solid rgba(var(--accent-rgb), 0.30);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px; letter-spacing: 0.06em;
+  color: var(--purple-light);
+}
+.orca-streak-flame { font-size: 10px; line-height: 1; opacity: 0.9; }
+.orca-streak-num { font-size: 13px; font-weight: 800; letter-spacing: -0.02em; }
+.orca-streak-label { color: var(--text-muted); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+
+.orca-activity-list {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.orca-activity-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 12px; border-radius: 10px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-subtle);
+  font-size: 13px; color: #cccccc;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.orca-activity-item:hover {
+  background: rgba(var(--accent-rgb),0.05);
+  border-color: rgba(var(--accent-rgb),0.20);
+}
+.orca-activity-item.is-clickable { cursor: pointer; }
+.orca-activity-icon {
+  flex-shrink: 0; width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(var(--accent-rgb),0.12);
+  color: var(--purple-light);
+  font-size: 11px;
+}
+.orca-activity-text { flex: 1; min-width: 0; line-height: 1.4; }
+.orca-activity-text strong { color: var(--white); font-weight: 600; }
+.orca-activity-time {
+  flex-shrink: 0; font-family: 'Inter', sans-serif;
+  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #777;
+}
+.orca-activity-empty {
+  font-size: 13px; color: #777; font-style: italic;
+  text-align: center; padding: 18px 12px;
+}
+.orca-activity-empty.is-hidden { display: none; }
 
 /* Build Timeline head right group */
 .orca-timeline-headright {
@@ -4708,6 +4848,22 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
         </article>
       </section>
 
+      <!-- Activity (streak + recent timeline) -->
+      <section class="orca-bento orca-bento-single">
+        <article class="orca-card orca-activity-card">
+          <div class="orca-card-head">
+            <div class="orca-card-title">Activity</div>
+            <span class="orca-streak-chip" id="orca-streak-chip" title="Consecutive days you've opened FRMLS">
+              <span class="orca-streak-flame" aria-hidden="true">▲</span>
+              <span class="orca-streak-num" id="orca-streak-num">1</span>
+              <span class="orca-streak-label">day streak</span>
+            </span>
+          </div>
+          <ul class="orca-activity-list" id="orca-activity-list"></ul>
+          <div class="orca-activity-empty" id="orca-activity-empty">Your recent actions will show up here as you work.</div>
+        </article>
+      </section>
+
       <!-- Modules -->
       <section class="orca-modules-section">
         <div class="orca-section-head">
@@ -5367,7 +5523,13 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <span class="panel-title">Brand Kit</span>
     <button class="panel-close" onclick="closePanel()">✕</button>
   </div>
-  <div class="panel-body">
+  <div class="panel-body" id="pk-printable">
+    <div class="pk-actions-row no-print">
+      <button class="pk-action-btn" onclick="exportBrandKitPDF()" title="Save your brand kit as a PDF">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download PDF
+      </button>
+    </div>
     <div class="panel-kit-name" id="pk-brand-name">YOUR BRAND</div>
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:4px">
       <span class="kit-meta-item"><span class="kit-meta-label">Category</span><span id="pk-category">—</span></span>
@@ -5379,6 +5541,9 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     <div class="font-pair" id="pk-fonts"></div>
     <div class="panel-section-title">Tone of Voice</div>
     <div class="kit-tone-text" id="pk-tone"></div>
+    <div class="panel-section-title">Brand Assets</div>
+    <div class="pk-assets-grid" id="pk-assets"></div>
+    <p class="pk-assets-hint no-print">Upload your logo, hero, and lookbook image. They get embedded in the PDF export.</p>
   </div>
 </div>
 
@@ -6296,6 +6461,99 @@ function renderOrcaTimeline() {
   if (meta) meta.textContent = `${done} of ${total} steps`;
 }
 
+/* ===== STREAK + ACTIVITY ===== */
+const STREAK_LS   = 'frmls_streak';
+const ACTIVITY_LS = 'frmls_activity';
+const ACTIVITY_CAP = 20;
+const ACTIVITY_RENDER_N = 5;
+
+function _todayKey() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function _daysBetween(aStr, bStr) {
+  const a = new Date(aStr + 'T00:00:00');
+  const b = new Date(bStr + 'T00:00:00');
+  return Math.round((b - a) / 86400000);
+}
+function streakTouch() {
+  let data = { last: '', count: 0 };
+  try { data = JSON.parse(localStorage.getItem(STREAK_LS) || '{}') || data; } catch (e) {}
+  const today = _todayKey();
+  if (data.last === today) {
+    /* already counted today */
+  } else if (data.last && _daysBetween(data.last, today) === 1) {
+    data.count = (data.count || 0) + 1;
+    data.last = today;
+  } else {
+    data.count = 1;
+    data.last = today;
+  }
+  try { localStorage.setItem(STREAK_LS, JSON.stringify(data)); } catch (e) {}
+  const el = document.getElementById('orca-streak-num');
+  if (el) el.textContent = data.count;
+  return data.count;
+}
+
+function readActivity() {
+  try { return JSON.parse(localStorage.getItem(ACTIVITY_LS) || '[]') || []; }
+  catch (e) { return []; }
+}
+function writeActivity(arr) {
+  try { localStorage.setItem(ACTIVITY_LS, JSON.stringify(arr.slice(0, ACTIVITY_CAP))); }
+  catch (e) {}
+}
+function logActivity(kind, text, action) {
+  const arr = readActivity();
+  // Dedupe: drop the previous entry if it matches kind+text and is within 90s
+  if (arr.length && arr[0].kind === kind && arr[0].text === text && (Date.now() - arr[0].ts) < 90 * 1000) {
+    arr[0].ts = Date.now();
+  } else {
+    arr.unshift({ kind, text, ts: Date.now() });
+  }
+  writeActivity(arr);
+  renderActivity();
+}
+const ACTIVITY_ICONS = {
+  copy:      '⧉',
+  step:      '✓',
+  check:     '☑',
+  bf:        '◇',
+  identity:  '◈',
+  panel:     '◧',
+  theme:     '◐',
+  asset:     '◰'
+};
+function activityTimeAgo(ts) {
+  const d = Date.now() - ts;
+  if (d < 60 * 1000)        return 'just now';
+  if (d < 60 * 60 * 1000)   return Math.round(d / 60000) + 'm ago';
+  if (d < 24 * 3600 * 1000) return Math.round(d / 3600000) + 'h ago';
+  const days = Math.round(d / 86400000);
+  if (days < 7) return days + 'd ago';
+  return Math.round(days / 7) + 'w ago';
+}
+function renderActivity() {
+  const list  = document.getElementById('orca-activity-list');
+  const empty = document.getElementById('orca-activity-empty');
+  if (!list || !empty) return;
+  const arr = readActivity().slice(0, ACTIVITY_RENDER_N);
+  if (!arr.length) {
+    list.innerHTML = '';
+    empty.classList.remove('is-hidden');
+    return;
+  }
+  empty.classList.add('is-hidden');
+  list.innerHTML = arr.map(a => {
+    const icon = ACTIVITY_ICONS[a.kind] || '·';
+    return `<li class="orca-activity-item">
+      <span class="orca-activity-icon">${icon}</span>
+      <span class="orca-activity-text">${a.text}</span>
+      <span class="orca-activity-time">${activityTimeAgo(a.ts)}</span>
+    </li>`;
+  }).join('');
+}
+
 /* ===== NEXT STEP CARD ===== */
 function _nextStepResolve() {
   // 1. Brand Foundation
@@ -7106,6 +7364,9 @@ function markDone(i, checked) {
   if (item) item.classList.toggle('step-done', checked);
   updateTracker();
   updateDashProgress();
+  if (checked && typeof logActivity === 'function' && typeof steps !== 'undefined' && steps[i]) {
+    logActivity('step', `Completed step <strong>${steps[i].title}</strong>`);
+  }
 }
 
 function switchTab(btn, panelId, bodyId) {
@@ -7164,13 +7425,20 @@ function buildLaunchChecklist() {
     try { JSON.parse(localStorage.getItem(CHECKLIST_LS) || '[]').forEach(i => savedChecked.add(Number(i))); } catch(e) {}
     list.innerHTML = launchItems.map((item,i) => `
       <label class="checklist-item" id="cl-item-${i}">
-        <input type="checkbox" id="cl-${i}" onchange="updateChecklistProgress()" ${savedChecked.has(i) ? 'checked' : ''} />
+        <input type="checkbox" id="cl-${i}" onchange="onChecklistToggle(${i}, this.checked); updateChecklistProgress()" ${savedChecked.has(i) ? 'checked' : ''} />
         <div class="cl-check-box">✓</div>
         <span class="cl-text">${item.text}</span>
         <span class="cl-tag cl-tag-${item.category}">${item.category}</span>
       </label>`).join('');
   }
   updateChecklistProgress();
+}
+
+function onChecklistToggle(i, checked) {
+  if (!checked) return;
+  if (typeof logActivity === 'function' && typeof launchItems !== 'undefined' && launchItems[i]) {
+    logActivity('check', `Checked off <strong>${launchItems[i].text}</strong>`);
+  }
 }
 
 function updateChecklistProgress() {
@@ -7213,6 +7481,8 @@ function buildDashboard() {
   renderNextStep();
   updateSnapshot();
   updateSbStats();
+  streakTouch();
+  renderActivity();
 }
 
 function updateDashProgress() {
@@ -7766,6 +8036,88 @@ function buildBrandKitPanel() {
 
   const toneEl = document.getElementById('pk-tone');
   if (toneEl) toneEl.textContent = kd.tone;
+
+  renderBrandKitAssets();
+}
+
+/* ===== BRAND KIT — ASSET UPLOADS ===== */
+const KIT_ASSETS_LS = 'frmls_kit_assets';
+const KIT_ASSET_SLOTS = [
+  { key:'logo',     label:'Logo' },
+  { key:'hero',     label:'Hero Image' },
+  { key:'lookbook', label:'Lookbook' }
+];
+const KIT_ASSET_MAX_BYTES = 2 * 1024 * 1024; // 2MB — keeps localStorage from blowing up
+
+function readKitAssets() {
+  try { return JSON.parse(localStorage.getItem(KIT_ASSETS_LS) || '{}') || {}; }
+  catch (e) { return {}; }
+}
+function writeKitAssets(map) {
+  try { localStorage.setItem(KIT_ASSETS_LS, JSON.stringify(map)); }
+  catch (e) {
+    alert("Couldn't save image — your browser's storage is full. Try a smaller file or remove an existing asset.");
+  }
+}
+function renderBrandKitAssets() {
+  const grid = document.getElementById('pk-assets');
+  if (!grid) return;
+  const assets = readKitAssets();
+  grid.innerHTML = KIT_ASSET_SLOTS.map(s => {
+    const a = assets[s.key];
+    if (a && a.dataUrl) {
+      return `
+        <div class="pk-asset-slot has-image" data-slot="${s.key}">
+          <button type="button" class="pk-asset-remove no-print" onclick="removeKitAsset('${s.key}')" aria-label="Remove ${s.label}" title="Remove">✕</button>
+          <img class="pk-asset-thumb" src="${a.dataUrl}" alt="${s.label}">
+          <span class="pk-asset-name">${s.label}</span>
+          <input type="file" accept="image/*" onchange="handleKitAssetUpload(event,'${s.key}')">
+        </div>`;
+    }
+    return `
+      <label class="pk-asset-slot" data-slot="${s.key}">
+        <span class="pk-asset-icon">+</span>
+        <span class="pk-asset-label">${s.label}</span>
+        <input type="file" accept="image/*" onchange="handleKitAssetUpload(event,'${s.key}')">
+      </label>`;
+  }).join('');
+}
+function handleKitAssetUpload(e, slotKey) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  if (!/^image\//.test(file.type)) {
+    alert('Please upload an image file.');
+    e.target.value = '';
+    return;
+  }
+  if (file.size > KIT_ASSET_MAX_BYTES) {
+    alert('Image is over 2MB. Please pick a smaller file.');
+    e.target.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    const assets = readKitAssets();
+    assets[slotKey] = { dataUrl: reader.result, name: file.name, ts: Date.now() };
+    writeKitAssets(assets);
+    renderBrandKitAssets();
+    const slotLabel = (KIT_ASSET_SLOTS.find(s => s.key === slotKey) || {}).label || slotKey;
+    if (typeof logActivity === 'function') {
+      logActivity('asset', `Uploaded <strong>${slotLabel}</strong> asset`);
+    }
+  };
+  reader.readAsDataURL(file);
+}
+function removeKitAsset(slotKey) {
+  const assets = readKitAssets();
+  delete assets[slotKey];
+  writeKitAssets(assets);
+  renderBrandKitAssets();
+}
+function exportBrandKitPDF() {
+  // Make sure the panel is fully rendered before invoking print
+  buildBrandKitPanel();
+  setTimeout(() => window.print(), 60);
 }
 
 /* ===== PROMPT PACK — COPY / VISIT TIMESTAMPS ===== */
@@ -7906,7 +8258,7 @@ function buildChecklistPanel() {
     try { JSON.parse(localStorage.getItem(CHECKLIST_LS) || '[]').forEach(i => savedChecked.add(Number(i))); } catch(e) {}
     list.innerHTML = launchItems.map((item, i) => `
       <label class="checklist-item" id="pk-cl-item-${i}">
-        <input type="checkbox" id="pk-cl-${i}" onchange="updatePkChecklistProgress()" ${savedChecked.has(i) ? 'checked' : ''} />
+        <input type="checkbox" id="pk-cl-${i}" onchange="onChecklistToggle(${i}, this.checked); updatePkChecklistProgress()" ${savedChecked.has(i) ? 'checked' : ''} />
         <div class="cl-check-box">✓</div>
         <span class="cl-text">${item.text}</span>
         <span class="cl-tag cl-tag-${item.category}">${item.category}</span>
@@ -8062,6 +8414,10 @@ function copyRaw(btn, text) {
   navigator.clipboard.writeText(text).then(() => {
     btn.textContent = '✓ copied'; btn.classList.add('copied');
     setTimeout(() => { btn.textContent = 'copy prompt'; btn.classList.remove('copied'); }, 1500);
+    if (typeof logActivity === 'function') {
+      const snippet = (text || '').slice(0, 56).trim() + ((text || '').length > 56 ? '…' : '');
+      logActivity('copy', `Copied prompt — <strong>${snippet}</strong>`);
+    }
   });
 }
 
@@ -8303,7 +8659,11 @@ function setTheme(key) {
       c.style.setProperty('--theme-card-glow', `rgba(${t.rgb},0.35)`);
     }
   });
+  const prevTheme = localStorage.getItem('frmls_theme');
   localStorage.setItem('frmls_theme', key);
+  if (prevTheme && prevTheme !== key && typeof logActivity === 'function') {
+    logActivity('theme', `Switched theme to <strong>${t.name}</strong>`);
+  }
 }
 
 function loadTheme() {
@@ -9105,6 +9465,85 @@ function getSearchIndex() {
     });
   });
 
+  // Launch checklist items — open the checklist panel and scroll to the row
+  if (typeof launchItems !== 'undefined' && Array.isArray(launchItems)) {
+    launchItems.forEach((item, i) => {
+      index.push({
+        label: item.text,
+        desc:  `Launch checklist · ${item.category || 'task'}`,
+        icon:  '☐',
+        cat:   'Checklist',
+        action: () => {
+          openPanel('panel-checklist');
+          setTimeout(() => {
+            const row = document.getElementById('pk-cl-' + i) || document.getElementById('cl-' + i);
+            if (row && row.scrollIntoView) row.scrollIntoView({ block:'center', behavior:'smooth' });
+          }, 220);
+        }
+      });
+    });
+  }
+
+  // Designer prompt sections — quick jump into specific theme sections
+  ['Hero','Product Page','Navigation','Banner','Product Grid'].forEach(name => {
+    index.push({
+      label: name,
+      desc:  `Designer prompt · ${name.toLowerCase()} section`,
+      icon:  '◎',
+      cat:   'Prompt',
+      action: () => {
+        openPanel('panel-designer');
+        setTimeout(() => {
+          const titles = document.querySelectorAll('#panel-designer .designer-section-title');
+          for (const t of titles) {
+            if (t.textContent.trim().toLowerCase() === name.toLowerCase()) {
+              t.scrollIntoView({ block:'start', behavior:'smooth' });
+              break;
+            }
+          }
+        }, 220);
+      }
+    });
+  });
+
+  // Theme commands
+  if (typeof THEMES !== 'undefined') {
+    Object.entries(THEMES).forEach(([key, t]) => {
+      index.push({
+        label: `Theme: ${t.name}`,
+        desc:  `Switch the accent palette to ${t.name}`,
+        icon:  '◐',
+        cat:   'Action',
+        action: () => { setTheme(key); if (typeof buildCustomizePanel === 'function') buildCustomizePanel(); }
+      });
+    });
+  }
+  index.push({
+    label: 'Toggle light/dark mode',
+    desc:  'Flip between dark and light surfaces',
+    icon:  '☾',
+    cat:   'Action',
+    action: () => toggleColorMode()
+  });
+
+  // Brand Foundation re-open
+  index.push({
+    label: 'Edit Brand Foundation',
+    desc:  'Reopen the 6-question identity flow',
+    icon:  '✦',
+    cat:   'Action',
+    action: () => { if (typeof bfShowOverlay === 'function') bfShowOverlay(true); }
+  });
+
+  // Export brand kit
+  index.push({
+    label: 'Download Brand Kit PDF',
+    desc:  'Export your brand kit as a printable document',
+    icon:  '⬇',
+    cat:   'Action',
+    action: () => { openPanel('panel-brandkit'); setTimeout(exportBrandKitPDF, 320); }
+  });
+
   // Resources
   searchResources.forEach(r => {
     index.push({
@@ -9119,7 +9558,7 @@ function getSearchIndex() {
   return index;
 }
 
-const badgeClass = { Step:'sr-badge-step', Prompt:'sr-badge-prompt', Dashboard:'sr-badge-dashboard', Resource:'sr-badge-resource' };
+const badgeClass = { Step:'sr-badge-step', Prompt:'sr-badge-prompt', Dashboard:'sr-badge-dashboard', Resource:'sr-badge-resource', Checklist:'sr-badge-resource', Action:'sr-badge-step' };
 
 function openQuickSearch() {
   const overlay = document.getElementById('searchModalOverlay');
@@ -9164,7 +9603,7 @@ function renderSearchResults() {
 
   // Group by category when no query (default state shows sections)
   if (!q) {
-    const order = ['Dashboard','Step','Prompt','Resource'];
+    const order = ['Dashboard','Action','Step','Prompt','Checklist','Resource'];
     let html = '';
     order.forEach(cat => {
       const items = filtered.filter(f => f.cat === cat);
@@ -10859,6 +11298,9 @@ function bfComplete() {
   bfSaveAnswers();
   localStorage.setItem(BF_COMPLETE_KEY, 'true');
   localStorage.removeItem(BF_STEP_KEY);
+  if (typeof logActivity === 'function') {
+    logActivity('bf', '<strong>Brand Foundation</strong> complete');
+  }
 
   const currentEl = document.getElementById('bf-screen-5');
   if (currentEl) {

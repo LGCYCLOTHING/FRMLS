@@ -79,6 +79,15 @@ body::before {
   pointer-events: none; z-index: 0;
   will-change: transform;
 }
+/* Optional per-theme texture overlay (e.g. Volt's dot grid). Static —
+   sits on top of the ambient blobs but doesn't drift. */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: var(--bg-pattern, none);
+  background-size: var(--bg-pattern-size, auto);
+  pointer-events: none; z-index: 0;
+}
 @keyframes bgShift {
   0%  { transform: scale(1) translate(0,0); }
   33% { transform: scale(1.05) translate(2%,1%); }
@@ -554,9 +563,9 @@ body::before {
 .btn { display:inline-flex; align-items:center; gap:6px; padding:11px 22px; font-size:14px; font-weight:600; font-family:'Inter',sans-serif; border-radius:var(--radius-md); cursor:pointer; transition:all 0.2s cubic-bezier(0.16,1,0.3,1); letter-spacing:0.01em; }
 .btn:not(.primary) { background:transparent; border:1px solid var(--border-mid); color:#cccccc; }
 .btn:not(.primary):hover { background:rgba(255,255,255,0.06); color:var(--white); }
-.btn.primary { background:var(--grad); border:none; color:var(--white); box-shadow:0 0 20px rgba(var(--accent-rgb),0.25); position:relative; overflow:hidden; }
+.btn.primary { background:var(--grad); border:none; color:var(--white); box-shadow:0 0 12px rgba(var(--accent-rgb),0.35), 0 0 32px rgba(var(--accent-rgb),0.12); position:relative; overflow:hidden; }
 .btn.primary::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.12),transparent); opacity:0; transition:opacity 0.2s; }
-.btn.primary:hover { box-shadow:0 0 38px rgba(var(--accent-rgb),0.52),0 4px 20px rgba(var(--accent-rgb),0.2); transform:translateY(-1px); }
+.btn.primary:hover { box-shadow:0 0 18px rgba(var(--accent-rgb),0.55), 0 0 44px rgba(var(--accent-rgb),0.22); transform:translateY(-1px); }
 .btn.primary:hover::after { opacity:1; }
 .btn.sm { padding:7px 14px; font-size:13px; }
 
@@ -1449,9 +1458,9 @@ body:has(#screen-7.active) .orca-shell {
   font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
   letter-spacing: -0.005em; cursor: pointer;
   transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
-  box-shadow: 0 4px 14px rgba(var(--accent-rgb),0.25);
+  box-shadow: 0 0 12px rgba(var(--accent-rgb),0.35), 0 0 32px rgba(var(--accent-rgb),0.12);
 }
-.orca-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(var(--accent-rgb),0.45); }
+.orca-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 18px rgba(var(--accent-rgb),0.55), 0 0 44px rgba(var(--accent-rgb),0.22); }
 .orca-btn-primary:active { transform: translateY(0); }
 .orca-btn-ghost {
   display: inline-flex; align-items: center; gap: 6px;
@@ -8133,15 +8142,21 @@ const THEMES = {
   },
   volt: {
     name: 'Volt',
-    primary: '#00FF66', primaryL: '#3DFF7E',
-    secondary: '#00D957', secondaryL: '#22FF66',
-    rgb: '0,255,102',
-    secondaryRgb: '0,217,87',
-    bg: '#020403',
-    bgAmbience: 'radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,255,102,0.14) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(0,217,87,0.10) 0%, transparent 55%), radial-gradient(ellipse 50% 40% at 60% 40%, rgba(0,255,102,0.06) 0%, transparent 50%)',
-    orb1: 'radial-gradient(circle, rgba(0,255,102,0.20) 0%, transparent 70%)',
-    orb2: 'radial-gradient(circle, rgba(0,217,87,0.14) 0%, transparent 70%)',
-    gradPreview: 'linear-gradient(135deg, #00C950 0%, #003318 50%, #000 100%)',
+    /* Exact neon-electric green spec */
+    primary: '#00e536', primaryL: '#16ff38',
+    secondary: '#00b825', secondaryL: '#16ff38',
+    rgb: '0,229,54',
+    secondaryRgb: '0,184,37',
+    bg: '#07080a',
+    bgAmbience: 'radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,229,54,0.14) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(0,184,37,0.10) 0%, transparent 55%), radial-gradient(ellipse 50% 40% at 60% 40%, rgba(0,229,54,0.06) 0%, transparent 50%)',
+    orb1: 'radial-gradient(circle, rgba(0,229,54,0.20) 0%, transparent 70%)',
+    orb2: 'radial-gradient(circle, rgba(0,184,37,0.14) 0%, transparent 70%)',
+    /* Custom 3-stop accent gradient per spec */
+    grad: 'linear-gradient(135deg, #00ff41 0%, #00b825 50%, #004d10 100%)',
+    /* Subtle dot-grid texture overlay */
+    bgPattern: 'radial-gradient(circle, rgba(0,229,54,0.06) 1px, transparent 1px)',
+    bgPatternSize: '24px 24px',
+    gradPreview: 'linear-gradient(135deg, #00ff41 0%, #00b825 50%, #004d10 100%)',
   },
   rose: {
     name: 'Rose',
@@ -8231,6 +8246,16 @@ function setTheme(key) {
   root.style.setProperty('--bg-ambience',  t.bgAmbience);
   root.style.setProperty('--orb1-bg',      t.orb1);
   root.style.setProperty('--orb2-bg',      t.orb2);
+  /* Optional per-theme overrides: 3-stop gradient + texture overlay */
+  if (t.grad) root.style.setProperty('--grad', t.grad);
+  else root.style.removeProperty('--grad');
+  if (t.bgPattern) {
+    root.style.setProperty('--bg-pattern', t.bgPattern);
+    root.style.setProperty('--bg-pattern-size', t.bgPatternSize || 'auto');
+  } else {
+    root.style.removeProperty('--bg-pattern');
+    root.style.removeProperty('--bg-pattern-size');
+  }
   // Update selected state on theme cards
   document.querySelectorAll('.theme-card').forEach(c => {
     const isSelected = c.dataset.theme === key;

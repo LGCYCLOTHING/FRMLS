@@ -3611,6 +3611,50 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   background: linear-gradient(135deg, #7c3aed, #06b6d4);
   box-shadow: 0 0 10px rgba(34,211,238,0.45);
 }
+
+/* "What this signals" — appears below the grid when a choice is clicked */
+.bf-choice-meaning {
+  width: 100%;
+  margin-bottom: 18px;
+  padding: 13px 16px;
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(124,58,237,0.10), rgba(6,182,212,0.04)),
+    rgba(255,255,255,0.02);
+  border: 1px solid rgba(157,92,245,0.28);
+  display: none;
+  position: relative;
+}
+.bf-choice-meaning.bf-show {
+  display: block;
+  animation: bfChoiceIn .35s cubic-bezier(.16,1,.3,1);
+}
+.bf-choice-meaning::before {
+  content: ''; position: absolute; left: -1px; top: 11px; bottom: 11px; width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, #9d5cf5, #22d3ee);
+}
+.bf-choice-eyebrow {
+  font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 5px;
+}
+.bf-choice-value {
+  font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 700;
+  color: #fff; letter-spacing: -0.01em; line-height: 1.3;
+  margin-bottom: 4px;
+}
+.bf-choice-text {
+  font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 500;
+  color: rgba(255,255,255,0.72); line-height: 1.45;
+}
+@keyframes bfChoiceIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 .bf-textarea {
   width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
   border-radius: 14px; padding: 14px 18px;
@@ -9637,6 +9681,109 @@ const BF_AFFIRMATIONS = [
   "The clearer the promise, the easier everything after it becomes."
 ];
 
+/* Per-choice meanings — "what this signals" box that appears
+   below the grid when an option is clicked. Keyed by screen index,
+   then by the data-value attribute on the card/pill. */
+const BF_CHOICE_MEANINGS = {
+  0: {
+    'represent': "Building something that's actually you. Every decision from here gets filtered through what feels right versus what doesn't.",
+    'freedom':   "Building for autonomy. The brand has to scale on systems and clarity — not on your hours.",
+    'passion':   "You're already close to your customer. That depth will show up in product details others miss.",
+    'proud':     "Quality of output is non-negotiable. The brand rewards patience over speed.",
+    'prove':     "There's a personal stake here. That fire shows up in voice, in standards, in what you refuse to ship.",
+    'lifestyle': "The brand and your life are one. People buy into the world, not just the product.",
+    'money':     "Real product, real margins, real customers. The brand earns trust before it earns money.",
+    'legacy':    "Building for the long game. Every decision asks 'will this still matter in ten years?'"
+  },
+  1: {
+    'minimal-clean':        "Restraint as a feature. Neutral palette, lots of breathing room, one or two typefaces max.",
+    'raw-textural':         "Imperfection on purpose. Real materials, exposed seams, weathered edges, honest grain.",
+    'editorial-considered': "Print-magazine feel. Generous whitespace, considered crops, intentional pace, long copy.",
+    'loud-graphic':         "High contrast. Big type, bold color, strong visual hooks. The brand interrupts.",
+    'soft-atmospheric':     "Hazy and dreamlike. Soft gradients, muted palettes, ambient light, mood over precision.",
+    'tech-precise':         "Mechanical exactness. Mono fonts, grid systems, sharp edges, no decoration.",
+    'vintage-archival':     "Found and faded. Grain, archive textures, era-specific type — like an old magazine pulled out.",
+    'industrial':           "Material and weight. Hardware finishes, dense type, working-class confidence."
+  },
+  2: {
+    'Calm':         "Your brand lowers the temperature in the room. Slow type, ample whitespace, muted palette.",
+    'Powerful':     "Your brand asserts. Bold type, strong contrast, commanding scale.",
+    'Rebellious':   "Your brand defies. Unexpected layouts, contrarian copy, raw textures.",
+    'Elevated':     "Your brand feels expensive. Refined type, restraint, premium materials.",
+    'Raw':          "Your brand keeps it real. Visible process, imperfection, unfiltered voice.",
+    'Pure':         "Your brand is essential. One color, one font, one idea.",
+    'Bold':         "Your brand is loud and proud. Big moves, no hedging, no apologies.",
+    'Quiet':        "Your brand whispers. Small type, soft tones — what's said matters more than how loud.",
+    'Warm':         "Your brand feels human. Off-white backgrounds, soft serifs, friendly voice.",
+    'Cold':         "Your brand stays clinical. Pure white, geometric sans, tech precision.",
+    'Sharp':        "Your brand cuts. Angular type, hard edges, no flourishes.",
+    'Soft':         "Your brand cushions. Rounded type, gentle gradients, easy pace.",
+    'Mysterious':   "Your brand withholds. Negative space, dim palettes — you have to look closer.",
+    'Grounded':     "Your brand is steady. Earth tones, solid type, no theatrics.",
+    'Fearless':     "Your brand commits. Strong stances, big claims, and lives by them.",
+    'Refined':      "Your brand is considered. Every detail thought through twice — nothing is by accident.",
+    'Honest':       "Your brand doesn't oversell. Plain language, real photos, transparent process.",
+    'Unstoppable':  "Your brand has momentum. Forward type, kinetic visuals, always pushing.",
+    'Minimal':      "Your brand removes. Everything earns its place or it's gone.",
+    'Loud':         "Your brand demands attention. Big type, bright color, no half-measures.",
+    'Intentional':  "Your brand has a reason for everything. Every color, every word, every move is deliberate.",
+    'Free':         "Your brand doesn't follow rules. Mixed type, broken grids, expressive voice."
+  },
+  3: {
+    'quality-over-hype': "Customers who research before they buy. Product depth matters more than novelty.",
+    'distinct':          "Customers building their own aesthetic. They value the details others miss.",
+    'builders':          "Customers who appreciate craft. They'll forgive small flaws if the intent is real.",
+    'independent':       "Customers who don't follow trends. The brand has to lead, not echo.",
+    'tired-mainstream':  "Customers ready for an alternative. The brand wins by not being the obvious choice.",
+    'fewer-better':      "Customers who buy slowly. Each piece has to justify its price and its place.",
+    'pay-for-real':      "Customers who value substance. They'll pay more if the difference is felt.",
+    'story-driven':      "Customers who collect meaning. Origin, process, and people matter as much as product."
+  }
+};
+
+/* Ensure the meaning box exists in a given screen — insert it just
+   before the textarea (or at the end if there isn't one) so it sits
+   between the option grid and the freeform input. */
+function bfEnsureMeaningEl(screenEl) {
+  if (!screenEl) return null;
+  let el = screenEl.querySelector('.bf-choice-meaning');
+  if (!el) {
+    el = document.createElement('div');
+    el.className = 'bf-choice-meaning';
+    el.innerHTML =
+      '<div class="bf-choice-eyebrow">what this signals</div>' +
+      '<div class="bf-choice-value"></div>' +
+      '<div class="bf-choice-text"></div>';
+    const anchor = screenEl.querySelector('.bf-textarea') || screenEl.querySelector('.bf-continue-btn');
+    if (anchor) screenEl.insertBefore(el, anchor);
+    else screenEl.appendChild(el);
+  }
+  return el;
+}
+
+function bfShowChoiceMeaning(screenIdx, value, label) {
+  const map = BF_CHOICE_MEANINGS[screenIdx];
+  if (!map) return;
+  const meaning = map[value];
+  if (!meaning) return;
+  const screenEl = document.getElementById('bf-screen-' + screenIdx);
+  const el = bfEnsureMeaningEl(screenEl);
+  if (!el) return;
+  el.querySelector('.bf-choice-value').textContent = label || value;
+  el.querySelector('.bf-choice-text').textContent  = meaning;
+  /* re-trigger the fade animation each click */
+  el.classList.remove('bf-show');
+  void el.offsetWidth;
+  el.classList.add('bf-show');
+}
+
+function bfHideChoiceMeaning(screenIdx) {
+  const screenEl = document.getElementById('bf-screen-' + screenIdx);
+  if (!screenEl) return;
+  const el = screenEl.querySelector('.bf-choice-meaning');
+  if (el) el.classList.remove('bf-show');
+}
+
 const BF_CONTEXT = [
   {
     eyebrow: 'step 01 · the why',
@@ -10020,6 +10167,8 @@ function bfToggleCard(el, screenIdx, value) {
   const i = arr.indexOf(value);
   if (i >= 0) arr.splice(i, 1); else arr.push(value);
   bfSaveAnswers();
+  /* Show what this choice signals — pulls the card's label text */
+  bfShowChoiceMeaning(screenIdx, value, (el.textContent || '').trim());
 }
 
 /* Toggle a mood pill */
@@ -10031,6 +10180,8 @@ function bfTogglePill(el, screenIdx, value) {
   const i = arr.indexOf(value);
   if (i >= 0) arr.splice(i, 1); else arr.push(value);
   bfSaveAnswers();
+  /* Show what this mood signals */
+  bfShowChoiceMeaning(screenIdx, value, (el.textContent || '').trim());
 }
 
 /* Save a textarea value */

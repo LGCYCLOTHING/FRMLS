@@ -3966,6 +3966,10 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   min-height: calc(100vh - 60px); position: relative; overflow: visible;
   padding-bottom: 100px;
 }
+/* The completion card is its own centered surface — drop the .bf-screen
+   corner bracket and top hairline so nothing looks off-axis. */
+.bf-completion-screen::before,
+.bf-completion-screen::after { display: none !important; }
 .bf-particles {
   position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0;
 }
@@ -4087,19 +4091,46 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   font-size: 20px; font-weight: 300; opacity: 0.35; color: #9d5cf5;
   -webkit-text-fill-color: initial;
 }
-.bf-output-foundation { display: flex; flex-direction: column; gap: 10px; }
+.bf-output-foundation { display: flex; flex-direction: column; gap: 14px; }
 .bf-output-foundation-row {
-  display: grid; grid-template-columns: 80px 1fr; gap: 14px;
-  align-items: baseline; text-align: left;
+  display: grid; grid-template-columns: 84px 1fr; gap: 16px;
+  align-items: start; text-align: left;
 }
 .bf-output-foundation-key {
   font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600;
   letter-spacing: 0.18em; text-transform: uppercase;
-  color: #06b6d4;
+  color: #06b6d4; padding-top: 6px;
 }
 .bf-output-foundation-val {
+  display: flex; flex-direction: column; gap: 6px;
   font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;
-  color: rgba(255,255,255,0.88); line-height: 1.55;
+  color: rgba(255,255,255,0.88); line-height: 1.55; min-width: 0;
+}
+.bf-output-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.bf-output-chip {
+  display: inline-flex;
+  padding: 4px 10px; border-radius: 100px;
+  background: rgba(124,58,237,0.12);
+  border: 1px solid rgba(124,58,237,0.32);
+  font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,0.92);
+  letter-spacing: -0.005em; line-height: 1.2;
+}
+.bf-output-chip.bf-output-chip-text {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.65);
+  font-style: italic;
+  white-space: pre-wrap;
+}
+.bf-output-line {
+  font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 500;
+  color: rgba(255,255,255,0.85); line-height: 1.55;
+}
+.bf-output-note {
+  font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 500;
+  font-style: italic;
+  color: rgba(255,255,255,0.55); line-height: 1.45;
 }
 .bf-output-voice-list { display: flex; flex-direction: column; gap: 14px; }
 .bf-output-voice-line {
@@ -9625,28 +9656,77 @@ function bfRenderOutputCard(output) {
     .map(ex => `<div class="bf-output-voice-line">"${ex}"</div>`)
     .join('');
 
-  /* Pull the user's actual foundation answers for a compact summary */
-  const ctx = (typeof getBrandContext === 'function') ? getBrandContext() : {};
-  const foundationRows = [
-    ['why',     ctx.brandWhy],
-    ['look',    ctx.brandLook],
-    ['feeling', ctx.moodWords],
-    ['for',     ctx.brandAudience],
-    ['promise', ctx.brandPromise]
-  ].filter(([, val]) =>
-    val && !/^\[.*\]$/.test(String(val).trim())
-  );
+  /* Pull foundation rows directly from bfAnswers so each row can show
+     the selections as chips and any freeform "in your own words..." note
+     underneath in italic. Labels reuse the same maps as getBrandContext. */
+  const ans = (typeof bfAnswers === 'object' && bfAnswers) ? bfAnswers : {};
+  const whyLabels = {
+    'represent':"create something that represents who I am",'freedom':"financial freedom and independence",
+    'passion':"genuine passion for this product or space",'proud':"build something I'm proud of",
+    'prove':"prove something to myself",'lifestyle':"create a lifestyle around something I love",
+    'money':"make money and do it with something real",'legacy':"leave something behind that matters"
+  };
+  const lookLabels = {
+    'minimal-clean':"minimal and clean",'raw-textural':"raw and textural",
+    'editorial-considered':"editorial and considered",'loud-graphic':"loud and graphic",
+    'soft-atmospheric':"soft and atmospheric",'tech-precise':"tech and precise",
+    'vintage-archival':"vintage / archival",'industrial':"industrial"
+  };
+  const audLabels = {
+    'quality-over-hype':"someone who values quality over hype",
+    'distinct':"people who want to look distinct, not trendy",
+    'builders':"builders and creatives shaping their own thing",
+    'independent':"independent thinkers who don't follow",
+    'tired-mainstream':"anyone tired of the mainstream",
+    'fewer-better':"people who buy fewer but better things",
+    'pay-for-real':"someone willing to pay for something real",
+    'story-driven':"people who care about the story behind a brand"
+  };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const chipFrom = (label, extraClass) =>
+    `<span class="bf-output-chip${extraClass ? ' ' + extraClass : ''}">${esc(label)}</span>`;
+  const rowHTML = (key, chips, note, line) => {
+    const chipsHTML = chips && chips.length
+      ? `<div class="bf-output-chips">${chips.join('')}</div>` : '';
+    const lineHTML = line ? `<div class="bf-output-line">${esc(line)}</div>` : '';
+    const noteHTML = note ? `<div class="bf-output-note">"${esc(note)}"</div>` : '';
+    return `<div class="bf-output-foundation-row">` +
+      `<span class="bf-output-foundation-key">${key}</span>` +
+      `<div class="bf-output-foundation-val">${chipsHTML}${lineHTML}${noteHTML}</div>` +
+    `</div>`;
+  };
+  const mapVals = (vals, labels) => (vals || []).map(v => chipFrom(labels ? (labels[v] || v) : v));
 
-  const foundationHTML = foundationRows.length
+  const foundationParts = [];
+  // step 0 — why
+  if (ans[0] && ((ans[0].selections || []).length || (ans[0].text || '').trim())) {
+    foundationParts.push(rowHTML('why', mapVals(ans[0].selections, whyLabels), (ans[0].text || '').trim()));
+  }
+  // step 1 — look
+  if (ans[1] && ((ans[1].selections || []).length || (ans[1].text || '').trim())) {
+    foundationParts.push(rowHTML('look', mapVals(ans[1].selections, lookLabels), (ans[1].text || '').trim()));
+  }
+  // step 2 — feeling
+  if (ans[2] && ((ans[2].moods || []).length || (ans[2].text || '').trim())) {
+    foundationParts.push(rowHTML('feeling', mapVals(ans[2].moods, null), (ans[2].text || '').trim()));
+  }
+  // step 3 — for
+  if (ans[3] && ((ans[3].selections || []).length || (ans[3].text || '').trim())) {
+    foundationParts.push(rowHTML('for', mapVals(ans[3].selections, audLabels), (ans[3].text || '').trim()));
+  }
+  // step 4 — category (single select)
+  if (ans[4] && ans[4].category) {
+    foundationParts.push(rowHTML('category', [chipFrom(ans[4].category)], ''));
+  }
+  // step 5 — promise (freeform only)
+  const promiseText = ans[5] && (ans[5].promise || '').trim();
+  if (promiseText) {
+    foundationParts.push(rowHTML('promise', null, '', promiseText));
+  }
+
+  const foundationHTML = foundationParts.length
     ? `<div class="bf-output-section-label">your foundation</div>` +
-      `<div class="bf-output-foundation">` +
-        foundationRows.map(([k, v]) =>
-          `<div class="bf-output-foundation-row">` +
-            `<span class="bf-output-foundation-key">${k}</span>` +
-            `<span class="bf-output-foundation-val">${v}</span>` +
-          `</div>`
-        ).join('') +
-      `</div>` +
+      `<div class="bf-output-foundation">${foundationParts.join('')}</div>` +
       `<div class="bf-output-divider"></div>`
     : '';
 

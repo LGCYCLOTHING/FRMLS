@@ -10150,9 +10150,18 @@ function bfEnsureMeaningEl(screenEl) {
     el.innerHTML =
       '<span class="bf-choice-header">what this signals</span>' +
       '<div class="bf-choice-list"></div>';
-    const anchor = screenEl.querySelector('.bf-textarea') || screenEl.querySelector('.bf-continue-btn');
-    if (anchor) screenEl.insertBefore(el, anchor);
-    else screenEl.appendChild(el);
+    /* Anchor priority: prefer .bf-nav-row (always a direct child of the
+       screen once wrapped), then .bf-textarea, then the bare continue
+       button. Insert via the anchor's parentNode so we don't require
+       it to be a direct child of screenEl. */
+    const anchor = screenEl.querySelector('.bf-nav-row')
+                || screenEl.querySelector('.bf-textarea')
+                || screenEl.querySelector('.bf-continue-btn');
+    if (anchor && anchor.parentNode) {
+      anchor.parentNode.insertBefore(el, anchor);
+    } else {
+      screenEl.appendChild(el);
+    }
   }
   return el;
 }

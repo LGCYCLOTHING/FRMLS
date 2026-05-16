@@ -1874,6 +1874,10 @@ body:has(#screen-7.active) .orca-shell {
   z-index: 20;
   box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.35);
   transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+  /* Stop the browser from converting the drag into a page pan/zoom */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .sb-resize-handle { right: 4px; }
 .pinned-resize-handle { left: 4px; }
@@ -6577,33 +6581,53 @@ function initSidebarResize() {
     sidebar.style.setProperty('min-width', saved + 'px', 'important');
   }
 
-  let dragging = false, startX = 0, startW = 0;
+  let dragging = false, startX = 0, startW = 0, activePointer = null;
+
   const onMove = e => {
     if (!dragging) return;
+    /* Only respond to the pointer we captured */
+    if (e.pointerId != null && activePointer != null && e.pointerId !== activePointer) return;
     let w = startW + (e.clientX - startX);
     w = Math.max(SB_MIN, Math.min(SB_MAX, w));
     sidebar.style.setProperty('width', w + 'px', 'important');
     sidebar.style.setProperty('min-width', w + 'px', 'important');
   };
-  const onUp = () => {
+  const onUp = e => {
     if (!dragging) return;
     dragging = false;
+    activePointer = null;
     document.body.classList.remove('sb-resizing');
     handle.classList.remove('dragging');
+    try { if (e && e.pointerId != null) handle.releasePointerCapture(e.pointerId); } catch (_) {}
     localStorage.setItem(SB_WIDTH_LS, sidebar.offsetWidth);
   };
-  handle.addEventListener('mousedown', e => {
-    if (!sidebar.classList.contains('mode-dashboard')) return;
+
+  /* Pointer Events handle mouse + touch + pen uniformly. setPointerCapture
+     ensures the drag keeps tracking even when the cursor leaves the narrow
+     18px handle — that was the main bug with the mouse-only handler. */
+  handle.addEventListener('pointerdown', e => {
+    /* If the handle is visible (CSS gates it to mode-dashboard), let it work */
+    if (getComputedStyle(handle).display === 'none') return;
+    /* Only primary mouse button — but always allow touch / pen */
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
     dragging = true;
+    activePointer = e.pointerId;
     startX = e.clientX;
     startW = sidebar.offsetWidth;
     document.body.classList.add('sb-resizing');
     handle.classList.add('dragging');
+    try { handle.setPointerCapture(e.pointerId); } catch (_) {}
     e.preventDefault();
   });
-  document.addEventListener('mousemove', onMove);
-  document.addEventListener('mouseup', onUp);
-  // Double-click resets to default width
+  handle.addEventListener('pointermove',   onMove);
+  handle.addEventListener('pointerup',     onUp);
+  handle.addEventListener('pointercancel', onUp);
+
+  /* Belt-and-suspenders fallback in case pointer-capture release misses */
+  window.addEventListener('pointerup',   onUp);
+  window.addEventListener('pointercancel', onUp);
+
+  /* Double-click resets to default width */
   handle.addEventListener('dblclick', () => {
     sidebar.style.removeProperty('width');
     sidebar.style.removeProperty('min-width');

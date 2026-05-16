@@ -2346,13 +2346,21 @@ body:has(#screen-7.active) .orca-shell {
 .sb-resize-dot { display: none; }
 .sidebar-nav.mode-dashboard .sb-resize-handle { display: flex; }
 .sb-resize-handle:hover,
-.sb-resize-handle.dragging { opacity: 1; background: rgba(var(--accent-rgb), 0.18); border-color: rgba(var(--accent-rgb), 0.4); }
+.sb-resize-handle.dragging,
+.pinned-resize-handle:hover,
+.pinned-resize-handle.dragging {
+  opacity: 1;
+  background: rgba(var(--accent-rgb), 0.18);
+  border-color: rgba(var(--accent-rgb), 0.4);
+}
 .sb-resize-dot {
   width: 3px; height: 3px;
   background: var(--text-muted); border-radius: 50%;
 }
 .sb-resize-handle:hover .sb-resize-dot,
-.sb-resize-handle.dragging .sb-resize-dot { background: var(--white); }
+.sb-resize-handle.dragging .sb-resize-dot,
+.pinned-resize-handle:hover .sb-resize-dot,
+.pinned-resize-handle.dragging .sb-resize-dot { background: var(--white); }
 body.sb-resizing { cursor: ew-resize !important; user-select: none; }
 body.sb-resizing * { user-select: none !important; }
 

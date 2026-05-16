@@ -3738,6 +3738,39 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   animation: none;
   box-shadow: none;
 }
+
+/* Chevron row: back ← [ CONTINUE → ] forward — sits inside the card */
+.bf-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  align-self: center;
+}
+.bf-nav-chevron {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.78);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background .2s, border-color .2s, transform .2s, opacity .2s, color .2s;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.bf-nav-chevron svg { display: block; }
+.bf-nav-chevron:not(:disabled):hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(157,92,245,0.55);
+  color: #fff;
+}
+.bf-nav-back:not(:disabled):hover { transform: translateX(-2px); }
+.bf-nav-fwd:not(:disabled):hover  { transform: translateX( 2px); }
+.bf-nav-chevron:disabled { opacity: 0.28; cursor: default; }
+
+/* The top-nav back button is now superseded by the inline chevron */
+#bf-back-btn { display: none !important; }
 .bf-complete-btn { font-size: 17px; padding: 16px 44px; }
 .bf-refs-label {
   font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.14em;
@@ -9797,6 +9830,61 @@ const BF_CHOICE_MEANINGS = {
   }
 };
 
+/* Wrap a screen's continue button with back/forward chevron buttons so they
+   sit flanking it inside the card. Idempotent — safe to call repeatedly. */
+function bfWrapContinueWithNav(screenEl, screenIdx) {
+  if (!screenEl) return;
+  const continueBtn = screenEl.querySelector('.bf-continue-btn');
+  if (!continueBtn) return;
+  if (screenEl.querySelector('.bf-nav-row')) return;  /* already wrapped */
+
+  const row = document.createElement('div');
+  row.className = 'bf-nav-row';
+
+  const back = document.createElement('button');
+  back.type = 'button';
+  back.className = 'bf-nav-chevron bf-nav-back';
+  back.setAttribute('aria-label', 'Back');
+  back.innerHTML =
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none">' +
+    '<path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '</svg>';
+  back.addEventListener('click', () => bfNavBack());
+
+  const fwd = document.createElement('button');
+  fwd.type = 'button';
+  fwd.className = 'bf-nav-chevron bf-nav-fwd';
+  fwd.setAttribute('aria-label', 'Next');
+  fwd.innerHTML =
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none">' +
+    '<path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '</svg>';
+  fwd.addEventListener('click', () => {
+    /* mirror the Continue button — only advance if it isn't disabled */
+    if (!continueBtn.disabled) continueBtn.click();
+  });
+
+  /* Insert the row in place of the continue button, then move continue inside */
+  continueBtn.parentNode.insertBefore(row, continueBtn);
+  row.appendChild(back);
+  row.appendChild(continueBtn);
+  row.appendChild(fwd);
+
+  /* Initial enabled state — back disabled on step 0, fwd follows continue */
+  back.disabled = (screenIdx === 0);
+  fwd.disabled  = continueBtn.disabled;
+}
+
+/* Keep the chevron disabled states in sync with the continue button */
+function bfSyncChevrons(screenEl, screenIdx) {
+  if (!screenEl) return;
+  const back = screenEl.querySelector('.bf-nav-back');
+  const fwd  = screenEl.querySelector('.bf-nav-fwd');
+  const continueBtn = screenEl.querySelector('.bf-continue-btn');
+  if (back) back.disabled = (screenIdx === 0);
+  if (fwd && continueBtn) fwd.disabled = continueBtn.disabled;
+}
+
 /* Ensure the meanings panel exists in a given screen. Each screen has its
    own panel (so transitioning between steps swaps the visible list).
    On wide screens it floats to the right of the card via CSS. */
@@ -10102,6 +10190,9 @@ function bfGoTo(step, animate) {
     nextEl.style.transform = 'translateY(20px)';
     nextEl.classList.add('bf-active'); // display: flex
 
+    // Wrap continue with back/forward chevrons (idempotent)
+    if (step < BF_TOTAL_STEPS) bfWrapContinueWithNav(nextEl, step);
+
     // Restore saved selections/text
     bfRestoreScreen(step);
 
@@ -10307,10 +10398,15 @@ function bfCheckContinue(screenIdx) {
   const btn = document.getElementById('bf-continue-' + screenIdx);
   if (!btn) return;
 
-  // Screen 4 (Reference) is always optional
-  if (screenIdx === 4) { btn.disabled = false; return; }
-
   const screen = document.getElementById('bf-screen-' + screenIdx);
+
+  // Screen 4 (Reference) is always optional
+  if (screenIdx === 4) {
+    btn.disabled = false;
+    bfSyncChevrons(screen, screenIdx);
+    return;
+  }
+
   if (!screen) return;
 
   let hasValue = false;
@@ -10319,6 +10415,7 @@ function bfCheckContinue(screenIdx) {
   if (ta && ta.value.trim()) hasValue = true;
 
   btn.disabled = !hasValue;
+  bfSyncChevrons(screen, screenIdx);
 }
 
 /* Restore saved state when navigating to a screen */

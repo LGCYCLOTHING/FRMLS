@@ -724,45 +724,8 @@ body::before {
 .ob-orb-5 { width:300px; height:300px; background:#7c3aed; top:18%; right:-90px; opacity:0.28; animation-delay:4.5s; }
 @keyframes orbPulse { 0%{transform:scale(1) translate(0,0)} 100%{transform:scale(1.18) translate(24px,-18px)} }
 
-/* Side accent rails (desktop only) */
-.bf-side-rail {
-  position:fixed; top:14vh; bottom:14vh; width:1px; z-index:1; pointer-events:none;
-  background:linear-gradient(to bottom, transparent 0%, rgba(124,58,237,0.7) 25%, rgba(6,182,212,0.7) 75%, transparent 100%);
-  -webkit-mask-image:repeating-linear-gradient(to bottom, black 0 5px, transparent 5px 14px);
-          mask-image:repeating-linear-gradient(to bottom, black 0 5px, transparent 5px 14px);
-}
-.bf-side-rail.bf-side-left { left:64px; }
-.bf-side-rail.bf-side-right { right:64px; }
-.bf-side-rail-cap {
-  position:fixed; width:8px; height:8px; border-radius:50%; z-index:1; pointer-events:none;
-  background:linear-gradient(135deg,#9d5cf5,#22d3ee);
-  box-shadow:0 0 14px rgba(124,58,237,0.75), 0 0 28px rgba(6,182,212,0.45);
-}
-.bf-side-rail-cap.bf-cap-tl { left:60px; top:calc(14vh - 4px); }
-.bf-side-rail-cap.bf-cap-bl { left:60px; bottom:calc(14vh - 4px); }
-.bf-side-rail-cap.bf-cap-tr { right:60px; top:calc(14vh - 4px); }
-.bf-side-rail-cap.bf-cap-br { right:60px; bottom:calc(14vh - 4px); }
-
-.bf-side-mark {
-  position:fixed; z-index:1; pointer-events:none;
-  font-family:'DM Mono',monospace; font-size:10px; font-weight:600;
-  letter-spacing:0.42em; color:rgba(255,255,255,0.55); text-transform:uppercase;
-  white-space:nowrap;
-}
-.bf-side-mark.bf-mark-left {
-  left:30px; top:50%; transform:translate(-50%,-50%) rotate(-90deg);
-}
-.bf-side-mark.bf-mark-right {
-  right:30px; top:50%; transform:translate(50%,-50%) rotate(90deg);
-}
-.bf-side-mark .bf-mark-accent {
-  background:linear-gradient(90deg,#9d5cf5,#22d3ee);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-}
-
-@media (max-width:1100px) {
-  .bf-side-rail, .bf-side-rail-cap, .bf-side-mark { display:none; }
-}
+/* Side accent rails — removed entirely; replaced by left .bf-context + right .bf-affirm */
+.bf-side-rail, .bf-side-rail-cap, .bf-side-mark { display: none !important; }
 
 /* Per-step context panel (left side, desktop only) */
 .bf-context {
@@ -799,12 +762,38 @@ body::before {
 
 @media (min-width:1280px) {
   .bf-context { display:block; }
-  /* Free up left side so the context panel has clean room */
-  .bf-side-rail.bf-side-left,
-  .bf-side-rail-cap.bf-cap-tl,
-  .bf-side-rail-cap.bf-cap-bl,
-  .bf-side-mark.bf-mark-left { display:none; }
+  .bf-affirm  { display:block; }
 }
+
+/* Per-step affirmation panel (right side, mirrors .bf-context) */
+.bf-affirm {
+  position:fixed; right:48px; top:50%; transform:translateY(-50%);
+  width:268px; z-index:2;
+  padding:22px 24px; border-radius:18px;
+  background:linear-gradient(225deg, rgba(6,182,212,0.10), rgba(124,58,237,0.05));
+  border:1px solid rgba(255,255,255,0.10);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  display:none;
+  transition:opacity 0.35s ease;
+}
+.bf-affirm::before {
+  content:''; position:absolute; right:-1px; top:18px; bottom:18px; width:2px;
+  border-radius:2px;
+  background:linear-gradient(to bottom,#22d3ee,#9d5cf5);
+}
+.bf-affirm-eyebrow {
+  font-family:'DM Mono',monospace; font-size:10px; font-weight:600;
+  letter-spacing:0.22em; text-transform:uppercase;
+  color:rgba(255,255,255,0.55);
+  margin-bottom:10px;
+}
+.bf-affirm-body {
+  font-family:'Instrument Serif', serif; font-style:italic;
+  font-size:18px; font-weight:400;
+  color:#ffffff; line-height:1.35; letter-spacing:-0.005em;
+}
+.bf-affirm-body::before { content:'\201C'; opacity:0.55; margin-right:2px; }
+.bf-affirm-body::after  { content:'\201D'; opacity:0.55; margin-left:2px; }
 
 /* Shared nav bar (both overlays use this) */
 .ob-nav-bar {
@@ -3648,22 +3637,34 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   color: #ffffff;
 }
 .bf-continue-btn {
-  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  /* Wave gradient: cyan→purple→cyan→purple, animated to flow right */
+  background: linear-gradient(90deg, #06b6d4 0%, #7c3aed 25%, #06b6d4 50%, #7c3aed 75%, #06b6d4 100%);
+  background-size: 200% 100%;
+  background-position: 0% 50%;
   border: 1px solid transparent; border-radius: 14px; padding: 14px 40px;
   font-size: 14px; font-weight: 700; color: #ffffff;
   font-family: 'DM Mono', monospace; letter-spacing: 0.16em; text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+  transition: transform 0.25s cubic-bezier(0.16,1,0.3,1), box-shadow 0.25s, opacity 0.25s;
   position: relative; align-self: center;
   min-width: 220px;
+  animation: bfBtnWave 3.2s linear infinite;
+  box-shadow: 0 4px 22px rgba(124,58,237,0.32), 0 0 30px rgba(6,182,212,0.15);
+}
+@keyframes bfBtnWave {
+  from { background-position: 0% 50%; }
+  to   { background-position: -200% 50%; }
 }
 .bf-continue-btn:hover:not(:disabled) {
-  background: rgba(6,182,212,0.10);
-  border-color: #06b6d4;
-  color: #06b6d4;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(124,58,237,0.50), 0 0 40px rgba(6,182,212,0.30);
 }
-.bf-continue-btn:disabled { opacity: 0.28; cursor: default; }
+.bf-continue-btn:disabled {
+  opacity: 0.32;
+  cursor: default;
+  animation: none;
+  box-shadow: none;
+}
 .bf-complete-btn { font-size: 17px; padding: 16px 44px; }
 .bf-refs-label {
   font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.14em;
@@ -3692,17 +3693,22 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 }
 .bf-promise-area { min-height: 140px; font-size: 16px; margin-bottom: 32px; }
 .bf-skip-btn {
-  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.18);
-  border-radius: 100px; padding: 10px 22px; cursor: pointer;
-  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+  background: transparent; border: none; cursor: pointer;
+  font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500;
   letter-spacing: 0.02em;
-  color: rgba(255,255,255,0.78);
-  transition: color 0.2s, background 0.2s, border-color 0.2s;
+  color: rgba(255,255,255,0.40);
+  transition: color 0.2s;
   z-index: 10; white-space: nowrap;
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  margin-top: 22px; align-self: center;
+  margin-top: 14px; padding: 4px 10px;
+  align-self: center;
+  text-decoration: underline;
+  text-decoration-color: rgba(255,255,255,0.18);
+  text-underline-offset: 3px;
 }
-.bf-skip-btn:hover { color: #ffffff; background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.32); }
+.bf-skip-btn:hover {
+  color: #ffffff;
+  text-decoration-color: rgba(157,92,245,0.6);
+}
 /* Completion screen */
 .bf-completion-screen {
   align-items: center; justify-content: flex-start; text-align: center;
@@ -3915,7 +3921,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   .bf-checkbox-card { padding: 11px 14px; font-size: 14px; line-height: 1.35; border-radius: 11px; }
   .bf-textarea { min-height: 54px; padding: 11px 16px; margin-bottom: 14px; border-radius: 11px; }
   .bf-continue-btn { padding: 11px 36px; }
-  .bf-skip-btn { margin-top: 12px; padding: 8px 20px; font-size: 12.5px; }
+  .bf-skip-btn { margin-top: 8px; padding: 4px 10px; font-size: 12px; }
 }
 
 /* Slightly more breathing room on tall screens — content stays comfortable */
@@ -3926,7 +3932,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   .bf-checkbox-grid { gap: 10px; margin-bottom: 18px; }
   .bf-checkbox-card { padding: 14px 16px; font-size: 14.5px; }
   .bf-textarea { min-height: 70px; margin-bottom: 22px; }
-  .bf-skip-btn { margin-top: 18px; }
+  .bf-skip-btn { margin-top: 14px; }
 }
 </style>
 </head>
@@ -4457,11 +4463,17 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   <div class="bf-side-mark bf-mark-left">FRMLS <span class="bf-mark-accent">·</span> BRAND FOUNDATION</div>
   <div class="bf-side-mark bf-mark-right">DEFINE <span class="bf-mark-accent">·</span> REFINE <span class="bf-mark-accent">·</span> BUILD</div>
 
-  <!-- Per-step context panel -->
+  <!-- Per-step context panel (left) -->
   <aside class="bf-context" aria-live="polite">
     <div class="bf-context-eyebrow" id="bf-context-eyebrow">step 01</div>
     <div class="bf-context-title" id="bf-context-title"></div>
     <div class="bf-context-body" id="bf-context-body"></div>
+  </aside>
+
+  <!-- Per-step affirmation panel (right) -->
+  <aside class="bf-affirm" aria-live="polite">
+    <div class="bf-affirm-eyebrow">a thought</div>
+    <div class="bf-affirm-body" id="bf-affirm-body"></div>
   </aside>
 
   <div class="ob-nav-bar">
@@ -9615,6 +9627,16 @@ const BF_MAX_KEY      = 'frmls_foundation_max';
 const BF_ANSWERS_KEY  = 'frmls_foundation_answers';
 const BF_TOTAL_STEPS  = 6;
 
+/* Right-side affirmations — one per step, mirrors BF_CONTEXT order */
+const BF_AFFIRMATIONS = [
+  "Your why is what keeps you going on the days that try to break you.",
+  "If the look is right, people stop scrolling before they read a word.",
+  "Feelings sell. Facts just inform.",
+  "A brand that talks to everyone reaches no one.",
+  "Imitate widely. Copy nothing. Taste is what's left.",
+  "The clearer the promise, the easier everything after it becomes."
+];
+
 const BF_CONTEXT = [
   {
     eyebrow: 'step 01 · the why',
@@ -9793,7 +9815,7 @@ function bfGoTo(step, animate) {
     const phaseLabel = document.querySelector('#bf-overlay .ob-phase-label');
     if (phaseLabel) phaseLabel.textContent = step >= BF_TOTAL_STEPS ? 'BRAND FOUNDATION' : 'BRAND FOUNDATION';
 
-    // Update per-step context panel
+    // Update per-step context panel (left)
     const ctxPanel    = document.querySelector('.bf-context');
     const ctxEyebrow  = document.getElementById('bf-context-eyebrow');
     const ctxTitle    = document.getElementById('bf-context-title');
@@ -9810,6 +9832,26 @@ function bfGoTo(step, animate) {
         ctxPanel.style.opacity = '0';
         ctxPanel.style.pointerEvents = 'none';
       }
+    }
+
+    // Update per-step affirmation panel (right)
+    const affirmPanel = document.querySelector('.bf-affirm');
+    const affirmBody  = document.getElementById('bf-affirm-body');
+    if (affirmPanel) {
+      const line = BF_AFFIRMATIONS[step];
+      if (line && step < BF_TOTAL_STEPS) {
+        if (affirmBody) affirmBody.textContent = line;
+        affirmPanel.style.opacity = '1';
+        affirmPanel.style.pointerEvents = 'auto';
+      } else {
+        affirmPanel.style.opacity = '0';
+        affirmPanel.style.pointerEvents = 'none';
+      }
+    }
+
+    // Move the skip button INTO the active screen so it lives inside the card
+    if (skipBtn && step < BF_TOTAL_STEPS && nextEl) {
+      nextEl.appendChild(skipBtn);
     }
 
     // Prepare next screen: show it but invisible, slightly below

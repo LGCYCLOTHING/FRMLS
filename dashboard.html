@@ -727,6 +727,42 @@ body::before {
 /* Side accent rails — removed entirely; replaced by left .bf-context + right .bf-affirm */
 .bf-side-rail, .bf-side-rail-cap, .bf-side-mark { display: none !important; }
 
+/* Ambient orbs — fill the empty space around the card with soft brand color */
+.bf-ambient {
+  position: fixed; pointer-events: none; z-index: 0;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.65;
+  will-change: transform;
+}
+.bf-ambient-1 {
+  width: 520px; height: 520px;
+  top: 12%; left: -120px;
+  background: radial-gradient(circle, rgba(124,58,237,0.40), rgba(124,58,237,0) 65%);
+  animation: bfAmbientFloat 18s ease-in-out infinite alternate;
+}
+.bf-ambient-2 {
+  width: 460px; height: 460px;
+  bottom: 8%; right: -100px;
+  background: radial-gradient(circle, rgba(6,182,212,0.32), rgba(6,182,212,0) 65%);
+  animation: bfAmbientFloat 22s ease-in-out infinite alternate-reverse;
+}
+.bf-ambient-3 {
+  width: 380px; height: 380px;
+  top: 55%; left: 8%;
+  background: radial-gradient(circle, rgba(157,92,245,0.22), rgba(157,92,245,0) 70%);
+  animation: bfAmbientFloat 26s ease-in-out infinite alternate;
+  animation-delay: -8s;
+}
+@keyframes bfAmbientFloat {
+  from { transform: translate(0, 0)   scale(1); }
+  to   { transform: translate(40px, -30px) scale(1.08); }
+}
+@media (max-width: 900px) {
+  .bf-ambient-3 { display: none; }
+  .bf-ambient { opacity: 0.45; filter: blur(80px); }
+}
+
 /* Per-step context panel (left side, desktop only) */
 .bf-context {
   position:fixed; left:48px; top:50%; transform:translateY(-50%);
@@ -795,12 +831,12 @@ body::before {
 .bf-affirm-body::before { content:'\201C'; opacity:0.55; margin-right:2px; }
 .bf-affirm-body::after  { content:'\201D'; opacity:0.55; margin-left:2px; }
 
-/* Shared nav bar (both overlays use this) */
+/* Shared nav bar (both overlays use this) — transparent so the bar
+   doesn't create a dark shadow band across the top of the overlay */
 .ob-nav-bar {
   position:sticky; top:0; z-index:10; display:flex; align-items:center;
   gap:16px; padding:20px 32px 16px;
-  background:rgba(6,2,15,0.55);
-  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  background:transparent;
   flex-shrink:0;
 }
 .ob-back-btn {
@@ -3566,7 +3602,8 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 .bf-label {
-  font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.22em;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
   text-transform: uppercase; text-align: center; width: 100%; margin-bottom: 22px;
   color: #06b6d4;
 }
@@ -3577,10 +3614,10 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   text-align: center; width: 100%; margin-bottom: 16px;
 }
 .bf-subline {
-  font-family: 'DM Mono', monospace;
-  font-size: 13px; color: rgba(255,255,255,0.6);
-  font-weight: 500; letter-spacing: 0.06em;
-  text-align: center; width: 100%; margin-bottom: 36px; line-height: 1.55;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px; color: rgba(255,255,255,0.62);
+  font-weight: 500; letter-spacing: -0.005em;
+  text-align: center; width: 100%; margin-bottom: 36px; line-height: 1.5;
 }
 .bf-checkbox-grid {
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
@@ -3612,17 +3649,55 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   box-shadow: 0 0 10px rgba(34,211,238,0.45);
 }
 
-/* "What this signals" — side panel to the right of the card on wide screens,
-   stacks inline below the grid on narrower ones. Holds one .bf-choice-item
-   per currently-selected option. */
+/* "What this signals" — liquid-glass side panel. Single header at top,
+   items stacked below without their own eyebrow. */
 .bf-choice-meaning {
   width: 100%;
   margin-bottom: 18px;
   display: none;
   flex-direction: column;
-  gap: 8px;
+  /* Liquid-glass container */
+  padding: 18px 18px 16px;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(124,58,237,0.10), rgba(6,182,212,0.04)),
+    rgba(20,16,32,0.45);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.35),
+    0 0 0 1px rgba(157,92,245,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  position: relative;
+  overflow: hidden;
 }
 .bf-choice-meaning.bf-show { display: flex; }
+/* Soft top-left highlight, common in liquid-glass treatments */
+.bf-choice-meaning::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+  background: radial-gradient(ellipse 80% 60% at 20% 0%, rgba(255,255,255,0.06), transparent 60%);
+}
+
+/* Single header — "WHAT THIS SIGNALS" once, at the top */
+.bf-choice-header {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.20em; text-transform: uppercase;
+  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 14px;
+  position: relative; z-index: 1;
+}
+
+/* List of stacked meanings inside the glass container */
+.bf-choice-list {
+  display: flex; flex-direction: column;
+  gap: 12px;
+  position: relative; z-index: 1;
+}
 
 /* Wide screens: detach the panel and float it to the right of the card */
 @media (min-width: 1180px) {
@@ -3645,28 +3720,14 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 
 .bf-choice-item {
   position: relative;
-  padding: 12px 14px 13px;
-  border-radius: 11px;
-  background:
-    linear-gradient(180deg, rgba(124,58,237,0.10), rgba(6,182,212,0.04)),
-    rgba(255,255,255,0.02);
-  border: 1px solid rgba(157,92,245,0.28);
+  padding: 0 0 0 14px;
   animation: bfChoiceIn .35s cubic-bezier(.16,1,.3,1);
 }
 .bf-choice-item.bf-out { animation: bfChoiceOut .25s ease forwards; }
 .bf-choice-item::before {
-  content: ''; position: absolute; left: -1px; top: 10px; bottom: 10px; width: 2px;
+  content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 2px;
   border-radius: 2px;
   background: linear-gradient(to bottom, #9d5cf5, #22d3ee);
-}
-.bf-choice-eyebrow {
-  display: block;
-  font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 600;
-  letter-spacing: 0.20em; text-transform: uppercase;
-  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 4px;
 }
 .bf-choice-value {
   font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700;
@@ -3678,11 +3739,11 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   color: rgba(255,255,255,0.72); line-height: 1.45;
 }
 @keyframes bfChoiceIn {
-  from { opacity: 0; transform: translateY(-4px) scale(.985); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateX(-4px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 @keyframes bfChoiceOut {
-  to { opacity: 0; transform: translateY(-4px); max-height: 0; padding-top: 0; padding-bottom: 0; margin-top: -8px; }
+  to { opacity: 0; transform: translateX(-4px); max-height: 0; padding-top: 0; padding-bottom: 0; margin-top: -12px; }
 }
 .bf-textarea {
   width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
@@ -4555,6 +4616,11 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   <!-- Atmospheric background -->
   <div class="bf-grain" aria-hidden="true"></div>
   <div class="ob-particles" id="bf-particles"></div>
+
+  <!-- Ambient orbs for depth in the empty side space -->
+  <div class="bf-ambient bf-ambient-1" aria-hidden="true"></div>
+  <div class="bf-ambient bf-ambient-2" aria-hidden="true"></div>
+  <div class="bf-ambient bf-ambient-3" aria-hidden="true"></div>
 
   <!-- FRMLS logo (anchored top-right, persistent across steps) -->
   <div class="bf-logo" aria-label="FRMLS">FRML<span class="bf-logo-s">S</span></div>
@@ -9887,15 +9953,21 @@ function bfSyncChevrons(screenEl, screenIdx) {
 
 /* Ensure the meanings panel exists in a given screen. Each screen has its
    own panel (so transitioning between steps swaps the visible list).
-   On wide screens it floats to the right of the card via CSS. */
+   On wide screens it floats to the right of the card via CSS.
+
+   Panel structure:
+     .bf-choice-meaning   (liquid-glass container)
+       .bf-choice-header  ("WHAT THIS SIGNALS" — once)
+       .bf-choice-list    (stacks .bf-choice-item children) */
 function bfEnsureMeaningEl(screenEl) {
   if (!screenEl) return null;
   let el = screenEl.querySelector('.bf-choice-meaning');
   if (!el) {
     el = document.createElement('div');
     el.className = 'bf-choice-meaning';
-    /* Inject before the textarea on narrow screens; absolute positioning
-       on wide screens detaches it visually to the right of the card. */
+    el.innerHTML =
+      '<span class="bf-choice-header">what this signals</span>' +
+      '<div class="bf-choice-list"></div>';
     const anchor = screenEl.querySelector('.bf-textarea') || screenEl.querySelector('.bf-continue-btn');
     if (anchor) screenEl.insertBefore(el, anchor);
     else screenEl.appendChild(el);
@@ -9913,52 +9985,51 @@ function bfAddChoiceItem(screenIdx, value, label) {
   const screenEl = document.getElementById('bf-screen-' + screenIdx);
   const panel = bfEnsureMeaningEl(screenEl);
   if (!panel) return;
-  /* skip if this value is already shown */
-  if (panel.querySelector('[data-value="' + CSS.escape(value) + '"]')) return;
+  const list = panel.querySelector('.bf-choice-list');
+  if (!list) return;
+  if (list.querySelector('[data-value="' + CSS.escape(value) + '"]')) return;
   const item = document.createElement('div');
   item.className = 'bf-choice-item';
   item.setAttribute('data-value', value);
   item.innerHTML =
-    '<span class="bf-choice-eyebrow">what this signals</span>' +
     '<div class="bf-choice-value"></div>' +
     '<div class="bf-choice-text"></div>';
   item.querySelector('.bf-choice-value').textContent = label || value;
   item.querySelector('.bf-choice-text').textContent  = meaning;
-  panel.appendChild(item);
+  list.appendChild(item);
   panel.classList.add('bf-show');
 }
 
-/* Remove the meaning item for a deselected option, with an exit animation.
-   If the panel ends up empty, hide it. */
 function bfRemoveChoiceItem(screenIdx, value) {
   const screenEl = document.getElementById('bf-screen-' + screenIdx);
   if (!screenEl) return;
   const panel = screenEl.querySelector('.bf-choice-meaning');
   if (!panel) return;
-  const item = panel.querySelector('[data-value="' + CSS.escape(value) + '"]');
+  const list = panel.querySelector('.bf-choice-list');
+  if (!list) return;
+  const item = list.querySelector('[data-value="' + CSS.escape(value) + '"]');
   if (!item) return;
   item.classList.add('bf-out');
   setTimeout(() => {
     item.remove();
-    if (!panel.children.length) panel.classList.remove('bf-show');
+    if (!list.children.length) panel.classList.remove('bf-show');
   }, 250);
 }
 
-/* Rebuild the panel from scratch based on current selections — used
-   when restoring a screen on revisit. */
 function bfRefreshMeaningPanel(screenIdx) {
   const screenEl = document.getElementById('bf-screen-' + screenIdx);
   if (!screenEl) return;
-  let panel = screenEl.querySelector('.bf-choice-meaning');
-  if (panel) panel.innerHTML = '';
+  const panel = screenEl.querySelector('.bf-choice-meaning');
+  if (panel) {
+    const list = panel.querySelector('.bf-choice-list');
+    if (list) list.innerHTML = '';
+  }
   const ans = bfAnswers[screenIdx];
   if (!ans) { if (panel) panel.classList.remove('bf-show'); return; }
-  /* Pull both card selections and pill moods (whichever the screen uses) */
   const values = []
     .concat(ans.selections || [])
     .concat(ans.moods || []);
   values.forEach(v => {
-    /* Find the matching DOM element to pull its visible label */
     const cardOrPill = screenEl.querySelector(
       '.bf-checkbox-card[data-value="' + CSS.escape(v) + '"], .bf-pill[data-value="' + CSS.escape(v) + '"]'
     );

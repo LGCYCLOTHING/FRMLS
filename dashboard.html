@@ -3737,12 +3737,12 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 .bf-choice-header {
   display: block;
   font-family: 'Inter', sans-serif;
-  font-size: 10px; font-weight: 700;
-  letter-spacing: 0.20em; text-transform: uppercase;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
   background: linear-gradient(90deg, #9d5cf5, #22d3ee);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   position: relative; z-index: 1;
 }
 
@@ -3887,24 +3887,54 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 /* The top-nav back button is now superseded by the inline chevron */
 #bf-back-btn { display: none !important; }
 .bf-complete-btn { font-size: 17px; padding: 16px 44px; }
-.bf-refs-label {
-  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.14em;
-  color: rgba(255,255,255,0.32); text-transform: uppercase; margin-bottom: 14px;
+
+/* Category grid — single-select cards with a small description line */
+.bf-cat-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  width: 100%; margin-bottom: 22px;
 }
-.bf-brand-refs { display: flex; flex-direction: column; gap: 18px; width: 100%; margin-bottom: 20px; }
-.bf-brand-pair { display: flex; flex-direction: column; gap: 8px; }
-.bf-brand-input {
-  width: 100%; background: #111111; border: 1px solid #333333;
-  border-radius: 12px; padding: 11px 16px;
-  font-size: 14px; font-family: 'Inter', sans-serif; font-weight: 500;
-  color: #ffffff; outline: none; transition: border-color 0.2s;
+.bf-cat-card {
+  position: relative;
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 14px 14px 13px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  text-align: left; cursor: pointer; user-select: none;
+  transition: border-color 0.2s, background 0.2s, transform 0.18s, box-shadow 0.2s;
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
-.bf-brand-input::placeholder { color: rgba(255,255,255,0.2); }
-.bf-brand-input:focus { border-color: rgba(124,58,237,0.5); }
-.bf-brand-input.bf-feel { color: rgba(255,255,255,0.75); font-size: 13px; }
-.bf-refs-optional {
-  font-size: 13px; color: rgba(255,255,255,0.25); text-align: center;
-  width: 100%; margin-bottom: 28px;
+.bf-cat-card:hover {
+  border-color: rgba(157,92,245,0.55);
+  background: rgba(124,58,237,0.07);
+  transform: translateY(-1px);
+}
+.bf-cat-card.selected {
+  border-color: #7c3aed;
+  background: rgba(124,58,237,0.14);
+  box-shadow: 0 0 0 1px rgba(124,58,237,0.30), 0 0 22px rgba(124,58,237,0.30);
+}
+.bf-cat-card.selected::after {
+  content: '✓'; position: absolute; top: 8px; right: 10px;
+  font-size: 10px; font-weight: 700; color: #fff;
+  width: 16px; height: 16px; line-height: 16px; text-align: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  box-shadow: 0 0 10px rgba(124,58,237,0.55);
+}
+.bf-cat-name {
+  font-size: 15px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2;
+}
+.bf-cat-desc {
+  font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.55);
+  line-height: 1.35;
+}
+.bf-cat-card.selected .bf-cat-desc { color: rgba(255,255,255,0.78); }
+
+@media (max-width: 767px) {
+  .bf-cat-grid { grid-template-columns: 1fr 1fr; }
 }
 .bf-promise-lead {
   font-size: 36px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2;
@@ -4820,28 +4850,50 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <button class="bf-continue-btn" id="bf-continue-3" disabled onclick="bfNextStep()">continue →</button>
     </div>
 
-    <!-- Screen 4: The Reference -->
+    <!-- Screen 4: The Category -->
     <div class="bf-screen" id="bf-screen-4">
       <div class="bf-label">brand foundation — 05</div>
-      <h2 class="bf-headline">name brands you respect.</h2>
-      <p class="bf-subline">not to copy — because they make you feel something.</p>
-      <div class="bf-refs-label">up to 3 brands</div>
-      <div class="bf-brand-refs">
-        <div class="bf-brand-pair">
-          <input class="bf-brand-input bf-brand-name-input" type="text" placeholder="brand name..." oninput="bfSaveBrandRef(this,0,'name')" />
-          <input class="bf-brand-input bf-feel bf-brand-feel-input" type="text" placeholder="what do they make you feel?" oninput="bfSaveBrandRef(this,0,'feel')" />
-        </div>
-        <div class="bf-brand-pair">
-          <input class="bf-brand-input bf-brand-name-input" type="text" placeholder="brand name..." oninput="bfSaveBrandRef(this,1,'name')" />
-          <input class="bf-brand-input bf-feel bf-brand-feel-input" type="text" placeholder="what do they make you feel?" oninput="bfSaveBrandRef(this,1,'feel')" />
-        </div>
-        <div class="bf-brand-pair">
-          <input class="bf-brand-input bf-brand-name-input" type="text" placeholder="brand name..." oninput="bfSaveBrandRef(this,2,'name')" />
-          <input class="bf-brand-input bf-feel bf-brand-feel-input" type="text" placeholder="what do they make you feel?" oninput="bfSaveBrandRef(this,2,'feel')" />
-        </div>
+      <h2 class="bf-headline">what category best describes your brand?</h2>
+      <p class="bf-subline">pick the one that fits — every prompt after this knows what kind of brand you're building.</p>
+      <div class="bf-cat-grid">
+        <button type="button" class="bf-cat-card" data-value="Streetwear" onclick="bfSelectCategory(this,'Streetwear')">
+          <span class="bf-cat-name">Streetwear</span>
+          <span class="bf-cat-desc">bold, graphic, culture-driven</span>
+        </button>
+        <button type="button" class="bf-cat-card" data-value="Casual" onclick="bfSelectCategory(this,'Casual')">
+          <span class="bf-cat-name">Casual</span>
+          <span class="bf-cat-desc">everyday, relaxed, accessible</span>
+        </button>
+        <button type="button" class="bf-cat-card" data-value="Luxury" onclick="bfSelectCategory(this,'Luxury')">
+          <span class="bf-cat-name">Luxury</span>
+          <span class="bf-cat-desc">elevated, premium, refined</span>
+        </button>
+        <button type="button" class="bf-cat-card" data-value="Minimalist" onclick="bfSelectCategory(this,'Minimalist')">
+          <span class="bf-cat-name">Minimalist</span>
+          <span class="bf-cat-desc">clean, quiet, intentional</span>
+        </button>
+        <button type="button" class="bf-cat-card" data-value="Workwear" onclick="bfSelectCategory(this,'Workwear')">
+          <span class="bf-cat-name">Workwear</span>
+          <span class="bf-cat-desc">functional, structured, professional</span>
+        </button>
+        <button type="button" class="bf-cat-card" data-value="Formal" onclick="bfSelectCategory(this,'Formal')">
+          <span class="bf-cat-name">Formal</span>
+          <span class="bf-cat-desc">sharp, tailored, occasion-driven</span>
+        </button>
+        <button type="button" class="bf-cat-card" data-value="Athleisure" onclick="bfSelectCategory(this,'Athleisure')">
+          <span class="bf-cat-name">Athleisure</span>
+          <span class="bf-cat-desc">performance meets lifestyle</span>
+        </button>
+        <button type="button" class="bf-cat-card" data-value="Vintage" onclick="bfSelectCategory(this,'Vintage')">
+          <span class="bf-cat-name">Vintage</span>
+          <span class="bf-cat-desc">nostalgic, curated, worn-in</span>
+        </button>
+        <button type="button" class="bf-cat-card" data-value="Avant-garde" onclick="bfSelectCategory(this,'Avant-garde')">
+          <span class="bf-cat-name">Avant-garde</span>
+          <span class="bf-cat-desc">experimental, artistic, boundary-pushing</span>
+        </button>
       </div>
-      <p class="bf-refs-optional">not sure? skip this one — it is optional.</p>
-      <button class="bf-continue-btn" id="bf-continue-4" onclick="bfNextStep()">continue →</button>
+      <button class="bf-continue-btn" id="bf-continue-4" disabled onclick="bfNextStep()">continue →</button>
     </div>
 
     <!-- Screen 5: The Promise -->
@@ -6613,6 +6665,7 @@ function getBrandContext() {
   let brandPromise = '[your brand promise]', moodWords = '[your mood words]';
   let brandLook = '[your brand look]', brandWhy = '[why you built this]';
   let brandAudience = '[who this is for]', brandReferences = '[your brand references]';
+  let brandCategory = '[your brand category]';
   try {
     const ans = JSON.parse(localStorage.getItem('frmls_foundation_answers') || '{}');
     if (ans[5] && ans[5].promise) brandPromise = ans[5].promise;
@@ -6649,14 +6702,19 @@ function getBrandContext() {
     const audMerged = merge(audSels, audText);
     if (audMerged) brandAudience = audMerged;
 
-    /* step 4 — taste / references */
+    /* step 4 — brand category (single select).
+       Legacy "brands" data (previous question) is still supported as a
+       fallback so older sessions don't break. */
+    if (ans[4] && ans[4].category) {
+      brandCategory = ans[4].category;
+    }
     if (ans[4] && ans[4].brands) {
       const refs = ans[4].brands.filter(b => b.name).map(b => b.feel ? `${b.name} (${b.feel})` : b.name);
       if (refs.length) brandReferences = refs.join(', ');
     }
   } catch(e) {}
 
-  return { brandName, threeWords, archetype, personalitySummary, voiceExample1, voiceExample2, voiceExample3, whatToAvoid, brandPromise, moodWords, brandLook, brandWhy, brandAudience, brandReferences };
+  return { brandName, threeWords, archetype, personalitySummary, voiceExample1, voiceExample2, voiceExample3, whatToAvoid, brandPromise, moodWords, brandLook, brandWhy, brandAudience, brandReferences, brandCategory };
 }
 
 function buildPrompt(template) {
@@ -6672,14 +6730,15 @@ function buildPrompt(template) {
     .replace(/\{\{brandLook\}\}/g, c.brandLook)
     .replace(/\{\{brandWhy\}\}/g, c.brandWhy)
     .replace(/\{\{brandAudience\}\}/g, c.brandAudience)
-    .replace(/\{\{brandReferences\}\}/g, c.brandReferences);
+    .replace(/\{\{brandReferences\}\}/g, c.brandReferences)
+    .replace(/\{\{brandCategory\}\}/g, c.brandCategory);
 }
 
 const brandPackSteps = [
   {
     title: 'Brand Identity',
     label: 'Define Your Brand Identity',
-    prompt: 'My brand is called {{brandName}}. It exists because {{brandPromise}}. The feeling it gives people is: {{moodWords}}. The visual energy is: {{brandLook}}. Three words that define everything: {{threeWords}}. This is for: {{brandAudience}}. Brands I respect (taste references, not to copy): {{brandReferences}}. Write a complete brand identity statement that captures all of this in 3-4 sentences. It should sound like {{voiceExample}} — that is the voice and tone to match throughout everything.'
+    prompt: 'My brand is called {{brandName}}. It is a {{brandCategory}} brand. It exists because {{brandPromise}}. The feeling it gives people is: {{moodWords}}. The visual energy is: {{brandLook}}. Three words that define everything: {{threeWords}}. This is for: {{brandAudience}}. Write a complete brand identity statement that captures all of this in 3-4 sentences. It should sound like {{voiceExample}} — that is the voice and tone to match throughout everything.'
   },
   {
     title: 'Homepage Headline',
@@ -6694,17 +6753,17 @@ const brandPackSteps = [
   {
     title: 'Product Description',
     label: 'Product Description',
-    prompt: 'Write a product description for {{brandName}}. Product: [product name and brief description]. The brand feeling is: {{moodWords}}. Brand personality: {{threeWords}}. This product is for: {{brandAudience}}. Do not list materials or specs — write about the feeling of owning and wearing this product. Who it is for, what it says about them, why they need it in their life. Voice matches: {{voiceExample}}. Under 60 words. Avoid: {{whatToAvoid}}.'
+    prompt: 'Write a product description for {{brandName}}, a {{brandCategory}} brand. Product: [product name and brief description]. The brand feeling is: {{moodWords}}. Brand personality: {{threeWords}}. This product is for: {{brandAudience}}. Do not list materials or specs — write about the feeling of owning and wearing this product. Who it is for, what it says about them, why they need it in their life. Voice matches: {{voiceExample}}. Under 60 words. Avoid: {{whatToAvoid}}.'
   },
   {
     title: 'About Page',
     label: 'About Page',
-    prompt: 'Write the about page for {{brandName}}. The brand exists because: {{brandPromise}}. Visual energy: {{brandLook}}. The feeling it gives: {{moodWords}}. Who this is for: {{brandAudience}}. Taste references (not to copy): {{brandReferences}}. What it stands against: {{whatToAvoid}}. Write it in first person, honest, no corporate language. It should answer three things: why this brand exists, who it is for, and what it stands for. Voice matches: {{voiceExample}}. Under 150 words.'
+    prompt: 'Write the about page for {{brandName}}, a {{brandCategory}} brand. The brand exists because: {{brandPromise}}. Visual energy: {{brandLook}}. The feeling it gives: {{moodWords}}. Who this is for: {{brandAudience}}. What it stands against: {{whatToAvoid}}. Write it in first person, honest, no corporate language. It should answer three things: why this brand exists, who it is for, and what it stands for. Voice matches: {{voiceExample}}. Under 150 words.'
   },
   {
     title: 'Brand Story',
     label: 'Brand Story',
-    prompt: 'Write the origin story for {{brandName}}. The brand was built because: {{brandWhy}}. It exists so that: {{brandPromise}}. Personality: {{threeWords}}. Built for: {{brandAudience}}. Brands that shaped the taste (not to copy): {{brandReferences}}. Write it as a short honest narrative — not a press release. Sound like a real person built this for a real reason. Reference the feeling of {{moodWords}} without saying those words directly. Under 100 words. Voice: {{voiceExample}}.'
+    prompt: 'Write the origin story for {{brandName}}, a {{brandCategory}} brand. The brand was built because: {{brandWhy}}. It exists so that: {{brandPromise}}. Personality: {{threeWords}}. Built for: {{brandAudience}}. Write it as a short honest narrative — not a press release. Sound like a real person built this for a real reason. Reference the feeling of {{moodWords}} without saying those words directly. Under 100 words. Voice: {{voiceExample}}.'
   },
   {
     title: 'Instagram Bio',
@@ -6729,7 +6788,7 @@ const brandPackSteps = [
   {
     title: 'Collection Page Description',
     label: 'Collection Page Description',
-    prompt: 'Write a collection page description for {{brandName}}. Collection name: [collection name]. Brand feeling: {{moodWords}}. Personality: {{threeWords}}. Speaking to: {{brandAudience}}. Under 40 words. It should set the mood for the collection before they see a single product. Do not describe the products — describe the feeling of the collection. Voice: {{voiceExample}}. Avoid: {{whatToAvoid}}.'
+    prompt: 'Write a collection page description for {{brandName}}, a {{brandCategory}} brand. Collection name: [collection name]. Brand feeling: {{moodWords}}. Personality: {{threeWords}}. Speaking to: {{brandAudience}}. Under 40 words. It should set the mood for the collection before they see a single product. Do not describe the products — describe the feeling of the collection. Voice: {{voiceExample}}. Avoid: {{whatToAvoid}}.'
   },
   {
     title: 'SEO and Meta Description',
@@ -6784,7 +6843,7 @@ const brandPackSteps = [
   {
     title: 'Founder\'s Letter',
     label: 'Founder\'s Letter',
-    prompt: 'Write a founder\'s letter for {{brandName}} — used for first-order inserts, press, and founder-led emails. The brand was built because: {{brandWhy}}. It exists so that: {{brandPromise}}. Written for: {{brandAudience}}. Brands that shaped the taste (not to copy, just context): {{brandReferences}}. The feeling it gives: {{moodWords}}. Voice: {{voiceExample}}. Write in first person, signed by the founder. Under 200 words. It should sound like a real person wrote it once, by hand — not a marketing team. Reference the feeling of {{moodWords}} without naming those words directly. Avoid: {{whatToAvoid}}.'
+    prompt: 'Write a founder\'s letter for {{brandName}}, a {{brandCategory}} brand — used for first-order inserts, press, and founder-led emails. The brand was built because: {{brandWhy}}. It exists so that: {{brandPromise}}. Written for: {{brandAudience}}. The feeling it gives: {{moodWords}}. Voice: {{voiceExample}}. Write in first person, signed by the founder. Under 200 words. It should sound like a real person wrote it once, by hand — not a marketing team. Reference the feeling of {{moodWords}} without naming those words directly. Avoid: {{whatToAvoid}}.'
   }
 ];
 
@@ -9886,7 +9945,7 @@ const BF_AFFIRMATIONS = [
   "If the look is right, people stop scrolling before they read a word.",
   "Feelings sell. Facts just inform.",
   "A brand that talks to everyone reaches no one.",
-  "Imitate widely. Copy nothing. Taste is what's left.",
+  "Pick the category that fits the brand you're building, not the one that sounds best.",
   "The clearer the promise, the easier everything after it becomes."
 ];
 
@@ -9947,6 +10006,17 @@ const BF_CHOICE_MEANINGS = {
     'fewer-better':      "Customers who buy slowly. Each piece has to justify its price and its place.",
     'pay-for-real':      "Customers who value substance. They'll pay more if the difference is felt.",
     'story-driven':      "Customers who collect meaning. Origin, process, and people matter as much as product."
+  },
+  4: {
+    'Streetwear':  "Culture-driven and graphic. Drops, logos, capsules, and a clear point of view that lives in the streets.",
+    'Casual':      "Everyday and easy. Pieces people reach for without thinking — accessible, reliable, never overdesigned.",
+    'Luxury':      "Premium and refined. Materials, finish, and price all signal that nothing here was rushed.",
+    'Minimalist': "Quiet and intentional. Restraint is the feature — fewer pieces, neutral palette, every detail earns its place.",
+    'Workwear':   "Functional and structured. Built for use, not display — pockets, weight, weather, real fabrics.",
+    'Formal':     "Sharp and tailored. Occasion-driven pieces designed to be the most considered thing in the room.",
+    'Athleisure': "Performance meets lifestyle. Technical fabrics that look as good off the field as on it.",
+    'Vintage':    "Curated and nostalgic. References to a specific era, worn-in textures, archive-feel storytelling.",
+    'Avant-garde': "Experimental and artistic. Boundary-pushing silhouettes, conceptual collections, fashion-as-statement."
   }
 };
 
@@ -10141,11 +10211,18 @@ function bfRefreshMeaningPanel(screenIdx) {
   const values = []
     .concat(ans.selections || [])
     .concat(ans.moods || []);
+  if (ans.category) values.push(ans.category);
   values.forEach(v => {
     const cardOrPill = screenEl.querySelector(
-      '.bf-checkbox-card[data-value="' + CSS.escape(v) + '"], .bf-pill[data-value="' + CSS.escape(v) + '"]'
+      '.bf-checkbox-card[data-value="' + CSS.escape(v) + '"], ' +
+      '.bf-pill[data-value="' + CSS.escape(v) + '"], ' +
+      '.bf-cat-card[data-value="' + CSS.escape(v) + '"]'
     );
-    const label = cardOrPill ? (cardOrPill.textContent || '').trim() : v;
+    let label = v;
+    if (cardOrPill) {
+      const nameEl = cardOrPill.querySelector('.bf-cat-name');
+      label = nameEl ? nameEl.textContent.trim() : (cardOrPill.textContent || '').trim();
+    }
     bfAddChoiceItem(screenIdx, v, label);
   });
 }
@@ -10174,9 +10251,9 @@ const BF_CONTEXT = [
     body: "Every great brand can name its hero customer in one sentence. The clearer you are on who you're building for, the easier every decision after this gets.\n\nIf the answer is 'everyone' or 'anyone who likes good design' — keep narrowing. The narrower you go, the more clearly the right person will hear you and the more loyal they'll be."
   },
   {
-    eyebrow: 'step 05 · the taste',
-    title: 'name your standard',
-    body: "The brands you respect reveal the bar you're aiming for — even if your output looks nothing like theirs. Taste is the thing.\n\nSkip the brands you think you're supposed to name. Pick the ones that genuinely shape your eye — and write down what they make you feel, not just their name. The feeling is what you're actually borrowing."
+    eyebrow: 'step 05 · the category',
+    title: 'name your category',
+    body: "Every brand lives in a category — even the ones that pretend not to. Naming it isn't limiting; it's the frame that makes every other choice make sense.\n\nPick the category that fits the brand you're actually building, not the one that sounds most flattering. Every prompt after this is tuned for the category you choose, so the output sounds like a real brand in that space."
   },
   {
     eyebrow: 'step 06 · the promise',
@@ -10563,6 +10640,40 @@ function bfToggleCard(el, screenIdx, value) {
   bfUpdateLimitHint(screenIdx);
 }
 
+/* Single-select category card (step 5) — stores into bfAnswers[4].category
+   so it persists in the same localStorage key as the rest of the answers. */
+function bfSelectCategory(el, value) {
+  const screenIdx = 4;
+  const screenEl = document.getElementById('bf-screen-' + screenIdx);
+  if (!screenEl) return;
+  /* Clear sibling selections (single-select behavior) */
+  screenEl.querySelectorAll('.bf-cat-card.selected').forEach(c => {
+    if (c !== el) c.classList.remove('selected');
+  });
+  el.classList.toggle('selected');
+  const isSelected = el.classList.contains('selected');
+
+  if (!bfAnswers[screenIdx]) bfAnswers[screenIdx] = {};
+  if (isSelected) {
+    bfAnswers[screenIdx].category = value;
+  } else {
+    delete bfAnswers[screenIdx].category;
+  }
+  bfSaveAnswers();
+
+  /* Refresh the right-side meanings panel to reflect the single choice */
+  const panel = screenEl.querySelector('.bf-choice-meaning');
+  const list  = panel && panel.querySelector('.bf-choice-list');
+  if (list) list.innerHTML = '';
+  if (panel) panel.classList.remove('bf-show');
+  if (isSelected) {
+    const label = el.querySelector('.bf-cat-name');
+    bfAddChoiceItem(screenIdx, value, label ? label.textContent.trim() : value);
+  }
+
+  bfCheckContinue(screenIdx);
+}
+
 /* Toggle a mood pill */
 function bfTogglePill(el, screenIdx, value) {
   if (!el.classList.contains('selected') && bfBlockedByLimit(el, screenIdx)) return;
@@ -10604,18 +10715,10 @@ function bfCheckContinue(screenIdx) {
   if (!btn) return;
 
   const screen = document.getElementById('bf-screen-' + screenIdx);
-
-  // Screen 4 (Reference) is always optional
-  if (screenIdx === 4) {
-    btn.disabled = false;
-    bfSyncChevrons(screen, screenIdx);
-    return;
-  }
-
   if (!screen) return;
 
   let hasValue = false;
-  if (screen.querySelector('.bf-checkbox-card.selected, .bf-pill.selected')) hasValue = true;
+  if (screen.querySelector('.bf-checkbox-card.selected, .bf-pill.selected, .bf-cat-card.selected')) hasValue = true;
   const ta = screen.querySelector('.bf-textarea');
   if (ta && ta.value.trim()) hasValue = true;
 
@@ -10647,12 +10750,11 @@ function bfRestoreScreen(step) {
     if (key && ans[key] !== undefined) ta.value = ans[key];
   });
 
-  // Restore brand ref inputs (screen 4)
-  if (step === 4 && ans.brands) {
-    const nameInputs = screen.querySelectorAll('.bf-brand-name-input');
-    const feelInputs = screen.querySelectorAll('.bf-brand-feel-input');
-    nameInputs.forEach((inp, i) => { if (ans.brands[i]) inp.value = ans.brands[i].name || ''; });
-    feelInputs.forEach((inp, i) => { if (ans.brands[i]) inp.value = ans.brands[i].feel || ''; });
+  // Restore category card (screen 4 — single select)
+  if (step === 4) {
+    screen.querySelectorAll('.bf-cat-card').forEach(card => {
+      card.classList.toggle('selected', !!(ans.category && card.dataset.value === ans.category));
+    });
   }
 
   // Rebuild the "what this signals" panel from the restored selections

@@ -954,22 +954,22 @@ body::before {
   height:6px; border-radius:3px; transition:all 0.45s cubic-bezier(0.16,1,0.3,1);
 }
 .ob-phase-dot.done { width:16px; background:rgba(255,255,255,0.45); }
-.ob-phase-dot.active { width:28px; background:linear-gradient(90deg,#7c3aed,#06b6d4); }
+.ob-phase-dot.active { width:28px; background:var(--grad); }
 .ob-phase-dot.upcoming { width:6px; background:rgba(255,255,255,0.18); }
-.ob-phase-label { font-family:'DM Mono',monospace; font-size:11px; font-weight:600; letter-spacing:0.28em; text-transform:uppercase; color:#06b6d4; }
+.ob-phase-label { font-family:'DM Mono',monospace; font-size:11px; font-weight:600; letter-spacing:0.28em; text-transform:uppercase; color:var(--cyan); }
 .ob-phase-step-sub { font-family:'Inter',sans-serif; font-size:12px; font-weight:600; letter-spacing:0.08em; color:rgba(255,255,255,0.7); text-transform:lowercase; }
 
 /* Phase progress bar (replaces the 3 phase dots in BF nav) */
 .bf-phase-bar {
   width:240px; height:2px; border-radius:2px;
-  background:rgba(124,58,237,0.30);
+  background:rgba(var(--accent-rgb),0.30);
   overflow:hidden; position:relative;
 }
 .bf-phase-bar-fill {
   position:absolute; left:0; top:0; bottom:0;
   width:0%;
-  background:#06b6d4;
-  box-shadow:0 0 10px rgba(6,182,212,0.55);
+  background:var(--cyan);
+  box-shadow:0 0 10px rgba(var(--accent-secondary-rgb),0.55);
   transition:width 0.45s cubic-bezier(0.16,1,0.3,1);
 }
 @media(max-width:640px) { .bf-phase-bar { width:160px; } }
@@ -994,16 +994,16 @@ body::before {
   cursor:pointer;
 }
 .bf-step-dot.done:hover {
-  border-color:rgba(124,58,237,0.8);
-  background:rgba(124,58,237,0.18);
+  border-color:rgba(var(--accent-rgb),0.8);
+  background:rgba(var(--accent-rgb),0.18);
   transform:translateY(-1px);
-  box-shadow:0 0 14px rgba(124,58,237,0.35);
+  box-shadow:0 0 14px rgba(var(--accent-rgb),0.35);
 }
 .bf-step-dot.active {
   border-color:transparent;
-  background:linear-gradient(135deg,#7c3aed,#06b6d4);
+  background:var(--grad);
   color:#ffffff;
-  box-shadow:0 0 16px rgba(124,58,237,0.55);
+  box-shadow:0 0 16px rgba(var(--accent-rgb),0.55);
   cursor:default;
   transform:scale(1.05);
 }
@@ -8127,15 +8127,15 @@ const THEMES = {
   },
   volt: {
     name: 'Volt',
-    primary: '#3DFF7E', primaryL: '#5EFF95',
-    secondary: '#22C55E', secondaryL: '#4ADE80',
-    rgb: '61,255,126',
-    secondaryRgb: '34,197,94',
-    bg: '#070a08',
-    bgAmbience: 'radial-gradient(ellipse 80% 60% at 20% 10%, rgba(61,255,126,0.10) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(34,197,94,0.08) 0%, transparent 55%)',
-    orb1: 'radial-gradient(circle, rgba(61,255,126,0.14) 0%, transparent 70%)',
-    orb2: 'radial-gradient(circle, rgba(134,239,172,0.10) 0%, transparent 70%)',
-    gradPreview: 'linear-gradient(135deg, #0E3D24 0%, #0a1f12 60%, #050a08 100%)',
+    primary: '#00FF66', primaryL: '#3DFF7E',
+    secondary: '#00D957', secondaryL: '#22FF66',
+    rgb: '0,255,102',
+    secondaryRgb: '0,217,87',
+    bg: '#020403',
+    bgAmbience: 'radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,255,102,0.14) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(0,217,87,0.10) 0%, transparent 55%), radial-gradient(ellipse 50% 40% at 60% 40%, rgba(0,255,102,0.06) 0%, transparent 50%)',
+    orb1: 'radial-gradient(circle, rgba(0,255,102,0.20) 0%, transparent 70%)',
+    orb2: 'radial-gradient(circle, rgba(0,217,87,0.14) 0%, transparent 70%)',
+    gradPreview: 'linear-gradient(135deg, #00C950 0%, #003318 50%, #000 100%)',
   },
   rose: {
     name: 'Rose',

@@ -696,9 +696,9 @@ body::before {
 #bf-overlay.bf-visible { opacity:1; pointer-events:auto; }
 #ob-overlay.ob-visible { opacity:1; pointer-events:auto; }
 
-/* FRMLS logo, top-right corner */
+/* FRMLS logo, top-LEFT corner */
 .bf-logo {
-  position:fixed; top:22px; right:32px; z-index:11;
+  position:fixed; top:22px; left:32px; z-index:11;
   font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size:26px; font-weight:900; letter-spacing:-0.025em;
   color:#ffffff; line-height:1;
@@ -709,7 +709,83 @@ body::before {
   -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
   padding-right:2px;
 }
-@media(max-width:1100px) { .bf-logo { font-size:22px; top:18px; right:18px; } }
+@media(max-width:1100px) { .bf-logo { font-size:22px; top:18px; left:18px; } }
+
+/* Top-right control: shown during first-time onboarding only */
+.bf-skip-to-dash {
+  position:fixed; top:18px; right:24px; z-index:12;
+  display:none;
+  align-items:center; gap:8px;
+  padding:9px 18px; border-radius:100px;
+  border:1px solid rgba(255,255,255,0.18);
+  background:rgba(255,255,255,0.04);
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  font-family:'Inter',sans-serif; font-size:12.5px; font-weight:600;
+  letter-spacing:0.02em;
+  color:rgba(255,255,255,0.82); cursor:pointer;
+  transition:color .2s, background .2s, border-color .2s, transform .2s;
+}
+.bf-skip-to-dash:hover {
+  color:#fff;
+  background:rgba(255,255,255,0.09);
+  border-color:rgba(157,92,245,0.55);
+  transform:translateX(2px);
+}
+.bf-skip-to-dash svg { width:14px; height:14px; }
+#bf-overlay:not(.bf-from-dashboard) .bf-skip-to-dash { display:inline-flex; }
+
+/* Top-right control: shown when opened FROM the dashboard */
+.bf-close-btn {
+  position:fixed; top:18px; right:24px; z-index:12;
+  display:none;
+  width:38px; height:38px; border-radius:50%;
+  align-items:center; justify-content:center;
+  border:1px solid rgba(255,255,255,0.18);
+  background:rgba(255,255,255,0.04);
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  color:rgba(255,255,255,0.82); cursor:pointer;
+  transition:color .2s, background .2s, border-color .2s, transform .2s;
+}
+.bf-close-btn:hover {
+  color:#fff;
+  background:rgba(255,255,255,0.09);
+  border-color:rgba(255,90,90,0.55);
+  transform:rotate(90deg);
+}
+.bf-close-btn svg { width:14px; height:14px; }
+#bf-overlay.bf-from-dashboard .bf-close-btn { display:inline-flex; }
+
+/* ── Dashboard-modal mode: overlay floats with rounded corners + blur,
+   so the dashboard underneath is faintly visible. */
+#bf-overlay.bf-from-dashboard {
+  inset:24px;
+  border-radius:24px;
+  background:
+    radial-gradient(ellipse 90% 80% at -10% -10%, rgba(59,7,100,0.55) 0%, rgba(59,7,100,0) 55%),
+    radial-gradient(ellipse 80% 70% at 110% 110%, rgba(6,182,212,0.16) 0%, rgba(6,182,212,0) 55%),
+    rgba(6,2,15,0.72);
+  backdrop-filter:blur(22px) saturate(1.2);
+  -webkit-backdrop-filter:blur(22px) saturate(1.2);
+  box-shadow:
+    0 30px 90px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(255,255,255,0.06),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+/* Logo and buttons reposition slightly so they sit inside the rounded edge */
+#bf-overlay.bf-from-dashboard .bf-logo {
+  top:18px; left:24px;
+}
+#bf-overlay.bf-from-dashboard .bf-close-btn,
+#bf-overlay.bf-from-dashboard .bf-skip-to-dash { top:14px; right:18px; }
+
+@media(max-width:767px) {
+  #bf-overlay.bf-from-dashboard {
+    inset:8px;
+    border-radius:16px;
+  }
+  .bf-skip-to-dash { padding:7px 14px; font-size:11.5px; right:14px; top:14px; }
+  .bf-close-btn { width:34px; height:34px; right:14px; top:14px; }
+}
 
 /* Atmospheric orbs (shared) */
 .ob-orb {
@@ -4737,8 +4813,19 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   <div class="bf-ambient bf-ambient-2" aria-hidden="true"></div>
   <div class="bf-ambient bf-ambient-3" aria-hidden="true"></div>
 
-  <!-- FRMLS logo (anchored top-right, persistent across steps) -->
+  <!-- FRMLS logo (top-left, persistent across steps) -->
   <div class="bf-logo" aria-label="FRMLS">FRML<span class="bf-logo-s">S</span></div>
+
+  <!-- Top-right control: SKIP TO DASHBOARD — shown for first-time onboarding only -->
+  <button type="button" class="bf-skip-to-dash" onclick="bfSkipToDashboard()" aria-label="Skip to dashboard">
+    Skip to dashboard
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <!-- Top-right control: CLOSE — shown when opened from the dashboard module -->
+  <button type="button" class="bf-close-btn" onclick="bfHideOverlay()" aria-label="Close">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+  </button>
 
   <!-- Side accent decorations (desktop only) -->
   <div class="bf-side-rail bf-side-left"></div>
@@ -10364,7 +10451,8 @@ function bfSaveAnswers() {
   localStorage.setItem(BF_ANSWERS_KEY, JSON.stringify(bfAnswers));
 }
 
-/* Called from goTo(7) — shows overlay if not yet complete */
+/* Called from goTo(7) — shows overlay if not yet complete.
+   This is the first-time onboarding entry point. */
 function initBrandFoundation() {
   bfLoadAnswers();
   if (localStorage.getItem(BF_COMPLETE_KEY)) {
@@ -10375,21 +10463,24 @@ function initBrandFoundation() {
   const savedMax = parseInt(localStorage.getItem(BF_MAX_KEY) || '0', 10);
   bfCurrentStep = isNaN(saved) ? 0 : Math.min(saved, BF_TOTAL_STEPS - 1);
   bfMaxVisited  = isNaN(savedMax) ? bfCurrentStep : Math.max(savedMax, bfCurrentStep);
-  bfShowOverlay();
+  bfShowOverlay(/* fromDashboard */ false);
 }
 
-/* Called from dashboard box — always opens the flow */
+/* Called from dashboard box — opens the BF flow as a floating modal
+   on top of the dashboard with an X close button. */
 function openBrandFoundation() {
   bfLoadAnswers();
   bfCurrentStep = 0;
   bfMaxVisited  = parseInt(localStorage.getItem(BF_MAX_KEY) || '0', 10) || 0;
-  bfShowOverlay();
+  bfShowOverlay(/* fromDashboard */ true);
 }
 
-function bfShowOverlay() {
+function bfShowOverlay(fromDashboard) {
   const overlay = document.getElementById('bf-overlay');
   if (!overlay) return;
   bfInitBFParticles();
+  /* Mode: dashboard-modal vs first-time-onboarding */
+  overlay.classList.toggle('bf-from-dashboard', !!fromDashboard);
   overlay.classList.add('bf-visible');
   document.body.style.overflow = 'hidden';
   // Stop Lenis so it doesn't intercept wheel events while overlay is open
@@ -10659,6 +10750,24 @@ function bfSkip() {
   } else if (bfCurrentStep === BF_TOTAL_STEPS - 1) {
     bfComplete();
   }
+}
+
+/* "Skip to dashboard" button — used in first-time onboarding to bypass
+   the entire BF flow and land straight on the dashboard. Marks BF as
+   not-yet-complete so the user can come back to it later from the
+   dashboard module box. */
+function bfSkipToDashboard() {
+  bfHideOverlay();
+  // If we're still inside the onboarding-active gate, drop it so the
+  // dashboard actually becomes interactive.
+  document.documentElement.classList.remove('onboarding-active');
+  // If brand name hasn't been collected yet, send them through the
+  // brand-name onboarding step instead of leaving the page blank.
+  if (typeof state !== 'undefined' && (!state.brandName || !state.brandName.trim())) {
+    if (typeof obShowOverlay === 'function') { obShowOverlay(); return; }
+  }
+  // Otherwise just make sure the dashboard screen is active.
+  if (typeof goTo === 'function') goTo(7);
 }
 
 function bfComplete() {

@@ -1697,7 +1697,18 @@ body:has(#screen-7.active) .orca-shell {
 .orca-activity-list {
   list-style: none; padding: 0; margin: 0;
   display: flex; flex-direction: column; gap: 4px;
+  max-height: 320px; overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--accent-rgb),0.35) transparent;
 }
+.orca-activity-list::-webkit-scrollbar { width: 6px; }
+.orca-activity-list::-webkit-scrollbar-thumb {
+  background: rgba(var(--accent-rgb),0.30); border-radius: 3px;
+}
+.orca-activity-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--accent-rgb),0.55);
+}
+.orca-activity-list::-webkit-scrollbar-track { background: transparent; }
 .orca-activity-item {
   display: flex; align-items: center; gap: 12px;
   padding: 9px 12px; border-radius: 10px;
@@ -4546,7 +4557,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <div class="sb-mini-title">Your progress</div>
       <div class="sb-stats-row"><span id="sb-stat-days">0</span><span class="sb-stat-label">days building</span></div>
       <div class="sb-stats-row"><span id="sb-stat-prompts">0</span><span class="sb-stat-label">of 22 prompts used</span></div>
-      <div class="sb-stats-row"><span id="sb-stat-modules">0</span><span class="sb-stat-label">of 12 modules opened</span></div>
+      <div class="sb-stats-row"><span id="sb-stat-modules">0</span><span class="sb-stat-label">of 11 modules opened</span></div>
     </div>
 
     <!-- 2. Daily tip -->
@@ -4827,7 +4838,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
             <div class="orca-kpi-label">Modules opened</div>
           </div>
           <div class="orca-kpi-value" id="orca-kpi-modules">0</div>
-          <div class="orca-kpi-sub">of 12 tools</div>
+          <div class="orca-kpi-sub">of 11 tools</div>
         </div>
         <div class="orca-kpi" data-tone="tasks">
           <div class="orca-kpi-head">
@@ -4889,16 +4900,9 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <section class="orca-modules-section">
         <div class="orca-section-head">
           <div class="orca-section-title">Modules</div>
-          <span class="orca-section-meta">12 tools</span>
+          <span class="orca-section-meta">11 tools</span>
         </div>
         <div class="dash-grid" id="dash-grid">
-      <div class="dash-box" id="box-identity" onclick="openIdentityModal()">
-        <div class="dash-box-icon">◈</div>
-        <div class="dash-box-title">Brand Identity</div>
-        <div class="dash-box-desc">Category, vibe, font, and color direction.</div>
-        <div class="dash-box-status" id="dash-identity-status">—</div>
-        <div class="dash-box-arrow">Open →</div>
-      </div>
       <div class="dash-box" id="box-brandkit" data-panel="panel-brandkit" onclick="openPanel('panel-brandkit')">
         <div class="dash-box-icon">◆</div>
         <div class="dash-box-title">Brand Kit</div>
@@ -5332,29 +5336,6 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     </div>
   </div>
 </div><!-- /ob-overlay -->
-
-<!-- ===== BRAND IDENTITY MODAL ===== -->
-<div id="identity-modal-backdrop" onclick="closeIdentityModal()">
-  <div id="identity-modal" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Brand Identity">
-    <!-- Ambient bg decorations -->
-    <div class="idm-orb idm-orb-1"></div>
-    <div class="idm-orb idm-orb-2"></div>
-    <!-- Header -->
-    <div class="idm-header">
-      <span class="idm-title">Brand Identity</span>
-      <button class="idm-close" onclick="closeIdentityModal()" aria-label="Close">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <!-- Content -->
-    <div class="idm-body" id="idm-body"></div>
-    <!-- Footer -->
-    <div class="idm-footer">
-      <button class="idm-btn-reset" onclick="idmReset()">Reset</button>
-      <button class="idm-btn-save" id="idm-save-btn" onclick="idmSave()">Save Identity</button>
-    </div>
-  </div>
-</div>
 
 <!-- ===== BRAND NAME MODAL ===== -->
 <div id="brandname-modal-backdrop" onclick="closeBrandNameModal()">
@@ -6381,7 +6362,7 @@ function goTo(n) {
   if (n === 5) buildStepList();
   if (n === 6) buildLaunchChecklist();
   if (n === 0) initDecisionTree();
-  if (n === 7) { buildDashboard(); initBrandFoundation(); dashApplyBrandIdentitySpotlight(); }
+  if (n === 7) { buildDashboard(); initBrandFoundation(); }
 
   const currentEl = document.querySelector('.screen.active');
   const nextEl = document.getElementById('screen-' + n);
@@ -6468,10 +6449,13 @@ function updateOrcaKpis() {
     const txt = bfStatus ? (bfStatus.textContent || '').trim() : '';
     foundationEl.textContent = (txt && txt !== '—') ? txt : 'not started';
   }
-  // Modules opened — count panels with a stored timestamp
+  // Modules opened — count panels with a stored timestamp, plus Brand
+  // Foundation (which opens an overlay rather than a side panel) once
+  // it has been completed.
   const panels = ['panel-brandkit','panel-prompts','panel-designer','panel-goodlooks','panel-checklist','panel-resources','panel-roadmap','panel-email','panel-moodboard','panel-supplier'];
   let opened = 0;
   panels.forEach(p => { if (localStorage.getItem('frmls_panel_opened_' + p)) opened++; });
+  if (localStorage.getItem(BF_COMPLETE_KEY)) opened++;
   const modulesEl = document.getElementById('orca-kpi-modules');
   if (modulesEl) modulesEl.textContent = opened;
   // Tasks remaining — launch checklist unchecked count
@@ -6507,8 +6491,8 @@ function renderOrcaTimeline() {
 /* ===== STREAK + ACTIVITY ===== */
 const STREAK_LS   = 'frmls_streak';
 const ACTIVITY_LS = 'frmls_activity';
-const ACTIVITY_CAP = 20;
-const ACTIVITY_RENDER_N = 5;
+const ACTIVITY_CAP = 60;
+const ACTIVITY_RENDER_N = 60;
 
 function _todayKey() {
   const d = new Date();
@@ -6570,9 +6554,6 @@ function gotoActivity(target) {
   switch (base) {
     case 'bf':
       if (typeof openBrandFoundation === 'function') openBrandFoundation();
-      return;
-    case 'identity':
-      if (typeof openIdentityModal === 'function') openIdentityModal();
       return;
     case 'panel-prompts':
     case 'panel-checklist':
@@ -6660,20 +6641,7 @@ function _nextStepResolve() {
       action: () => (typeof openBrandFoundation === 'function') && openBrandFoundation()
     };
   }
-  // 2. Brand Identity (cat / vibe / font / color)
-  const haveCat   = !!(state && state.cat);
-  const haveVibe  = !!(state && state.vibe);
-  const haveFont  = !!(state && state.fontStyle);
-  const haveColor = !!(state && state.colorMood);
-  if (!(haveCat && haveVibe && haveFont && haveColor)) {
-    return {
-      label: 'Set your Brand Identity',
-      desc: 'Pick category, vibe, font, and palette. Three minutes — locks in your visual direction.',
-      cta: 'Open Brand Identity →',
-      action: () => (typeof openIdentityModal === 'function') && openIdentityModal()
-    };
-  }
-  // 3. Prompts (12 onboarding steps)
+  // 2. Prompts (12 onboarding steps)
   if (typeof stepDone !== 'undefined' && stepDone.size < 12) {
     let next = 0;
     for (let i = 0; i < 12; i++) { if (!stepDone.has(i)) { next = i; break; } }
@@ -6833,9 +6801,12 @@ function updateSbStats() {
     promptsEl.textContent = copied;
   }
   if (modulesEl) {
-    const panels = ['panel-brandkit','panel-prompts','panel-designer','panel-goodlooks','panel-checklist','panel-resources','panel-roadmap','panel-email','panel-moodboard','panel-supplier','panel-brandlinks','panel-customize'];
+    /* Same set the KPI counts — the 10 dashboard side panels, plus
+       Brand Foundation as +1 once complete (no panel timestamp for it). */
+    const panels = ['panel-brandkit','panel-prompts','panel-designer','panel-goodlooks','panel-checklist','panel-resources','panel-roadmap','panel-email','panel-moodboard','panel-supplier'];
     let opened = 0;
     panels.forEach(p => { if (localStorage.getItem('frmls_panel_opened_' + p)) opened++; });
+    if (localStorage.getItem(BF_COMPLETE_KEY)) opened++;
     modulesEl.textContent = opened;
   }
 }
@@ -7578,7 +7549,6 @@ function buildDashboard() {
   }
   updateDashProgress();
   refreshLastOpenedLabels();
-  refreshIdentityStatus();
   refreshBrandNameStatus();
   fnLoadNotes();
   loadStoreUrl();
@@ -7858,196 +7828,6 @@ document.addEventListener('keydown', e => {
   }
 });
 
-function refreshIdentityStatus() {
-  // Mantra (step 3) is optional. Required steps are category, vibe, color.
-  const completed = [state.cat, state.vibe, state.colorMood].filter(Boolean).length;
-  const el = document.getElementById('dash-identity-status');
-  if (!el) return;
-  el.textContent = completed === 3 ? '3 / 3 complete' : `${completed} / 3 complete`;
-  el.style.color  = completed === 3 ? '#34d399' : '#a78bfa';
-}
-
-/* ===== BRAND IDENTITY MODAL ===== */
-const IDM_CATS = [
-  { val:'clothing',    label:'Clothing and Apparel' },
-  { val:'accessories', label:'Accessories and Jewelry' },
-  { val:'footwear',    label:'Footwear' },
-  { val:'lifestyle',   label:'Lifestyle and Streetwear' }
-];
-const IDM_VIBES = [
-  { val:'clean & minimal',  label:'Clean and Minimal',   desc:'calm, refined, nothing wasted' },
-  { val:'raw & bold',       label:'Raw and Bold',         desc:'unfiltered, direct, real' },
-  { val:'quiet luxury',     label:'Quiet Luxury',         desc:'elevated, considered, understated' },
-  { val:'street & urban',   label:'Street and Urban',     desc:'cultural, current, community' },
-  { val:'warm & organic',   label:'Warm and Organic',     desc:'natural, human, grounded' },
-  { val:'dark & editorial', label:'Dark and Editorial',   desc:'cold, precise, sharp' }
-];
-const IDM_COLORS = [
-  { val:'Quiet Luxury',    desc:'elevated',    swatches:['#e8e0d5','#c4b9a8','#8a7d6e','#3d342a'] },
-  { val:'Street Editorial',desc:'raw',         swatches:['#e8e8e8','#888888','#333333','#0a0a0a'] },
-  { val:'Dark Matte',      desc:'premium',     swatches:['#1a1a1a','#2d2d2d','#444444','#666666'] },
-  { val:'Warm Earth',      desc:'organic',     swatches:['#d4956a','#b8724a','#8a4e2e','#3d2010'] },
-  { val:'Clean Modern',    desc:'minimal',     swatches:['#ffffff','#f0f0f0','#cccccc','#333333'] },
-  { val:'Soft Neutral',    desc:'wearable',    swatches:['#f5e6e0','#e8c4b8','#d4a090','#8a5548'] },
-  { val:'Bold Mono',       desc:'graphic',     swatches:['#000000','#ffffff','#111111','#eeeeee'] },
-  { val:'Vintage Washed',  desc:'authentic',   swatches:['#c4b090','#a89070','#8a7055','#4a3828'] }
-];
-
-function openIdentityModal() {
-  const bd = document.getElementById('identity-modal-backdrop');
-  if (!bd) return;
-  buildIdentityModal();
-  bd.classList.add('idm-open');
-  document.body.style.overflow = 'hidden';
-  document.documentElement.style.overflow = 'hidden';
-  // Stop Lenis smooth scroll so it doesn't scroll the dashboard behind the modal.
-  if (typeof lenis !== 'undefined') lenis.stop();
-
-  // Bind a wheel handler directly on the modal body so Lenis (which listens
-  // at the window level) never sees the event and can't block native scroll.
-  const idmBody = document.getElementById('idm-body');
-  if (idmBody && !idmBody._idmWheelBound) {
-    idmBody.addEventListener('wheel', function(e) {
-      let delta = e.deltaY;
-      if (e.deltaMode === 1) delta *= 16;
-      if (e.deltaMode === 2) delta *= window.innerHeight;
-      idmBody.scrollTop += delta;
-      e.stopPropagation();
-      e.preventDefault();
-    }, { passive: false });
-    idmBody._idmWheelBound = true;
-  }
-}
-function closeIdentityModal() {
-  const bd = document.getElementById('identity-modal-backdrop');
-  if (!bd) return;
-  bd.classList.remove('idm-open');
-  document.body.style.overflow = '';
-  document.documentElement.style.overflow = '';
-  if (typeof lenis !== 'undefined') lenis.start();
-  refreshIdentityStatus();
-}
-function buildIdentityModal() {
-  const body = document.getElementById('idm-body');
-  if (!body) return;
-  const cat    = state.cat       || '';
-  const vibe   = state.vibe      || '';
-  const mantra = state.mantra    || '';
-  const color  = state.colorMood || '';
-  const brandName = (state.brandName || 'BRAND').toUpperCase();
-  // Helper to safely echo user-entered mantra into the input value attribute
-  const escapeAttr = (s) => String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-  function badge(val) {
-    return val
-      ? `<span class="idm-badge complete">complete</span>`
-      : `<span class="idm-badge incomplete">not set</span>`;
-  }
-
-  body.innerHTML = `
-    <!-- Step 1: Category -->
-    <div class="idm-step">
-      <span class="idm-step-num">Step 01</span>
-      <div class="idm-step-head">
-        <div class="idm-step-title">What are you building?</div>
-        ${badge(cat)}
-      </div>
-      <p class="idm-step-desc">pick the category that fits your brand.</p>
-      <div class="idm-pill-row">
-        ${IDM_CATS.map(c=>`<div class="idm-pill${cat===c.val?' idm-sel':''}" onclick="idmSelectCat('${c.val}')">${c.label}</div>`).join('')}
-      </div>
-    </div>
-
-    <!-- Step 2: Vibe -->
-    <div class="idm-step">
-      <span class="idm-step-num">Step 02</span>
-      <div class="idm-step-head">
-        <div class="idm-step-title">What does your brand feel like?</div>
-        ${badge(vibe)}
-      </div>
-      <p class="idm-step-desc">this shapes your visual direction.</p>
-      <div class="idm-vibe-grid">
-        ${IDM_VIBES.map(v=>`<div class="idm-vibe-card${vibe===v.val?' idm-sel':''}" onclick="idmSelectVibe('${v.val}')">
-          <div class="idm-vibe-name">${v.label}</div>
-          <div class="idm-vibe-desc">${v.desc}</div>
-        </div>`).join('')}
-      </div>
-    </div>
-
-    <!-- Step 3: Brand mantra (optional) -->
-    <div class="idm-step">
-      <span class="idm-step-num">Step 03</span>
-      <div class="idm-step-head">
-        <div class="idm-step-title">Your brand mantra.</div>
-        <span class="idm-badge ${mantra ? 'complete' : 'optional'}">${mantra ? 'complete' : 'optional'}</span>
-      </div>
-      <p class="idm-step-desc">the sentence you'd put on the wall. one line, internal-facing.</p>
-      <input type="text" class="idm-mantra-input" id="idm-mantra-input"
-             value="${escapeAttr(mantra)}"
-             maxlength="120"
-             placeholder="e.g. less, but better."
-             oninput="idmSetMantra(this.value)" />
-    </div>
-
-    <!-- Step 4: Color -->
-    <div class="idm-step">
-      <span class="idm-step-num">Step 04</span>
-      <div class="idm-step-head">
-        <div class="idm-step-title">Pick your color direction.</div>
-        ${badge(color)}
-      </div>
-      <p class="idm-step-desc">this shapes your brand kit palette.</p>
-      <div class="idm-color-grid">
-        ${IDM_COLORS.map(c=>`<div class="idm-color-card${color===c.val?' idm-sel':''}" onclick="idmSelectColor('${c.val}')">
-          <div class="idm-swatches">${c.swatches.map(s=>`<div class="idm-swatch" style="background:${s}"></div>`).join('')}</div>
-          <div class="idm-color-name">${c.val}</div>
-          <div class="idm-color-sub">${c.desc}</div>
-        </div>`).join('')}
-      </div>
-    </div>`;
-}
-
-function idmSelectCat(val) {
-  state.cat = val; saveState(); updateSnapshot();
-  document.querySelectorAll('.idm-pill').forEach(el =>
-    el.classList.toggle('idm-sel', el.getAttribute('onclick')&&el.getAttribute('onclick').includes("'"+val+"'")));
-  document.querySelector('#idm-body .idm-step:nth-child(1) .idm-badge').outerHTML =
-    `<span class="idm-badge complete">complete</span>`;
-  buildIdentityModal();
-}
-function idmSelectVibe(val) {
-  state.vibe = val; saveState(); updateSnapshot();
-  buildIdentityModal();
-}
-function idmSetMantra(val) {
-  state.mantra = (val || '').trim();
-  saveState();
-  // Update only the badge so the input keeps focus / cursor while the user types
-  const badge = document.querySelector('#idm-body .idm-step:nth-child(3) .idm-badge');
-  if (badge) {
-    if (state.mantra) { badge.textContent = 'complete'; badge.classList.add('complete'); badge.classList.remove('optional'); }
-    else              { badge.textContent = 'optional'; badge.classList.add('optional'); badge.classList.remove('complete'); }
-  }
-}
-function idmSelectColor(val) {
-  state.colorMood = val; saveState(); updateSnapshot();
-  document.querySelectorAll('.color-card').forEach(c =>
-    c.classList.toggle('selected', c.getAttribute('onclick')&&c.getAttribute('onclick').includes("'"+val+"'")));
-  buildIdentityModal();
-}
-function idmReset() {
-  state.cat = ''; state.vibe = ''; state.mantra = ''; state.colorMood = '';
-  saveState(); updateSnapshot(); buildIdentityModal(); refreshIdentityStatus();
-}
-function idmSave() {
-  saveState();
-  refreshIdentityStatus();
-  const btn = document.getElementById('idm-save-btn');
-  if (!btn) return;
-  btn.textContent = 'Saved ✓';
-  btn.classList.add('saved');
-  setTimeout(() => { btn.textContent = 'Save Identity'; btn.classList.remove('saved'); }, 1500);
-}
 
 /* ===== BRAND NAME MODAL ===== */
 function openBrandNameModal() {
@@ -8409,7 +8189,6 @@ function buildRoadmap() {
 
   // Node definitions: [id, label, x%, y(px), stepIndex(-1=special), colKey]
   const nodes = [
-    { id:'n-brandid',  label:'Brand Identity',        xp:50, y:30,  stepIdx:-1,  action:()=>openIdentityModal() },
     { id:'n-name',     label:'Brand Name',             xp:18, y:110, stepIdx:-1,  action:()=>openBrandNameModal() },
     { id:'n-visuals',  label:'Brand Visuals',          xp:50, y:110, stepIdx:1,   action:()=>openStep(1) },
     { id:'n-niche',    label:'Niche & Audience',       xp:82, y:110, stepIdx:-1,  action:()=>openBrandFoundation() },
@@ -9028,7 +8807,6 @@ const LAYOUT_LS  = 'frmls_layout_hidden';
 const ORDER_LS   = 'frmls_layout_order';
 
 const DASH_BOXES = [
-  { id:'box-identity',        label:'Brand Identity' },
   { id:'box-brandfoundation', label:'Brand Foundation' },
   { id:'box-brandkit',        label:'Brand Kit' },
   { id:'box-prompts',         label:'Prompt Pack' },
@@ -11189,26 +10967,6 @@ function bfUpdateBoxStatus() {
   }
 }
 
-/* First-visit spotlight on the Brand Identity card.
-   Shows once on the user's first dashboard view; the pulse + label
-   disappear on click. Two localStorage keys gate the behavior:
-     - frmls_visited           : set after the very first activation
-     - frmls_brand_identity_seen : set after the user clicks the card */
-function dashApplyBrandIdentitySpotlight() {
-  const card = document.getElementById('box-identity');
-  if (!card) return;
-  if (localStorage.getItem('frmls_brand_identity_seen') === 'true') return;
-  if (localStorage.getItem('frmls_visited') === 'true') return;
-
-  card.classList.add('dash-spotlight');
-  localStorage.setItem('frmls_visited', 'true');
-
-  card.addEventListener('click', function onFirstClick() {
-    card.classList.remove('dash-spotlight');
-    localStorage.setItem('frmls_brand_identity_seen', 'true');
-    card.removeEventListener('click', onFirstClick);
-  });
-}
 
 function bfGoTo(step, animate) {
   if (bfIsAnimating) return;

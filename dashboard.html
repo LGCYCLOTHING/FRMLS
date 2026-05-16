@@ -3667,6 +3667,42 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   box-shadow: 0 0 10px rgba(34,211,238,0.45);
 }
 
+/* Shake animation when the user tries to exceed the selection cap */
+.bf-checkbox-card.bf-shake,
+.bf-pill.bf-shake {
+  animation: bfShake .42s cubic-bezier(.36,.07,.19,.97);
+}
+@keyframes bfShake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+
+/* Per-screen "pick up to N · M selected" hint above the grid */
+.bf-limit-hint {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 14px;
+  text-align: center;
+  width: 100%;
+  transition: color .25s;
+}
+.bf-limit-hint .bf-limit-count {
+  font-weight: 700; color: rgba(255,255,255,0.78);
+  transition: color .25s;
+}
+.bf-limit-hint.bf-at-limit {
+  color: var(--cyan-light, #22d3ee);
+}
+.bf-limit-hint.bf-at-limit .bf-limit-count {
+  background: linear-gradient(90deg, #9d5cf5, #22d3ee);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* "What this signals" — liquid-glass side panel. Single header at top,
    items stacked below without their own eyebrow. */
 .bf-choice-meaning {
@@ -9914,6 +9950,64 @@ const BF_CHOICE_MEANINGS = {
   }
 };
 
+/* Per-screen selection caps. Keep prompts focused: too many "selected"
+   options dilute the brand voice the prompts get built around.
+   Display step → cap mapping: step 1/2/4 = 3, step 3 = 4. */
+const BF_MAX_SELECTIONS = {
+  0: 3,  // step 01 — the why
+  1: 3,  // step 02 — the look
+  2: 4,  // step 03 — the feeling (22 mood pills → allow one more)
+  3: 3   // step 04 — the people
+};
+
+function bfGetSelectionCount(screenIdx) {
+  const ans = bfAnswers[screenIdx];
+  if (!ans) return 0;
+  return ((ans.selections || []).length) + ((ans.moods || []).length);
+}
+
+function bfEnsureLimitHint(screenEl, screenIdx) {
+  const max = BF_MAX_SELECTIONS[screenIdx];
+  if (!max) return null;
+  let hint = screenEl.querySelector('.bf-limit-hint');
+  if (!hint) {
+    hint = document.createElement('div');
+    hint.className = 'bf-limit-hint';
+    hint.innerHTML = `Pick up to ${max} · <span class="bf-limit-count">0</span> selected`;
+    const anchor = screenEl.querySelector('.bf-checkbox-grid, .bf-pill-grid');
+    if (anchor) screenEl.insertBefore(hint, anchor);
+    else screenEl.appendChild(hint);
+  }
+  return hint;
+}
+
+function bfUpdateLimitHint(screenIdx) {
+  const screenEl = document.getElementById('bf-screen-' + screenIdx);
+  if (!screenEl) return;
+  const max = BF_MAX_SELECTIONS[screenIdx];
+  if (!max) return;
+  const hint = screenEl.querySelector('.bf-limit-hint');
+  if (!hint) return;
+  const count = bfGetSelectionCount(screenIdx);
+  const counter = hint.querySelector('.bf-limit-count');
+  if (counter) counter.textContent = count;
+  hint.classList.toggle('bf-at-limit', count >= max);
+}
+
+/* Returns true if adding another selection would exceed the cap.
+   Triggers a shake on the offending card/pill for feedback. */
+function bfBlockedByLimit(el, screenIdx) {
+  const max = BF_MAX_SELECTIONS[screenIdx];
+  if (!max) return false;
+  if (bfGetSelectionCount(screenIdx) < max) return false;
+  /* Cap hit — shake the element they just clicked */
+  el.classList.remove('bf-shake');
+  void el.offsetWidth;
+  el.classList.add('bf-shake');
+  setTimeout(() => el.classList.remove('bf-shake'), 500);
+  return true;
+}
+
 /* Wrap a screen's continue button with back/forward chevron buttons so they
    sit flanking it inside the card. Idempotent — safe to call repeatedly. */
 function bfWrapContinueWithNav(screenEl, screenIdx) {
@@ -10293,8 +10387,12 @@ function bfGoTo(step, animate) {
     // Wrap continue with back/forward chevrons (idempotent)
     if (step < BF_TOTAL_STEPS) bfWrapContinueWithNav(nextEl, step);
 
+    // Selection-cap hint above the grid (only on capped screens)
+    if (step < BF_TOTAL_STEPS) bfEnsureLimitHint(nextEl, step);
+
     // Restore saved selections/text
     bfRestoreScreen(step);
+    bfUpdateLimitHint(step);
 
     // Scroll overlay to top
     const overlay = document.getElementById('bf-overlay');
@@ -10446,6 +10544,9 @@ function bfEnterDashboard() {
 
 /* Toggle a checkbox card */
 function bfToggleCard(el, screenIdx, value) {
+  /* If trying to ADD a new selection past the cap, shake and bail */
+  if (!el.classList.contains('selected') && bfBlockedByLimit(el, screenIdx)) return;
+
   el.classList.toggle('selected');
   if (!bfAnswers[screenIdx]) bfAnswers[screenIdx] = {};
   if (!bfAnswers[screenIdx].selections) bfAnswers[screenIdx].selections = [];
@@ -10459,10 +10560,13 @@ function bfToggleCard(el, screenIdx, value) {
   } else {
     bfRemoveChoiceItem(screenIdx, value);
   }
+  bfUpdateLimitHint(screenIdx);
 }
 
 /* Toggle a mood pill */
 function bfTogglePill(el, screenIdx, value) {
+  if (!el.classList.contains('selected') && bfBlockedByLimit(el, screenIdx)) return;
+
   el.classList.toggle('selected');
   if (!bfAnswers[screenIdx]) bfAnswers[screenIdx] = {};
   if (!bfAnswers[screenIdx].moods) bfAnswers[screenIdx].moods = [];
@@ -10475,6 +10579,7 @@ function bfTogglePill(el, screenIdx, value) {
   } else {
     bfRemoveChoiceItem(screenIdx, value);
   }
+  bfUpdateLimitHint(screenIdx);
 }
 
 /* Save a textarea value */

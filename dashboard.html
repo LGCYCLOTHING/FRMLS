@@ -990,6 +990,9 @@ body::after {
 @media (min-width:1280px) {
   .bf-context { display:block; }
   .bf-affirm  { display:block; }
+  /* Hide the affirmation panel when it has no body content yet — otherwise
+     it shows up as an empty dark box to the right of the active screen. */
+  .bf-affirm:has(#bf-affirm-body:empty) { display:none !important; }
 }
 
 /* Per-step affirmation panel (right side, mirrors .bf-context) */
@@ -3824,11 +3827,11 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 .bf-screens-container {
   width: 100%; display: flex; flex-direction: column; align-items: center;
   position: relative; min-height: calc(100vh - 92px);
-  padding-bottom: 24px;
+  padding-bottom: 16px;
 }
 .bf-screen {
-  width: 100%; max-width: 780px;
-  padding: 28px 36px 28px;
+  width: 100%; max-width: 980px;
+  padding: 22px 30px 22px;
   flex-direction: column; align-items: flex-start;
   display: none;
   position: relative;
@@ -3868,29 +3871,29 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 }
 .bf-label {
   font-family: 'Inter', sans-serif;
-  font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
-  text-transform: uppercase; text-align: center; width: 100%; margin-bottom: 22px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; text-align: center; width: 100%; margin-bottom: 12px;
   color: var(--cyan);
 }
 .bf-headline {
   font-family: 'Inter', sans-serif;
-  font-size: 60px; font-weight: 900; color: #ffffff;
-  letter-spacing: -0.045em; line-height: 1.02;
-  text-align: center; width: 100%; margin-bottom: 16px;
+  font-size: 40px; font-weight: 900; color: #ffffff;
+  letter-spacing: -0.04em; line-height: 1.05;
+  text-align: center; width: 100%; margin-bottom: 10px;
 }
 .bf-subline {
   font-family: 'Inter', sans-serif;
   font-size: 14px; color: rgba(255,255,255,0.62);
   font-weight: 500; letter-spacing: -0.005em;
-  text-align: center; width: 100%; margin-bottom: 36px; line-height: 1.5;
+  text-align: center; width: 100%; margin-bottom: 18px; line-height: 1.45;
 }
 .bf-checkbox-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
-  width: 100%; margin-bottom: 20px;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
+  width: 100%; margin-bottom: 14px;
 }
 .bf-checkbox-card {
   background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
-  padding: 14px 16px; cursor: pointer; font-size: 15px; font-weight: 500; color: #ffffff; line-height: 1.45;
+  padding: 11px 14px; cursor: pointer; font-size: 14px; font-weight: 500; color: #ffffff; line-height: 1.4;
   transition: border-color 0.2s, background 0.2s, transform 0.18s, box-shadow 0.2s;
   position: relative; z-index: 1; user-select: none;
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
@@ -4048,21 +4051,21 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 }
 .bf-textarea {
   width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 14px; padding: 14px 18px;
-  font-size: 15px; font-family: 'Inter', sans-serif; font-weight: 500;
-  color: #ffffff; line-height: 1.65; resize: none; outline: none;
-  min-height: 80px; margin-bottom: 28px;
+  border-radius: 14px; padding: 12px 16px;
+  font-size: 14px; font-family: 'Inter', sans-serif; font-weight: 500;
+  color: #ffffff; line-height: 1.55; resize: none; outline: none;
+  min-height: 60px; margin-bottom: 14px;
   transition: border-color 0.2s, background 0.2s;
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
 .bf-textarea::placeholder { color: rgba(255,255,255,0.4); }
 .bf-textarea:focus { border-color: var(--cyan); background: rgba(var(--accent-secondary-rgb),0.05); }
 .bf-pill-grid {
-  display: flex; flex-wrap: wrap; gap: 9px; width: 100%; margin-bottom: 24px;
+  display: flex; flex-wrap: wrap; gap: 7px; width: 100%; margin-bottom: 14px;
 }
 .bf-pill {
   background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 100px;
-  padding: 8px 18px; font-size: 14px; font-weight: 500; color: #ffffff; cursor: pointer;
+  padding: 7px 15px; font-size: 13px; font-weight: 500; color: #ffffff; cursor: pointer;
   transition: border-color 0.2s, background 0.2s; user-select: none; line-height: 1;
 }
 .bf-pill:hover { border-color: rgba(var(--accent-rgb),0.6); background: rgba(var(--accent-rgb),0.06); }
@@ -4076,7 +4079,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   background: linear-gradient(90deg, var(--cyan) 0%, var(--purple) 25%, var(--cyan) 50%, var(--purple) 75%, var(--cyan) 100%);
   background-size: 200% 100%;
   background-position: 0% 50%;
-  border: 1px solid transparent; border-radius: 14px; padding: 14px 40px;
+  border: 1px solid transparent; border-radius: 14px; padding: 12px 36px;
   font-size: 14px; font-weight: 700; color: #ffffff;
   font-family: 'Inter', sans-serif; letter-spacing: 0.16em; text-transform: uppercase;
   cursor: pointer;
@@ -4141,13 +4144,13 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 
 /* Category grid — single-select cards with a small description line */
 .bf-cat-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-  width: 100%; margin-bottom: 22px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  width: 100%; margin-bottom: 14px;
 }
 .bf-cat-card {
   position: relative;
-  display: flex; flex-direction: column; gap: 4px;
-  padding: 14px 14px 13px;
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 11px 12px 10px;
   border-radius: 12px;
   background: rgba(255,255,255,0.035);
   border: 1px solid rgba(255,255,255,0.08);
@@ -4215,7 +4218,8 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 .bf-completion-screen {
   align-items: center; justify-content: flex-start; text-align: center;
   min-height: calc(100vh - 60px); position: relative; overflow: visible;
-  padding-bottom: 100px;
+  padding-bottom: 40px;
+  max-width: 1200px;
 }
 /* The completion card is its own centered surface — drop the .bf-screen
    corner bracket and top hairline so nothing looks off-axis. */
@@ -4235,9 +4239,9 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   100% { transform: translate(var(--tx, 30px), var(--ty, -60px)) scale(0.5); opacity: 0.1; }
 }
 .bf-completion-logo {
-  font-size: 72px; font-weight: 900; letter-spacing: -0.06em; line-height: 1;
+  font-size: 56px; font-weight: 900; letter-spacing: -0.06em; line-height: 1;
   color: #ffffff;
-  margin-bottom: 28px; position: relative; z-index: 1; overflow: visible;
+  margin-bottom: 16px; position: relative; z-index: 1; overflow: visible;
 }
 .bf-completion-logo-s {
   display: inline-block; padding-right: 8px;
@@ -4245,12 +4249,12 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .bf-completion-title {
-  font-size: 32px; font-weight: 800; color: #ffffff; letter-spacing: -0.03em;
-  margin-bottom: 16px; line-height: 1.2; position: relative; z-index: 1;
+  font-size: 26px; font-weight: 800; color: #ffffff; letter-spacing: -0.03em;
+  margin-bottom: 8px; line-height: 1.2; position: relative; z-index: 1;
 }
 .bf-completion-sub {
-  font-size: 18px; color: rgba(255,255,255,0.5); line-height: 1.65;
-  margin-bottom: 48px; max-width: 420px; position: relative; z-index: 1;
+  font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.5;
+  margin-bottom: 22px; max-width: 420px; position: relative; z-index: 1;
 }
 .bf-enter-btn {
   background: linear-gradient(120deg, var(--purple) 0%, var(--cyan) 25%, var(--purple-light) 50%, var(--cyan) 75%, var(--purple) 100%);
@@ -4294,11 +4298,11 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 }
 /* Brand output card (completion screen) */
 .bf-output-card {
-  width: 100%; max-width: 600px; margin: 0 auto 28px;
+  width: 100%; max-width: 1080px; margin: 0 auto 18px;
   background: linear-gradient(#1a1a1a, #1a1a1a) padding-box,
               var(--grad) border-box;
   border: 1px solid transparent;
-  border-radius: 16px; padding: 40px;
+  border-radius: 16px; padding: 28px 32px;
   position: relative; z-index: 1;
   opacity: 0; transform: translateY(32px);
   transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16,1,0.3,1);
@@ -5537,11 +5541,6 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <div class="cust-section-title">Dashboard layout</div>
       <div class="cust-toggle-list" id="custToggleList"></div>
     </div>
-    <!-- Section 3: Reorder boxes -->
-    <div class="cust-section">
-      <div class="cust-section-title">Reorder boxes</div>
-      <div class="cust-reorder-list" id="custReorderList"></div>
-    </div>
   </div>
 </div>
 
@@ -6018,13 +6017,6 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <div class="resource-section-title">Reviews</div>
       <div class="resource-card" onclick="window.open('https://loox.io','_blank')"><div class="resource-name">Loox</div><div class="resource-url">loox.io</div><div class="resource-desc">Photo review app for Shopify. Builds trust fast.</div></div>
     </div>
-    <hr class="sh-divider" style="margin:18px 0">
-    <div class="resource-section-title" style="background:linear-gradient(90deg,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;margin-bottom:12px">Templates</div>
-    <div class="tmpl-card"><div class="tmpl-info"><div class="tmpl-name">Inventory Tracker</div><div class="tmpl-desc">Products, SKUs, stock levels, reorder points, and supplier info.</div></div><button class="tmpl-dl-btn" onclick="dlCsv('inventory-tracker')">Download</button></div>
-    <div class="tmpl-card"><div class="tmpl-info"><div class="tmpl-name">Order History</div><div class="tmpl-desc">Full order log — units, costs, deposits, ETAs, and delivery status.</div></div><button class="tmpl-dl-btn" onclick="dlCsv('order-history')">Download</button></div>
-    <div class="tmpl-card"><div class="tmpl-info"><div class="tmpl-name">Cost & Pricing Calculator</div><div class="tmpl-desc">Landed cost, retail pricing at 3x and 4x, and margin analysis.</div></div><button class="tmpl-dl-btn" onclick="dlCsv('cost-pricing')">Download</button></div>
-    <div class="tmpl-card"><div class="tmpl-info"><div class="tmpl-name">Sales Tracker</div><div class="tmpl-desc">Daily sales by platform — revenue, refunds, and net income.</div></div><button class="tmpl-dl-btn" onclick="dlCsv('sales-tracker')">Download</button></div>
-    <div class="tmpl-card"><div class="tmpl-info"><div class="tmpl-name">Expense Tracker</div><div class="tmpl-desc">Business expenses by category — inventory, shipping, marketing, and more.</div></div><button class="tmpl-dl-btn" onclick="dlCsv('expense-tracker')">Download</button></div>
   </div>
 </div>
 
@@ -6537,16 +6529,66 @@ function writeActivity(arr) {
   try { localStorage.setItem(ACTIVITY_LS, JSON.stringify(arr.slice(0, ACTIVITY_CAP))); }
   catch (e) {}
 }
-function logActivity(kind, text, action) {
+function logActivity(kind, text, target) {
   const arr = readActivity();
   // Dedupe: drop the previous entry if it matches kind+text and is within 90s
   if (arr.length && arr[0].kind === kind && arr[0].text === text && (Date.now() - arr[0].ts) < 90 * 1000) {
     arr[0].ts = Date.now();
+    if (target) arr[0].target = target;
   } else {
-    arr.unshift({ kind, text, ts: Date.now() });
+    const entry = { kind, text, ts: Date.now() };
+    if (target) entry.target = target;
+    arr.unshift(entry);
   }
   writeActivity(arr);
   renderActivity();
+}
+
+/* Click handler for an Activity row — routes back to where the action was
+   originally taken. Target format: a plain string ID like "panel-checklist:3"
+   or "bf" or "identity". */
+function gotoActivity(target) {
+  if (!target) return;
+  const [base, arg] = String(target).split(':');
+  switch (base) {
+    case 'bf':
+      if (typeof openBrandFoundation === 'function') openBrandFoundation();
+      return;
+    case 'identity':
+      if (typeof openIdentityModal === 'function') openIdentityModal();
+      return;
+    case 'panel-prompts':
+    case 'panel-checklist':
+    case 'panel-brandkit':
+    case 'panel-customize':
+    case 'panel-designer':
+    case 'panel-email':
+    case 'panel-moodboard':
+    case 'panel-goodlooks':
+    case 'panel-resources':
+    case 'panel-supplier':
+    case 'panel-brandlinks':
+      openPanel(base);
+      if (arg !== undefined) {
+        const idx = parseInt(arg, 10);
+        setTimeout(() => {
+          let row = null;
+          if (base === 'panel-checklist') {
+            row = document.getElementById('pk-cl-' + idx) || document.getElementById('cl-' + idx);
+          } else if (base === 'panel-prompts') {
+            row = document.getElementById('pk-item-' + idx);
+            if (row && typeof togglePkStep === 'function') {
+              const body = document.getElementById('pk-body-' + idx);
+              if (body && !body.classList.contains('open')) togglePkStep(idx);
+            }
+          }
+          if (row && row.scrollIntoView) row.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }, 240);
+      }
+      return;
+    default:
+      return;
+  }
 }
 const ACTIVITY_ICONS = {
   copy:      '⧉',
@@ -6580,7 +6622,8 @@ function renderActivity() {
   empty.classList.add('is-hidden');
   list.innerHTML = arr.map(a => {
     const icon = ACTIVITY_ICONS[a.kind] || '·';
-    return `<li class="orca-activity-item">
+    const clickable = a.target ? ' is-clickable" onclick="gotoActivity(\'' + String(a.target).replace(/'/g, "\\'") + '\')"' : '"';
+    return `<li class="orca-activity-item${clickable}>
       <span class="orca-activity-icon">${icon}</span>
       <span class="orca-activity-text">${a.text}</span>
       <span class="orca-activity-time">${activityTimeAgo(a.ts)}</span>
@@ -7416,7 +7459,7 @@ function markDone(i, checked) {
   updateTracker();
   updateDashProgress();
   if (checked && typeof logActivity === 'function' && typeof steps !== 'undefined' && steps[i]) {
-    logActivity('step', `Completed step <strong>${steps[i].title}</strong>`);
+    logActivity('step', `Completed step <strong>${steps[i].title}</strong>`, 'panel-prompts:' + i);
   }
 }
 
@@ -7488,7 +7531,7 @@ function buildLaunchChecklist() {
 function onChecklistToggle(i, checked) {
   if (!checked) return;
   if (typeof logActivity === 'function' && typeof launchItems !== 'undefined' && launchItems[i]) {
-    logActivity('check', `Checked off <strong>${launchItems[i].text}</strong>`);
+    logActivity('check', `Checked off <strong>${launchItems[i].text}</strong>`, 'panel-checklist:' + i);
   }
 }
 
@@ -8154,7 +8197,7 @@ function handleKitAssetUpload(e, slotKey) {
     renderBrandKitAssets();
     const slotLabel = (KIT_ASSET_SLOTS.find(s => s.key === slotKey) || {}).label || slotKey;
     if (typeof logActivity === 'function') {
-      logActivity('asset', `Uploaded <strong>${slotLabel}</strong> asset`);
+      logActivity('asset', `Uploaded <strong>${slotLabel}</strong> asset`, 'panel-brandkit');
     }
   };
   reader.readAsDataURL(file);
@@ -8468,7 +8511,7 @@ function copyRaw(btn, text) {
     setTimeout(() => { btn.textContent = 'copy prompt'; btn.classList.remove('copied'); }, 1500);
     if (typeof logActivity === 'function') {
       const snippet = (text || '').slice(0, 56).trim() + ((text || '').length > 56 ? '…' : '');
-      logActivity('copy', `Copied prompt — <strong>${snippet}</strong>`);
+      logActivity('copy', `Copied prompt — <strong>${snippet}</strong>`, 'panel-prompts');
     }
   });
 }
@@ -8587,7 +8630,7 @@ const THEMES = {
        only. Surface tones stay neutral so the page reads as black-on-green
        UI, not a green-washed page. */
     primary: '#00e536', primaryL: '#16ff38',
-    secondary: '#00b825', secondaryL: '#16ff38',
+    secondary: '#00b825', secondaryL: '#007a1a',
     rgb: '0,229,54',
     secondaryRgb: '0,184,37',
     bg: '#07080a',
@@ -8714,7 +8757,7 @@ function setTheme(key) {
   const prevTheme = localStorage.getItem('frmls_theme');
   localStorage.setItem('frmls_theme', key);
   if (prevTheme && prevTheme !== key && typeof logActivity === 'function') {
-    logActivity('theme', `Switched theme to <strong>${t.name}</strong>`);
+    logActivity('theme', `Switched theme to <strong>${t.name}</strong>`, 'panel-customize');
   }
 }
 
@@ -9013,23 +9056,6 @@ function buildCustomizePanel() {
   }
 
   // Section 3: reorder
-  const reorderList = document.getElementById('custReorderList');
-  if (reorderList) {
-    const orderedBoxes = order.map(id => DASH_BOXES.find(b => b.id === id)).filter(Boolean);
-    const remaining    = DASH_BOXES.filter(b => !order.includes(b.id));
-    const allOrdered   = [...orderedBoxes, ...remaining];
-    reorderList.innerHTML = allOrdered.map((b, i) => `
-      <div class="cust-reorder-item" draggable="true" data-id="${b.id}"
-        ondragstart="custDragStart(event)" ondragover="custDragOver(event)"
-        ondrop="custDrop(event)" ondragend="custDragEnd(event)" ondragleave="custDragLeave(event)">
-        <span class="cust-drag-handle">⠿</span>
-        <span class="cust-reorder-label">${b.label}</span>
-        <div class="cust-arrow-btns">
-          <button class="cust-arrow-btn" onclick="custMoveBox('${b.id}',-1)" ${i===0?'disabled':''} title="Move up">▲</button>
-          <button class="cust-arrow-btn" onclick="custMoveBox('${b.id}',1)" ${i===allOrdered.length-1?'disabled':''} title="Move down">▼</button>
-        </div>
-      </div>`).join('');
-  }
 }
 
 function custToggleBox(boxId, btn) {
@@ -10706,14 +10732,18 @@ const BF_AFFIRMATIONS = [
    then by the data-value attribute on the card/pill. */
 const BF_CHOICE_MEANINGS = {
   0: {
-    'represent': "Building something that's actually you. Every decision from here gets filtered through what feels right versus what doesn't.",
-    'freedom':   "Building for autonomy. The brand has to scale on systems and clarity — not on your hours.",
-    'passion':   "You're already close to your customer. That depth will show up in product details others miss.",
-    'proud':     "Quality of output is non-negotiable. The brand rewards patience over speed.",
-    'prove':     "There's a personal stake here. That fire shows up in voice, in standards, in what you refuse to ship.",
-    'lifestyle': "The brand and your life are one. People buy into the world, not just the product.",
-    'money':     "Real product, real margins, real customers. The brand earns trust before it earns money.",
-    'legacy':    "Building for the long game. Every decision asks 'will this still matter in ten years?'"
+    'represent':       "Building something that's actually you. Every decision from here gets filtered through what feels right versus what doesn't.",
+    'freedom':         "Building for autonomy. The brand has to scale on systems and clarity — not on your hours.",
+    'passion':         "You're already close to your customer. That depth will show up in product details others miss.",
+    'proud':           "Quality of output is non-negotiable. The brand rewards patience over speed.",
+    'prove':           "There's a personal stake here. That fire shows up in voice, in standards, in what you refuse to ship.",
+    'lifestyle':       "The brand and your life are one. People buy into the world, not just the product.",
+    'money':           "Real product, real margins, real customers. The brand earns trust before it earns money.",
+    'legacy':          "Building for the long game. Every decision asks 'will this still matter in ten years?'",
+    'self-buyer':      "You're the customer too. That alignment shows up in fit, finish, and what you refuse to compromise on.",
+    'escape-9to5':     "Built with conviction. Nothing about this brand feels safe or borrowed — it reads like it had to exist.",
+    'gap-in-market':   "There's a thesis behind this. The brand has a clear opinion on what the category is missing and fills it without apology.",
+    'creative-outlet': "Direction over decoration. Every visual, every word, every drop is an extension of one creative voice."
   },
   1: {
     'minimal-clean':        "Restraint as a feature. Neutral palette, lots of breathing room, one or two typefaces max.",
@@ -10723,7 +10753,11 @@ const BF_CHOICE_MEANINGS = {
     'soft-atmospheric':     "Hazy and dreamlike. Soft gradients, muted palettes, ambient light, mood over precision.",
     'tech-precise':         "Mechanical exactness. Mono fonts, grid systems, sharp edges, no decoration.",
     'vintage-archival':     "Found and faded. Grain, archive textures, era-specific type — like an old magazine pulled out.",
-    'industrial':           "Material and weight. Hardware finishes, dense type, working-class confidence."
+    'industrial':           "Material and weight. Hardware finishes, dense type, working-class confidence.",
+    'monochrome':           "One color, one world. Every photo, every page, every product reads as part of a single committed palette.",
+    'futuristic':           "Forward-leaning and clean. Sharp geometry, technical type, surfaces that feel engineered, not styled.",
+    'y2k-digital':          "Early-internet energy. Pixel edges, chrome, lens flare, the swagger of a brand built in a browser window.",
+    'earthy-organic':       "Natural and lived-in. Linen, paper, sun-bleached tones, photography that feels like a place not a studio."
   },
   2: {
     'Calm':         "Your brand lowers the temperature in the room. Slow type, ample whitespace, muted palette.",
@@ -10747,7 +10781,13 @@ const BF_CHOICE_MEANINGS = {
     'Minimal':      "Your brand removes. Everything earns its place or it's gone.",
     'Loud':         "Your brand demands attention. Big type, bright color, no half-measures.",
     'Intentional':  "Your brand has a reason for everything. Every color, every word, every move is deliberate.",
-    'Free':         "Your brand doesn't follow rules. Mixed type, broken grids, expressive voice."
+    'Free':         "Your brand doesn't follow rules. Mixed type, broken grids, expressive voice.",
+    'Effortless':   "Your brand never tries too hard. The looks feel found, not built — and the work to get there stays invisible.",
+    'Confident':    "Your brand doesn't ask for permission. Strong stances, no hedging, no qualifier on a single sentence.",
+    'Nostalgic':    "Your brand references a specific past. Era-correct type, film grain, the feeling of something remembered.",
+    'Future-facing':"Your brand reads ahead of the curve. Forward type, technical materials, surfaces that feel just shipped.",
+    'Lived-in':     "Your brand has wear on it. Patina, fade, the look of something owned for years before the photo was taken.",
+    'Magnetic':     "Your brand pulls. Strong center of gravity in every shot — people stop scrolling without knowing why."
   },
   3: {
     'quality-over-hype': "Customers who research before they buy. Product depth matters more than novelty.",
@@ -10757,7 +10797,11 @@ const BF_CHOICE_MEANINGS = {
     'tired-mainstream':  "Customers ready for an alternative. The brand wins by not being the obvious choice.",
     'fewer-better':      "Customers who buy slowly. Each piece has to justify its price and its place.",
     'pay-for-real':      "Customers who value substance. They'll pay more if the difference is felt.",
-    'story-driven':      "Customers who collect meaning. Origin, process, and people matter as much as product."
+    'story-driven':      "Customers who collect meaning. Origin, process, and people matter as much as product.",
+    'gen-z-style':       "Customers fluent in references. Speak in visuals first, drops second — the captions can be short.",
+    'grown-decisive':    "Customers who don't need to be convinced. Lead with the product, skip the urgency, respect their time.",
+    'early-adopters':    "Customers who find brands first. They reward you for not being everywhere — keep the launch quiet, keep it good.",
+    'aesthetic-driven':  "Customers curating a whole world. The brand has to look right in their feed, their home, and their life."
   },
   4: {
     'Streetwear':  "Culture-driven and graphic. Drops, logos, capsules, and a clear point of view that lives in the streets.",
@@ -10768,7 +10812,11 @@ const BF_CHOICE_MEANINGS = {
     'Formal':     "Sharp and tailored. Occasion-driven pieces designed to be the most considered thing in the room.",
     'Athleisure': "Performance meets lifestyle. Technical fabrics that look as good off the field as on it.",
     'Vintage':    "Curated and nostalgic. References to a specific era, worn-in textures, archive-feel storytelling.",
-    'Avant-garde': "Experimental and artistic. Boundary-pushing silhouettes, conceptual collections, fashion-as-statement."
+    'Avant-garde': "Experimental and artistic. Boundary-pushing silhouettes, conceptual collections, fashion-as-statement.",
+    'Techwear':    "Function-first and urban. Technical fabrics, hardware, weather resistance — built like gear, worn like clothing.",
+    'Sustainable': "Ethical and transparent. The materials, the makers, and the lifecycle all show — nothing about the supply chain is hidden.",
+    'Basics':      "Elevated essentials. Fit, fabric, and finish are the entire pitch — no graphics, no gimmicks, no shortcuts.",
+    'Denim':       "Denim-led and heritage. Indigo, selvedge, hand-finishing, and the kind of fade that takes years to earn."
   }
 };
 
@@ -11361,7 +11409,7 @@ function bfComplete() {
   localStorage.setItem(BF_COMPLETE_KEY, 'true');
   localStorage.removeItem(BF_STEP_KEY);
   if (typeof logActivity === 'function') {
-    logActivity('bf', '<strong>Brand Foundation</strong> complete');
+    logActivity('bf', '<strong>Brand Foundation</strong> complete', 'bf');
   }
 
   const currentEl = document.getElementById('bf-screen-5');
@@ -11518,6 +11566,35 @@ function bfRestoreScreen(step) {
   const screen = document.getElementById('bf-screen-' + step);
   if (!screen) return;
   const ans = bfAnswers[step] || {};
+
+  /* Build the set of valid values rendered on this screen, then prune
+     any saved entries that no longer exist (e.g. legacy keys from before
+     options were renamed). Without this, the selection counter can show
+     "3 selected" with zero cards highlighted. */
+  const validSelectionValues = new Set();
+  screen.querySelectorAll('.bf-checkbox-card').forEach(card => {
+    validSelectionValues.add(card.dataset.value);
+  });
+  const validMoodValues = new Set();
+  screen.querySelectorAll('.bf-pill').forEach(pill => {
+    validMoodValues.add(pill.dataset.value);
+  });
+
+  let pruned = false;
+  if (Array.isArray(ans.selections)) {
+    const before = ans.selections.length;
+    ans.selections = ans.selections.filter(v => validSelectionValues.has(v));
+    if (ans.selections.length !== before) pruned = true;
+  }
+  if (Array.isArray(ans.moods)) {
+    const before = ans.moods.length;
+    ans.moods = ans.moods.filter(v => validMoodValues.has(v));
+    if (ans.moods.length !== before) pruned = true;
+  }
+  if (pruned) {
+    bfAnswers[step] = ans;
+    bfSaveAnswers();
+  }
 
   // Restore checkbox cards
   screen.querySelectorAll('.bf-checkbox-card').forEach(card => {

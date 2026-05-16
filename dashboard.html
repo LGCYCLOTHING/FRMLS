@@ -30,11 +30,12 @@ html.frmls-init #ob-overlay { visibility: visible; }
 html { scroll-behavior: smooth; overflow-x: hidden; }
 
 :root {
-  --theme-dark-bg: #0a0a0a;
-  --bg: var(--theme-dark-bg, #0a0a0a);
-  --bg-card: #111111;
-  --bg-card-2: #181818;
-  --bg-prompt: #161616;
+  --theme-dark-bg: #07080a;
+  --bg: var(--theme-dark-bg, #07080a);
+  --bg-sidebar: #0a0b0a;
+  --bg-card: #0e0f0e;
+  --bg-card-2: #131413;
+  --bg-prompt: #131413;
   --purple: #7c3aed;
   --purple-light: #9d5cf5;
   --cyan: #06b6d4;
@@ -580,7 +581,7 @@ body::after {
 /* ===== BRAND KIT ===== */
 .brand-kit-doc { border:1px solid var(--border-subtle); border-radius:var(--radius-lg); background:var(--bg-card); overflow:hidden; margin-bottom:1.75rem; position:relative; }
 .brand-kit-doc::before { content:''; position:absolute; inset:-1px; border-radius:calc(var(--radius-lg)+1px); background:var(--grad); z-index:-1; opacity:0.33; }
-.kit-header { padding:24px 24px 20px; border-bottom:1px solid var(--border-subtle); background:linear-gradient(135deg,rgba(var(--accent-rgb),0.08),rgba(var(--accent-rgb),0.03)); }
+.kit-header { padding:24px 24px 20px; border-bottom:1px solid var(--border-subtle); background:var(--bg-card-2); }
 .kit-watermark { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.22em; text-transform:uppercase; color:#999999; margin-bottom:10px; }
 .kit-brand-name { font-size:32px; font-weight:900; letter-spacing:-0.04em; background:var(--grad-text); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; margin-bottom:12px; }
 .kit-meta-row { display:flex; gap:18px; flex-wrap:wrap; }
@@ -658,7 +659,7 @@ body::after {
 
 /* ===== BRAND CONTEXT BANNER (PROMPT PACK) ===== */
 .pk-brand-banner { margin-bottom:16px; }
-.pk-ctx-card { background:rgba(var(--accent-rgb),0.07); border:1px solid rgba(var(--accent-rgb),0.22); border-radius:var(--radius-md); padding:14px 16px; position:relative; }
+.pk-ctx-card { background:var(--bg-card); border:1px solid rgba(var(--accent-rgb),0.15); border-radius:var(--radius-md); padding:14px 16px; position:relative; }
 .pk-ctx-meta { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-muted); margin-bottom:5px; }
 .pk-ctx-words { font-size:16px; font-weight:800; letter-spacing:-0.02em; background:var(--grad-text); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1.2; margin-bottom:3px; }
 .pk-ctx-archetype { font-family:'DM Mono',monospace; font-size:10px; color:#666; }
@@ -1270,21 +1271,21 @@ body:has(#screen-7.active) .orca-shell {
   min-height: calc(100vh - 20px);
 }
 
-/* The shell: one big rounded card holding the whole dashboard. */
+/* The shell: one big rounded card holding the whole dashboard. Neutral
+   surface so the page reads as black, not green-washed. */
 .orca-shell {
   position: relative; z-index: 1;
-  background: linear-gradient(180deg, rgba(var(--accent-rgb),0.06), var(--bg-card) 40%, var(--bg-card-2));
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 28px;
   padding: 26px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(var(--accent-rgb),0.05) inset;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.45);
   overflow: hidden;
 }
 .orca-shell::before {
-  content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
-  background: radial-gradient(ellipse 70% 50% at 0% 0%, rgba(var(--accent-rgb),0.10), transparent 60%),
-              radial-gradient(ellipse 60% 50% at 100% 100%, color-mix(in srgb, var(--cyan) 8%, transparent), transparent 60%);
-  opacity: 0.9;
+  /* Removed — would tint the shell with theme color and the user wants
+     surfaces to stay neutral. Re-enable only if a future theme needs it. */
+  content: none;
 }
 .orca-shell > * { position: relative; z-index: 1; }
 
@@ -1352,24 +1353,20 @@ body:has(#screen-7.active) .orca-shell {
 
 .orca-kpi {
   position: relative; overflow: hidden;
-  background: linear-gradient(165deg, rgba(var(--accent-rgb),0.18), var(--bg-card) 60%, var(--bg-card-2));
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 18px;
   padding: 16px 16px 18px;
   display: flex; flex-direction: column; gap: 8px;
   min-height: 132px;
 }
-.orca-kpi[data-tone="build"] {
-  background: linear-gradient(165deg, rgba(var(--accent-rgb),0.22), var(--bg-card) 55%, var(--bg-card-2));
-}
-.orca-kpi[data-tone="foundation"] {
-  background: linear-gradient(165deg, color-mix(in srgb, var(--cyan) 18%, transparent), var(--bg-card) 55%, var(--bg-card-2));
-}
-.orca-kpi[data-tone="modules"] {
-  background: linear-gradient(165deg, rgba(var(--accent-rgb),0.14), var(--bg-card) 55%, var(--bg-card-2));
-}
+/* Per-tone variants: same neutral surface — tones differentiate via icon
+   color and accent in their headers, not by tinting the whole card. */
+.orca-kpi[data-tone="build"],
+.orca-kpi[data-tone="foundation"],
+.orca-kpi[data-tone="modules"],
 .orca-kpi[data-tone="tasks"] {
-  background: linear-gradient(165deg, color-mix(in srgb, var(--cyan) 14%, transparent), var(--bg-card) 55%, var(--bg-card-2));
+  background: var(--bg-card);
 }
 .orca-kpi::after {
   content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px;
@@ -1421,14 +1418,15 @@ body:has(#screen-7.active) .orca-shell {
   margin-bottom: 18px;
   padding: 18px 20px;
   border-radius: 18px;
-  border: 1px solid var(--border-subtle);
-  background:
-    linear-gradient(135deg, rgba(var(--accent-rgb),0.18), color-mix(in srgb, var(--cyan) 14%, transparent) 60%, var(--bg-card));
+  border: 1px solid rgba(var(--accent-rgb),0.15);
+  background: var(--bg-card-2);
   position: relative; overflow: hidden;
 }
 .orca-prompts-hero::before {
+  /* Subtle directional accent glow from the icon side, contained inside
+     the card — gives a hint of theme color without washing the surface. */
   content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
-  background: radial-gradient(circle 380px at 0% 50%, rgba(var(--accent-rgb),0.18), transparent 70%);
+  background: radial-gradient(circle 280px at 0% 50%, rgba(var(--accent-rgb),0.08), transparent 70%);
 }
 .orca-prompts-hero > * { position: relative; z-index: 1; }
 .orca-prompts-left { display:flex; align-items:center; gap: 14px; min-width: 0; }
@@ -1566,11 +1564,12 @@ body:has(#screen-7.active) .orca-shell {
 /* Next Step card */
 .orca-card-nextstep {
   display: flex; flex-direction: column; gap: 10px;
-  background: linear-gradient(165deg, rgba(var(--accent-rgb),0.10), var(--bg-card) 65%, var(--bg-card-2));
+  background: var(--bg-card-2);
+  border: 1px solid rgba(var(--accent-rgb),0.15);
 }
 .orca-card-nextstep::before {
   content:''; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
-  background: radial-gradient(circle 320px at 0% 0%, rgba(var(--accent-rgb),0.14), transparent 70%);
+  background: radial-gradient(circle 280px at 0% 0%, rgba(var(--accent-rgb),0.08), transparent 70%);
 }
 .orca-card-nextstep > * { position: relative; z-index: 1; }
 .orca-next-label {
@@ -1641,7 +1640,8 @@ body:has(#screen-7.active) .orca-shell {
   border-radius: 14px;
 }
 .orca-modules-section .dash-box.dash-box-featured {
-  background: linear-gradient(135deg, rgba(var(--accent-rgb),0.10), color-mix(in srgb, var(--cyan) 6%, var(--bg-card)));
+  background: var(--bg-card-2);
+  border-color: rgba(var(--accent-rgb),0.15);
 }
 .orca-modules-section .dash-box-icon  { font-size: 20px; margin-bottom: 8px; }
 .orca-modules-section .dash-box-title { font-size: 14px; margin-bottom: 3px; }
@@ -1650,9 +1650,9 @@ body:has(#screen-7.active) .orca-shell {
 .orca-modules-section .dash-box-status { font-size: 9.5px; margin-top: 6px; }
 .orca-modules-section .dash-box-arrow  { font-size: 9.5px; margin-top: 3px; }
 
-/* Sidebar restyle on dashboard mode — integrated card surface */
+/* Sidebar restyle on dashboard mode — neutral dark surface, no green wash */
 .sidebar-nav.mode-dashboard {
-  background: linear-gradient(180deg, rgba(var(--accent-rgb),0.06), var(--bg-card) 60%, var(--bg-card-2));
+  background: var(--bg-sidebar, #0a0b0a);
   border: 1px solid var(--border-subtle);
   border-radius: 24px;
   width: 190px;
@@ -8166,20 +8166,25 @@ const THEMES = {
   },
   volt: {
     name: 'Volt',
-    /* Exact neon-electric green spec */
+    /* Exact neon-electric green spec — color shows in accents/buttons/glows
+       only. Surface tones stay neutral so the page reads as black-on-green
+       UI, not a green-washed page. */
     primary: '#00e536', primaryL: '#16ff38',
     secondary: '#00b825', secondaryL: '#16ff38',
     rgb: '0,229,54',
     secondaryRgb: '0,184,37',
     bg: '#07080a',
-    bgAmbience: 'radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,229,54,0.14) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(0,184,37,0.10) 0%, transparent 55%), radial-gradient(ellipse 50% 40% at 60% 40%, rgba(0,229,54,0.06) 0%, transparent 50%)',
-    orb1: 'radial-gradient(circle, rgba(0,229,54,0.20) 0%, transparent 70%)',
-    orb2: 'radial-gradient(circle, rgba(0,184,37,0.14) 0%, transparent 70%)',
+    /* No ambient blobs — pure neutral background. */
+    bgAmbience: 'none',
+    /* Orbs only used by the brand-identity overlay; keep them very subtle */
+    orb1: 'radial-gradient(circle, rgba(0,229,54,0.08) 0%, transparent 70%)',
+    orb2: 'radial-gradient(circle, rgba(0,184,37,0.05) 0%, transparent 70%)',
     /* Custom 3-stop accent gradient per spec */
     grad: 'linear-gradient(135deg, #00ff41 0%, #00b825 50%, #004d10 100%)',
-    /* Subtle dot-grid texture overlay */
-    bgPattern: 'radial-gradient(circle, rgba(0,229,54,0.06) 1px, transparent 1px)',
-    bgPatternSize: '24px 24px',
+    /* Subtle dot-grid texture overlay — kept low-alpha so it reads as
+       texture, not green wash. */
+    bgPattern: 'radial-gradient(circle, rgba(0,229,54,0.05) 1px, transparent 1px)',
+    bgPatternSize: '28px 28px',
     gradPreview: 'linear-gradient(135deg, #00ff41 0%, #00b825 50%, #004d10 100%)',
   },
   rose: {

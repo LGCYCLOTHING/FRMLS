@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRMLS Image Gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 3em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            background: #333;
+            aspect-ratio: 1;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .gallery-item .label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px;
+            font-size: 0.75em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover .label {
+            transform: translateY(0);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 90%;
+            max-width: 900px;
+            max-height: 80vh;
+            object-fit: contain;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 30px;
+            right: 45px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #ccc;
+        }
+        
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 30px;
+            padding: 10px 20px;
+            cursor: pointer;
+            background: rgba(0,0,0,0.5);
+            border: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .nav-button:hover {
+            background: rgba(0,0,0,0.8);
+        }
+        
+        .prev {
+            left: 20px;
+        }
+        
+        .next {
+            right: 20px;
+        }
+        
+        .image-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        
+        .stats {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🖼️ FRMLS Image Gallery</h1>
+        <div class="gallery" id="gallery"></div>
+        <div class="stats">
+            <p>Total Images: <span id="imageCount">0</span></p>
+        </div>
+    </div>
+    
+    <div id="modal" class="modal">
+        <span class="close-modal">&times;</span>
+        <button class="nav-button prev" onclick="changeImage(-1)">❮</button>
+        <img class="modal-content" id="modal-img" src="">
+        <button class="nav-button next" onclick="changeImage(1)">❯</button>
+        <div class="image-counter">
+            <span id="current-index">1</span> / <span id="total-images">0</span>
+        </div>
+    </div>
+
+    <script>
+        let currentImageIndex = 0;
+        const images = [
+            { src: '03df45125980618589a78bd39544188a.jpg', alt: '03df45125980618589a78bd39544188a' },
+            { src: '09b93f91e6f5c1219d90875160617be1.jpg', alt: '09b93f91e6f5c1219d90875160617be1' },
+            { src: '123b53c5f000f175786f5d222ed968d3.jpg', alt: '123b53c5f000f175786f5d222ed968d3' },
+            { src: '1ffa962daa14b097d8bfe45eba4ffffa.jpg', alt: '1ffa962daa14b097d8bfe45eba4ffffa' },
+            { src: '288e26365d8b31ef42acff350c01c993.jpg', alt: '288e26365d8b31ef42acff350c01c993' },
+            { src: '6431b7add8e8130ca57065ead17f42b1.jpg', alt: '6431b7add8e8130ca57065ead17f42b1' },
+            { src: '663a6530c00ab9c439ea1b16eeb15ce6.jpg', alt: '663a6530c00ab9c439ea1b16eeb15ce6' },
+            { src: '6847a7a0e02991a6e289e6b1365562da.jpg', alt: '6847a7a0e02991a6e289e6b1365562da' },
+            { src: '6a0393b2c947362a772df0a720455019.jpg', alt: '6a0393b2c947362a772df0a720455019' },
+            { src: '74da29ce6712cdb12a0c8cb6f6b8139e.jpg', alt: '74da29ce6712cdb12a0c8cb6f6b8139e' },
+            { src: '7f9c04cb2e0a7aa07c8528316e764816.jpg', alt: '7f9c04cb2e0a7aa07c8528316e764816' },
+            { src: '916e309b2ea56fc20ea9a13de1ea6d11.jpg', alt: '916e309b2ea56fc20ea9a13de1ea6d11' },
+            { src: '93658fa4c01d8483fb6f344bada9c2b3.jpg', alt: '93658fa4c01d8483fb6f344bada9c2b3' },
+            { src: '9b7a74d0784162a03668bb71c0f8361c.jpg', alt: '9b7a74d0784162a03668bb71c0f8361c' },
+            { src: '9d1fa0beb729146dd4bb2fac8a2eb708.jpg', alt: '9d1fa0beb729146dd4bb2fac8a2eb708' },
+            { src: 'IMG_3712.jpeg', alt: 'IMG_3712' },
+            { src: 'IMG_3713.jpeg', alt: 'IMG_3713' },
+            { src: 'IMG_3714.jpeg', alt: 'IMG_3714' },
+            { src: 'IMG_3715.jpeg', alt: 'IMG_3715' },
+            { src: 'IMG_3716.jpeg', alt: 'IMG_3716' },
+            { src: 'IMG_3717.jpeg', alt: 'IMG_3717' },
+            { src: 'IMG_3736.jpeg', alt: 'IMG_3736' },
+            { src: 'IMG_3737.jpeg', alt: 'IMG_3737' },
+            { src: 'IMG_3738.jpeg', alt: 'IMG_3738' },
+            { src: 'IMG_3739.jpeg', alt: 'IMG_3739' },
+            { src: 'IMG_3740.jpeg', alt: 'IMG_3740' },
+            { src: 'IMG_3741.jpeg', alt: 'IMG_3741' },
+            { src: 'IMG_3771.jpeg', alt: 'IMG_3771' },
+            { src: 'IMG_3772.jpeg', alt: 'IMG_3772' },
+            { src: 'IMG_3773.jpeg', alt: 'IMG_3773' },
+            { src: 'IMG_3774.jpeg', alt: 'IMG_3774' },
+            { src: 'IMG_3775.jpeg', alt: 'IMG_3775' },
+            { src: 'IMG_3776.jpeg', alt: 'IMG_3776' },
+            { src: 'IMG_3777.jpeg', alt: 'IMG_3777' },
+            { src: 'IMG_3791.jpeg', alt: 'IMG_3791' },
+            { src: 'IMG_3792.jpeg', alt: 'IMG_3792' },
+            { src: 'IMG_3834.jpeg', alt: 'IMG_3834' },
+            { src: 'IMG_3925.jpeg', alt: 'IMG_3925' },
+            { src: 'IMG_3926.jpeg', alt: 'IMG_3926' },
+            { src: 'IMG_3927.jpeg', alt: 'IMG_3927' },
+            { src: 'IMG_3928.jpeg', alt: 'IMG_3928' },
+            { src: 'IMG_3929.jpeg', alt: 'IMG_3929' },
+            { src: 'IMG_3930.jpeg', alt: 'IMG_3930' },
+            { src: 'IMG_3931.jpeg', alt: 'IMG_3931' },
+            { src: 'Opera Snapshot_2026-05-10_225209_whop.com.png', alt: 'Opera Snapshot' },
+            { src: 'Opera Snapshot_2026-05-13_151535_www.frmls.com.png', alt: 'Opera Snapshot' },
+            { src: 'Opera Snapshot_2026-05-13_151552_www.frmls.com.png', alt: 'Opera Snapshot' },
+            { src: 'Opera Snapshot_2026-05-13_151615_www.frmls.com.png', alt: 'Opera Snapshot' },
+            { src: 'Opera Snapshot_2026-05-13_171747_www.frmls.com.png', alt: 'Opera Snapshot' },
+            { src: 'Opera Snapshot_2026-05-13_180654_www.frmls.com.png', alt: 'Opera Snapshot' },
+            { src: 'Opera Snapshot_2026-05-13_183058_www.frmls.com.png', alt: 'Opera Snapshot' },
+            { src: 'abd95b555f18b54bba8ffeecb9cdcf4b.jpg', alt: 'abd95b555f18b54bba8ffeecb9cdcf4b' },
+            { src: 'b43c0d00a1eb8811880fed754314f842.jpg', alt: 'b43c0d00a1eb8811880fed754314f842' },
+            { src: 'be5975c24fadd96f64f9b0f1317b8ab3.jpg', alt: 'be5975c24fadd96f64f9b0f1317b8ab3' },
+            { src: 'c0cd5d2a7d25a8a557be264494b886c1.jpg', alt: 'c0cd5d2a7d25a8a557be264494b886c1' },
+            { src: 'ca7a44fd7a44673c6914c6e08f170949.jpg', alt: 'ca7a44fd7a44673c6914c6e08f170949' },
+            { src: 'd7f035241a98e3094fc1216a91be7a40.jpg', alt: 'd7f035241a98e3094fc1216a91be7a40' },
+            { src: 'db9a6b6ce266666ca29f3717e7711eb3.jpg', alt: 'db9a6b6ce266666ca29f3717e7711eb3' },
+            { src: 'download (1).png', alt: 'Download' },
+            { src: 'download (5).jpg', alt: 'Download' },
+            { src: 'download.png', alt: 'Download' },
+            { src: 'e0a1023b8ae77c25063833de6ca243f7.jpg', alt: 'e0a1023b8ae77c25063833de6ca243f7' },
+            { src: 'e4658a05670bcff747825fbb4dd5147d.jpg', alt: 'e4658a05670bcff747825fbb4dd5147d' },
+            { src: 'f4d19f2273ba433144b6ff4a0660e89f.jpg', alt: 'f4d19f2273ba433144b6ff4a0660e89f' },
+            { src: 'f6b3dd882ad98979acdcaf008545a3d5.jpg', alt: 'f6b3dd882ad98979acdcaf008545a3d5' },
+            { src: 'fdd203e0e134e82c161655babbd0c9df.jpg', alt: 'fdd203e0e134e82c161655babbd0c9df' },
+            { src: 'statement-post.png', alt: 'Statement Post' },
+            { src: 'temp_image_037CBDE9-D5FC-41DB-A4CE-37A1E790CD2A.jpeg', alt: 'Temp Image' }
+        ];
+
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-img');
+        const gallery = document.getElementById('gallery');
+
+        // Build gallery
+        function initGallery() {
+            images.forEach((image, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.innerHTML = `
+                    <img src="${image.src}" alt="${image.alt}" loading="lazy">
+                    <div class="label">${image.alt}</div>
+                `;
+                item.onclick = () => openModal(index);
+                gallery.appendChild(item);
+            });
+            
+            document.getElementById('imageCount').textContent = images.length;
+            document.getElementById('total-images').textContent = images.length;
+        }
+
+        // Open modal with image
+        function openModal(index) {
+            currentImageIndex = index;
+            modal.style.display = 'block';
+            updateModalImage();
+        }
+
+        // Update modal image
+        function updateModalImage() {
+            modalImg.src = images[currentImageIndex].src;
+            document.getElementById('current-index').textContent = currentImageIndex + 1;
+        }
+
+        // Change image in modal
+        function changeImage(n) {
+            currentImageIndex += n;
+            if (currentImageIndex >= images.length) currentImageIndex = 0;
+            if (currentImageIndex < 0) currentImageIndex = images.length - 1;
+            updateModalImage();
+        }
+
+        // Close modal
+        document.querySelector('.close-modal').onclick = () => {
+            modal.style.display = 'none';
+        };
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (modal.style.display === 'block') {
+                if (e.key === 'ArrowLeft') changeImage(-1);
+                if (e.key === 'ArrowRight') changeImage(1);
+                if (e.key === 'Escape') modal.style.display = 'none';
+            }
+        });
+
+        // Close modal when clicking outside image
+        modal.onclick = (e) => {
+            if (e.target === modal) modal.style.display = 'none';
+        };
+
+        // Initialize on load
+        window.addEventListener('load', initGallery);
+    </script>
+</body>
+</html>

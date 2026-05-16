@@ -689,6 +689,304 @@ body::after {
   -webkit-overflow-scrolling:touch; overscroll-behavior:contain;
   opacity:0; pointer-events:none; transition:opacity 0.4s ease;
 }
+
+/* ========================================================================
+   ROADMAP OVERLAY — full-screen node canvas of the build pipeline
+   ========================================================================*/
+#roadmap-overlay {
+  position:fixed; inset:0; z-index:9997;
+  display:flex; flex-direction:column;
+  background:#07080a;
+  opacity:0; pointer-events:none;
+  transition:opacity 0.35s ease;
+}
+#roadmap-overlay.rm-visible { opacity:1; pointer-events:auto; }
+
+.rm-bg {
+  position:absolute; inset:0; pointer-events:none; z-index:0;
+  background-image:
+    radial-gradient(circle, rgba(var(--accent-rgb),0.05) 1px, transparent 1px),
+    radial-gradient(ellipse 60% 50% at 18% 20%, rgba(var(--accent-rgb),0.10), transparent 60%),
+    radial-gradient(ellipse 55% 50% at 82% 80%, rgba(var(--accent-secondary-rgb),0.08), transparent 60%);
+  background-size:28px 28px, 100% 100%, 100% 100%;
+}
+
+.rm-header {
+  position:relative; z-index:2;
+  display:flex; align-items:flex-start; justify-content:space-between;
+  padding:28px 32px 16px; gap:24px;
+}
+.rm-header-left { display:flex; flex-direction:column; gap:6px; min-width:0; }
+.rm-eyebrow {
+  font-family:'DM Mono', monospace; font-size:10.5px;
+  letter-spacing:0.20em; text-transform:uppercase;
+  color:var(--cyan);
+}
+.rm-title {
+  font-family:'Inter', sans-serif; font-size:32px; font-weight:800;
+  letter-spacing:-0.03em; line-height:1.1; color:#fff;
+  margin:0;
+}
+.rm-sub {
+  font-family:'Inter', sans-serif; font-size:14px;
+  color:rgba(255,255,255,0.55); margin:0; line-height:1.5;
+  max-width:520px;
+}
+.rm-header-right { display:flex; align-items:center; gap:12px; flex-shrink:0; }
+
+.rm-filters {
+  display:flex; gap:4px;
+  padding:4px; border-radius:100px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border-subtle);
+}
+.rm-filter {
+  padding:6px 14px; border-radius:100px;
+  background:transparent; border:none;
+  font-family:'Inter', sans-serif; font-size:12px; font-weight:600;
+  color:rgba(255,255,255,0.55); cursor:pointer;
+  transition:color .2s, background .2s;
+}
+.rm-filter:hover { color:#fff; }
+.rm-filter.active {
+  color:#fff;
+  background:rgba(var(--accent-rgb),0.18);
+  box-shadow:inset 0 0 0 1px rgba(var(--accent-rgb),0.35);
+}
+
+.rm-close-btn {
+  width:38px; height:38px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(255,255,255,0.18);
+  background:rgba(255,255,255,0.04);
+  color:rgba(255,255,255,0.82); cursor:pointer;
+  transition:color .2s, background .2s, border-color .2s, transform .2s;
+}
+.rm-close-btn:hover {
+  color:#fff; background:rgba(255,255,255,0.09);
+  border-color:rgba(255,90,90,0.55);
+  transform:rotate(90deg);
+}
+.rm-close-btn svg { width:14px; height:14px; }
+
+.rm-progress {
+  position:relative; z-index:2;
+  display:flex; align-items:center; gap:14px;
+  padding:0 32px 18px;
+}
+.rm-progress-label,
+.rm-progress-pct {
+  font-family:'DM Mono', monospace; font-size:11px; letter-spacing:0.10em;
+  text-transform:uppercase; color:rgba(255,255,255,0.50);
+  white-space:nowrap;
+}
+.rm-progress-pct {
+  background:var(--grad-text);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  font-weight:700;
+}
+.rm-progress-track {
+  flex:1; height:4px; border-radius:3px;
+  background:rgba(255,255,255,0.06); overflow:hidden;
+}
+.rm-progress-fill {
+  height:100%; width:0; border-radius:3px;
+  background:var(--grad);
+  box-shadow:0 0 14px rgba(var(--accent-rgb),0.55);
+  transition:width .55s cubic-bezier(.16,1,.3,1);
+}
+
+/* The canvas: edges layer + nodes layer */
+.rm-canvas-wrap {
+  position:relative; flex:1;
+  margin:0 32px 32px; border-radius:18px;
+  background:rgba(13,15,13,0.55);
+  border:1px solid var(--border-subtle);
+  overflow:hidden;
+  min-height:0;
+}
+.rm-edges {
+  position:absolute; inset:0; width:100%; height:100%;
+  pointer-events:none; z-index:1;
+}
+.rm-edges path { fill:none; stroke-linecap:round; }
+.rm-edges .rm-edge {
+  stroke:rgba(255,255,255,0.10); stroke-width:1.5;
+  stroke-dasharray:4 6;
+  transition:stroke .3s, stroke-width .3s, stroke-opacity .3s;
+}
+.rm-edges .rm-edge.rm-edge-active {
+  stroke:url(#rmEdgeGrad);
+  stroke-width:2;
+  stroke-dasharray:none;
+  filter:drop-shadow(0 0 6px rgba(var(--accent-rgb),0.35));
+}
+.rm-edges .rm-edge.rm-edge-trace {
+  stroke:rgba(var(--accent-rgb),0.95);
+  stroke-width:2.5;
+  stroke-dasharray:none;
+  filter:drop-shadow(0 0 12px rgba(var(--accent-rgb),0.7));
+}
+
+.rm-nodes {
+  position:absolute; inset:0; z-index:2;
+  pointer-events:none;
+}
+.rm-node {
+  position:absolute;
+  width:170px; padding:14px 16px;
+  border-radius:14px;
+  background:var(--bg-card);
+  border:1px solid var(--border-subtle);
+  cursor:pointer;
+  pointer-events:auto;
+  transition:transform .25s cubic-bezier(.16,1,.3,1), border-color .25s, box-shadow .25s, background .25s, opacity .25s;
+  user-select:none;
+  transform:translate(-50%, -50%);
+  display:flex; flex-direction:column; gap:6px;
+}
+.rm-node:hover {
+  transform:translate(-50%, -50%) translateY(-2px);
+  border-color:rgba(var(--accent-rgb),0.45);
+  box-shadow:0 12px 32px rgba(0,0,0,0.45), 0 0 24px rgba(var(--accent-rgb),0.15);
+}
+.rm-node.rm-locked    { opacity:0.40; cursor:not-allowed; border-style:dashed; }
+.rm-node.rm-locked:hover { transform:translate(-50%, -50%); box-shadow:none; }
+.rm-node.rm-progress  {
+  border-color:rgba(var(--accent-rgb),0.45);
+  box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.15);
+  animation:rmNodePulse 2.4s ease-in-out infinite;
+}
+.rm-node.rm-done {
+  background:var(--bg-card-2);
+  border-color:rgba(var(--accent-rgb),0.55);
+  box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.20), 0 0 22px rgba(var(--accent-rgb),0.18);
+}
+.rm-node.rm-traced {
+  border-color:rgba(var(--accent-rgb),0.85);
+  box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.40), 0 0 28px rgba(var(--accent-rgb),0.35);
+}
+.rm-node.rm-hidden { display:none; }
+@keyframes rmNodePulse {
+  0%, 100% { box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.15), 0 0 0 rgba(var(--accent-rgb),0); }
+  50%      { box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.30), 0 0 22px rgba(var(--accent-rgb),0.30); }
+}
+
+.rm-node-head {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:8px;
+}
+.rm-node-num {
+  font-family:'DM Mono', monospace; font-size:9px; font-weight:600;
+  letter-spacing:0.18em; text-transform:uppercase;
+  color:rgba(255,255,255,0.40);
+}
+.rm-node-badge {
+  width:18px; height:18px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:9px; font-weight:700; color:#fff;
+}
+.rm-node.rm-done .rm-node-badge {
+  background:var(--grad);
+  box-shadow:0 0 10px rgba(var(--accent-rgb),0.55);
+}
+.rm-node.rm-progress .rm-node-badge {
+  background:rgba(var(--accent-rgb),0.18);
+  border:1px solid rgba(var(--accent-rgb),0.45);
+  color:var(--cyan-light);
+}
+.rm-node.rm-upcoming .rm-node-badge,
+.rm-node.rm-locked .rm-node-badge {
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.10);
+  color:rgba(255,255,255,0.45);
+}
+.rm-node-title {
+  font-family:'Inter', sans-serif; font-size:14px; font-weight:700;
+  letter-spacing:-0.01em; color:#fff; line-height:1.2;
+}
+.rm-node-meta {
+  font-family:'DM Mono', monospace; font-size:9.5px;
+  letter-spacing:0.10em; text-transform:uppercase;
+  color:rgba(255,255,255,0.42);
+}
+
+/* Floating detail panel */
+.rm-detail {
+  position:absolute; bottom:20px; left:20px;
+  width:320px; padding:20px;
+  border-radius:14px;
+  background:var(--bg-card-2);
+  border:1px solid rgba(var(--accent-rgb),0.30);
+  box-shadow:0 20px 60px rgba(0,0,0,0.55);
+  z-index:5;
+  opacity:0; transform:translateY(8px); pointer-events:none;
+  transition:opacity .3s, transform .3s;
+}
+.rm-detail.rm-show { opacity:1; transform:translateY(0); pointer-events:auto; }
+.rm-detail-close {
+  position:absolute; top:10px; right:10px;
+  width:24px; height:24px; border-radius:50%; border:none;
+  background:rgba(255,255,255,0.05);
+  color:rgba(255,255,255,0.6); cursor:pointer; font-size:16px; line-height:1;
+}
+.rm-detail-close:hover { color:#fff; background:rgba(255,255,255,0.10); }
+.rm-detail-status {
+  display:inline-block;
+  font-family:'DM Mono', monospace; font-size:9.5px;
+  letter-spacing:0.18em; text-transform:uppercase;
+  padding:3px 9px; border-radius:100px;
+  background:rgba(var(--accent-rgb),0.18);
+  color:var(--cyan-light);
+  margin-bottom:10px;
+}
+.rm-detail-title {
+  font-family:'Inter', sans-serif; font-size:18px; font-weight:800;
+  letter-spacing:-0.02em; color:#fff; margin:0 0 8px;
+}
+.rm-detail-body {
+  font-family:'Inter', sans-serif; font-size:13px; line-height:1.55;
+  color:rgba(255,255,255,0.65); margin:0 0 14px;
+}
+.rm-detail-meta {
+  font-family:'DM Mono', monospace; font-size:10px;
+  letter-spacing:0.10em; color:rgba(255,255,255,0.40);
+  margin-bottom:14px; display:flex; flex-direction:column; gap:4px;
+}
+.rm-detail-meta strong { color:rgba(255,255,255,0.78); font-weight:600; }
+.rm-detail-cta {
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  width:100%; padding:10px 14px; border-radius:10px; border:none;
+  background:var(--grad); color:#fff; cursor:pointer;
+  font-family:'DM Mono', monospace; font-size:11px; font-weight:700;
+  letter-spacing:0.12em; text-transform:uppercase;
+  box-shadow:0 0 12px rgba(var(--accent-rgb),0.35), 0 0 32px rgba(var(--accent-rgb),0.12);
+  transition:transform .2s, box-shadow .2s;
+}
+.rm-detail-cta:hover {
+  transform:translateY(-1px);
+  box-shadow:0 0 18px rgba(var(--accent-rgb),0.55), 0 0 44px rgba(var(--accent-rgb),0.22);
+}
+.rm-detail-cta:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
+
+/* Mobile: collapse the node canvas into a vertical stepper */
+@media (max-width: 900px) {
+  .rm-header { padding:20px 16px 12px; flex-direction:column; align-items:flex-start; }
+  .rm-header-right { width:100%; justify-content:space-between; }
+  .rm-title { font-size:24px; }
+  .rm-progress { padding:0 16px 14px; }
+  .rm-canvas-wrap { margin:0 16px 16px; min-height:600px; }
+  .rm-edges { display:none; }
+  .rm-nodes {
+    position:relative; padding:18px 14px; display:flex; flex-direction:column; gap:10px;
+  }
+  .rm-node {
+    position:relative; left:auto !important; top:auto !important;
+    width:100%; transform:none;
+  }
+  .rm-node:hover { transform:translateY(-1px); }
+  .rm-detail { position:fixed; left:12px; right:12px; bottom:12px; width:auto; }
+}
 #bf-overlay {
   z-index:9999;
   background:
@@ -4355,6 +4653,10 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
       Customize
     </button>
+    <button class="sb-nav-item" onclick="openRoadmap()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><path d="M8 6h8M6 8v8M18 8v8M8 18h8"/></svg>
+      Roadmap
+    </button>
   </div>
   <div class="sb-todo-widget">
     <div class="sb-todo-head">
@@ -4829,6 +5131,62 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 </div><!-- /app -->
 
 <!-- ===== BRAND FOUNDATION FLOW ===== -->
+<!-- ===== ROADMAP OVERLAY (full-screen node canvas) ===== -->
+<div id="roadmap-overlay" role="dialog" aria-modal="true" aria-label="Build roadmap">
+  <div class="rm-bg" aria-hidden="true"></div>
+
+  <header class="rm-header">
+    <div class="rm-header-left">
+      <span class="rm-eyebrow">Build roadmap</span>
+      <h1 class="rm-title">Your brand, mapped.</h1>
+      <p class="rm-sub">Every module, and what flows into what. Click any node to jump in.</p>
+    </div>
+    <div class="rm-header-right">
+      <div class="rm-filters" role="tablist" aria-label="Filter nodes">
+        <button type="button" class="rm-filter active" data-filter="all">All</button>
+        <button type="button" class="rm-filter" data-filter="incomplete">Incomplete</button>
+        <button type="button" class="rm-filter" data-filter="done">Done</button>
+      </div>
+      <button type="button" class="rm-close-btn" onclick="closeRoadmap()" aria-label="Close roadmap">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Build progress strip -->
+  <div class="rm-progress">
+    <span class="rm-progress-label" id="rmProgressLabel">0 / 8 modules complete</span>
+    <div class="rm-progress-track"><div class="rm-progress-fill" id="rmProgressFill"></div></div>
+    <span class="rm-progress-pct" id="rmProgressPct">0%</span>
+  </div>
+
+  <!-- The canvas: SVG layer for edges, HTML layer for nodes -->
+  <div class="rm-canvas-wrap">
+    <svg class="rm-edges" id="rmEdges" viewBox="0 0 1600 760" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <defs>
+        <linearGradient id="rmEdgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"  stop-color="rgb(var(--accent-rgb-comma, 0 229 54))" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="rgb(var(--accent-rgb-comma, 0 229 54))" stop-opacity="0.15"/>
+        </linearGradient>
+      </defs>
+      <!-- paths injected by JS -->
+    </svg>
+    <div class="rm-nodes" id="rmNodes" aria-label="Roadmap nodes">
+      <!-- nodes injected by JS -->
+    </div>
+
+    <!-- Floating detail panel on node click -->
+    <aside class="rm-detail" id="rmDetail" aria-hidden="true">
+      <button type="button" class="rm-detail-close" onclick="rmCloseDetail()" aria-label="Close">×</button>
+      <span class="rm-detail-status" id="rmDetailStatus">UPCOMING</span>
+      <h3 class="rm-detail-title" id="rmDetailTitle"></h3>
+      <p class="rm-detail-body" id="rmDetailBody"></p>
+      <div class="rm-detail-meta" id="rmDetailMeta"></div>
+      <button type="button" class="rm-detail-cta" id="rmDetailCta">Open module →</button>
+    </aside>
+  </div>
+</div>
+
 <div id="bf-overlay" role="dialog" aria-modal="true" aria-label="Brand Foundation">
   <!-- Atmospheric background -->
   <div class="bf-grain" aria-hidden="true"></div>
@@ -10584,6 +10942,247 @@ function bfHideOverlay() {
   // Re-enable Lenis smooth scroll for the main page
   if (typeof lenis !== 'undefined') lenis.start();
   bfUpdateBoxStatus();
+}
+
+/* ============================================================
+   ROADMAP OVERLAY — full-screen node canvas
+   Renders a static SVG-edge layout of the build pipeline with
+   live per-node status pulled from existing localStorage flags. */
+const RM_NODES = [
+  { id:'foundation', title:'Brand Foundation', meta:'6-step questionnaire',
+    body:'Your why, your visual energy, your audience, and the promise behind the brand. Every prompt downstream gets filled in from this.',
+    x:80,  y:340, num:'01', opens:'foundation', deps:[] },
+  { id:'identity',   title:'Brand Identity',   meta:'category · vibe · font · palette',
+    body:'Lock in category, vibe, font direction, color mood, and hero customer. The visual + voice direction that ships into every output.',
+    x:280, y:340, num:'02', opens:'identity', deps:['foundation'] },
+  { id:'brandkit',   title:'Brand Kit',        meta:'colors · fonts · tone',
+    body:'Your complete brand document — colors, fonts, tone of voice. Saved once, pulled into every prompt and email automatically.',
+    x:520, y:340, num:'03', opens:'panel-brandkit', deps:['identity'] },
+  { id:'prompts',    title:'Prompt Pack',      meta:'all build prompts',
+    body:'Every build prompt pre-filled with your brand voice, audience, and direction. Paste into any AI service and run.',
+    x:820, y:200, num:'04', opens:'panel-prompts', deps:['brandkit'] },
+  { id:'designer',   title:'Designer Prompts', meta:'Shopify theme code',
+    body:'Claude Code snippets that build your Shopify theme around your actual brand — not a generic template.',
+    x:820, y:340, num:'05', opens:'panel-designer', deps:['brandkit'] },
+  { id:'email',      title:'Email Marketing',  meta:'flows + subject lines',
+    body:'Welcome, abandoned cart, post-purchase — flows and copy already in your brand voice. Ready for any email tool.',
+    x:820, y:480, num:'06', opens:'panel-email', deps:['brandkit'] },
+  { id:'checklist',  title:'Launch Checklist', meta:'20 items',
+    body:'20 things to check before you remove your store password. Track progress and launch with nothing missing.',
+    x:1150, y:340, num:'07', opens:'panel-checklist', deps:['prompts','designer','email'] },
+  { id:'resources',  title:'Resources',        meta:'apps · fonts · suppliers',
+    body:'Every tool, font, app, and resource you might need while building — curated and tagged.',
+    x:1380, y:340, num:'08', opens:'panel-resources', deps:[] }
+];
+
+function rmComputeStatus() {
+  /* Pull live state from existing storage / state */
+  const bfDone     = !!localStorage.getItem(BF_COMPLETE_KEY);
+  const obDone     = !!localStorage.getItem(OB_COMPLETE_KEY);
+  /* identity considered "done" once OB completion key exists (covers brand name + details) */
+  let brandKitFilled = false;
+  try { const o = JSON.parse(localStorage.getItem('frmls_brand_output') || 'null'); brandKitFilled = !!(o && o.summary); } catch(e){}
+  let promptsOpened = !!localStorage.getItem('last_open_panel-prompts');
+  let designerOpened= !!localStorage.getItem('last_open_panel-designer');
+  let emailOpened   = !!localStorage.getItem('last_open_panel-email');
+  let resourcesOpened = !!localStorage.getItem('last_open_panel-resources');
+  /* Checklist done = all 20 items ticked */
+  let checklistChecked = 0, checklistTotal = 0;
+  try {
+    const arr = JSON.parse(localStorage.getItem(CHECKLIST_LS) || '[]');
+    checklistChecked = arr.length;
+    checklistTotal = (typeof launchItems !== 'undefined') ? launchItems.length : 20;
+  } catch(e){}
+  const checklistDone = checklistTotal > 0 && checklistChecked >= checklistTotal;
+
+  return {
+    foundation: bfDone ? 'done' : 'progress',
+    identity:   obDone ? 'done' : (bfDone ? 'upcoming' : 'locked'),
+    brandkit:   brandKitFilled ? 'done' : (obDone ? 'upcoming' : 'locked'),
+    prompts:    promptsOpened ? 'done' : (brandKitFilled ? 'upcoming' : 'locked'),
+    designer:   designerOpened ? 'done' : (brandKitFilled ? 'upcoming' : 'locked'),
+    email:      emailOpened ? 'done' : (brandKitFilled ? 'upcoming' : 'locked'),
+    checklist:  checklistDone ? 'done' : (checklistChecked > 0 ? 'progress' : 'upcoming'),
+    resources:  resourcesOpened ? 'done' : 'upcoming'
+  };
+}
+
+function rmRender() {
+  const nodesEl = document.getElementById('rmNodes');
+  const edgesEl = document.getElementById('rmEdges');
+  if (!nodesEl || !edgesEl) return;
+  const status = rmComputeStatus();
+
+  /* Render nodes */
+  nodesEl.innerHTML = RM_NODES.map(n => {
+    const s = status[n.id];
+    const badge = s === 'done' ? '✓' : (s === 'progress' ? '●' : (s === 'locked' ? '✕' : ''));
+    return `
+      <div class="rm-node rm-${s}" data-id="${n.id}" data-status="${s}"
+           style="left:${n.x}px; top:${n.y}px;"
+           role="button" tabindex="0" aria-label="${n.title}">
+        <div class="rm-node-head">
+          <span class="rm-node-num">${n.num}</span>
+          <span class="rm-node-badge">${badge}</span>
+        </div>
+        <div class="rm-node-title">${n.title}</div>
+        <div class="rm-node-meta">${n.meta}</div>
+      </div>`;
+  }).join('');
+
+  /* Render edges (cubic-bezier curves between dependency pairs) */
+  const W = 1600, H = 760, NW = 170, NH = 78;
+  const paths = [];
+  RM_NODES.forEach(n => {
+    n.deps.forEach(depId => {
+      const dep = RM_NODES.find(m => m.id === depId);
+      if (!dep) return;
+      /* edge from right side of dep to left side of n */
+      const x1 = dep.x + NW/2, y1 = dep.y;
+      const x2 = n.x   - NW/2, y2 = n.y;
+      const dx = Math.max(40, (x2 - x1) * 0.5);
+      const d = `M ${x1} ${y1} C ${x1+dx} ${y1}, ${x2-dx} ${y2}, ${x2} ${y2}`;
+      const active = (status[depId] === 'done');
+      paths.push(`<path class="rm-edge${active ? ' rm-edge-active' : ''}" d="${d}" data-from="${depId}" data-to="${n.id}"/>`);
+    });
+  });
+  /* Keep the <defs> intact — only replace path siblings */
+  const defs = edgesEl.querySelector('defs');
+  edgesEl.innerHTML = (defs ? defs.outerHTML : '') + paths.join('');
+
+  /* Progress strip */
+  const doneCount = Object.values(status).filter(s => s === 'done').length;
+  const total = RM_NODES.length;
+  const pct = Math.round((doneCount / total) * 100);
+  const pl  = document.getElementById('rmProgressLabel');
+  const pp  = document.getElementById('rmProgressPct');
+  const pf  = document.getElementById('rmProgressFill');
+  if (pl) pl.textContent = `${doneCount} / ${total} modules complete`;
+  if (pp) pp.textContent = pct + '%';
+  if (pf) pf.style.width = pct + '%';
+
+  /* Wire node clicks */
+  nodesEl.querySelectorAll('.rm-node').forEach(el => {
+    el.addEventListener('click', () => rmShowDetail(el.dataset.id));
+    el.addEventListener('mouseenter', () => rmTraceUpstream(el.dataset.id));
+    el.addEventListener('mouseleave', () => rmClearTrace());
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); rmShowDetail(el.dataset.id); }
+    });
+  });
+
+  /* Apply current filter */
+  rmApplyFilter(document.querySelector('#roadmap-overlay .rm-filter.active')?.dataset.filter || 'all');
+}
+
+function rmTraceUpstream(id) {
+  /* Highlight the chain leading TO this node */
+  const node = RM_NODES.find(n => n.id === id);
+  if (!node) return;
+  const lit = new Set([id]);
+  const walk = (n) => n.deps.forEach(d => { if (!lit.has(d)) { lit.add(d); walk(RM_NODES.find(m => m.id === d) || {deps:[]}); } });
+  walk(node);
+  document.querySelectorAll('#rmNodes .rm-node').forEach(el => {
+    el.classList.toggle('rm-traced', lit.has(el.dataset.id) && el.dataset.id !== id);
+  });
+  document.querySelectorAll('#rmEdges .rm-edge').forEach(p => {
+    const from = p.getAttribute('data-from'); const to = p.getAttribute('data-to');
+    p.classList.toggle('rm-edge-trace', lit.has(from) && lit.has(to));
+  });
+}
+function rmClearTrace() {
+  document.querySelectorAll('#rmNodes .rm-node.rm-traced').forEach(el => el.classList.remove('rm-traced'));
+  document.querySelectorAll('#rmEdges .rm-edge.rm-edge-trace').forEach(p => p.classList.remove('rm-edge-trace'));
+}
+
+function rmShowDetail(id) {
+  const node = RM_NODES.find(n => n.id === id);
+  if (!node) return;
+  const status = rmComputeStatus()[id];
+  const panel = document.getElementById('rmDetail');
+  const statusEl = document.getElementById('rmDetailStatus');
+  const titleEl  = document.getElementById('rmDetailTitle');
+  const bodyEl   = document.getElementById('rmDetailBody');
+  const metaEl   = document.getElementById('rmDetailMeta');
+  const ctaEl    = document.getElementById('rmDetailCta');
+  if (!panel || !titleEl) return;
+  const statusLabel = {done:'COMPLETE', progress:'IN PROGRESS', upcoming:'UPCOMING', locked:'LOCKED'}[status] || 'UPCOMING';
+  if (statusEl) statusEl.textContent = statusLabel;
+  titleEl.textContent = node.title;
+  bodyEl.textContent  = node.body;
+  /* Build meta lines: deps + outputs */
+  const depTitles  = node.deps.map(d => RM_NODES.find(m => m.id === d)?.title).filter(Boolean);
+  const consumers  = RM_NODES.filter(m => m.deps.includes(id)).map(m => m.title);
+  const meta = [];
+  if (depTitles.length) meta.push(`<div>Needs: <strong>${depTitles.join(', ')}</strong></div>`);
+  if (consumers.length) meta.push(`<div>Feeds: <strong>${consumers.join(', ')}</strong></div>`);
+  metaEl.innerHTML = meta.join('');
+  ctaEl.disabled = (status === 'locked');
+  ctaEl.textContent = status === 'locked'
+    ? `Locked — finish ${depTitles[0] || 'upstream'} first`
+    : (status === 'done' ? 'Open module →' : 'Start →');
+  ctaEl.onclick = () => {
+    if (status === 'locked') return;
+    rmOpenTarget(node);
+  };
+  panel.classList.add('rm-show');
+  panel.setAttribute('aria-hidden', 'false');
+}
+function rmCloseDetail() {
+  const panel = document.getElementById('rmDetail');
+  if (!panel) return;
+  panel.classList.remove('rm-show');
+  panel.setAttribute('aria-hidden', 'true');
+}
+
+function rmOpenTarget(node) {
+  /* Close the roadmap then route the click into existing module-open APIs */
+  closeRoadmap();
+  setTimeout(() => {
+    const t = node.opens;
+    if (t === 'foundation') { if (typeof openBrandFoundation === 'function') openBrandFoundation(); return; }
+    if (t === 'identity')   { if (typeof openIdentityModal === 'function') openIdentityModal(); return; }
+    if (t && t.startsWith('panel-') && typeof openPanel === 'function') { openPanel(t); return; }
+  }, 240);
+}
+
+function rmApplyFilter(filter) {
+  document.querySelectorAll('#roadmap-overlay .rm-filter').forEach(b => {
+    b.classList.toggle('active', b.dataset.filter === filter);
+  });
+  document.querySelectorAll('#rmNodes .rm-node').forEach(el => {
+    const s = el.dataset.status;
+    let visible = true;
+    if (filter === 'incomplete') visible = (s !== 'done');
+    else if (filter === 'done')   visible = (s === 'done');
+    el.classList.toggle('rm-hidden', !visible);
+  });
+}
+
+function openRoadmap() {
+  const overlay = document.getElementById('roadmap-overlay');
+  if (!overlay) return;
+  rmRender();
+  overlay.classList.add('rm-visible');
+  document.body.style.overflow = 'hidden';
+  if (typeof lenis !== 'undefined') lenis.stop();
+  /* Filter button handlers (once) */
+  if (!overlay._rmBound) {
+    overlay.querySelectorAll('.rm-filter').forEach(b => {
+      b.addEventListener('click', () => rmApplyFilter(b.dataset.filter));
+    });
+    /* Esc closes */
+    overlay.addEventListener('keydown', e => { if (e.key === 'Escape') closeRoadmap(); });
+    overlay._rmBound = true;
+  }
+}
+function closeRoadmap() {
+  const overlay = document.getElementById('roadmap-overlay');
+  if (!overlay) return;
+  overlay.classList.remove('rm-visible');
+  document.body.style.overflow = '';
+  if (typeof lenis !== 'undefined') lenis.start();
+  rmCloseDetail();
 }
 
 function bfUpdateBoxStatus() {

@@ -3537,13 +3537,44 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   padding-bottom: 24px;
 }
 .bf-screen {
-  width: 100%; max-width: 740px;
-  padding: 16px 32px 16px;
+  width: 100%; max-width: 780px;
+  padding: 28px 36px 28px;
   flex-direction: column; align-items: flex-start;
   display: none;
+  position: relative;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(124,58,237,0.07), rgba(6,182,212,0.025) 60%, rgba(6,182,212,0)),
+    rgba(10,8,22,0.55);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.45),
+    0 0 60px rgba(124,58,237,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+/* gradient hairline along the top edge of the card */
+.bf-screen::before {
+  content: ''; position: absolute; left: 14%; right: 14%; top: -1px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(157,92,245,0.65) 30%, rgba(34,211,238,0.65) 70%, transparent);
+  pointer-events: none;
+}
+/* corner accent caps — subtle "tech-card" detail */
+.bf-screen::after {
+  content: ''; position: absolute; left: 12px; top: 12px;
+  width: 14px; height: 14px; pointer-events: none;
+  border-top: 1px solid rgba(157,92,245,0.45);
+  border-left: 1px solid rgba(157,92,245,0.45);
+  border-top-left-radius: 6px;
 }
 .bf-screen.bf-active {
   display: flex;
+  animation: bfScreenIn .55s cubic-bezier(.16,1,.3,1);
+}
+@keyframes bfScreenIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 .bf-label {
   font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 0.22em;
@@ -3567,20 +3598,29 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
   width: 100%; margin-bottom: 20px;
 }
 .bf-checkbox-card {
-  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px;
-  padding: 16px; cursor: pointer; font-size: 15px; font-weight: 500; color: #ffffff; line-height: 1.45;
-  transition: border-color 0.2s, background 0.2s, transform 0.18s;
+  background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+  padding: 14px 16px; cursor: pointer; font-size: 15px; font-weight: 500; color: #ffffff; line-height: 1.45;
+  transition: border-color 0.2s, background 0.2s, transform 0.18s, box-shadow 0.2s;
   position: relative; z-index: 1; user-select: none;
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
 .bf-checkbox-card:hover {
-  border-color: rgba(124,58,237,0.6);
-  background: rgba(124,58,237,0.06);
+  border-color: rgba(157,92,245,0.55);
+  background: rgba(124,58,237,0.07);
+  transform: translateY(-1px);
 }
 .bf-checkbox-card.selected {
-  border-color: #06b6d4;
-  background: rgba(6,182,212,0.10);
-  box-shadow: 0 0 0 1px rgba(6,182,212,0.15);
+  border-color: rgba(34,211,238,0.85);
+  background: rgba(6,182,212,0.12);
+  box-shadow: 0 0 0 1px rgba(6,182,212,0.20), 0 0 22px rgba(34,211,238,0.20);
+}
+.bf-checkbox-card.selected::before {
+  content: '✓'; position: absolute; top: 8px; right: 10px;
+  font-size: 10px; font-weight: 700; color: #fff;
+  width: 16px; height: 16px; line-height: 16px; text-align: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  box-shadow: 0 0 10px rgba(34,211,238,0.45);
 }
 .bf-textarea {
   width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
@@ -3847,7 +3887,8 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 /* Mobile */
 @media (max-width: 767px) {
   .bf-top-bar { padding: 16px 20px 12px; }
-  .bf-screen { padding: 32px 20px 100px; }
+  .bf-screen { padding: 22px 20px 24px; border-radius: 16px; }
+  .bf-screen::after { left: 8px; top: 8px; width: 10px; height: 10px; }
   .bf-headline { font-size: 38px; letter-spacing: -0.035em; }
   .bf-subline { font-size: 12px; margin-bottom: 24px; }
   .bf-checkbox-grid { grid-template-columns: 1fr; }
@@ -3866,9 +3907,9 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     padding-bottom: 8px;
     justify-content: flex-start;
   }
-  .bf-screen { padding: 8px 32px 0; }
+  .bf-screen { padding: 22px 34px 22px; }
   .bf-label { margin-bottom: 12px; }
-  .bf-headline { font-size: 46px; line-height: 1.05; margin-bottom: 8px; }
+  .bf-headline { font-size: 44px; line-height: 1.05; margin-bottom: 8px; }
   .bf-subline { margin-bottom: 18px; }
   .bf-checkbox-grid { gap: 8px; margin-bottom: 12px; }
   .bf-checkbox-card { padding: 11px 14px; font-size: 14px; line-height: 1.35; border-radius: 11px; }
@@ -3879,6 +3920,7 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 
 /* Slightly more breathing room on tall screens — content stays comfortable */
 @media (min-width: 768px) and (min-height: 900px) {
+  .bf-screen { padding: 32px 40px 30px; }
   .bf-headline { font-size: 52px; margin-bottom: 12px; }
   .bf-subline { margin-bottom: 28px; }
   .bf-checkbox-grid { gap: 10px; margin-bottom: 18px; }

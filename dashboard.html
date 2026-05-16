@@ -796,20 +796,27 @@ body::after {
   transition:width .55s cubic-bezier(.16,1,.3,1);
 }
 
-/* The canvas: edges layer + nodes layer */
+/* The canvas: edges layer + nodes layer.
+   Fixed 1600/760 aspect so SVG viewBox coords and absolute-positioned
+   HTML nodes share the exact same coordinate space. The wrapper scales
+   the whole canvas down to fit while preserving alignment. */
 .rm-canvas-wrap {
-  position:relative; flex:1;
-  margin:0 32px 32px; border-radius:18px;
+  position:relative; align-self:center;
+  width:100%; max-width:calc((100vh - 220px) * 1600 / 760);
+  aspect-ratio: 1600 / 760;
+  margin:0 32px 32px;
+  border-radius:18px;
   background:rgba(13,15,13,0.55);
   border:1px solid var(--border-subtle);
   overflow:hidden;
-  min-height:0;
 }
 .rm-edges {
   position:absolute; inset:0; width:100%; height:100%;
   pointer-events:none; z-index:1;
 }
 .rm-edges path { fill:none; stroke-linecap:round; }
+.rm-grad-stop-1 { stop-color: var(--purple-light); stop-opacity: 0.55; }
+.rm-grad-stop-2 { stop-color: var(--cyan-light);   stop-opacity: 0.15; }
 .rm-edges .rm-edge {
   stroke:rgba(255,255,255,0.10); stroke-width:1.5;
   stroke-dasharray:4 6;
@@ -832,67 +839,184 @@ body::after {
   position:absolute; inset:0; z-index:2;
   pointer-events:none;
 }
+
+/* Base styles shared across all node kinds */
 .rm-node {
   position:absolute;
-  width:170px; padding:14px 16px;
+  cursor:pointer;
+  pointer-events:auto;
+  user-select:none;
+  transform:translate(-50%, -50%);
+  transition:transform .25s cubic-bezier(.16,1,.3,1), filter .25s, opacity .25s;
+  color:#fff;
+}
+.rm-node.rm-locked    { opacity:0.40; cursor:not-allowed; }
+.rm-node.rm-hidden    { display:none; }
+.rm-node:hover        { transform:translate(-50%, -50%) translateY(-2px); }
+.rm-node.rm-locked:hover { transform:translate(-50%, -50%); }
+
+/* ============ ICON-ONLY NODE ============ */
+.rm-node-icon-only {
+  width:92px;
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+}
+.rm-node-disc {
+  position:relative;
+  width:64px; height:64px; border-radius:50%;
+  background:var(--bg-card);
+  border:1px solid var(--border-subtle);
+  display:flex; align-items:center; justify-content:center;
+  transition:border-color .25s, background .25s, box-shadow .25s;
+}
+.rm-node-disc svg {
+  width:26px; height:26px;
+  stroke:rgba(255,255,255,0.7);
+  transition:stroke .25s;
+}
+.rm-node-icon-only.rm-done .rm-node-disc {
+  background:var(--bg-card-2);
+  border-color:rgba(var(--accent-rgb),0.6);
+  box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.20), 0 0 22px rgba(var(--accent-rgb),0.22);
+}
+.rm-node-icon-only.rm-done .rm-node-disc svg { stroke:var(--purple-light); }
+.rm-node-icon-only.rm-progress .rm-node-disc {
+  border-color:rgba(var(--accent-rgb),0.5);
+  animation:rmNodePulse 2.4s ease-in-out infinite;
+}
+.rm-node-icon-only.rm-progress .rm-node-disc svg { stroke:#fff; }
+.rm-node-icon-only.rm-locked .rm-node-disc { border-style:dashed; }
+.rm-node-icon-only:hover .rm-node-disc {
+  border-color:rgba(var(--accent-rgb),0.65);
+  box-shadow:0 0 24px rgba(var(--accent-rgb),0.25);
+}
+.rm-node-icon-only .rm-node-label {
+  font-family:'Inter', sans-serif; font-size:12.5px; font-weight:700;
+  letter-spacing:-0.01em; color:#fff; line-height:1.2; text-align:center;
+  white-space:nowrap;
+}
+.rm-node-icon-only .rm-node-meta {
+  font-family:'DM Mono', monospace; font-size:8.5px;
+  letter-spacing:0.10em; text-transform:uppercase;
+  color:rgba(255,255,255,0.42); text-align:center;
+  white-space:nowrap;
+}
+
+/* ============ CARD NODE ============ */
+.rm-node-card {
+  width:200px; padding:14px 16px;
   border-radius:14px;
   background:var(--bg-card);
   border:1px solid var(--border-subtle);
-  cursor:pointer;
-  pointer-events:auto;
-  transition:transform .25s cubic-bezier(.16,1,.3,1), border-color .25s, box-shadow .25s, background .25s, opacity .25s;
-  user-select:none;
-  transform:translate(-50%, -50%);
-  display:flex; flex-direction:column; gap:6px;
+  display:flex; flex-direction:column; gap:8px;
+  transition:border-color .25s, box-shadow .25s, background .25s;
 }
-.rm-node:hover {
-  transform:translate(-50%, -50%) translateY(-2px);
-  border-color:rgba(var(--accent-rgb),0.45);
-  box-shadow:0 12px 32px rgba(0,0,0,0.45), 0 0 24px rgba(var(--accent-rgb),0.15);
+.rm-node-card .rm-node-head {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:8px;
 }
-.rm-node.rm-locked    { opacity:0.40; cursor:not-allowed; border-style:dashed; }
-.rm-node.rm-locked:hover { transform:translate(-50%, -50%); box-shadow:none; }
-.rm-node.rm-progress  {
-  border-color:rgba(var(--accent-rgb),0.45);
-  box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.15);
-  animation:rmNodePulse 2.4s ease-in-out infinite;
+.rm-node-card .rm-node-icon {
+  width:32px; height:32px; border-radius:9px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border-subtle);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .25s, border-color .25s;
 }
-.rm-node.rm-done {
+.rm-node-card .rm-node-icon svg {
+  width:18px; height:18px;
+  stroke:rgba(255,255,255,0.78);
+}
+.rm-node-card .rm-node-title {
+  font-family:'Inter', sans-serif; font-size:14px; font-weight:700;
+  letter-spacing:-0.01em; color:#fff; line-height:1.2;
+}
+.rm-node-card .rm-node-meta {
+  font-family:'DM Mono', monospace; font-size:9.5px;
+  letter-spacing:0.10em; text-transform:uppercase;
+  color:rgba(255,255,255,0.42);
+}
+.rm-node-card.rm-done {
   background:var(--bg-card-2);
   border-color:rgba(var(--accent-rgb),0.55);
   box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.20), 0 0 22px rgba(var(--accent-rgb),0.18);
 }
-.rm-node.rm-traced {
-  border-color:rgba(var(--accent-rgb),0.85);
-  box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.40), 0 0 28px rgba(var(--accent-rgb),0.35);
+.rm-node-card.rm-done .rm-node-icon {
+  background:rgba(var(--accent-rgb),0.12);
+  border-color:rgba(var(--accent-rgb),0.35);
 }
-.rm-node.rm-hidden { display:none; }
-@keyframes rmNodePulse {
-  0%, 100% { box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.15), 0 0 0 rgba(var(--accent-rgb),0); }
-  50%      { box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.30), 0 0 22px rgba(var(--accent-rgb),0.30); }
+.rm-node-card.rm-progress {
+  border-color:rgba(var(--accent-rgb),0.45);
+  animation:rmNodePulse 2.4s ease-in-out infinite;
+}
+.rm-node-card.rm-locked { border-style:dashed; }
+.rm-node-card:hover {
+  border-color:rgba(var(--accent-rgb),0.55);
+  box-shadow:0 12px 32px rgba(0,0,0,0.45), 0 0 24px rgba(var(--accent-rgb),0.18);
 }
 
-.rm-node-head {
-  display:flex; align-items:center; justify-content:space-between;
-  gap:8px;
+/* ============ FEATURED NODE (current focus) ============ */
+.rm-node-featured {
+  width:240px; padding:18px;
+  border-radius:16px;
+  background:linear-gradient(180deg, rgba(var(--accent-rgb),0.16), rgba(var(--accent-rgb),0.04) 50%, var(--bg-card-2));
+  border:1px solid rgba(var(--accent-rgb),0.55);
+  box-shadow:0 24px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(var(--accent-rgb),0.25), 0 0 32px rgba(var(--accent-rgb),0.30);
+  display:flex; flex-direction:column; gap:12px;
+  position:absolute;
+  z-index:3;
 }
-.rm-node-num {
-  font-family:'DM Mono', monospace; font-size:9px; font-weight:600;
+.rm-node-featured .rm-node-head {
+  display:flex; align-items:flex-start; gap:12px;
+}
+.rm-node-featured .rm-node-icon {
+  flex:0 0 auto;
+  width:42px; height:42px; border-radius:11px;
+  background:var(--grad);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 0 14px rgba(var(--accent-rgb),0.45);
+}
+.rm-node-featured .rm-node-icon svg {
+  width:22px; height:22px; stroke:#fff;
+}
+.rm-node-featured .rm-node-head-text { flex:1; min-width:0; }
+.rm-node-featured .rm-node-num {
+  font-family:'DM Mono', monospace; font-size:9.5px; font-weight:600;
   letter-spacing:0.18em; text-transform:uppercase;
-  color:rgba(255,255,255,0.40);
+  background:var(--grad-text);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  margin-bottom:3px; display:block;
 }
+.rm-node-featured .rm-node-title {
+  font-family:'Inter', sans-serif; font-size:17px; font-weight:800;
+  letter-spacing:-0.02em; color:#fff; line-height:1.15;
+}
+.rm-node-feat-body {
+  font-family:'Inter', sans-serif; font-size:12px; line-height:1.5;
+  color:rgba(255,255,255,0.68);
+}
+.rm-node-feat-cta {
+  font-family:'DM Mono', monospace; font-size:10.5px; font-weight:700;
+  letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--cyan-light);
+  padding-top:8px; border-top:1px solid rgba(var(--accent-rgb),0.20);
+}
+
+/* ============ STATUS BADGE (top-right on all kinds) ============ */
 .rm-node-badge {
   width:18px; height:18px; border-radius:50%;
   display:flex; align-items:center; justify-content:center;
   font-size:9px; font-weight:700; color:#fff;
+  flex-shrink:0;
+}
+.rm-node-icon-only .rm-node-badge {
+  position:absolute; top:-4px; right:-4px;
 }
 .rm-node.rm-done .rm-node-badge {
   background:var(--grad);
   box-shadow:0 0 10px rgba(var(--accent-rgb),0.55);
 }
 .rm-node.rm-progress .rm-node-badge {
-  background:rgba(var(--accent-rgb),0.18);
-  border:1px solid rgba(var(--accent-rgb),0.45);
+  background:rgba(var(--accent-rgb),0.20);
+  border:1px solid rgba(var(--accent-rgb),0.50);
   color:var(--cyan-light);
 }
 .rm-node.rm-upcoming .rm-node-badge,
@@ -901,15 +1025,43 @@ body::after {
   border:1px solid rgba(255,255,255,0.10);
   color:rgba(255,255,255,0.45);
 }
-.rm-node-title {
-  font-family:'Inter', sans-serif; font-size:14px; font-weight:700;
-  letter-spacing:-0.01em; color:#fff; line-height:1.2;
+
+/* ============ UPSTREAM TRACE (on hover) ============ */
+.rm-node.rm-traced .rm-node-disc,
+.rm-node.rm-traced.rm-node-card,
+.rm-node.rm-traced.rm-node-featured {
+  border-color:rgba(var(--accent-rgb),0.85);
+  box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.40), 0 0 28px rgba(var(--accent-rgb),0.35);
 }
-.rm-node-meta {
-  font-family:'DM Mono', monospace; font-size:9.5px;
-  letter-spacing:0.10em; text-transform:uppercase;
-  color:rgba(255,255,255,0.42);
+
+@keyframes rmNodePulse {
+  0%, 100% { box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.20), 0 0 0 rgba(var(--accent-rgb),0); }
+  50%      { box-shadow:0 0 0 1px rgba(var(--accent-rgb),0.30), 0 0 22px rgba(var(--accent-rgb),0.30); }
 }
+
+/* ============ EDGE EMBELLISHMENTS ============ */
+.rm-edge-dot {
+  fill:rgba(255,255,255,0.30);
+  transition:fill .25s, r .25s;
+}
+.rm-edge-dot-active {
+  fill:rgba(var(--accent-rgb),0.95);
+  filter:drop-shadow(0 0 6px rgba(var(--accent-rgb),0.6));
+}
+.rm-edge-label-bg {
+  fill:var(--bg-card-2);
+  stroke:rgba(255,255,255,0.10);
+  stroke-width:1;
+}
+.rm-edge-label {
+  font-family:'DM Mono', monospace;
+  font-size:9.5px; letter-spacing:0.1em;
+  fill:rgba(255,255,255,0.55);
+  text-transform:lowercase;
+  pointer-events:none;
+}
+.rm-edge-label-group[data-from] { transition:opacity .25s; }
+.rm-edges path { transition:stroke .25s, stroke-width .25s, stroke-opacity .25s; }
 
 /* Floating detail panel */
 .rm-detail {
@@ -5162,11 +5314,11 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
 
   <!-- The canvas: SVG layer for edges, HTML layer for nodes -->
   <div class="rm-canvas-wrap">
-    <svg class="rm-edges" id="rmEdges" viewBox="0 0 1600 760" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <svg class="rm-edges" id="rmEdges" viewBox="0 0 1600 760" preserveAspectRatio="none" aria-hidden="true">
       <defs>
         <linearGradient id="rmEdgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%"  stop-color="rgb(var(--accent-rgb-comma, 0 229 54))" stop-opacity="0.55"/>
-          <stop offset="100%" stop-color="rgb(var(--accent-rgb-comma, 0 229 54))" stop-opacity="0.15"/>
+          <stop offset="0%"  class="rm-grad-stop-1"/>
+          <stop offset="100%" class="rm-grad-stop-2"/>
         </linearGradient>
       </defs>
       <!-- paths injected by JS -->
@@ -10946,34 +11098,61 @@ function bfHideOverlay() {
 
 /* ============================================================
    ROADMAP OVERLAY — full-screen node canvas
-   Renders a static SVG-edge layout of the build pipeline with
-   live per-node status pulled from existing localStorage flags. */
+   Renders a node graph of the build pipeline with live per-node
+   status pulled from existing localStorage flags. Layout mixes
+   icon-only nodes and card nodes; the user's "current focus"
+   node renders as a larger expanded card. */
+
+/* Each node owns an SVG icon-path for its visual identity. */
+const RM_ICONS = {
+  foundation: '<path d="M12 2 14.5 9 22 9 16 13.5 18.5 21 12 16.5 5.5 21 8 13.5 2 9 9.5 9z" stroke-linejoin="round"/>',
+  identity:   '<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>',
+  brandkit:   '<path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>',
+  prompts:    '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5M8 9h2"/>',
+  designer:   '<path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/>',
+  email:      '<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M22 7l-10 7L2 7"/>',
+  checklist:  '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+  resources:  '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>'
+};
+
 const RM_NODES = [
-  { id:'foundation', title:'Brand Foundation', meta:'6-step questionnaire',
+  { id:'foundation', title:'Brand Foundation', meta:'6 questions · ~12 min',
     body:'Your why, your visual energy, your audience, and the promise behind the brand. Every prompt downstream gets filled in from this.',
-    x:80,  y:340, num:'01', opens:'foundation', deps:[] },
-  { id:'identity',   title:'Brand Identity',   meta:'category · vibe · font · palette',
+    x:120,  y:380, kind:'icon', opens:'foundation', deps:[] },
+  { id:'identity',   title:'Brand Identity',   meta:'category · vibe · font',
     body:'Lock in category, vibe, font direction, color mood, and hero customer. The visual + voice direction that ships into every output.',
-    x:280, y:340, num:'02', opens:'identity', deps:['foundation'] },
-  { id:'brandkit',   title:'Brand Kit',        meta:'colors · fonts · tone',
+    x:330,  y:380, kind:'icon', opens:'identity', deps:['foundation'] },
+  { id:'brandkit',   title:'Brand Kit',        meta:'the source of truth',
     body:'Your complete brand document — colors, fonts, tone of voice. Saved once, pulled into every prompt and email automatically.',
-    x:520, y:340, num:'03', opens:'panel-brandkit', deps:['identity'] },
-  { id:'prompts',    title:'Prompt Pack',      meta:'all build prompts',
+    x:560,  y:380, kind:'card', opens:'panel-brandkit', deps:['identity'] },
+  { id:'prompts',    title:'Prompt Pack',      meta:'pre-filled · all 12',
     body:'Every build prompt pre-filled with your brand voice, audience, and direction. Paste into any AI service and run.',
-    x:820, y:200, num:'04', opens:'panel-prompts', deps:['brandkit'] },
+    x:900,  y:180, kind:'card', opens:'panel-prompts', deps:['brandkit'] },
   { id:'designer',   title:'Designer Prompts', meta:'Shopify theme code',
     body:'Claude Code snippets that build your Shopify theme around your actual brand — not a generic template.',
-    x:820, y:340, num:'05', opens:'panel-designer', deps:['brandkit'] },
+    x:900,  y:380, kind:'card', opens:'panel-designer', deps:['brandkit'] },
   { id:'email',      title:'Email Marketing',  meta:'flows + subject lines',
     body:'Welcome, abandoned cart, post-purchase — flows and copy already in your brand voice. Ready for any email tool.',
-    x:820, y:480, num:'06', opens:'panel-email', deps:['brandkit'] },
-  { id:'checklist',  title:'Launch Checklist', meta:'20 items',
+    x:900,  y:580, kind:'card', opens:'panel-email', deps:['brandkit'] },
+  { id:'checklist',  title:'Launch Checklist', meta:'20 checks',
     body:'20 things to check before you remove your store password. Track progress and launch with nothing missing.',
-    x:1150, y:340, num:'07', opens:'panel-checklist', deps:['prompts','designer','email'] },
+    x:1240, y:380, kind:'icon', opens:'panel-checklist', deps:['prompts','designer','email'] },
   { id:'resources',  title:'Resources',        meta:'apps · fonts · suppliers',
     body:'Every tool, font, app, and resource you might need while building — curated and tagged.',
-    x:1380, y:340, num:'08', opens:'panel-resources', deps:[] }
+    x:1440, y:380, kind:'icon', opens:'panel-resources', deps:[] }
 ];
+
+/* Edge labels — what data actually flows through each connection */
+const RM_EDGE_LABELS = {
+  'foundation->identity': 'answers',
+  'identity->brandkit':   'category, vibe',
+  'brandkit->prompts':    'voice, audience',
+  'brandkit->designer':   'look, tone',
+  'brandkit->email':      'voice',
+  'prompts->checklist':   'ready',
+  'designer->checklist':  'ready',
+  'email->checklist':     'ready'
+};
 
 function rmComputeStatus() {
   /* Pull live state from existing storage / state */
@@ -11007,22 +11186,110 @@ function rmComputeStatus() {
   };
 }
 
+/* Width/height tables — different node kinds have different bounding boxes,
+   used both for layout and for edge endpoint geometry. */
+const RM_DIMS = {
+  icon:     { w: 92,  h: 116 },  /* icon disc + label below */
+  card:     { w: 200, h: 100 },  /* compact card with title + meta */
+  featured: { w: 240, h: 150 }   /* expanded "current focus" card */
+};
+
+/* Pick the "current focus" node — the first non-done node in the natural
+   build order. Becomes the featured (expanded) node on the canvas. */
+function rmPickFocus(status) {
+  const order = ['foundation','identity','brandkit','prompts','designer','email','checklist'];
+  for (const id of order) {
+    if (status[id] !== 'done' && status[id] !== 'locked') return id;
+  }
+  return null;
+}
+
+/* Generate a curvy organic SVG path between two points. Adds slight
+   asymmetric control offsets so the line bends like a real cable instead
+   of a sterile bezier. */
+function rmEdgePath(x1, y1, x2, y2) {
+  const dx = x2 - x1, dy = y2 - y1;
+  const horiz = Math.abs(dx);
+  /* Pull control points horizontally first, then nudge the second one
+     slightly along the orthogonal axis for an organic S-curve. */
+  const c1x = x1 + Math.max(80, horiz * 0.45);
+  const c1y = y1;
+  const c2x = x2 - Math.max(80, horiz * 0.45);
+  const c2y = y2 + (dy === 0 ? 0 : (dy > 0 ? -8 : 8));
+  return `M ${x1} ${y1} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${x2} ${y2}`;
+}
+
+/* Approximate midpoint of a cubic bezier (good enough for label placement) */
+function rmEdgeMid(x1, y1, x2, y2) {
+  const dx = x2 - x1;
+  const c1x = x1 + Math.max(80, Math.abs(dx) * 0.45);
+  const c2x = x2 - Math.max(80, Math.abs(dx) * 0.45);
+  /* t = 0.5 on the cubic */
+  const mx = 0.125 * x1 + 0.375 * c1x + 0.375 * c2x + 0.125 * x2;
+  const my = 0.125 * y1 + 0.375 * y1 + 0.375 * y2 + 0.125 * y2;
+  return { x: mx, y: my };
+}
+
 function rmRender() {
   const nodesEl = document.getElementById('rmNodes');
   const edgesEl = document.getElementById('rmEdges');
   if (!nodesEl || !edgesEl) return;
   const status = rmComputeStatus();
+  const focusId = rmPickFocus(status);
 
-  /* Render nodes */
-  nodesEl.innerHTML = RM_NODES.map(n => {
+  /* Render nodes — three kinds, one of them becomes featured */
+  nodesEl.innerHTML = RM_NODES.map((n, i) => {
     const s = status[n.id];
+    const isFocus = (n.id === focusId);
+    /* Promote the focus node to featured kind */
+    const kind = isFocus ? 'featured' : n.kind;
+    const icon = RM_ICONS[n.id] || '';
     const badge = s === 'done' ? '✓' : (s === 'progress' ? '●' : (s === 'locked' ? '✕' : ''));
+    const num = String(i + 1).padStart(2, '0');
+
+    if (kind === 'icon') {
+      return `
+        <div class="rm-node rm-node-icon-only rm-${s}" data-id="${n.id}" data-status="${s}" data-kind="icon"
+             style="left:${(n.x / 1600 * 100).toFixed(3)}%; top:${(n.y / 760 * 100).toFixed(3)}%;"
+             role="button" tabindex="0" aria-label="${n.title}">
+          <div class="rm-node-disc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icon}</svg>
+            <span class="rm-node-badge">${badge}</span>
+          </div>
+          <div class="rm-node-label">${n.title}</div>
+          <div class="rm-node-meta">${n.meta}</div>
+        </div>`;
+    }
+
+    if (kind === 'featured') {
+      return `
+        <div class="rm-node rm-node-featured rm-${s}" data-id="${n.id}" data-status="${s}" data-kind="featured"
+             style="left:${(n.x / 1600 * 100).toFixed(3)}%; top:${(n.y / 760 * 100).toFixed(3)}%;"
+             role="button" tabindex="0" aria-label="${n.title}">
+          <div class="rm-node-head">
+            <div class="rm-node-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icon}</svg>
+            </div>
+            <div class="rm-node-head-text">
+              <span class="rm-node-num">${num} · ${s === 'done' ? 'COMPLETE' : (s === 'progress' ? 'IN PROGRESS' : (s === 'locked' ? 'LOCKED' : 'NEXT UP'))}</span>
+              <div class="rm-node-title">${n.title}</div>
+            </div>
+            <span class="rm-node-badge">${badge}</span>
+          </div>
+          <div class="rm-node-feat-body">${n.body}</div>
+          <div class="rm-node-feat-cta">Open module →</div>
+        </div>`;
+    }
+
+    /* card */
     return `
-      <div class="rm-node rm-${s}" data-id="${n.id}" data-status="${s}"
-           style="left:${n.x}px; top:${n.y}px;"
+      <div class="rm-node rm-node-card rm-${s}" data-id="${n.id}" data-status="${s}" data-kind="card"
+           style="left:${(n.x / 1600 * 100).toFixed(3)}%; top:${(n.y / 760 * 100).toFixed(3)}%;"
            role="button" tabindex="0" aria-label="${n.title}">
         <div class="rm-node-head">
-          <span class="rm-node-num">${n.num}</span>
+          <div class="rm-node-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icon}</svg>
+          </div>
           <span class="rm-node-badge">${badge}</span>
         </div>
         <div class="rm-node-title">${n.title}</div>
@@ -11030,23 +11297,36 @@ function rmRender() {
       </div>`;
   }).join('');
 
-  /* Render edges (cubic-bezier curves between dependency pairs) */
-  const W = 1600, H = 760, NW = 170, NH = 78;
+  /* Render edges — curvy paths + endpoint dots + labels */
+  const NW_FOR = (id) => {
+    const n = RM_NODES.find(m => m.id === id); if (!n) return 0;
+    const k = (id === focusId) ? 'featured' : n.kind;
+    return RM_DIMS[k].w;
+  };
   const paths = [];
   RM_NODES.forEach(n => {
     n.deps.forEach(depId => {
       const dep = RM_NODES.find(m => m.id === depId);
       if (!dep) return;
-      /* edge from right side of dep to left side of n */
-      const x1 = dep.x + NW/2, y1 = dep.y;
-      const x2 = n.x   - NW/2, y2 = n.y;
-      const dx = Math.max(40, (x2 - x1) * 0.5);
-      const d = `M ${x1} ${y1} C ${x1+dx} ${y1}, ${x2-dx} ${y2}, ${x2} ${y2}`;
+      const x1 = dep.x + NW_FOR(depId) / 2;
+      const y1 = dep.y;
+      const x2 = n.x   - NW_FOR(n.id)  / 2;
+      const y2 = n.y;
+      const d  = rmEdgePath(x1, y1, x2, y2);
+      const mid = rmEdgeMid(x1, y1, x2, y2);
       const active = (status[depId] === 'done');
-      paths.push(`<path class="rm-edge${active ? ' rm-edge-active' : ''}" d="${d}" data-from="${depId}" data-to="${n.id}"/>`);
+      const label = RM_EDGE_LABELS[`${depId}->${n.id}`] || '';
+      paths.push(
+        `<path class="rm-edge${active ? ' rm-edge-active' : ''}" d="${d}" data-from="${depId}" data-to="${n.id}"/>` +
+        `<circle class="rm-edge-dot${active ? ' rm-edge-dot-active' : ''}" cx="${x1}" cy="${y1}" r="3.5"/>` +
+        `<circle class="rm-edge-dot${active ? ' rm-edge-dot-active' : ''}" cx="${x2}" cy="${y2}" r="3.5"/>` +
+        (label ? `<g class="rm-edge-label-group" data-from="${depId}" data-to="${n.id}">
+           <rect class="rm-edge-label-bg" x="${mid.x - label.length * 3.6 - 8}" y="${mid.y - 10}" width="${label.length * 7.2 + 16}" height="20" rx="10"/>
+           <text class="rm-edge-label" x="${mid.x}" y="${mid.y + 4}" text-anchor="middle">${label}</text>
+         </g>` : '')
+      );
     });
   });
-  /* Keep the <defs> intact — only replace path siblings */
   const defs = edgesEl.querySelector('defs');
   edgesEl.innerHTML = (defs ? defs.outerHTML : '') + paths.join('');
 

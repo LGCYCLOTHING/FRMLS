@@ -2022,26 +2022,57 @@ body:has(#screen-7.active) .orca-shell {
 .sidebar-nav.mode-dashboard .sb-todo-check.checked::after { font-size: 10px; }
 .sidebar-nav.mode-dashboard .sb-todo-item { padding: 6px 4px; }
 
-/* Resize handle — three vertical dots on the right edge, drag to resize. */
+/* Unified edge control pill: drag-to-resize on top, close on bottom,
+   separated by a hairline divider so they read as a single element. */
 .sb-resize-handle,
 .pinned-resize-handle {
   display: none;
   position: absolute; top: 50%; transform: translateY(-50%);
-  width: 18px; height: 56px;
-  align-items: center; justify-content: center;
-  cursor: ew-resize;
+  width: 20px; height: 92px;
+  flex-direction: column; align-items: stretch; justify-content: stretch;
   background: var(--grad);
   border: 1px solid color-mix(in srgb, var(--purple) 60%, transparent);
-  border-radius: 8px;
+  border-radius: 10px;
   color: #ffffff;
   z-index: 20;
   box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.35);
   transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+  overflow: hidden;
   /* Stop the browser from converting the drag into a page pan/zoom */
   touch-action: none;
   -webkit-user-select: none;
   user-select: none;
 }
+/* Drag grip — the top of the pill */
+.sb-resize-grip,
+.pinned-resize-grip {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  cursor: ew-resize;
+  transition: background 0.15s;
+}
+.sb-resize-grip:hover,
+.pinned-resize-grip:hover { background: rgba(255,255,255,0.10); }
+/* Hairline divider between the grip and the close button */
+.sb-resize-handle::after,
+.pinned-resize-handle::after {
+  content: ''; display: block;
+  height: 1px; margin: 0 4px;
+  background: rgba(0,0,0,0.32);
+}
+/* Close button — bottom of the pill, same width, smaller height */
+.sb-resize-close,
+.pinned-resize-close {
+  height: 26px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; padding: 0;
+  color: #ffffff; cursor: pointer;
+  transition: background 0.15s;
+}
+.sb-resize-close:hover,
+.pinned-resize-close:hover { background: rgba(0,0,0,0.25); }
+.sb-resize-close svg,
+.pinned-resize-close svg { display: block; opacity: 0.92; }
 .sb-resize-handle { right: 4px; }
 .pinned-resize-handle { left: 4px; }
 .side-panel.pinned .pinned-resize-handle { display: flex; }
@@ -2076,38 +2107,6 @@ body:has(#screen-7.active) .orca-shell {
 .pinned-resize-handle.dragging .sb-resize-dot { background: var(--white); }
 body.sb-resizing { cursor: ew-resize !important; user-select: none; }
 body.sb-resizing * { user-select: none !important; }
-
-/* Small X button that sits just below the drag-resize handle on each
-   side. Lets the user collapse the left sidebar or close the pinned
-   right-side panel without hunting for a separate control. */
-.sb-close-btn,
-.pinned-close-btn {
-  display: none;
-  position: absolute;
-  width: 22px; height: 22px;
-  align-items: center; justify-content: center;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(20,20,20,0.85);
-  color: rgba(255,255,255,0.78);
-  cursor: pointer;
-  z-index: 20;
-  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-}
-.sb-close-btn { right: 4px; top: calc(50% + 36px); }
-.pinned-close-btn { left: 4px; top: calc(50% + 36px); }
-.side-panel.pinned .pinned-close-btn { display: flex; }
-.sidebar-nav.mode-dashboard .sb-close-btn { display: flex; }
-.sb-close-btn:hover,
-.pinned-close-btn:hover {
-  background: rgba(var(--accent-rgb),0.25);
-  border-color: rgba(var(--accent-rgb),0.65);
-  color: #ffffff;
-  transform: scale(1.08);
-}
-.sb-close-btn svg,
-.pinned-close-btn svg { display: block; }
 
 /* Mini "show sidebar" button when the left sidebar is collapsed away. */
 body.sb-collapsed .sidebar-nav.mode-dashboard { transform: translateX(-100%); transition: transform 0.3s ease; }
@@ -4655,16 +4654,18 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
     </div>
   </div>
 
-  <div class="sb-resize-handle" id="sbResizeHandle" title="Drag to resize sidebar" aria-label="Resize sidebar">
-    <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M2.5 7h9"/>
-      <path d="M5 4.5 2.5 7 5 9.5"/>
-      <path d="M9 4.5 11.5 7 9 9.5"/>
-    </svg>
+  <div class="sb-resize-handle" id="sbResizeHandle">
+    <div class="sb-resize-grip" id="sbResizeGrip" title="Drag to resize sidebar" aria-label="Resize sidebar">
+      <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M2.5 7h9"/>
+        <path d="M5 4.5 2.5 7 5 9.5"/>
+        <path d="M9 4.5 11.5 7 9 9.5"/>
+      </svg>
+    </div>
+    <button type="button" class="sb-resize-close" onclick="collapseSidebar()" title="Hide sidebar" aria-label="Hide sidebar">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
   </div>
-  <button type="button" class="sb-close-btn" onclick="collapseSidebar()" title="Hide sidebar" aria-label="Hide sidebar">
-    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-  </button>
 </nav>
 <button type="button" class="sb-show-btn" onclick="showSidebar()" title="Show sidebar" aria-label="Show sidebar">
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -6945,21 +6946,24 @@ function attachPinnedResize(panel) {
 
   const handle = document.createElement('div');
   handle.className = 'pinned-resize-handle';
-  handle.title = 'Drag to resize panel';
-  handle.setAttribute('aria-label', 'Resize panel');
-  handle.innerHTML = '<svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7h9"/><path d="M5 4.5 2.5 7 5 9.5"/><path d="M9 4.5 11.5 7 9 9.5"/></svg>';
-  panel.appendChild(handle);
 
-  // Small X button just below the drag handle — quick way to close
-  // the pinned panel without reaching for the header X.
+  const grip = document.createElement('div');
+  grip.className = 'pinned-resize-grip';
+  grip.title = 'Drag to resize panel';
+  grip.setAttribute('aria-label', 'Resize panel');
+  grip.innerHTML = '<svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7h9"/><path d="M5 4.5 2.5 7 5 9.5"/><path d="M9 4.5 11.5 7 9 9.5"/></svg>';
+  handle.appendChild(grip);
+
   const closeBtn = document.createElement('button');
   closeBtn.type = 'button';
-  closeBtn.className = 'pinned-close-btn';
+  closeBtn.className = 'pinned-resize-close';
   closeBtn.title = 'Close panel';
   closeBtn.setAttribute('aria-label', 'Close panel');
   closeBtn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
   closeBtn.addEventListener('click', e => { e.stopPropagation(); closePanel(); });
-  panel.appendChild(closeBtn);
+  handle.appendChild(closeBtn);
+
+  panel.appendChild(handle);
 
   let dragging = false, startX = 0, startW = 0;
   const onMove = e => {
@@ -6976,7 +6980,7 @@ function attachPinnedResize(panel) {
     handle.classList.remove('dragging');
     localStorage.setItem(PINNED_WIDTH_LS, panel.offsetWidth);
   };
-  handle.addEventListener('mousedown', e => {
+  grip.addEventListener('mousedown', e => {
     if (!panel.classList.contains('pinned')) return;
     dragging = true;
     startX = e.clientX;
@@ -6988,7 +6992,7 @@ function attachPinnedResize(panel) {
   document.addEventListener('mousemove', onMove);
   document.addEventListener('mouseup', onUp);
   // Double-click resets to default.
-  handle.addEventListener('dblclick', () => {
+  grip.addEventListener('dblclick', () => {
     panel.style.removeProperty('width');
     panel.style.removeProperty('min-width');
     localStorage.removeItem(PINNED_WIDTH_LS);
@@ -6998,7 +7002,10 @@ function attachPinnedResize(panel) {
 function initSidebarResize() {
   const sidebar = document.getElementById('sidebarNav');
   const handle  = document.getElementById('sbResizeHandle');
-  if (!sidebar || !handle) return;
+  /* Pointer events fire on the inner grip only — that way clicks on the
+     close X (sibling of the grip) never start a drag. */
+  const grip    = document.getElementById('sbResizeGrip') || handle;
+  if (!sidebar || !handle || !grip) return;
 
   // Restore saved width
   const saved = parseInt(localStorage.getItem(SB_WIDTH_LS), 10);
@@ -7024,17 +7031,15 @@ function initSidebarResize() {
     activePointer = null;
     document.body.classList.remove('sb-resizing');
     handle.classList.remove('dragging');
-    try { if (e && e.pointerId != null) handle.releasePointerCapture(e.pointerId); } catch (_) {}
+    try { if (e && e.pointerId != null) grip.releasePointerCapture(e.pointerId); } catch (_) {}
     localStorage.setItem(SB_WIDTH_LS, sidebar.offsetWidth);
   };
 
   /* Pointer Events handle mouse + touch + pen uniformly. setPointerCapture
      ensures the drag keeps tracking even when the cursor leaves the narrow
-     18px handle — that was the main bug with the mouse-only handler. */
-  handle.addEventListener('pointerdown', e => {
-    /* If the handle is visible (CSS gates it to mode-dashboard), let it work */
+     handle — that was the main bug with the mouse-only handler. */
+  grip.addEventListener('pointerdown', e => {
     if (getComputedStyle(handle).display === 'none') return;
-    /* Only primary mouse button — but always allow touch / pen */
     if (e.pointerType === 'mouse' && e.button !== 0) return;
     dragging = true;
     activePointer = e.pointerId;
@@ -7042,19 +7047,19 @@ function initSidebarResize() {
     startW = sidebar.offsetWidth;
     document.body.classList.add('sb-resizing');
     handle.classList.add('dragging');
-    try { handle.setPointerCapture(e.pointerId); } catch (_) {}
+    try { grip.setPointerCapture(e.pointerId); } catch (_) {}
     e.preventDefault();
   });
-  handle.addEventListener('pointermove',   onMove);
-  handle.addEventListener('pointerup',     onUp);
-  handle.addEventListener('pointercancel', onUp);
+  grip.addEventListener('pointermove',   onMove);
+  grip.addEventListener('pointerup',     onUp);
+  grip.addEventListener('pointercancel', onUp);
 
   /* Belt-and-suspenders fallback in case pointer-capture release misses */
   window.addEventListener('pointerup',   onUp);
   window.addEventListener('pointercancel', onUp);
 
-  /* Double-click resets to default width */
-  handle.addEventListener('dblclick', () => {
+  /* Double-click on the grip resets to default width */
+  grip.addEventListener('dblclick', () => {
     sidebar.style.removeProperty('width');
     sidebar.style.removeProperty('min-width');
     localStorage.removeItem(SB_WIDTH_LS);

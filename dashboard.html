@@ -2077,6 +2077,59 @@ body:has(#screen-7.active) .orca-shell {
 body.sb-resizing { cursor: ew-resize !important; user-select: none; }
 body.sb-resizing * { user-select: none !important; }
 
+/* Small X button that sits just below the drag-resize handle on each
+   side. Lets the user collapse the left sidebar or close the pinned
+   right-side panel without hunting for a separate control. */
+.sb-close-btn,
+.pinned-close-btn {
+  display: none;
+  position: absolute;
+  width: 22px; height: 22px;
+  align-items: center; justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(20,20,20,0.85);
+  color: rgba(255,255,255,0.78);
+  cursor: pointer;
+  z-index: 20;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+.sb-close-btn { right: 4px; top: calc(50% + 36px); }
+.pinned-close-btn { left: 4px; top: calc(50% + 36px); }
+.side-panel.pinned .pinned-close-btn { display: flex; }
+.sidebar-nav.mode-dashboard .sb-close-btn { display: flex; }
+.sb-close-btn:hover,
+.pinned-close-btn:hover {
+  background: rgba(var(--accent-rgb),0.25);
+  border-color: rgba(var(--accent-rgb),0.65);
+  color: #ffffff;
+  transform: scale(1.08);
+}
+.sb-close-btn svg,
+.pinned-close-btn svg { display: block; }
+
+/* Mini "show sidebar" button when the left sidebar is collapsed away. */
+body.sb-collapsed .sidebar-nav.mode-dashboard { transform: translateX(-100%); transition: transform 0.3s ease; }
+body.sb-collapsed .sb-show-btn { display: flex; }
+.sb-show-btn {
+  display: none;
+  position: fixed; left: 10px; top: 14px; z-index: 30;
+  width: 32px; height: 32px;
+  align-items: center; justify-content: center;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(20,20,20,0.85);
+  color: rgba(255,255,255,0.85);
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  transition: background 0.15s, border-color 0.15s;
+}
+.sb-show-btn:hover {
+  background: rgba(var(--accent-rgb),0.25);
+  border-color: rgba(var(--accent-rgb),0.6);
+}
+
 /* ===== ARRANGE MODE (iPhone-style) ===== */
 body.dashboard-arrange-mode { user-select:none; -webkit-user-select:none; }
 body.dashboard-arrange-mode .dash-box {
@@ -4609,7 +4662,13 @@ body.dashboard-arrange-mode #arrange-done-bar { display:flex; }
       <path d="M9 4.5 11.5 7 9 9.5"/>
     </svg>
   </div>
+  <button type="button" class="sb-close-btn" onclick="collapseSidebar()" title="Hide sidebar" aria-label="Hide sidebar">
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
 </nav>
+<button type="button" class="sb-show-btn" onclick="showSidebar()" title="Show sidebar" aria-label="Show sidebar">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
 
 <!-- ===== RIGHT SNAPSHOT PANEL ===== -->
 <div class="snapshot-panel">
@@ -6848,6 +6907,21 @@ function sbRotateTip() {
 /* ===== SIDEBAR RESIZE (drag the 3-dot handle on the right edge) ===== */
 const SB_WIDTH_LS = 'frmls_sidebar_width';
 const SB_MIN = 200, SB_MAX = 460;
+const SB_COLLAPSED_LS = 'frmls_sidebar_collapsed';
+
+function collapseSidebar() {
+  document.body.classList.add('sb-collapsed');
+  try { localStorage.setItem(SB_COLLAPSED_LS, '1'); } catch (e) {}
+}
+function showSidebar() {
+  document.body.classList.remove('sb-collapsed');
+  try { localStorage.removeItem(SB_COLLAPSED_LS); } catch (e) {}
+}
+function _restoreSidebarCollapsed() {
+  try { if (localStorage.getItem(SB_COLLAPSED_LS) === '1') document.body.classList.add('sb-collapsed'); }
+  catch (e) {}
+}
+_restoreSidebarCollapsed();
 
 /* ===== PINNED PANEL RESIZE (drag handle on the panel's left edge) ===== */
 const PINNED_WIDTH_LS = 'frmls_pinned_panel_width';
@@ -6875,6 +6949,17 @@ function attachPinnedResize(panel) {
   handle.setAttribute('aria-label', 'Resize panel');
   handle.innerHTML = '<svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7h9"/><path d="M5 4.5 2.5 7 5 9.5"/><path d="M9 4.5 11.5 7 9 9.5"/></svg>';
   panel.appendChild(handle);
+
+  // Small X button just below the drag handle — quick way to close
+  // the pinned panel without reaching for the header X.
+  const closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'pinned-close-btn';
+  closeBtn.title = 'Close panel';
+  closeBtn.setAttribute('aria-label', 'Close panel');
+  closeBtn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+  closeBtn.addEventListener('click', e => { e.stopPropagation(); closePanel(); });
+  panel.appendChild(closeBtn);
 
   let dragging = false, startX = 0, startW = 0;
   const onMove = e => {
